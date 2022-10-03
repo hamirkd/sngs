@@ -1,0 +1,164 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a class="element btn_search_all" ng-click="getAll();"><span class="icon-clipboard-2"></span> Tout </a><a class="element btn_search"><span class="icon-search"></span> Recherche </a><span class="element-divider"></span><a ng-if="app.userPfl.mg!=0"
+                        href="#/stkbcmd/0" class="element bg-darkCobalt"><span class="icon-plus"></span>&nbsp;<span class="icon-copy"></span> Nouv BC </a><a ng-if="app.userPfl.mg!=0" href="#/stkcmd" class="element bg-darkMagenta"><span class="icon-plus"></span>&nbsp;<span class="icon-download-2"></span> Enr Command </a>
+                    <a
+                        ng-if="!app.PRMS.resa" href="#/ancmd" class="element"><span class="icon-undo"></span> Details/Annuler </a><a href="#/etacmd" class="element"><span class="icon-stats-2"></span> Etat comm </a><span class="element-divider"></span> &nbsp; <img src="public/images/1.gif" ng-show="loading" alt=""
+                        />
+                        <div class="input-control text span4 fg-blue" style='float: right;'> recherche approfondie :
+                            <form ng-submit="fullSearch()"><input fg-red ng-model="fullSearchText" placeholder="Recherche approfondie.." type="text"></form>
+                        </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <div class="row">
+        <fiedlset>
+            <legend>
+                <table width="100%">
+                    <tr>
+                        <td>{{title}}</td>
+                        <td><span class="input-control text span2" style=""><input ng-model="filterText" placeholder="filtre" type="text"></span></td>
+                        <td>Total : {{filtered.length}}</td>
+                    </tr>
+                </table>
+            </legend>
+            <div class="col-md-12" ng-show="approvisionnements.length> 0" style="min-height: 400px;max-height: 400px;overflow: auto;" when-scrolled="loadMore()">
+                <table class="table striped bordered hovered">
+                    <thead>
+                        <th class='text-left'>Date &nbsp;</th>
+                        <th class='text-left'>Num BC&nbsp;</th>
+                        <th class='text-left'>Recu&nbsp;</th>
+                        <th class='text-left'>Fourniss &nbsp;</th>
+                        <th class='text-left'>Auteur&nbsp;</th>
+                        <th class='text-left'>Action&nbsp;</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in filtered=(approvisionnements | filter:filterText)" class="liste">
+                            <td>{{data.date_cmd | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                            <td class='fg-red'><a href ng-click="showDetails(data)"><i class="icon-eye"></i> {{data.bon_cmd}} </a><span ng-switch="data.actif"><a class="fg-violet" ng-switch-when="0" title="Bon clos/Ferme"><span class="icon-bookmark on-left"></span></a>
+                                </span>
+                            </td>
+                            <td class='fg-red'><span ng-switch="data.bl_cmd_recu"><span class="fg-red my-small-font" ng-if="id_cmd!=1" ng-switch-when="0">[<span class="icon-move-horizontal on-left"></span>En cours]</span> &nbsp;<a class="fg-green my-small-font" ng-if="id_cmd!=1"
+                                    ng-switch-when="0" href="" ng-click="statusc(1,data.id_cmd);details(data)" title="Cliquer pour dire --recu--"><span class="icon-database on-left"></span>Recevoir</a> &nbsp; <span class="fg-green my-small-font" ng-if="id_cmd!=1"
+                                    ng-switch-when="1"><span class="icon-checkmark on-left"></span>Recu</span> &nbsp; <span class="fg-dark my-small-font" ng-if="id_cmd!=1" ng-switch-when="1">({{data.date_cmd_recu | date:'dd/MM/y'}})</span> &nbsp; <a class="fg-red my-small-font"
+                                    ng-if="id_cmd!=1" ng-switch-when="1" href="" ng-click="statusc(0,data.id_cmd);details(data)" title="cliquer ici pour mettre le produit --en cours..--"><span class="icon-accessibility on-left"></span>Recaler</a></span>
+                            </td>
+                            <td>{{data.nom_frns|uppercase}}</td>
+                            <td>{{data.login_cmd}}</td>
+                            <td><a ng-if="data.id_cmd!=1 && app.userPfl.id==data.user_cmd" href="#/stkbcmd/{{data.id_cmd}}" class="btn">&nbsp;<i class="icon-pencil"></i>&nbsp; Editer</a><span ng-switch="data.actif" ng-if="app.userPfl.pfl<=1"><a class="fg-violet" ng-if="data.id_cmd!=1" ng-switch-when="0" href="" ng-click="status(1,data.id_cmd)" title="Ouvrir le Bon"><span class="icon-bookmark-2 on-left"></span>Ouvrir</a>
+                                <a
+                                    class="fg-violet" ng-if="data.id_cmd!=1" ng-switch-when="1" href="" ng-click="status(0,data.id_cmd)" title="Fermer/Clore le Bon"><span class="icon-bookmark on-left"></span>Fermer</a>
+                                    </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" ng-show="approvisionnements.length == 0">
+                <div class="col-md-12">
+                    <h4>Aucun bon de commande ... !</h4>
+                </div>
+            </div>
+        </fiedlset>
+    </div>
+    <div class="example" id="searchPannel">
+        <fieldset>
+            <legend><a class="toggle_search" href=""><span class=" icon-arrow-right-3"></span></a> Nouveau Filtre</legend>
+            <form name="form">
+                <div style="max-height:500px;overflow:auto;">
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <div class="stagger"><label>Date du/debut</label>
+                                    <div class="input-control text span2"><input type="text" placeholder="jj/mm/aaaa" name="date_deb" ng-model="search.date_deb"></div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="stagger"><label>Date Fin</label>
+                                    <div class="input-control text span2"><input type="text" name="date_fin" ng-model="search.date_fin" placeholder="jj/mm/aaaa"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>Statut de la Commande</label>
+                                <div class="input-control select span4" data-role="input-control"><select ng-model="search.bc"><option value=""></option><option value="0">En cours</option><option value="1">Recu</option></select></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="input-control select span6" data-role="input-control"><label>Fournisseurs &nbsp;&nbsp;<span class="input-control text span2" style=""><input ng-model="filterfrns" placeholder="filtre" type="text"></span></label><select ng-model="search.fournisseur" ng-options="fournisseur.id_frns as fournisseur.nom_frns | uppercase for fournisseur in fournisseurs|filter:filterfrns"
+                                        ng-click="getfrns()"><option value=""></option></select></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="input-control select span6" data-role="input-control"><label>Article &nbsp;&nbsp;<span class="input-control text span2" style=""><input ng-model="filterItem" placeholder="filtre" type="text"></span></label><select ng-model="search.article" ng-options="article.id_art as article.nom_art | uppercase for article in articles|filter:filterItem|orderBy:'nom_art':false"
+                                        ng-click="getart()"><option value=""></option></select><span style="position:absolute;" title="Actualiser la liste des articles" class="icon-cycle" ng-click="app.refreshartCache()"></span></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="input-control select span6" data-role="input-control"><label>Categorie &nbsp;&nbsp;<span class="input-control text span2" style=""><input ng-model="filterItemcat" placeholder="filtre" type="text"></span></label><select ng-model="search.categorie" ng-options="categorie.id_cat as categorie.nom_cat | uppercase for categorie in categories|filter:filterItemcat"
+                                        ng-click="getcat()"><option value=""></option></select><span style="position:absolute;" title="Actualiser la liste des categories articles" class="icon-cycle" ng-click="app.refreshcatCache()"></span></div>
+                            </td>
+                        </tr>
+                    </table>
+                </div><button class="primary" ng-click="searchF();"><i class="icon-search on-left on-left-more"></i>Valider</button> &nbsp; <button class="inverse" type="reset" class="button"><i class="icon-undo on-left on-left-more"></i> Annuler </button></form>
+        </fieldset>
+    </div>
+    <div class="example" id="detailsPannel">
+        <fieldset>
+            <legend><a class="toggle_details" href=""><span class=" icon-arrow-right-3"></span></a> Articles de la commande No : <span class="fg-red">{{num_fact}}</span><span class="input-control text span2" style=""><input ng-model="filterText2" placeholder="filtre" type="text"></span></legend>
+            <div
+                class="col-md-12" style="max-height: 600px;overflow: auto;">
+                <table class="table striped bordered condensed hovered">
+                    <thead>
+                        <th class='text-left'>Designation&nbsp;</th>
+                        <th class='text-left'>Qte&nbsp;</th>
+                        <th class='text-left'>Mnt&nbsp;</th>
+                        <th class='text-left'>&nbsp;</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in filtere=(details|filter:filterText2)">
+                            <td>{{data.nom_art |uppercase}}</td>
+                            <td>{{data.qte_cmd_art}}</td>
+                            <td>{{(data.prix_cmd_art * data.qte_cmd_art) | currency}}</td>
+                            <td><span ng-switch="data.bl_art_recu"><a class="fg-red my-small-font" ng-if="nid_cmd!=1" ng-switch-when="0" href="" ng-click="statusca(1,data.id_cmd_art)" title="Cliquer pour dire --recu--"><span class="icon-move-horizontal on-left"></span>En
+                                cours...</a><a class="fg-green my-small-font" ng-if="nid_cmd!=1" ng-switch-when="1" href="" ng-click="statusca(0,data.id_cmd_art)" title="cliquer ici pour mettre le produit --en cours..--"><span class="icon-checkmark on-left"></span>Recu</a><br/>
+                                <span
+                                    class="fg-dark my-small-font" ng-if="nid_cmd!=1" ng-switch-when="1">({{data.date_recu_art | date:'dd/MM/y'}})</span>
+                                    </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="right">
+                                <h3><span>Total Achat :</span></h3>
+                            </td>
+                            <td>
+                                <h3><span class="fg-red"> {{ getTotalAchat() | currency }} F</span></h3>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+    </div>
+    </fieldset>
+</div>
+</div>
+<script>
+    $(function() {
+        $(".toggle_details").on("click", function() {
+            $("#detailsPannel").css("right", "-800px")
+        });
+        $(".toggle_search").on("click", function() {
+            $("#searchPannel").css("right", "-700px")
+        });
+        $(".btn_search").on("click", function() {
+            $("#searchPannel").css("right", "0")
+        })
+    });
+</script>

@@ -1,0 +1,139 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a class="element btn_search_all" ng-click="searchAll();"><span
+                            class="icon-clipboard-2"></span> Tout Afficher </a><span class="element-divider"></span><a
+                        class="element btn_search"><span class="icon-search"></span> Nouveau Critere de recherche
+                    </a><img src="public/images/1.gif" ng-show="loading" alt="" /><span
+                        class="element-divider"></span><a ng-click="refresh();" class="element"><span
+                            class="icon-cycle"></span> Actualiser </a>
+                    <div class="input-control text span4 fg-blue" style='float: right;'> recherche approfondie : <form
+                            ng-submit="fullSearch()"><input fg-red ng-model="fullSearchText"
+                                placeholder="Recherche approfondie.." type="text"></form>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <div class="row">
+        <div>
+            <div class="example">
+                <fiedlset>
+                    <legend>{{title}} :::::::: Total : {{filtered.length}} <a ng-hide="alertes.length == 0"
+                            class="button warning" align="right" style="float:right;margin-right:50px;"
+                            href="./app/raps/stk.php?mg={{search.magasin}}&art={{search.article}}&cat={{search.categorie}}"
+                            target="_BLANK"><span class="icon-printer"></span>{{app.txtprint}}</a><a
+                            ng-hide="creances.length == 0" class="button success" align="left" style="margin-left:50px;"
+                            href="./app/raps/inventstkxls.php?mg={{search.magasin}}&art={{search.article}}&cat={{search.categorie}}"
+                            target="_BLANK"><span class="icon-file-excel"></span>Excel</a>
+                        <div class="input-control text span4" style='float: right;'><input ng-model="filterText"
+                                placeholder="filtrer" type="text"></div>
+                    </legend>
+                    <div class="col-md-12" ng-show="alertes.length> 0"
+                        style="min-height: 400px;max-height: 400px;overflow: auto;" when-scrolled="loadMore()">
+                        <table class="table striped bordered condensed hovered">
+                            <thead>
+                                <th class='text-left'>Designation&nbsp;</th>
+                                <th class='text-left'>Qte &nbsp;</th>
+                                <th class='text-left'>Qte Phy &nbsp;</th>
+                                <th class='text-left'>Categorie&nbsp;</th>
+                                <th class='text-left'>Magasin &nbsp;</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in filtered=(alertes| filter:filterText)" class="liste">
+                                    <td>{{data.nom_art |uppercase}}</td>
+                                    <td><a href  ng-if="data.bl_approuv==0"
+                                            ng-click="approuv(data)" title="Approuver la correction"
+                                            class="btn">&nbsp;<i class="icon-checkmark"></i>&nbsp;</a><span
+                                            data-hint="{{data.prec_date_stk}}|Par {{data.detail_stk}}"
+                                            data-hint-position="top" ng-if="data.bl_approuv==0" class="fg-lightRed">
+                                            {{data.prec_qte_stk}}-></span>{{data.qte_stk}} <a
+                                            href title="Verifier et corriger la quantite en stock"
+                                            ng-click="affStock(data)">&nbsp;<i class="icon-eye"></i>&nbsp;</a></td>
+                                    <td class="input-control text span2" style='float: right;'>
+                                        <input ng-model="data.qte_stk"
+                                            placeholder="" type="text">
+                                    </td>
+                                    <td>{{data.nom_cat |uppercase}}</td>
+                                    <td>{{data.nom_mag |uppercase}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" ng-show="alertes.length == 0">
+                        <div class="col-md-12">
+                            <h5>Aucun stock disponible ... !</h5>
+                        </div>
+                    </div>
+                </fiedlset>
+                <div style='padding:10px;position:absolute; width:160px; top:-3px; right:-170px; background-color: #fff;'
+                    ng-hide="!corrstock.nom_art"><label><b>Article : </b></label>
+                    <div class="input-control select" data-role="input-control"> {{corrstock.nom_art}} </div>
+                    <label><b>Qte :</b></label>
+                    <div class="input-control select" data-role="input-control"><input class='span2' type="number"
+                            name="qte_stk" ng-model="corrstock.qte_stk" placeholder="0"></div><br /><button
+                        class="bg-magenta" title='Valider pour Corriger le stock' style="" ng-click="corrStock();"><i
+                            class="icon-thumbs-up on-left-more"></i>Ok</button>
+                </div>
+            </div>
+            <div class="example" id="searchPannel">
+                <fieldset>
+                    <legend><a class="toggle_search" href=""><span class=" icon-arrow-right-3"></span></a> Nouveau
+                        Filtre</legend>
+                    <form name="form">
+                        <div style="max-height:500px;overflow:auto;">
+                            <table width="100%">
+                                <tr>
+                                    <td>
+                                        <div class="stagger"><label>Magasin</label>
+                                            <div class="input-control select span4" data-role="input-control"><select
+                                                    ng-model="search.magasin"
+                                                    ng-options="magasin.id_mag as magasin.nom_mag | uppercase for magasin in magasins"
+                                                    ng-click="getmag()">
+                                                    <option value=""></option>
+                                                </select></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="input-control select span4"><label>Article &nbsp;&nbsp;<span
+                                                    class="input-control text span2" style=""><input
+                                                        ng-model="filterItem" placeholder="filtre"
+                                                        type="text"></span></label><select ng-model="search.article"
+                                                ng-options="article.id_art as article.nom_art|uppercase for article in articles|filter:filterItem"
+                                                ng-click="getart()">
+                                                <option value=""></option>
+                                            </select></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="input-control select span4"><label>Categorie &nbsp;&nbsp;<span
+                                                    class="input-control text span2" style=""><input
+                                                        ng-model="filterItemcat" placeholder="filtre"
+                                                        type="text"></span></label><select ng-model="search.categorie"
+                                                ng-options="categorie.id_cat as categorie.nom_cat | uppercase for categorie in categories|filter:filterItemcat"
+                                                ng-click="getcat()">
+                                                <option value=""></option>
+                                            </select><span style="position:absolute;"
+                                                title="Actualiser la liste des categories articles" class="icon-cycle"
+                                                ng-click="app.refreshcatCache()"></span></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div><button class="primary" ng-click="searchF();"><i
+                                class="icon-search on-left on-left-more"></i>Valider</button> &nbsp; <button
+                            class="inverse" type="reset" class="button"><i class="icon-undo on-left on-left-more"></i>
+                            Annuler </button>
+                    </form>
+                </fieldset>
+            </div>
+
+        </div>
+    </div>
+    <script>$(function () { $(".toggle_search").on("click", function () { $("#searchPannel").css("right", "-700px") }); $(".btn_search").on("click", function () { $("#searchPannel").css("right", "0") }); $(".toggle_replace").on("click", function () { $("#replacePannel").css("right", "-700px") }) });</script>

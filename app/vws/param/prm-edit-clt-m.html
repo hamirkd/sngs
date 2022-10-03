@@ -1,0 +1,64 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/prmclt" class="element"><span class="icon-list"></span> Liste des clients </a><span class="element-divider"></span>
+                    <div class="no-tablet-portrait" ng-show="client.id_clt"><span class="element-divider"></span><a class="element brand" href="#/prmclt/0"><span class="icon-plus-2"></span> Nouveau client </a><span class="element-divider"></span><a class="element brand place-right"><span class="icon-pencil"></span> Modification du client : <span class='fg-active-green'>{{client.code_clt}}</span></a></div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <form name="form">
+        <fieldset>
+            <legend>{{title}}</legend>
+            <table width="96%" boder="1">
+                <tr>
+                    <td><label>Nom/Raison sociale</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="nom_clt" placeholder="M. Tanga Jean de Dieu" type="text" ng-model="client.nom_clt" required><button type="button" class="btn-clear" tabindex="-1"></button></div><label>Exhonorer des Taxes ?</label>
+                        <div class="input-control select span4"
+                            data-role="input-control"><select name="exo_tva_clt" ng-model="client.exo_tva_clt" ng-options="exo.name as exo.label for exo in exos"></select></div>
+                    </td>
+                    <td><label>Telephone</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="tel_clt" placeholder="+00226 50 20 24 78" type="text" ng-model="client.tel_clt"><button type="button" class="btn-clear" tabindex="-1"></button></div><label>E-mail</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="mail_clt" placeholder="exemple@gmail.com" type="email" ng-model="client.mail_clt"><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    </td>
+                    <td><label>No RCCM</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="rccm_clt" placeholder="BF OUA 2001 E 1254" type="text" ng-model="client.rccm_clt"><button type="button" class="btn-clear" tabindex="-1"></button></div><label>Bp</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="bp_clt" placeholder="bp 13140 Ouaga 10" type="text" ng-model="client.bp_clt"><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Sexe</label>
+                        <div class="input-control radio default-style" data-role="input-control"><label><input name="sexe_clt" checked="" type="radio" ng-model="client.sexe_clt" value="M" checked><span class="check"></span> Homme </label></div>
+                        <div class="input-control radio default-style" data-role="input-control"><label><input name="sexe_clt" type="radio" ng-model="client.sexe_clt" value="F"><span class="check"></span> Femme </label></div>
+                        <div class="input-control radio default-style" data-role="input-control"><label><input name="sexe_clt" type="radio" ng-model="client.sexe_clt" value="E"><span class="check"></span> Entreprise </label></div>
+                    </td>
+                    <td><label>Forme Juridique</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="forme_juri_clt" placeholder="SA, SARL, SP" type="text" ng-model="client.forme_juri_clt"><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    </td>
+                    <td><label>Regime d'imposition</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="regime_clt" placeholder="reel simplifie" type="text" ng-model="client.regime_clt"><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Plafond Credit autorise</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="max_crdt_clt" placeholder="credit autorise" type="number" ng-model="client.max_crdt_clt"></div>
+                    </td>
+                    <td rowspan="2"><label>Adresse (secteur, ville, pays, ..)</label>
+                        <div class="input-control textarea span4" data-role="input-control"><input name="adr_clt" placeholder=" Sect 17 Pissy" ng-model="client.adr_clt"></div><label>No IFU</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="ifu_clt" placeholder="00001520F" type="text" ng-model="client.ifu_clt"><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    </td>
+                    <td><label>Division fiscale</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="division_clt" placeholder="baskuy sud" type="text" ng-model="client.division_clt"><button type="button" class="btn-clear" tabindex="-1"></button></div><label>Situation Geographique</label>
+                        <div class="input-control text span4"
+                            data-role="input-control"><input name="situation_clt" placeholder="avenue bassawarga" type="text" ng-model="client.situation_clt"><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+            </table><button class="primary" ng-click="save(client);" ng-disabled="isClean() || form.$invalid"><span class="icon-checkmark"></span> {{buttonText}}</button> &nbsp; <button class="danger" ng-click="deleted(client)" ng-show="client.id_clt"><span class="icon-cancel-2"></span> Supprimer</button></fieldset>
+    </form>
+</div>

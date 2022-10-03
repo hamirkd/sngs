@@ -1,0 +1,289 @@
+<style>
+    .badge.badge-assertive {
+        background-color: #ef4e3a;
+        color: #FFF
+    }
+
+    .badge {
+        position: absolute;
+        background-color: transparent;
+        color: #AAA;
+        z-index: 1;
+        display: inline-block;
+        padding: 3px 8px;
+        min-width: 10px;
+        border-radius: 10px;
+        vertical-align: baseline;
+        text-align: center;
+        white-space: nowrap;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 20px
+    }
+</style>
+<div class="example">
+    <div class="row">
+        <fiedlset ng-if="app.userPfl.pfl!=6 && app.userPfl.pfl!=5 && app.userPfl.pfl!=7">
+            <legend>{{title}} | Filtre : <div class="input-control text span4 pull-right"><input ng-model="filterText"
+                        placeholder="filtrer" type="text"></div>
+            </legend>
+            <div class="col-md-12" ng-show="ventes.length> 0"
+                style="min-height: 400px;max-height: 400px;overflow: auto;">
+                <div class="listview-outlook" data-role="listview" style="margin-top: 20px">
+                    <div class="list-group ">
+                        <div class="group-content"><a class="list marked" href
+                                ng-repeat="data in filtered=(ventes | filter:filterText)">
+                                <div class="list-content"><span class="list-remark dark"
+                                        style="font-weight:bold;">{{data.heure_fact}} :::: {{data.code_caissier_fact
+                                        |uppercase}}</span><span class="list-title">BOUTIQUE : {{data.code_mag
+                                        |uppercase}} - {{data.nom_mag |uppercase}} </span><span
+                                        class="list-title">FACTURE &nbsp;&nbsp;: <span class="fg-blue"
+                                            style="font-weight:bold;">{{data.code_fact |uppercase}}</span> &nbsp;<span
+                                            title="remise de {{data.remise_vnt_fact}} F CFA"
+                                            class="fg-red my-small-font" ng-if="data.remise_vnt_fact>0">(rem)</span>
+                                        &nbsp;<span title="Garantie" class="fg-red my-small-font"
+                                            ng-if="data.bl_fact_grt==1">(Garantie)</span> &nbsp;<span title="Tva"
+                                            class="fg-red my-small-font"
+                                            ng-if="data.bl_bic==0 && data.bl_tva==1 ">(Tva)</span> &nbsp;<span
+                                            title="Tva+Bic" class="fg-red my-small-font"
+                                            ng-if="data.bl_bic==1">(Bic)</span> &nbsp;<span title="Pourcentage regle"
+                                            class="fg-emerald my-small-font"
+                                            ng-if="data.bl_crdt_regle==1 && data.bl_fact_crdt==1"> pay&eacute;</span>
+                                        &nbsp;<span title="Garantie Encaissee" class="fg-blue my-small-font"
+                                            ng-if="data.bl_encaiss_grt==1 && data.bl_fact_crdt==1">
+                                            encaiss&eacute;</span> &nbsp;<span title="Pourcentage regle"
+                                            class="fg-emerald my-small-font"
+                                            ng-if="data.bl_crdt_regle==0 && data.bl_fact_crdt==1">
+                                            {{(data.som_verse_crdt*100)/(data.crdt_fact-data.remise_vnt_fact)|number:0}}%</span></span><span
+                                        class="list-title">CLIENT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{data.clt
+                                        |uppercase}}</span><span class="list-title">ARTICLE &nbsp;&nbsp;&nbsp;&nbsp;:
+                                        <span class="fg-darkBlue" style="font-weight:bold;"> {{data.nom_art |uppercase}}
+                                        </span></span><span
+                                        class="list-title fg-red">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{data.qte_vnt}}<span
+                                            class="fg-black" style="font-weight:bold;"> X </span>{{data.pu_theo_vnt |
+                                        currency}} <span class="fg-black" style="font-weight:bold;"> &lhblk;
+                                        </span>{{data.mnt_theo_vnt | currency}}</span><span class="list-title"
+                                        ng-if="app.userPfl.pfl==1"> MARGE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span
+                                            title="marge" class="fg-red my-small-font"
+                                            ng-if="data.marge_vnt<0">{{data.marge_vnt | currency}}</span><span
+                                            title="marge" class="fg-green my-small-font"
+                                            ng-if="data.marge_vnt>=0">{{data.marge_vnt | currency}}</span></span></div>
+                                <span
+                                    style="display: inline-block;position:absolute;top:10px;right:25px;font-weight: bold; font-size: 18px;line-height: 20px;">
+                                    {{data.code_mag |uppercase}} - {{data.nom_mag |uppercase}} </span><span
+                                    ng-if="data.sup_fact==1"
+                                    style="display: inline-block;position:absolute;top:25px;right:435px;font-weight: bold; font-size: 18px;line-height: 20px;-moz-transform:rotate(-30deg);-webkit-transform:rotate(-30deg);"><img
+                                        title="{{data.date_sup_fact}}" width="150" height="75"
+                                        src="public/images/ann.png" /></span><span
+                                    style="display: inline-block;position:absolute;top:50px;right:325px;font-weight: bold; font-size: 18px;line-height: 20px;"><span
+                                        ng-if="data.bl_fact_grt==1" class="fg-orange"> [ GARANTIE ] </span><span
+                                        ng-if="data.bl_fact_grt==0 && data.bl_fact_crdt==1 " class="fg-red"> - CREDIT -
+                                    </span></span><span
+                                    style="display: inline-block;position:absolute;bottom:20px;right:525px;"
+                                    class="badge badge-assertive bg-lightBlue"> {{data.mnt_theo_vnt | currency}} </span>
+                            </a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" ng-show="!ventes.length">
+                <div class="col-md-12">
+                    <h7>Aucun article vendu aujourd'hui... !</h7>
+                </div>
+            </div>
+            <div class="col-md-12" ng-show="ventes.length> 0">
+                <div class="col-md-12">
+                    <table class="table striped bordered condensed" border='1'>
+                        <tbody>
+                            <tr>
+                                <td colspan="1" align="right">
+                                    <h3><span>Comptant :</span></h3>
+                                </td>
+                                <td colspan="2">
+                                    <h3><span class="fg-red"> {{etatj.mntcpt|number:0 }} </span><span class="fg-black"
+                                            ng-if="app.PRMS.grt"> # </span><span class="fg-red" ng-if="app.PRMS.grt">
+                                            {{etatj.mntencaiss|number:0 }} </span></h3>
+                                </td>
+                                <td colspan="1" align="right">
+                                    <h3><span>Credit :</span></h3>
+                                </td>
+                                <td colspan="2">
+                                    <h3><span class="fg-red"> {{etatj.mntcrdt|number:0 }} </span></h3>
+                                </td>
+                                <td colspan="1" align="right" ng-if="app.PRMS.grt">
+                                    <h3><span>Garantie :</span></h3>
+                                </td>
+                                <td colspan="1" ng-if="app.PRMS.grt">
+                                    <h3><span class="fg-red"> {{etatj.mntgrt|number:0 }} </span></h3>
+                                </td>
+                                <td colspan="1" align="right" ng-if="!app.PRMS.grt">
+                                    <h3><span>Reglements :</span></h3>
+                                </td>
+                                <td colspan="1" ng-if="!app.PRMS.grt">
+                                    <h3><span class="fg-red"> {{etatj.mntp|number:0 }} </span></h3>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </fiedlset>
+        <div class="row" ng-show="app.userPfl.pfl==3 || app.userPfl.mg==0">
+            <table ng-if="nbalerte.nbr> 0">
+                <tr>
+                    <td>
+                        <div class="span4 no-tablet-portrait no-phone">
+                            <div class="notice marker-on-right bg-red padding1 text-center" style="height: 50px">
+                                <h1 class="fg-white" style="font-size: 16px; line-height: 16px; margin-bottom: 2px">
+                                    {{nbalerte.nbr}} Article(s) En rupture de stock</h1>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="vertical-align: top;margin-left:20px;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /><a
+                            href="#/stklrt">Consulter la liste</a></td>
+                </tr>
+            </table>
+            <div ng-if="nbalerte.nbr <= 0" class="span6 no-tablet-portrait no-phone"> Aucune rupture de stock
+                constat&eacute;e </div>
+        </div>
+        <div class="row" ng-show="app.userPfl.pfl==5">
+            <div class="grid">
+                <div class="row">
+                    <div class="span9">
+                        <div class="example">
+                            <fiedlset>
+                                <legend style="width:100%;">
+                                    <table width="100%">
+                                        <tr>
+                                            <td>{{title}}</td>
+                                            <td><span class="input-control text span2" style=""><input
+                                                        ng-model="filterText" placeholder="filtre" type="text"></span>
+                                            </td>
+                                            <td>Total : {{filtered.length}}</td>
+                                            <td><button class="bg-active-darkTeal" style="float:right;"
+                                                    ng-click="getAllFactures();"><i
+                                                        class="icon-spin on-left on-left-more"></i>Actualiser</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </legend>
+                                <div class="col-md-12" ng-show="factures.length> 0"
+                                    style="min-height: 400px;max-height: 400px;overflow: auto;">
+                                    <table class="table striped bordered condensed hovered">
+                                        <thead>
+                                            <th class='text-left'>No Fact</th>
+                                            <th class='text-left'>Client</th>
+                                            <th class='text-left'>Boutique</th>
+                                            <th class='text-left'>&nbsp;</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="data in filtered=(factures|filter:filterText)"
+                                                ng-click="select($index)" class="liste"
+                                                ng-class="{'info':$index == index}">
+                                                <td><a href ng-click="showDetails(data)"
+                                                        title='Cliquez pour voir les details dans la colonne de droite'><i
+                                                            class="icon-eye"></i> {{data.code_fact}}&nbsp;</a><span
+                                                        title="remise de {{data.remise_vnt_fact}} F CFA"
+                                                        class="fg-red my-small-font"
+                                                        ng-if="data.remise_vnt_fact>0">(rem)</span><span title="Tva"
+                                                        class="fg-red my-small-font"
+                                                        ng-if="data.bl_bic==0 && data.bl_tva==1 ">(Tva)</span><span
+                                                        title="Tva+Bic" class="fg-red my-small-font"
+                                                        ng-if="data.bl_bic==1">(Bic)</span><span
+                                                        title="Pourcentage regle" class="fg-emerald my-small-font"
+                                                        ng-if="data.bl_crdt_regle==1 && data.bl_fact_crdt==1">
+                                                        pay&eacute;</span><span title="Pourcentage regle"
+                                                        class="fg-emerald my-small-font"
+                                                        ng-if="data.bl_crdt_regle==0 && data.bl_fact_crdt==1">
+                                                        {{(data.som_verse_crdt*100)/(data.crdt_fact-data.remise_vnt_fact)|number:0}}%</span><span
+                                                        title="Garantie" class="fg-orange my-small-font"
+                                                        ng-if="data.bl_fact_grt==1"> [Garantie]</span><span
+                                                        title="Credit" class="fg-darkRed my-small-font"
+                                                        ng-if="data.bl_fact_grt==0 && data.bl_fact_crdt==1">
+                                                        [Credit]</span><span title="Comptant"
+                                                        class="fg-green my-small-font" ng-if="data.bl_fact_crdt==0">
+                                                        [Comptant]</span></td>
+                                                </td>
+                                                <td>{{data.nom_clt |uppercase}} <br><img title="{{data.date_sup_fact}}"
+                                                        ng-if="data.sup_fact==1" width="100" height="50"
+                                                        src="public/images/ann.png" /></td>
+                                                <td>{{data.code_mag |uppercase}}</td>
+                                                <td><a title='Imprimer la facture' class="button warning" align="right"
+                                                        href="./app/raps/fact.php?f={{data.id_fact}}"
+                                                        target="_BLANK"><span class="icon-printer"></span></a> &nbsp;<a
+                                                        ng-click="encaiss(data)" title='Valider la facture'
+                                                        class="button bg-green" align="right" href><span
+                                                            class="icon-foursquare"></span></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-12" ng-show="factures.length == 0">
+                                    <div class="col-md-12" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                                        <h4>Aucune facture ... !</h4>
+                                    </div>
+                                </div>
+                            </fiedlset>
+                        </div>
+                    </div>
+                    <div class="span6" style="float:right;">
+                        <div class="example">
+                            <fieldset>
+                                <legend>Articles de la facture No : <span class="fg-red">{{num_fact}}</span>:: </legend>
+                                <div class="col-md-12" style="min-height: 255px;max-height: 255px;overflow: auto;">
+                                    <table class="table striped bordered condensed hovered">
+                                        <thead>
+                                            <th class='text-left'>Designation&nbsp;</th>
+                                            <th class='text-left'>Qte&nbsp;</th>
+                                            <th class='text-left'>Pu&nbsp;</th>
+                                            <th class='text-left'>Mnt&nbsp;</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="data in filtere=(details)">
+                                                <td>{{data.nom_art |uppercase}}</td>
+                                                <td>{{data.qte_vnt | uppercase}}</td>
+                                                <td>{{data.pu_theo_vnt |uppercase}}</td>
+                                                <td>{{data.mnt_theo_vnt |uppercase}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <table ng-hide="!num_fact" width="100%">
+                                    <tr>
+                                        <td align="left">
+                                            <h3><span>MONTANT NET :</span></h3>
+                                        </td>
+                                        <td align="right">
+                                            <h3><span class="fg-red"> {{ (credit_fact-remise_fact) | currency }}
+                                                    &nbsp;&nbsp;&nbsp;</span></h3>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left"><br>
+                                            <h3><span>SOM VERS :</span></h3>
+                                        </td>
+                                        <td align="right"><br><input
+                                                style='font-size:20px;padding:5px;font-weight: bold;'
+                                                class="span2 bg-olive fg-white bd-darkCyan" name="som_verse"
+                                                placeholder="0" type="number" title="Entrez la somme versee"
+                                                ng-model="som_verse" ng-change="caclMon()"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">
+                                            <h3><span>MONNAIE :</span></h3>
+                                        </td>
+                                        <td align="right">
+                                            <h3><span class="fg-magenta"> {{ (credit_fact-som_verse)*(-1) | currency }}
+                                                    &nbsp;&nbsp;&nbsp;</span></h3>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-show="app.userPfl.pfl==6"> Espace Controlle Audit-Qualite-comptabilte. </div>
+    </div>
+</div>
+</div>

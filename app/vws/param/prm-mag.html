@@ -1,0 +1,71 @@
+ <div class="grid">
+    <div class="row">
+        <div> 
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content">
+                    <a href="#/prmmag/0" class="element">
+                        <span class="icon-plus-2"></span> 
+                        Nouveau magasin
+                    </a>
+                    <span class="element-divider"></span> 
+                </div>
+            </nav>
+            <!--end of nav class="navigation-bar white border"--> 
+        </div> 
+        
+    </div>
+    <!--end of class="row"--> 
+</div> 
+<!--end of class="grid"--> 
+
+
+
+
+<div class="example">
+    <div class="row">
+        <fiedlset>
+            <legend>{{title}} | Filter par magasin : <div class="input-control text span4 pull-right">
+                    <input ng-model="filterText" placeholder="libelle magasin" type="text">
+                </div>
+                </legend>
+            <div class="col-md-12" ng-show="magasins.length > 0" style="min-height: 400px;max-height: 400px;overflow: auto;">  
+                <table class="table striped bordered condensed hovered">
+                    <thead>
+                    <th class='text-left'>Code Magasin&nbsp;</th>
+                    <th class='text-left'>Libelle magasin &nbsp;</th>
+                     <th class='text-left'>Responsable&nbsp;</th>
+                     <th class='text-left'>Titre&nbsp;</th>
+                     <th class='text-left'>Ville&nbsp;</th>
+                     <th class='text-left'>Pays &nbsp;</th>
+                     <th class='text-left'>Tel &nbsp;</th>
+                     <th class='text-left'>Mail &nbsp;</th>
+                    <th class='text-left'>Action&nbsp;</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in magasins | filter:filterText" class="liste">
+                            <td>{{data.code_mag|uppercase}}</td>
+                            <td>{{data.nom_mag|uppercase}}</td> 
+                            <td>{{data.resp_mag|uppercase}}</td> 
+                            <td>{{data.titre_resp_mag|uppercase}}</td> 
+                            <td>{{data.ville_mag|uppercase}}</td> 
+                            <td>{{data.pays_mag|uppercase}}</td> 
+                            <td>{{data.tel_mag}}</td>  
+                            <td>{{data.mail_mag}}</td> 
+                            <td><a href="#/prmmag/{{data.id_mag}}" class="btn">&nbsp;<i  class="icon-pencil"></i>&nbsp; Editer</a></td>
+                        </tr> 
+                    </tbody> 
+                </table>
+            </div>
+            <div class="col-md-12" ng-show="magasins.length == 0">
+                <div class="col-md-12">
+                    <h4>Aucun magasin ... !</h4>
+                </div>
+            </div>
+            </fiedlset>
+
+    </div>
+</div>
+<!--div class=example-->
+ 
+
+

@@ -1,0 +1,83 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><span class="element-divider"></span><a ng-if="app.userPfl.mg!=0"
+                        href="#/stkba/0" class="element bg-lightOrange"><span class="icon-plus"></span>&nbsp;<span
+                            class="icon-copy"></span> Nouv BE </a><a ng-if="app.userPfl.mg!=0" href="#/stkas"
+                        class="element bg-lightGreen"><span class="icon-plus"></span>&nbsp;<span
+                            class="icon-download-2"></span> Entree stock </a><a ng-if="!app.PRMS.resa" href="#/anapp"
+                        class="element"><span class="icon-undo"></span> Details/Annuler </a><a href="#/etaapp"
+                        class="element"><span class="icon-stats-2"></span> Etat Approv </a></div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <div class="row">
+        <fiedlset>
+            <legend>{{title}} | Filtre : <div class="input-control text span4 pull-right"><input ng-model="filterText"
+                        placeholder="filtre" type="text"></div>
+            </legend>
+            <div class="col-md-12" ng-show="sorties.length> 0"
+                style="min-height: 400px;max-height: 400px;overflow: auto;">
+                <table class="table striped bordered hovered">
+                    <thead>
+                        <th class='text-left'>No Bon&nbsp; <span ng-show="srtnba>0"><a ng-if="app.userPfl.mg!=0" href
+                                    ng-click="tvusrt()" title="Tout Marquer comme Recu" class="btn">&nbsp;<i
+                                        class="fg-red icon-alarm"><span style="font-size:12px;"
+                                            class="fg-red">(0{{srtnba}})</span></i>&nbsp;</a></span></th>
+                        <th class='text-left'>Emis &nbsp;</th>
+                        <th class='text-left'>Date &nbsp;</th>
+                        <th class='text-left'>Auteur&nbsp;</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in sorties | filter:filterText" class="liste">
+                            <td class='fg-red'><a href ng-click="showDetails(data)"><i class="icon-eye"></i>
+                                    &nbsp;{{data.bon_sort}}</a> &nbsp; <a class="fg-red"
+                                    ng-if="data.rejeter==0 && app.userPfl.mg!=0" href ng-click="rejetersrt(data)"
+                                    title="Rejeter" class="btn">&nbsp;<i
+                                        class="icon-alarm"></i>&nbsp;Rejeter le bon</a> &nbsp;
+                                    <a class="fg-red" ng-if="data.rejeter==1" class="btn">&nbsp;Rejeter</a>
+                                <a class="fg-violet" href
+                            ng-click="apprvae(data)" ng-if="data.rejeter==0" title="Approvisonner directement dans le stock"
+                            class="btn">&nbsp;<i class="icon-cloud-2"></i>&nbsp;Approv Directement</a></td>
+                            <td>{{data.nom_mag}}</td>
+                            <td>{{data.date_sort | date:'dd/MM/y'}}</td>
+                            <td>{{data.login_sort}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" ng-show="sorties.length == 0">
+                <div class="col-md-12">
+                    <h4>Aucun bon en attente d'approvisionnement ... !</h4>
+                </div>
+            </div>
+        </fiedlset>
+    </div>
+</div>
+<div class="example" id="detailsPannel">
+    <fieldset>
+        <legend><a class="toggle_details" href=""><span class=" icon-arrow-right-3"></span></a> Articles du bon : <span
+                class="fg-red">{{num_fact}}</span><span class="input-control text span2" style=""><input
+                    ng-model="filterText2" placeholder="filtre" type="text"></span></legend>
+        <div class="col-md-12" style="max-height: 600px;overflow: auto;">
+            <table class="table striped bordered condensed hovered">
+                <thead>
+                    <th class='text-left'>Code ART&nbsp;</th>
+                    <th class='text-left'>Designation&nbsp;</th>
+                    <th class='text-left'>Qte&nbsp;</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="data in filtere=(details|filter:filterText2)">
+                        <td>{{data.code_art |uppercase}}</td>
+                        <td>{{data.nom_art |uppercase}}</td>
+                        <td>{{data.qte_sort_art | uppercase}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+</div>
+<script>$(function () { $(".toggle_details").on("click", function () { $("#detailsPannel").css("right", "-800px") }) });</script>

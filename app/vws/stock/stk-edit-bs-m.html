@@ -1,0 +1,76 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/stkbs" class="element"><span class="icon-list"></span>
+                        Liste des BS </a><a href="#/stkss" class="element bg-pink"><span
+                            class="icon-plus"></span>&nbsp;<span class="icon-upload-3"></span> Nouvelle Sortie de stock
+                    </a><a href="#/ansort" class="element"><span class="icon-undo"></span> Details/Annuler </a><a
+                        href="#/etasort" class="element"><span class="icon-stats-2"></span> Etat Sorties </a>
+                    <div class="no-tablet-portrait" ng-show="sortie.id_sort"><span class="element-divider"></span><a
+                            class="element brand bg-pink" href="#/stkbs/0"><span class="icon-plus-2"></span> Nouveau Bon
+                        </a><span class="element-divider"></span><a class="element brand place-right"><span
+                                class="icon-pencil"></span> Modification du bon de sortie : <span
+                                class='fg-amber'>{{sortie.bon_sort}}</span></a></div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <form name="form">
+        <fieldset>
+            <legend>{{title}}</legend>
+            <table width="100%">
+                <tr>
+                    <td width="50%"><label>Date sortie</label>
+                        <div class="input-control text span4"><input type="text" placeholder="JJ/MM/AAAA"
+                                name="date_sort" ng-disabled="!app.PRMS.defdat||sortie.actif==0" ng-model="sortie.date_sort" required>
+                        </div> (jj/mm/aaaa)
+                    </td>
+                    <td colspan="4">
+                        <legend>Motif</legend>
+                        <p>
+                            {{sortie.motif}}
+
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>No du Bon</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="bon_sort"
+                                placeholder="BS152184521001" type="text" ng-model="sortie.bon_sort" ng-disabled="true"
+                                value="BS152184521001"><button type="button" class="btn-clear" tabindex="-1"></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Beneficiaire</label>
+                        <div class="input-control select span4" data-role="input-control"><select name='mag_sort_dst'
+                                ng-model="sortie.mag_sort_dst" ng-disabled="sortie.actif==0"
+                                ng-options="magasin.id_mag as magasin.nom_mag|uppercase for magasin in magasins"
+                                required></select></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+            </table>
+            <span ng-if="sortie.actif==1||sortie.actif==undefined">
+                <button ng-if="sortie.rejeter==0||sortie.actif==rejeter" class="primary" ng-click="save(sortie);"
+                    ng-disabled="isClean() || form.$invalid"><span class="icon-checkmark"></span>
+                    {{buttonText}}</button>
+                <button ng-if="sortie.rejeter==1" class="primary" ng-click="save(sortie);"
+                    ng-disabled="form.$invalid"><span class="icon-checkmark"></span> {{buttonText}}</button>
+                    &nbsp; <button class="danger" ng-click="deleted(sortie)" ng-show="sortie.id_sort"><span
+                        class="icon-cancel-2"></span>
+                    Supprimer</button>
+                    &nbsp; <button class="warning" ng-if="sortie.rejeter==1" ng-click="rejetersrt(sortie)"><span
+                        class="icon-cancel-2"></span>
+                    Renvoyer le bon</button></span>
+            <span ng-if="sortie.actif==0" class="fg-red">
+                Ce bon a été consommé
+            </span>
+        </fieldset>
+    </form>
+</div>

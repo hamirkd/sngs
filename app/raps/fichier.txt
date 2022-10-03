@@ -1,0 +1,147 @@
+SELECT app.bon_liv_appro,date_format(app.date_appro,'%d %b %Y') as date_appro,
+    a.nom_art,m.code_mag,c.nom_cat,f.nom_frns,
+    apa.qte_appro_art,apa.prix_appro_art
+    FROM t_approvisionnement app
+    INNER JOIN t_approvisionnement_article apa ON app.id_appro=apa.appro_appro_art
+    INNER JOIN t_magasin m on m.id_mag=apa.mag_appro_art
+    INNER JOIN t_article a ON apa.art_appro_art=a.id_art 
+    INNER JOIN t_categorie_article c ON c.id_cat=a.cat_art
+    INNER JOIN t_fournisseur f ON app.frns_appro=f.id_frns
+    WHERE  1=1  AND apa.mag_appro_art=10 AND date(app.date_appro)='2021-11-27' Order by app.date_appro DESC,c.nom_cat,a.nom_artSELECT  
+            fv.code_caissier_fact,
+            fv.login_caissier_fact,
+            fv.bl_fact_grt,
+            (fv.crdt_fact-fv.som_verse_crdt) as mnt_crce,
+            fv.code_fact,
+            date(fv.date_fact) as date_fact,
+            time(fv.date_fact) as heure_fact,
+            cl.code_clt,
+            cl.nom_clt,
+            cl.tel_clt,
+            m.code_mag
+            FROM t_facture_vente fv 
+             INNER JOIN t_client cl ON fv.clnt_fact=cl.id_clt
+             inner join t_magasin m on fv.mag_fact=m.id_mag
+            WHERE fv.bl_fact_crdt=1 AND bl_fact_grt=0 AND fv.bl_crdt_regle=0  AND fv.sup_fact=0 AND fv.crdt_fact>0 AND (fv.crdt_fact-fv.som_verse_crdt)>0  AND fv.caissier_fact in (SELECT id_user FROM t_user where mag_user=2) ORDER BY cl.nom_clt,fv.date_fact DESCSELECT  
+            fv.code_caissier_fact,
+            fv.login_caissier_fact,
+            fv.bl_fact_grt,
+            (fv.crdt_fact-fv.som_verse_crdt) as mnt_crce,
+            fv.code_fact,
+            date(fv.date_fact) as date_fact,
+            time(fv.date_fact) as heure_fact,
+            cl.code_clt,
+            cl.nom_clt,
+            cl.tel_clt,
+            m.code_mag
+            FROM t_facture_vente fv 
+             INNER JOIN t_client cl ON fv.clnt_fact=cl.id_clt
+             inner join t_magasin m on fv.mag_fact=m.id_mag
+            WHERE fv.bl_fact_crdt=1 AND bl_fact_grt=0 AND fv.bl_crdt_regle=0  AND fv.sup_fact=0 AND fv.crdt_fact>0 AND (fv.crdt_fact-fv.som_verse_crdt)>0  AND fv.mag_fact  =2 ORDER BY cl.nom_clt,fv.date_fact DESCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-09' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_art=6437 AND id_cat=215 AND date(Date_vnt) between '2022-01-01' 
+                AND '2022-03-22' ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-18' ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-19' ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-21' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-22' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=10 AND date(Date_vnt)='2022-03-01' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=10 AND date(Date_vnt)='2022-03-02' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=10 AND date(Date_vnt)='2022-03-03' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=10 AND date(Date_vnt)='2022-03-04' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=10 AND date(Date_vnt)='2022-03-05' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=10 AND date(Date_vnt)='2022-03-07' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=10 AND date(Date_vnt)='2022-03-08' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=10 AND date(Date_vnt)='2022-03-09' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=10 AND date(Date_vnt)='2022-03-10' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=10 AND date(Date_vnt)='2022-03-11' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=10 AND date(Date_vnt)='2022-03-12' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=10 AND date(Date_vnt)='2022-03-14' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=10 AND date(Date_vnt)='2022-03-15' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCselect s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,
+                p.prix_mini_art,p.prix_gros_art,p.prix_max_art
+                from t_stock s
+   inner join t_magasin m on s.mag_stk=m.id_mag
+  inner join t_article a on s.art_stk=a.id_art
+  inner join t_categorie_article ca on a.cat_art=ca.id_cat
+  left join (select * from t_prix_article GROUP BY art_prix_art DESC) p on s.art_stk=p.art_prix_art
+  WHERE 1=1 AND s.mag_stk=2 Order by m.nom_mag,ca.nom_cat,a.nom_artselect s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,
+                p.prix_mini_art,p.prix_gros_art,p.prix_max_art
+                from t_stock s
+   inner join t_magasin m on s.mag_stk=m.id_mag
+  inner join t_article a on s.art_stk=a.id_art
+  inner join t_categorie_article ca on a.cat_art=ca.id_cat
+  left join (select * from t_prix_article GROUP BY art_prix_art DESC) p on s.art_stk=p.art_prix_art
+  WHERE 1=1 AND s.mag_stk=2 Order by m.nom_mag,ca.nom_cat,a.nom_artselect s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,
+                p.prix_mini_art,p.prix_gros_art,p.prix_max_art
+                from t_stock s
+   inner join t_magasin m on s.mag_stk=m.id_mag
+  inner join t_article a on s.art_stk=a.id_art
+  inner join t_categorie_article ca on a.cat_art=ca.id_cat
+  left join (select * from t_prix_article GROUP BY art_prix_art DESC) p on s.art_stk=p.art_prix_art
+  WHERE 1=1 AND s.mag_stk=2 Order by m.nom_mag,ca.nom_cat,a.nom_artselect s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,
+                p.prix_mini_art,p.prix_gros_art,p.prix_max_art
+                from t_stock s
+   inner join t_magasin m on s.mag_stk=m.id_mag
+  inner join t_article a on s.art_stk=a.id_art
+  inner join t_categorie_article ca on a.cat_art=ca.id_cat
+  left join (select * from t_prix_article GROUP BY art_prix_art DESC) p on s.art_stk=p.art_prix_art
+  WHERE 1=1 AND s.mag_stk=2 Order by m.nom_mag,ca.nom_cat,a.nom_artselect s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,
+                p.prix_mini_art,p.prix_gros_art,p.prix_max_art
+                from t_stock s
+   inner join t_magasin m on s.mag_stk=m.id_mag
+  inner join t_article a on s.art_stk=a.id_art
+  inner join t_categorie_article ca on a.cat_art=ca.id_cat
+  left join (select * from t_prix_article GROUP BY art_prix_art DESC) p on s.art_stk=p.art_prix_art
+  WHERE 1=1 AND s.mag_stk=2 Order by m.nom_mag,ca.nom_cat,a.nom_artSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-21' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-22' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-23' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-24' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-25' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-26' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-28' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-29' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-30' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-03-31' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCselect s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,
+                p.prix_mini_art,p.prix_gros_art,p.prix_max_art
+                from t_stock s
+   inner join t_magasin m on s.mag_stk=m.id_mag
+  inner join t_article a on s.art_stk=a.id_art
+  inner join t_categorie_article ca on a.cat_art=ca.id_cat
+  left join (select * from t_prix_article GROUP BY art_prix_art DESC) p on s.art_stk=p.art_prix_art
+  WHERE 1=1 Order by m.nom_mag,ca.nom_cat,a.nom_artselect s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,
+                p.prix_mini_art,p.prix_gros_art,p.prix_max_art
+                from t_stock s
+   inner join t_magasin m on s.mag_stk=m.id_mag
+  inner join t_article a on s.art_stk=a.id_art
+  inner join t_categorie_article ca on a.cat_art=ca.id_cat
+  left join (select * from t_prix_article GROUP BY art_prix_art DESC) p on s.art_stk=p.art_prix_art
+  WHERE 1=1 Order by m.nom_mag,ca.nom_cat,a.nom_artSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-01' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-04' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-04' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-04' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-07' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-08' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-09' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-11' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-12' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-13' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-14' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-15' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT app.bon_liv_appro,date_format(app.date_appro,'%d %b %Y') as date_appro,
+    a.nom_art,m.code_mag,c.nom_cat,f.nom_frns,
+    apa.qte_appro_art,apa.prix_appro_art
+    FROM t_approvisionnement app
+    INNER JOIN t_approvisionnement_article apa ON app.id_appro=apa.appro_appro_art
+    INNER JOIN t_magasin m on m.id_mag=apa.mag_appro_art
+    INNER JOIN t_article a ON apa.art_appro_art=a.id_art 
+    INNER JOIN t_categorie_article c ON c.id_cat=a.cat_art
+    INNER JOIN t_fournisseur f ON app.frns_appro=f.id_frns
+    WHERE  1=1  AND apa.mag_appro_art=2 Order by app.date_appro DESC,c.nom_cat,a.nom_artSELECT app.bon_liv_appro,date_format(app.date_appro,'%d %b %Y') as date_appro,
+    a.nom_art,m.code_mag,c.nom_cat,f.nom_frns,
+    apa.qte_appro_art,apa.prix_appro_art
+    FROM t_approvisionnement app
+    INNER JOIN t_approvisionnement_article apa ON app.id_appro=apa.appro_appro_art
+    INNER JOIN t_magasin m on m.id_mag=apa.mag_appro_art
+    INNER JOIN t_article a ON apa.art_appro_art=a.id_art 
+    INNER JOIN t_categorie_article c ON c.id_cat=a.cat_art
+    INNER JOIN t_fournisseur f ON app.frns_appro=f.id_frns
+    WHERE  1=1  AND apa.mag_appro_art=2 Order by app.date_appro DESC,c.nom_cat,a.nom_artSELECT app.bon_liv_appro,date_format(app.date_appro,'%d %b %Y') as date_appro,
+    a.nom_art,m.code_mag,c.nom_cat,f.nom_frns,
+    apa.qte_appro_art,apa.prix_appro_art
+    FROM t_approvisionnement app
+    INNER JOIN t_approvisionnement_article apa ON app.id_appro=apa.appro_appro_art
+    INNER JOIN t_magasin m on m.id_mag=apa.mag_appro_art
+    INNER JOIN t_article a ON apa.art_appro_art=a.id_art 
+    INNER JOIN t_categorie_article c ON c.id_cat=a.cat_art
+    INNER JOIN t_fournisseur f ON app.frns_appro=f.id_frns
+    WHERE  1=1  AND apa.mag_appro_art=2 Order by app.date_appro DESC,c.nom_cat,a.nom_artSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-14' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-15' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-16' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-18' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-19' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-20' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-21' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0  AND id_mag=2 AND date(Date_vnt)='2022-04-22' AND bl_fact_grt=0 AND bl_fact_crdt=0 ORDER BY code_mag,Date_vnt DESC,nom_cat ASCSELECT app.bon_liv_appro,date_format(app.date_appro,'%d %b %Y') as date_appro,
+    a.nom_art,m.code_mag,c.nom_cat,f.nom_frns,
+    apa.qte_appro_art,apa.prix_appro_art
+    FROM t_approvisionnement app
+    INNER JOIN t_approvisionnement_article apa ON app.id_appro=apa.appro_appro_art
+    INNER JOIN t_magasin m on m.id_mag=apa.mag_appro_art
+    INNER JOIN t_article a ON apa.art_appro_art=a.id_art 
+    INNER JOIN t_categorie_article c ON c.id_cat=a.cat_art
+    INNER JOIN t_fournisseur f ON app.frns_appro=f.id_frns
+    WHERE  1=1  AND apa.mag_appro_art=21 AND date(app.date_appro)='2022-04-27' Order by app.date_appro DESC,c.nom_cat,a.nom_artselect s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,
+                p.prix_mini_art,p.prix_gros_art,p.prix_max_art
+                from t_stock s
+   inner join t_magasin m on s.mag_stk=m.id_mag
+  inner join t_article a on s.art_stk=a.id_art
+  inner join t_categorie_article ca on a.cat_art=ca.id_cat
+  left join (select * from t_prix_article GROUP BY art_prix_art DESC) p on s.art_stk=p.art_prix_art
+  WHERE 1=1 AND s.mag_stk=9 Order by m.nom_mag,ca.nom_cat,a.nom_artselect s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,
+                p.prix_mini_art,p.prix_gros_art,p.prix_max_art
+                from t_stock s
+   inner join t_magasin m on s.mag_stk=m.id_mag
+  inner join t_article a on s.art_stk=a.id_art
+  inner join t_categorie_article ca on a.cat_art=ca.id_cat
+  left join (select * from t_prix_article GROUP BY art_prix_art DESC) p on s.art_stk=p.art_prix_art
+  WHERE 1=1 AND s.mag_stk=9 Order by m.nom_mag,ca.nom_cat,a.nom_artselect s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,
+                p.prix_mini_art,p.prix_gros_art,p.prix_max_art
+                from t_stock s
+   inner join t_magasin m on s.mag_stk=m.id_mag
+  inner join t_article a on s.art_stk=a.id_art
+  inner join t_categorie_article ca on a.cat_art=ca.id_cat
+  left join (select * from t_prix_article GROUP BY art_prix_art DESC) p on s.art_stk=p.art_prix_art
+  WHERE 1=1 AND s.mag_stk=16 Order by m.nom_mag,ca.nom_cat,a.nom_art

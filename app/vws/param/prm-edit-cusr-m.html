@@ -1,0 +1,91 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/prmcusr" class="element"><span class="icon-list"></span>
+                        Liste des utilisateurs </a><span class="element-divider"></span>
+                    <div class="no-tablet-portrait" ng-show="user.id_user"><span class="element-divider"></span><a class="element brand" href="#/prmcusr/0"><span class="icon-plus-2"></span> Nouvel
+                            utilisateur </a><span class="element-divider"></span><a class="element brand place-right"><span class="icon-pencil"></span> Modification de
+                            l'utilisateur : <span class='fg-active-green'>{{user.code_user}}</span></a></div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <form name="form">
+        <fieldset>
+            <legend>{{title}}</legend>
+            <table width="95%">
+                <tr>
+                    <td><label>Code utilisateur (5 caracteres maxi)</label>
+                        <div class="input-control text span4" data-role="input-control"><input placeholder="code" type="text" ng-model="user.code_user" required><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    </td>
+                    <td><label>Login/Identifiant</label>
+                        <div class="input-control text span4" data-role="input-control"><input placeholder="login" type="text" ng-model="user.login_user" required><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    </td>
+                    <td><label>Affilie au Magasin </label>
+                        <div class="input-control select span4" data-role="input-control"><select name='mag_user' ng-model="user.mag_user" ng-options="magasin.id_mag as magasin.nom_mag|uppercase for magasin in magasins">
+                                <option value=""></option>
+                            </select></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Profil</label>
+                        <div class="input-control select span4" data-role="input-control"><select ng-model="user.profil_user">
+                                <option value="4">Renseignement</option>
+                                <option value="6">Comptabilte/Audit</option>
+                                <option value="3">Magasinier</option>
+                                <option value="2">Vendeur(euse)</option>
+                                <option value="5">Caissier(&egrave;re)</option>
+                                <option value="1">Administrateur</option>
+                                <option value="7">Responsable Reglement</option>
+                            </select></div>
+                    </td>
+                    <td><label>E-mail</label>
+                        <div class="input-control text span4" data-role="input-control"><input placeholder="onyxbf@yahoo.fr" type="email" ng-model="user.mail_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><label>Nom</label>
+                        <div class="input-control text span4" data-role="input-control"><input placeholder="OUEDRAOGO" ng-model="user.nom_user"></div>
+                    </td>
+                    <td>
+                        <div>
+                            <label>Peut-il faire un règlement à crédit ? 
+                            <label style="display: contents;"><input name="regl_credit" checked="" type="radio" ng-model="user.regl_credit" value="1" checked><span class="check"></span> Oui </label>
+                            <label style="display: contents;"><input name="regl_credit" type="radio" ng-model="user.regl_credit" value="0"><span class="check"></span> Non </label></label>
+
+                            <label>Peut-il faire une vente à crédit ? 
+                                <label style="display: contents;"><input name="vente_credit" checked="" type="radio" ng-model="user.vente_credit" value="1" checked><span class="check"></span> Oui </label>
+                            <label style="display: contents;"><input name="vente_credit" type="radio" ng-model="user.vente_credit" value="0"><span class="check"></span> Non </label></label>
+
+                            <label>Peut-il annuler une facture de vente ? 
+                                <label style="display: contents;"><input name="facture_vente_annulee" checked="" type="radio" ng-model="user.facture_vente_annulee" value="1" checked><span class="check"></span> Oui </label>
+                            <label style="display: contents;"><input name="facture_vente_annulee" type="radio" ng-model="user.facture_vente_annulee" value="0"><span class="check"></span> Non </label></label>
+                        </div>
+                    </td>
+                    <td>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Pr&eacute;nom(s) </label>
+                        <div class="input-control text span4" data-role="input-control"><input placeholder="Hamza" type="text" ng-model="user.prenom_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    </td>
+                    <td>
+                        <!-- <div ng-if="user.profil_user==6||user.profil_user==5||user.profil_user==3||user.profil_user==2">
+                            <label>Peut-il faire une vente à crédit?
+                            <label style="display: contents;"><input name="vente_credit" checked="" type="radio" ng-model="user.vente_credit" value="1" checked><span class="check"></span> Oui </label>
+                            <label style="display: contents;"><input name="vente_credit" type="radio" ng-model="user.vente_credit" value="0"><span class="check"></span> Non </label></label>
+                        </div> -->
+                    </td>
+                    <td></td>
+                </tr>
+            </table><button class="primary" ng-click="save(user);" ng-disabled="form.$invalid"><span
+                    class="icon-checkmark"></span> {{buttonText}}</button> &nbsp; <button class="danger" ng-click="deleted(user)" ng-show="user.id_user"><span class="icon-cancel-2"></span> Supprimer</button>
+        </fieldset>
+    </form>
+</div>

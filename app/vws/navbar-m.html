@@ -1,0 +1,64 @@
+<div class="navigation-bar">
+    <div class="navigation-bar-content container">
+        <a href="" class="element" style="position:absolute; top:0; left:-15px;">&nbsp;&nbsp;[{{app.userPfl.mag}}]</a>
+
+        <a href="#/home" class="element"><span class="icon-home"></span> &nbsp; ACCUEIL</a><span class="element-divider"></span>
+        <a class="element1 pull-menu" href="#"></a>
+        <div ng-if="app.userPfl.pfl==1 && app.userPfl.mg==0 ">
+            <ng-include src="'app/vws/men/sup-m.html'"></ng-include>
+        </div>
+        <div ng-if="app.userPfl.pfl==1 && app.userPfl.mg!=0 ">
+            <ng-include src="'app/vws/men/adm-m.html'"></ng-include>
+        </div>
+        <div ng-if="app.userPfl.pfl==0 && app.userPfl.mg==0 ">
+            <ng-include src="'app/vws/men/root-m.html'"></ng-include>
+        </div>
+        <div ng-if="app.userPfl.pfl==2">
+            <ng-include src="'app/vws/men/vend-m.html'"></ng-include>
+        </div>
+        <div ng-if="app.userPfl.pfl==3">
+            <ng-include src="'app/vws/men/mag-m.html'"></ng-include>
+        </div>
+        <div ng-if="app.userPfl.pfl==4">
+            <ng-include src="'app/vws/men/rens-m.html'"></ng-include>
+        </div>
+        <div ng-if="app.userPfl.pfl==5">
+            <ng-include src="'app/vws/men/cais-m.html'"></ng-include>
+        </div>
+        <div ng-if="app.userPfl.pfl==6">
+            <ng-include src="'app/vws/men/compt-m.html'"></ng-include>
+        </div>
+        <div ng-if="app.userPfl.pfl==7">
+            <ng-include src="'app/vws/men/regl-m.html'"></ng-include>
+        </div>
+
+        <div class="no-tablet-portrait no-phone">
+            <ul class="element-menu place-right" ng-if="app.userPfl.pfl==7">
+                <li><a class="dropdown-toggle" href="#"><span class="icon-home"></span> &nbsp;Boutique </a>
+                    <ul class="inverse dropdown-menu" data-role="dropdown">
+                        <li>
+                            <a href="" ng-click="changerMagasin(0,'TOUS')" title=""><span
+                                    class="icon-sun on-left"></span>TOUS</a>
+                        </li>
+                        <li ng-repeat="magasin in magasins">
+                            <a href="" ng-click="changerMagasin(magasin.id_mag,magasin.nom_mag)" title=""><span
+                                    class="icon-sun on-left"></span>{{magasin.nom_mag|uppercase}}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul><span class="element-divider place-right"></span>
+
+            <ul class="element-menu place-right">
+                <li><a class="dropdown-toggle" href="#"><span class="icon-user"></span> &nbsp;Session </a>
+                    <ul class="dropdown-menu inverse" data-role="dropdown">
+                        <li><a href=""><span class="icon-user-2"></span> Connecte : {{app.userPfl.login}}</a></li>
+                        <li><a href="#/prmpusr"><span class="icon-user-2"></span> Mon profil</a></li>
+                        <li><a title="Deconnexion" ng-click="app.logOut()" class=""><span class="icon-box-add"></span>
+                                Deconnexion</a></li>
+                    </ul>
+                </li>
+            </ul><span class="element-divider place-right"></span>
+            <div class="element place-right" title="Connecte en tant que"> {{app.userPfl.lastName}} </div>
+        </div>
+    </div>
+</div>

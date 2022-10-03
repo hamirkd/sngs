@@ -1,0 +1,93 @@
+<div class="example">
+    <form name="form">
+        <fieldset>
+            <legend>{{title}} | Client : <span class="fg-lightOlive">{{creance_details.nom_clt}}</span> | Montant Total
+                des credit : <span class="fg-red" ng-hide='!creance_details.mnt_creditg'>{{creance_details.mnt_creditg|
+                    currency}} F CFA</span></legend>
+            <table width="100%" border="0" style="padding:2px;" cellsacing="10">
+                <tr>
+                    <td><label>Date Reglement</label>
+                        <div class="input-control text span2"><input type="text" placeholder="jj/mm/aaaa"
+                                name="date_crce_clnt" ng-disabled="!app.PRMS.defdat"
+                                ng-model="appreglement.date_crce_clnt" class="fg-orange"></div>
+                    </td>
+                    <td><label> Versement Avance </label>
+                        <div class="input-control text span4" data-role="input-control"><input style=''
+                                class="fg-cobalt" name="mnt_versement" placeholder="Versement" type="number"
+                                ng-change="validMnt()" ng-model="appreglement.mnt_versement"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label> Clients &nbsp;&nbsp;<span class="input-control text span2" style=""><input
+                                    ng-model="filterItem" placeholder="filtre" type="text"></span></label>
+                        <div class="input-control select span6" data-role="input-control"><select name='creance_clt'
+                                ng-model="appreglement.creance_clt"
+                                ng-options="creance.id_clt as creance.code_clt+' : '+creance.nom_clt+' | '+creance.mnt_reste|uppercase for creance in creances|filter:filterItem"
+                                ng-change="getCreancegDetails(appreglement.creance_clt)" required></select><span
+                                style="position:absolute;" title="Actualiser la liste des creanciers" class="icon-cycle"
+                                ng-click="getCreancesgClients()"></span><input name="id_clnt" type="hidden"
+                                ng-model="creance_details.id_clt"></div>
+                    </td>
+                    <td><label>Document reference</label>
+                        <div class="input-control textarea span4" data-role="input-control"><textarea
+                                name="ref_crce_clnt" placeholder="Ex : Cheque No xxxxx ou versement No yyyyyyx "
+                                ng-model="appreglement.ref_crce_clnt"></textarea></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label ng-hide='!creance_details.mnt_creditg'> Somme versee </label>
+                        <div class="input-control select span6" data-role="input-control"
+                            ng-hide='!creance_details.mnt_creditg'>
+                            <div class="fg-white bg-green" style='padding:5px;font-size:30px;'>
+                                {{creance_details.som_verseg | currency}} F CFA</div>
+                        </div>
+                    </td>
+                    <td><label ng-hide='!creance_details.mnt_creditg'> Reste &agrave; payer </label>
+                        <div style='padding:5px;font-size:30px;' class="bg-red fg-white"
+                            ng-hide='!creance_details.mnt_creditg'>
+                            {{(creance_details.mnt_creditg-creance_details.som_verseg-appreglement.mnt_versement)|
+                            currency}} F CFA</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label ng-hide='!creance_details.mnt_creditg'> Magasin </label>
+                        <div class="input-control select span4" data-role="input-control"
+                            ng-hide='!creance_details.mnt_creditg'><span class="fg-brown"> {{app.userPfl.mag}}</span>
+                        </div>
+                    </td>
+                    <td style='vertical-align: bottom;'>
+                        <div align="left"><button class="primary span2" ng-click="save();"
+                                ng-disabled="!appreglement.mnt_versement"><span class="icon-checkmark"></span>
+                                Verser</button><button class="inverse span2" type="reset" class="button"
+                                ng-click='emptyForm()'><i class="icon-undo on-left on-left-more"></i>Annuler </button>
+                        </div>
+                    </td>
+                </tr>
+            </table><br />
+            <div ng-hide='!creance_details.mnt_creditg' id="div_details" style="max-height: 200px;overflow: auto;">
+                <table class="table striped bordered condensed hovered">
+                    <thead>
+                        <th class='text-left'>Date &nbsp;</th>
+                        <th class='text-left'>Facture &nbsp;</th>
+                        <th class='text-left'>Vendeur &nbsp;</th>
+                        <th class='text-left'>Designation&nbsp;</th>
+                        <th class='text-left'>Qte&nbsp;</th>
+                        <th class='text-left'>Pu&nbsp;</th>
+                        <th class='text-left'>Mnt&nbsp;</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in filtere=(details)">
+                            <td>{{data.date_fact |date:'dd/MM/yyyy'}}</td>
+                            <td>{{data.code_fact |uppercase}}</td>
+                            <td>{{data.code_caissier_fact |uppercase}}</td>
+                            <td>{{data.nom_art |uppercase}}</td>
+                            <td>{{data.qte_vnt | uppercase}}</td>
+                            <td>{{data.pu_theo_vnt |uppercase}}</td>
+                            <td>{{data.mnt_theo_vnt |uppercase}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+    </form>
+</div>

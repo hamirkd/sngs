@@ -1,0 +1,29 @@
+# Commenter la ligne ci-dessous si plantage
+php_flag zlib.output_compression on
+
+# Activer le filtre
+SetOutputFilter DEFLATE
+
+#AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/x-javascript
+
+# Certains navigateurs ne peuvent pas avoir GZIP (les vieux)
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+
+# Certains navigateurs ne peuvent pas avoir GZIP (les vieux)
+BrowserMatch ^Mozilla/4\.0678 no-gzip
+
+# On ne veut pas d'IE
+BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+
+# On ne compresse pas les images, elles le sont déjà.
+SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+
+#on gère le cas des proxy
+#Header append Vary User-Agent env=!dont-vary
+
+#################################################
+# enable cross domain access control
+
+# forcer le cache
+RewriteRule ^(css|js)/([\w-]+)\.\d+\.\1$ $1/$2.$1 [L]
+ 

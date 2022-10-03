@@ -1,0 +1,94 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/stkbs" class="element"><span class="icon-list"></span>
+                        Liste des BS </a><a ng-if="app.userPfl.mg!=0" href="#/stkbs/0"
+                        class="element bg-lightOrange"><span class="icon-plus"></span>&nbsp;<span
+                            class="icon-copy"></span> Nouveau Bon de sortie </a><a ng-if="app.userPfl.mg!=0"
+                        href="#/stkss" class="element bg-pink"><span class="icon-plus"></span>&nbsp;<span
+                            class="icon-upload-3"></span> Nouvelle Sortie de stock </a><a ng-if="!app.PRMS.resa"
+                        href="#/ansort" class="element"><span class="icon-undo"></span> Details/Annuler </a><a
+                        href="#/etasort" class="element"><span class="icon-stats-2"></span> Etat Sorties </a></div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <div class="row">
+        <fiedlset>
+            <legend>{{title}} | Filtre : <div class="input-control text span4 pull-right"><input ng-model="filterText"
+                        placeholder="filtre" type="text"></div>
+            </legend>
+            <div class="col-md-12" ng-show="sorties.length> 0"
+                style="min-height: 400px;max-height: 400px;overflow: auto;">
+                <table class="table striped bordered hovered">
+                    <thead>
+                        <th class='text-left'>No Bon&nbsp; <span ng-show="srtnv>0"><a ng-if="app.userPfl.mg==0" href
+                                    ng-click="tvusrt()" title="Tout Marquer comme Vu" class="btn">&nbsp;<i
+                                        class="fg-red icon-alarm"><span style="font-size:12px;"
+                                            class="fg-red">(0{{srtnv}})</span></i>&nbsp;</a></span></th>
+                        <th class='text-left'>Beneficiaire &nbsp;</th>
+                        <th class='text-left'>Date &nbsp;</th>
+                        <th class='text-left'>Auteur&nbsp;</th>
+                        <th class='text-left'>Action&nbsp;</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in sorties | filter:filterText" class="liste">
+                            <td class='fg-red'>{{data.bon_sort}}
+                                <span ng-switch="data.actif"><a ng-switch-when="0" title="Bon clos/Ferme"><span
+                                            class="icon-bookmark on-left"></span></a>
+                                </span>
+                                <span ng-if="data.actif==1">
+                                    <a ng-if="data.rejeter==1" title="rejeté" ng-click="showDetails(data)">&nbsp;<span
+                                            class="fg-red icon-arrow-down-3 on-left"></span></a>
+                                </span>
+                                &nbsp;&nbsp; <a class="button warning" align="right"
+                                    href="./app/raps/bs.php?f={{data.id_sort}}&r={{data.id_mag}}"
+                                    title="Imprimer le Bon de sortie" target="_BLANK"><span
+                                        class="icon-printer"></span></a> &nbsp; <a
+                                    ng-if="data.vu==0 && app.userPfl.mg==0" href ng-click="vusrt(data)"
+                                    title="Marquer comme Vu" class="btn">&nbsp;<i class="icon-alarm"></i>&nbsp;</a>
+                            </td>
+                            <td>{{data.nom_mag}}</td>
+                            <td>{{data.date_sort | date:'dd/MM/y'}}</td>
+                            <td>{{data.login_sort}}</td>
+                            <td><a ng-if="app.userPfl.mg!=0" href="#/stkbs/{{data.id_sort}}" class="btn">&nbsp;<i
+                                        class="icon-pencil"></i>&nbsp; Editer</a><span ng-switch="data.actif"
+                                    ng-if="app.userPfl.mg==0"><a ng-switch-when="0" href=""
+                                        ng-click="status(1,data.id_sort)" title="Ouvrir le Bon"><span
+                                            class="icon-bookmark-2 on-left"></span>Ouvrir</a><a ng-switch-when="1"
+                                        href="" ng-click="status(0,data.id_sort)" title="Fermer/Clore le Bon"><span
+                                            class="icon-bookmark on-left"></span>Fermer</a></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="col-md-12" ng-show="sorties.length == 0">
+                <div class="col-md-12">
+                    <h4>Aucun bon de sortie ... !</h4>
+                </div>
+            </div>
+        </fiedlset>
+    </div>
+</div>
+<div class="example" id="detailsPannel">
+    <fieldset>
+        <legend><a class="toggle_details" href=""><span class=" icon-arrow-right-3"></span></a> Motif de rejet du bon :
+            <span class="fg-red">{{bonEntree.bon_sort}}</span></legend>
+        <div class="col-md-12" style="max-height: 600px;overflow: auto;">
+            <p style="height: 100px">{{bonEntree.motif}}</p>
+            <button class="warning" ng-click="rejetersrt(bonEntree);" ng-disabled="form.$invalid"><span
+                    class="icon-checkmark"></span> Renvoyer le bon</button>
+            &nbsp;
+        </div>
+    </fieldset>
+</div>
+<script>$(function () {
+        $(".toggle_details").on("click", function () {
+            $("#detailsPannel").css("right", "-800px");
+        })
+
+    });</script>

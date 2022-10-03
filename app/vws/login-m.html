@@ -1,0 +1,36 @@
+<style>
+    .bloc {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(to bottom, #dacdb1 11%, #f0e8d8 56%);
+        box-shadow: 0 0 65px #cdbe9f inset, 0 0 20px #beae8c inset
+    }
+</style>
+<div class="login-shape" style="background: transparent;">
+    <table border="0" width="100%" height="100%" class="login-content" id="login-content" cellpadding="10" cellspacing="10">
+        <tr>
+            <td rowspan="3" style="border-right: 1px solid #ccc;" align="center"><img class="logos" src="public/images/sng.png" width="124" height="149" alt="logo-sngs"><br /><span class="item-slogan">Solution Stock && Vente !</span></td>
+            <td>
+                <p class="header">SNG-S ! v4</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span class="item-title">{{app.appnf}}</span>, <span class="item-slogan">{{app.appslog}}</span></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form ng-submit="login.authenticate()"><label>Login</label>
+                    <div class="input-control text" data-role="input-control"><input placeholder="Identifiant" type="text" ng-model="login.authLogin"><button type="button" class="btn-clear" tabindex="-1"></button></div><label>Mot de passe</label>
+                    <div class="input-control password" data-role="input-control"><input placeholder="Mot de passe" autofocus="" type="password" ng-model="login.authPassword"><button type="button" class="btn-reveale" tabindex="-1"></button></div>
+                    <div class="controls-right"><button type="submit" class="button primary"><i
+                                class="icon-key on-left"></i>Connexion </button><button type="reset" class="button"><i
+                                class="icon-undo on-left on-left-more"></i>Annuler </button></div>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>

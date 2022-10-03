@@ -1,0 +1,66 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/stkbs" class="element"><span class="icon-list"></span>
+                        Liste des BS </a><a href="#/stkbs/0" class="element bg-lightOrange"><span
+                            class="icon-plus"></span>&nbsp;<span class="icon-copy"></span> Nouveau Bon de sortie </a><a ng-if="!app.PRMS.resa" href="#/ansort" class="element"><span class="icon-undo"></span>
+                        Details/Annuler </a><a href="#/etasort" class="element"><span class="icon-stats-2"></span> Etat
+                        Sorties </a></div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <form name="form">
+        <fieldset>
+            <legend>{{title}} </legend>
+            <table width="100%" border="0" style="padding:5px;" cellsacing="10">
+                <tr>
+                    <td width="30%"><label>Bons de sorties[<a href="#/stkbs/0" title="Ajouter/Creer un bon de sortie"
+                                target="_BLANK">+</a>]</label>
+                        <div class="input-control select span4" data-role="input-control"><select class='fg-crimson' name='sort_sort_art' ng-model="sortstock.sort_sort_art" ng-options="sortie.id_sort as sortie.bon_sort + ' Du ' + sortie.date_sort for sortie in sorties" ng-change="gas()" ng-click="getsort()" required></select></div>
+                    </td>
+                    <td rowspan="4" width="70%">
+                        <div style="max-height: 260px;overflow: auto;">
+                            <table class="table striped bordered condensed" width="100%" style="padding:5px;border:1px solid #ccc;border-collapse: collapse;" cellsacing="10">
+                                <tr style="border:1px solid #ccc;">
+                                    <th style="text-align: left;">&nbsp;Designation</th>
+                                    <th style="text-align: left;">&nbsp;Qte</th>
+                                    <th style="text-align: left;">&nbsp;Auteur</th>
+                                </tr>
+                                <tr style="border:1px solid #ccc;" ng-repeat="data in articlessorties | filter:filterText" class="liste">
+                                    <td style="text-align: left;">&nbsp;{{data.nom_art|uppercase}} <a href ng-click='undobs(data)' title="supprimer"><i
+                                                class="icon-cancel on-left on-left-more"></i></a></td>
+                                    <td style="text-align: left;">&nbsp;{{data.qte_sort_art}}</td>
+                                    <td style="text-align: left;">&nbsp;{{data.code_user_sort_art|uppercase}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-if="app.PRMS.cat">
+                    <td><label>Categorie[<a href="#/prmcat/0" title="Ajouter/Creer une categorie" target="_BLANK">+</a>]
+                            &nbsp;&nbsp;<span class="input-control text span2" style=""><input ng-model="filterItemcat"
+                                    placeholder="filtre" type="text"></span></label>
+                        <div class="input-control select span6" data-role="input-control"><select ng-model="mCategorie" ng-options="categorie.id_cat as categorie.nom_cat|uppercase for categorie in categories|filter:filterItemcat|orderBy:'nom_cat':false" ng-change="loadArticlesOfCategorie(mCategorie)" ng-click="getcat(app.userPfl.mg)"></select></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Article[<a href="#/prmart/0" title="Ajouter/Creer un article" target="_BLANK">+</a>]:::
+                            QTE = <span class="fg-red">{{stock.qte_stk}}</span> &nbsp;&nbsp;<span
+                                class="input-control text span2" style=""><input ng-model="filterItem"
+                                    placeholder="filtre" type="text"></span></label>
+                        <div class="input-control select span6" data-role="input-control"><select name='art_sort_art' ng-model="sortstock.art_sort_art" ng-options="article.id_art as article.nom_art|uppercase for article in articles|filter:filterItem|orderBy:'nom_art':false" ng-change="getStock(sortstock.art_sort_art,app.userPfl.mg)"
+                                required></select></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Quantit&eacute;</label>
+                        <div class="input-control text span3" data-role="input-control"><input style='font-size:16px;padding:5px;' class="fg-cobalt" name="qte_sort_art" placeholder="Qte" type="number" ng-model="sortstock.qte_sort_art" required></div>
+                    </td>
+                </tr>
+            </table><br /><button class="primary span4" ng-click="save(sortstock);" ng-disabled="form.$invalid || djob"><span class="icon-checkmark"></span> Enregistrer</button><button class="inverse span4" type="reset" class="button"><i class="icon-undo on-left"></i>Annuler </button>
+        </fieldset>
+    </form>
+</div>

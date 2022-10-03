@@ -1,0 +1,85 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/etavers" class="element btn_search"><span class="icon-stats"></span> Etat Versements </a><span class="element-divider"></span><a href="#/dep" class="element btn_search"><span class="icon-plus"></span>&nbsp;<span class="icon-medal-2"></span> Nouv Depense </a>
+                    <a
+                        href="#/etadep" class="element btn_search"><span class="icon-stats"></span> Etat Depenses </a>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <div class="row">
+        <div class="span11">
+            <div class="example">
+                <fiedlset>
+                    <legend>{{title}} </legend>
+                    <div class="col-md-12" ng-show="versements.length> 0">
+                        <table class="table striped bordered condensed hovered">
+                            <thead>
+                                <th class='text-left'>Banque versement&nbsp;</th>
+                                <th class='text-left'>Montant&nbsp;</th>
+                                <th class='text-left'>Details &nbsp;</th>
+                                <th class='text-left'>Auteur&nbsp;</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in filtered=(versements | filter:filterText)" class="liste">
+                                    <td>{{data.nom_bank|uppercase}}</td>
+                                    <td>{{data.mnt_vrsmnt |currency}}</td>
+                                    <td>{{data.obj_vrsmnt}}</td>
+                                    <td>{{data.code_caissier_vrsmnt|uppercase}}</td>
+                                </tr>
+                                <tr>
+                                    <td align="right">
+                                        <h3><span>Total :</span></h3>
+                                    </td>
+                                    <td>
+                                        <h3><span class="fg-red"> {{ getTotal() | currency }} F CFA</span></h3>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" ng-show="versements.length == 0">
+                        <div class="col-md-12">
+                            <h4>Aucun versement ... !</h4>
+                        </div>
+                    </div>
+                </fiedlset>
+            </div>
+        </div>
+        <div class="span5" style="float:right;">
+            <div class="example">
+                <fieldset>
+                    <legend>Nouveau versement</legend>
+                    <form name="form">
+                        <table width="100%">
+                            <tr>
+                                <td><label>Date Versement</label>
+                                    <div class="input-control text span2"><input type="text" placeholder="jj/mm/aaaa" name="date_vrsmnt" ng-disabled="!app.PRMS.defdat" ng-model="versement.date_vrsmnt" class="fg-orange"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Montant</label>
+                                    <div class="input-control text span4" data-role="input-control"><input style="height:200%;font-size:48px;" name="mnt_vrsmnt" placeholder="0" type="number" ng-model="versement.mnt_vrsmnt" required></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><br/><br/><label>Banque</label>
+                                    <div class="input-control select span4" data-role="input-control"><select ng-model="versement.bank_vrsmnt" ng-options="banque.id_bank as banque.nom_bank|uppercase for banque in banques" ng-click="gbq()"></select><span style="position:absolute;" title="Actualiser la liste" class="icon-cycle"
+                                            ng-click="app.refresbnkCache()"></span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Objet du versement</label>
+                                    <div class="input-control textarea span4" data-role="input-control"><textarea name="obj_vrsmnt" placeholder="Objet" ng-model="versement.obj_vrsmnt"></textarea></div>
+                                </td>
+                            </tr>
+                        </table><button class="primary" ng-click="save(versement);" ng-disabled="form.$invalid || !versement.bank_vrsmnt"><span class="icon-checkmark"></span>Valider</button> &nbsp; <button class="inverse" type="reset" class="button"><i class="icon-undo on-left on-left-more"></i>Annuler </button></form>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>

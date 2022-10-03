@@ -1,0 +1,81 @@
+<style>
+    .bg-danger {
+        background-color: red!important;
+    }
+</style>
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a class="element btn_search_all" href="#/stkas"><span
+                            class="icon-clipboard-2"></span> Retour </a><span class="element-divider"></span>
+                    <a href="#/stkinv-inventaire" class="element"><span class="icon-list"></span>
+                        Importation inventaire</a>
+                    <span class="element-divider"></span>
+                    <img src="public/images/1.gif" ng-show="loading||(compteur>0&&!(compteur+1>filtres.length))" alt="" /><span class="element-divider"></span>
+                    <span class="element-divider" ng-show="(compteur>0&&!(compteur+1>filtres.length))"></span>
+                    <span class="" ng-show="(compteur>0&&!(compteur+1>filtres.length))">{{compteur}}/{{datas.length}}</span>
+
+                </div>
+            </nav>
+
+        </div>
+    </div>
+</div>
+<div class="grid" style="z-index: inherit;">
+    <div class="row">
+        <div>
+            <div class="example">
+                <fiedlset>
+                    <div class="row">
+                        <legend>
+                            <form action="" method="post" enctype="multipart/form-data">
+                                Choisir le fichier d'inventaire:
+                                <input type="file" name="fichierImporte" id="fichierImporte" ng-model="fichierImporte">
+                                <!-- <input type="file" name="fichierImporte" id="fichierImporte" ng-model="fichierImporte"> -->
+                                <input type="submit" value="Importer inventaire" name="submit" id="upload" ng-click="importInventaire()">
+                                <a class="text col-md-1" style="color: red;" ng-click="showError()">{{erreur}}</a>/{{datas.length}}
+                            </form>
+                            <div class="input-control text span4" style='float: right;'><input ng-model="filterText" placeholder="filtrer" type="text"></div>
+                        </legend>
+                    </div>
+                    <div class="col-md-12" ng-show="datas.length> 0" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                        <table class="table striped bordered condensed hovered">
+                            <thead>
+                                <th class='text-left'>code&nbsp;</th>
+                                <th class='text-left'>Magasin&nbsp;</th>
+                                <th class='text-left'>Categorie&nbsp;</th>
+                                <th class='text-left'>Designation&nbsp;</th>
+                                <th class='text-left'>Qte Theorique&nbsp;</th>
+                                <th class='text-left'>Qte Physique&nbsp;</th>
+                                <th class='text-left'>Ecart &nbsp;</th>
+                            </thead>
+                            <tbody>
+                                <!-- <tr ng-repeat="data in datas" class="liste"> -->
+                                <tr ng-repeat="data in filtered=(filtres| filter:filterText)" class="liste bg-primary" ng-class="{'bg-danger': data.erreur}">
+                                    <!-- <tr ng-repeat="data in filtered=(datas| filter:filterText)" class="liste" ng-if="data.erreur"> -->
+                                    <td>{{data.code}}</td>
+                                    <td>{{data.nom_mag |uppercase}}</td>
+                                    <td>{{data.nom_cat |uppercase}}</td>
+                                    <td>{{data.nom_art |uppercase}}</td>
+                                    <td>{{data.qte_the |uppercase}}</td>
+                                    <td>{{data.qte_phy |uppercase}}</td>
+                                    <td>{{data.ecart |uppercase}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-md-12">
+                            <input type="submit" value="Importer inventaire" class="button primary" id="upload" ng-click="importerInventaireDansLaBase()">
+                        </div>
+                    </div>
+                    <div class="col-md-12" ng-show="datas.length == 0">
+                        <div class="col-md-12">
+                            <h5>Pas de données ... !</h5>
+                        </div>
+                    </div>
+                </fiedlset>
+            </div>
+
+        </div>
+    </div>
+</div>

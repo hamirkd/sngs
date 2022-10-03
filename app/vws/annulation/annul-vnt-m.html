@@ -1,0 +1,71 @@
+<div class="grid">
+    <div class="row">
+        <div class="span10">
+            <div class="example">
+                <fiedlset>
+                    <legend style="width:100%;">
+                        <table width="100%">
+                            <tr>
+                                <td>{{title}}</td>
+                                <td><span class="input-control text span2" style=""><input ng-model="filterText" placeholder="filtre" type="text"></span></td>
+                                <td>Total : {{filtered.length}}</td>
+                                <td>
+                                    <form ng-submit="rechF();"><button class="inverse" style="float:right;"><i class="icon-search on-left on-left-more"></i>Ok</button><span class="input-control text span3" style="margin-right:1px;float:right"><input type="text" name="fact" ng-model="rech.vare" placeholder="Fac, Client, Date"></span></form>
+                                </td>
+                            </tr>
+                        </table>
+                    </legend>
+                    <div class="col-md-12" ng-show="factures.length> 0" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                        <table class="table striped bordered condensed hovered">
+                            <thead>
+                                <th class='text-left'>No Facture&nbsp;</th>
+                                <th class='text-left'>Client&nbsp;</th>
+                                <th class='text-left'>Magasin&nbsp;</th>
+                                <th class='text-left'>Caissier&nbsp;</th>
+                                <th class='text-left'>&nbsp;</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in filtered=(factures|filter:filterText)" ng-click="select($index)" class="liste" ng-class="{'info':$index == index,'strike':(data.supok),'red':(data.supok)}">
+                                    <td><a href ng-click="showDetails(data)" data-hint='Cliquez pour voir les details dans la colonne de droite' data-hint-position='top'><i class="icon-eye"></i> {{data.code_fact}}</a><span title="remise de {{data.remise_vnt_fact}} F CFA"
+                                            class="fg-red my-small-font" ng-if="data.remise_vnt_fact>0">(rem)</span><span title="Garantie" class="fg-red my-small-font" ng-if="data.bl_fact_grt==1">(Garantie)</span><span title="Tva" class="fg-red my-small-font"
+                                            ng-if="data.bl_bic==0 && data.bl_tva==1 ">(Tva)</span><span title="Tva+Bic" class="fg-red my-small-font" ng-if="data.bl_bic==1">(Bic)</span></td>
+                                    <td>{{data.nom_clt |uppercase}}</td>
+                                    <td>{{data.code_mag |uppercase}}</td>
+                                    <td>{{data.code_caissier_fact | uppercase}}</td>
+                                    <td><a ng-if="data.sup_fact!=1" href ng-click='undo(data)'><i class="icon-undo on-left on-left-more"></i> Annuler</a>
+                                        <img title="{{data.date_sup_fact}}" ng-if="data.sup_fact==1" width="100" height="50" src="public/images/ann.png" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" ng-show="factures.length == 0">
+                        <div class="col-md-12" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                            <h4>Aucune facture ... !</h4>
+                        </div>
+                    </div>
+                </fiedlset>
+            </div>
+        </div>
+        <div class="span6" style="float:right;">
+            <div class="example">
+                <fieldset>
+                    <legend>Articles de la facture No : <span class="fg-red">{{num_fact}}</span></legend>
+                    <div class="col-md-12" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                        <table class="table striped bordered condensed hovered">
+                            <thead>
+                                <th class='text-left'>Designation&nbsp;</th>
+                                <th class='text-left'>Qte&nbsp;</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in filtere=(details)">
+                                    <td>{{data.nom_art |uppercase}} <span class="fg-red my-small-font">({{data.pu_theo_vnt|currency}})</span></td>
+                                    <td>{{data.qte_vnt | uppercase}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a class="element btn_search_all" ng-click="getAll();"><span
+                            class="icon-clipboard-2"></span> Tout Afficher </a><span class="element-divider"></span><a
+                        ng-if="app.userPfl.pfl==1 || app.userPfl.pfl==2 || app.userPfl.pfl==3 || app.userPfl.pfl==5 "
+                        href="#/prmart/0" class="element"><span class="icon-plus-2"></span> Nouveau article </a> &nbsp;
+                    <img src="public/images/1.gif" ng-show="loading" alt="" />
+                    <div class="input-control text span4 fg-blue" style='float: right;'> recherche approfondie : <form
+                            ng-submit="fullSearch()"><input fg-red ng-model="fullSearchText"
+                                placeholder="Recherche approfondie.." type="text"></form>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <div class="row">
+        <fiedlset>
+            <legend>{{title}} | Filter par article : <div class="input-control text span4 pull-right"><input
+                        ng-model="filterText" placeholder="libelle article" type="text"></div> Total :
+                {{filtered.length}} <a ng-hide="articles.length == 0" class="button success" align="left"
+                    style="margin-left:50px;" href="./app/raps/lstartxls.php" target="_BLANK"><span
+                        class="icon-file-excel"></span>Exporter</a></legend>
+            <div class="col-md-12" ng-show="articles.length> 0"
+                style="min-height: 400px;max-height: 400px;overflow: auto;" when-scrolled="loadMore()">
+                <table class="table striped bordered condensed hovered">
+                    <thead>
+                        <th class='text-left'>Libelle article &nbsp;</th>
+                        <th class='text-left'>Ref &nbsp;</th>
+                        <th class='text-left'>PU Mini &nbsp;</th>
+                        <th class='text-left'>PU Maxi &nbsp;</th>
+                        <th class='text-left'>PU Gros&nbsp;</th>
+                        <th class='text-left' ng-if="app.PRMS.prxcht && app.userPfl.pfl<=1">P ACHT Gros&nbsp;</th>
+                        <th class='text-left'>seuil &nbsp;</th>
+                        <th class='text-left'>Categorie&nbsp;</th>
+                        <th class='text-left'>Unite &nbsp;</th>
+                        <th ng-if="app.userPfl.pfl==1 || app.userPfl.pfl==2 || app.userPfl.pfl==3 || app.userPfl.pfl==5 "
+                            class='text-left'>Action&nbsp;</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in filtered=(articles | filter:filterText)" class="liste">
+                            <td>
+                                <div contentEditable="true" ng-model="datan" typeo="art" fd="nom_art" dt="data">
+                                    {{data.nom_art|uppercase}}</div>
+                            </td>
+                            <td>
+                                <div contentEditable="true" ng-model="datam" typeo="art" fd="ref_art" dt="data">
+                                    {{data.ref_art}}</div>
+                            </td>
+                            <td>
+                                <div contentEditable="true" ng-model="datam" typeo="art" fd="prix_mini_art" dt="data">
+                                    {{data.prix_mini_art}}</div>
+                            </td>
+                            <td>
+                                <div contentEditable="true" ng-model="datam" typeo="art" fd="prix_max_art" dt="data">
+                                    {{data.prix_max_art}}</div>
+                            </td>
+                            <td>
+                                <div contentEditable="true" ng-model="datag" typeo="art" fd="prix_gros_art" dt="data">
+                                    {{data.prix_gros_art}}</div>
+                            </td>
+                            <td ng-if="app.PRMS.prxcht && app.userPfl.pfl<=1">
+                                <div contentEditable="true" ng-model="datag" typeo="art" fd="prix_achat_art" dt="data">
+                                    {{data.prix_achat_art}}</div>
+                            </td>
+                            <td>{{data.seuil_art}}</td>
+                            <td>{{data.nom_cat|uppercase}}</td>
+                            <td>{{data.nom_unite|uppercase}}</td>
+                            <td
+                                ng-if="app.userPfl.pfl==1 || app.userPfl.pfl==2 || app.userPfl.pfl==3 || app.userPfl.pfl==5 ">
+                                <a href="#/prmart/{{data.id_art}}" target="_BLANK" class="btn">&nbsp;<i
+                                        class="icon-pencil"></i>&nbsp;</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" ng-show="articles.length == 0">
+                <div class="col-md-12">
+                    <h4>Aucun article ... !</h4>
+                </div>
+            </div>
+        </fiedlset>
+    </div>
+</div>

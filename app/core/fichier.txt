@@ -1,0 +1,1 @@
+UPDATE t_sortie set rejeter=!rejeter,motif='ds' WHERE id_sort=6532 

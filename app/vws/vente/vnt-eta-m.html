@@ -1,0 +1,214 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a class="element btn_search"><span class="icon-search"></span>
+                        Nouveau Critere de recherche </a><span class="element-divider"></span><img
+                        src="public/images/1.gif" ng-show="loading" alt="" />
+                    <div class="input-control text span4 fg-blue" style='float: right;'> recherche approfondie : <form
+                            ng-submit="fullSearch()"><input title="ou tapez l'un des mots suivants : annulee, remise"
+                                fg-red ng-model="fullSearchText" placeholder="Recherche approfondie.." type="text">
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <div class="row">
+        <div>
+            <div class="example">
+                <fiedlset>
+                    <legend>{{title}} <a ng-hide="ventes.length == 0" class="button warning" align="right"
+                            style="float:right;margin-right:50px;"
+                            href="./app/raps/vntext.php?d={{search.date_deb}}&f={{search.date_fin}}&tv={{search.bc}}&tx={{search.tx}}&mg={{search.magasin}}&cs={{search.user}}&art={{search.article}}&cat={{search.categorie}}&clt={{search.client}}"
+                            target="_BLANK"><span class="icon-printer"></span>{{app.txtprint}}</a>
+                            <a
+                            ng-hide="creances.length == 0" class="button success" align="right" style="float:right;margin-right:50px;"
+                            href="./app/raps/factxls.php?d={{search.date_deb}}&f={{search.date_fin}}&tv={{search.bc}}&tx={{search.tx}}&mg={{search.magasin}}&cs={{search.user}}&art={{search.article}}&cat={{search.categorie}}&clt={{search.client}}"
+                            target="_BLANK"><span class="icon-file-excel"></span>Excel</a>
+
+                        <div class="input-control text span4" style='float: right;'><input ng-model="filterText"
+                                placeholder="filtrer" type="text"></div>
+                    </legend>
+                    <div class="col-md-12" ng-show="ventes.length> 0"
+                        style="min-height: 380px;max-height: 380px;overflow: auto;">
+                        <table class="table striped bordered condensed hovered">
+                            <thead>
+                                <th class='text-left'>Date&nbsp;</th>
+                                <th class='text-left'>Boutiq &nbsp;</th>
+                                <th class='text-left'>Client &nbsp;</th>
+                                <th class='text-left'>No Facture&nbsp;</th>
+                                <th class='text-left'>Libelle article &nbsp;</th>
+                                <th class='text-left'>Qte &nbsp;</th>
+                                <th class='text-left'>Pu &nbsp;</th>
+                                <th class='text-left'>Montant &nbsp;</th>
+                                <th ng-if="app.userPfl.pfl==1" class='text-left'>Marge &nbsp;</th>
+                                <th class='text-left'>Caissier &nbsp;</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in filtered=(ventes | filter:filterText)" class="liste">
+                                    <td>{{data.Date_vnt|date:'dd/MM/yyyy'}} {{data.heure_vnt}}</td>
+                                    <td>{{data.code_mag |uppercase}}</td>
+                                    <td>{{data.nom_clt |uppercase}}</td>
+                                    <td>{{data.code_fact |uppercase}} <span title="Garantie"
+                                            class="fg-red my-small-font"
+                                            ng-if="data.bl_fact_grt==1">(Garantie)</span><span title="Credit"
+                                            class="fg-blue my-small-font"
+                                            ng-if="data.bl_fact_grt==0 && data.bl_fact_crdt==1">(Credit)</span><span
+                                            title="Comptant" class="fg-black my-small-font"
+                                            ng-if="data.bl_fact_crdt==0">(Comptant)</span><span
+                                            title="{{data.remise_vnt_fact}}" class="fg-red my-small-font"
+                                            ng-if="data.remise_vnt_fact>0">(rem)</span><span title="Annulee"
+                                            class="fg-red my-small-font" ng-if="data.sup_fact==1">&nbsp;&nbsp;[X]</span>
+                                    </td>
+                                    <td>{{data.nom_art |uppercase}}</td>
+                                    <td>{{data.Qte_vnt}}</td>
+                                    <td>{{data.pu_theo_vnt | currency }}</td>
+                                    <td>{{data.mnt_theo_vnt | currency}}</td>
+                                    <td ng-if="app.userPfl.pfl==1"><span title="marge" class="fg-red my-small-font"
+                                            ng-if="data.marge_vnt<0">{{data.marge_vnt | currency}}</span><span
+                                            title="marge" class="fg-green my-small-font"
+                                            ng-if="data.marge_vnt>=0">{{data.marge_vnt | currency}}</span></td>
+                                    <td>{{data.code_caissier_fact |uppercase}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" align="right">
+                                        <h3><span>Valeurs Des Ventes :</span></h3>
+                                    </td>
+                                    <td colspan="2">
+                                        <h3><span class="fg-red"> {{ getTotal() | currency }} F CFA</span></h3>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" ng-show="ventes.length == 0">
+                        <div class="col-md-12">
+                            <h4>Aucune vente ... !</h4>
+                        </div>
+                    </div>
+                </fiedlset>
+            </div>
+        </div>
+        <div class="example" id="searchPannel">
+            <fieldset>
+                <legend><a class="toggle_search" href=""><span class=" icon-arrow-right-3"></span></a> Nouveau Filtre
+                </legend>
+                <form name="form">
+                    <div style="max-height:600px;overflow:auto;">
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Date du/debut</label>
+                                        <div class="input-control text span2"><input type="text"
+                                                placeholder="jj/mm/aaaa" name="date_deb" ng-model="search.date_deb">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="stagger"><label>Date Fin</label>
+                                        <div class="input-control text span2"><input type="text" name="date_fin"
+                                                ng-model="search.date_fin" placeholder="jj/mm/aaaa"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Taxes ?</label>
+                                        <div class="input-control select span4" data-role="input-control"><select
+                                                ng-model="search.tx">
+                                                <option value=""></option>
+                                                <option value="1">AVEC TVA</option>
+                                            </select></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Type de vente</label>
+                                        <div class="input-control select span4" data-role="input-control"><select
+                                                ng-model="search.bc">
+                                                <option value=""></option>
+                                                <option value="0">COMPTANT</option>
+                                                <option value="1">A CREDIT</option>
+                                                <option value="2">GARANTIE</option>
+                                            </select></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Btq/Mag</label>
+                                        <div class="input-control select span4" data-role="input-control"><select
+                                                ng-model="search.magasin"
+                                                ng-options="magasin.id_mag as magasin.nom_mag | uppercase for magasin in magasins"
+                                                ng-click="getmag()">
+                                                <option value=""></option>
+                                            </select></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Caissier</label>
+                                        <div class="input-control select span4" data-role="input-control"><select
+                                                ng-model="search.user"
+                                                ng-options="user.code_user as user.login_user | uppercase for user in users"
+                                                ng-click="getuser()">
+                                                <option value=""></option>
+                                            </select></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="input-control select span6" data-role="input-control"><label>Article
+                                            &nbsp;&nbsp;<span class="input-control text span2" style=""><input
+                                                    ng-model="filterItem" placeholder="filtre"
+                                                    type="text"></span></label><select ng-model="search.article"
+                                            ng-options="article.id_art as article.nom_art | uppercase for article in articles|filter:filterItem"
+                                            ng-click="getart()">
+                                            <option value=""></option>
+                                        </select><span style="position:absolute;"
+                                            title="Actualiser la liste des articles" class="icon-cycle"
+                                            ng-click="app.refreshartCache()"></span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="input-control select span6" data-role="input-control"><label>Categorie
+                                            &nbsp;&nbsp;<span class="input-control text span2" style=""><input
+                                                    ng-model="filterItemcat" placeholder="filtre"
+                                                    type="text"></span></label><select ng-model="search.categorie"
+                                            ng-options="categorie.id_cat as categorie.nom_cat | uppercase for categorie in categories|filter:filterItemcat"
+                                            ng-click="getcat()">
+                                            <option value=""></option>
+                                        </select><span style="position:absolute;"
+                                            title="Actualiser la liste des categories articles" class="icon-cycle"
+                                            ng-click="app.refreshcatCache()"></span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="input-control select span6" data-role="input-control"><label>Client
+                                            &nbsp;&nbsp;<span class="input-control text span2" style=""><input
+                                                    ng-model="filterItemclt" placeholder="filtre"
+                                                    type="text"></span></label><select ng-model="search.client"
+                                            ng-options="client.id_clt as client.nom_clt | uppercase for client in clients|filter:filterItemclt|orderBy:'nom_clt':false"
+                                            ng-click="getclt()">
+                                            <option value=""></option>
+                                        </select></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div><button class="primary" ng-click="searchF();"><i
+                            class="icon-search on-left on-left-more"></i>Valider</button> &nbsp; <button class="inverse"
+                        type="reset" class="button"><i class="icon-undo on-left on-left-more"></i> Annuler </button>
+                </form>
+            </fieldset>
+        </div>
+    </div>
+</div>
+<script>$(function () { $(".toggle_search").on("click", function () { $("#searchPannel").css("right", "-700px") }); $(".btn_search").on("click", function () { $("#searchPannel").css("right", "0") }) });</script>
