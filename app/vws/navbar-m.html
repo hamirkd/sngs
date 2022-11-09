@@ -33,14 +33,14 @@
         </div>
 
         <div class="no-tablet-portrait no-phone">
-            <ul class="element-menu place-right" ng-if="app.userPfl.pfl==7">
+            <ul class="element-menu place-right">
                 <li><a class="dropdown-toggle" href="#"><span class="icon-home"></span> &nbsp;Boutique </a>
                     <ul class="inverse dropdown-menu" data-role="dropdown">
                         <li>
-                            <a href="" ng-click="changerMagasin(0,'TOUS')" title=""><span
-                                    class="icon-sun on-left"></span>TOUS</a>
+                            <a href="" ng-click="changerMagasin(-1,'Actualiser')" title=""><span
+                                    class="icon-sun on-left"></span>Actualiser</a>
                         </li>
-                        <li ng-repeat="magasin in magasins">
+                        <li ng-repeat="magasin in myMagasinsAcces">
                             <a href="" ng-click="changerMagasin(magasin.id_mag,magasin.nom_mag)" title=""><span
                                     class="icon-sun on-left"></span>{{magasin.nom_mag|uppercase}}</a>
                         </li>

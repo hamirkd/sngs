@@ -85,8 +85,8 @@ angular.module("sngs").controller("loginCtrl", ["$rootScope", "$scope", "localSt
                 login.authPassword = "";
                 app.view.done = true;
                 $rootScope.loginUser = 1;
-                login.getDroit()
-                $location.path(config.urlHome)
+                login.getDroit();
+                $location.path(config.urlHome);
             } else {
                 app.waiting.show = false;
                 app.notify(result.message, "m")

@@ -118,7 +118,7 @@
         </div>
         
         {{(app.navbar.show && app.PRMS.bon_att && app.userPfl!='' && app.userPfl.mg!=0)}}
-        <span style="float:left;margin-left:20px;">GBCYS, copyright &copy;2013-
+        <span style="float:left;margin-left:20px;">LINA ENTREPRISE, copyright &copy;2013-
             <?php echo date("Y"); ?> ! {{app.appns}} {{app.appv}} ::: Licence accord&eacute;e &agrave; <span
                 class="bg-green fg-white">{{app.benef}}</span>
         </span>

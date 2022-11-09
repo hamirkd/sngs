@@ -44,11 +44,12 @@ $data = [];
         foreach($sheetData as $item){
             if($i==0){
                 $i=1;
-                if($item['A']!='code'||$item['B']!='nom_mag'||$item["C"]!='nom_cat'||$item["D"]!='nom_art'||$item["E"]!='ecart'){
-                    $response = array("status" => 0,
+                if($item['A']!='code'||$item['B']!='nom_mag'||$item["C"]!='nom_cat'||$item["D"]!='nom_art'||$item["E"]!='qte_the'||$item["F"]!='qte_phy'){
+                    $response = array("status" => -1,
                                 "datas" => "-1",
-                                "msg" => "Veuillez verifier l'ordre!");
-                    // $this->response($this->json($response), 200);
+                                "msg" => "Veuillez verifier l'ordre des champs, code|nom_mag|nom_cat|nom_art|qte_the|qte_phy");
+                    echo json_encode($response);
+                    return;
                 }
             }
             else{

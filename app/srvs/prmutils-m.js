@@ -856,6 +856,20 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
             return task
         }
     };
+    servicesObject.getMyMagasinsAcces = function() {
+        if (!localStorageService.get("magasinsCache")) {
+            return dao.getDataGet(config.mdlParamMag + "getMyMagasinsAcces", "myMagasinsAcces")
+        } else {
+            var task = $q.defer();
+            reponse = {
+                err: 0,
+                data: JSON.parse(localStorageService.get("myMagasinsAcces")),
+                message: ""
+            };
+            task.resolve(reponse);
+            return task
+        }
+    };
     servicesObject.getMagasin = function(objectID) {
         return dao.getData(config.mdlParamMag + "getMagasin&id=" + objectID)
     };

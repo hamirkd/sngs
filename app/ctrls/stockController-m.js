@@ -589,16 +589,28 @@ sngs.controller("stockInvCtrl", ["$scope", '$http', 'config', "$rootScope", "prm
             type: 'post',
             success: function(php_script_response) {
                 // alert(php_script_response); // <-- display response from the PHP script, if any
-                console.log(php_script_response)
                 $scope.loading = false;
-                $scope.datas = JSON.parse(php_script_response);
-                $scope.datas = $scope.datas.datas;
-                $scope.filtres = angular.copy($scope.datas);
-                for (const data of $scope.datas) {
-                    if (data.erreur) $scope.erreur = $scope.erreur + 1;
+                // console.log(php_script_response)
+                $scope.loading = false;
+                try {
+                    var response = JSON.parse(php_script_response);
+                    if (response.status == -1) {
+                        app.notify(JSON.stringify(response.msg ? response.msg : response.message), "m", 10000)
+                    } else {
+                        $scope.datas = JSON.parse(php_script_response);
+                        $scope.datas = $scope.datas.datas;
+                        $scope.filtres = angular.copy($scope.datas);
+                        for (const data of $scope.datas) {
+                            if (data.erreur) $scope.erreur = $scope.erreur + 1;
+                        }
+                    }
+                } catch (error) {
+                    app.notify(JSON.stringify(php_script_response), "m", 10000)
                 }
+
                 $scope.$apply();
             }
+
         });
 
         // task = prmutils.importInventaire(fd);
@@ -2126,15 +2138,16 @@ sngs.controller("stockEditBsCtrl", ["$scope", "$rootScope", "config", "$location
         if (objectID <= 0) {
             task = prmutils.insertSortie(sortie);
             task.promise.then(function(result) {
+                console.log(result)
                 if (result.err === 0) {
                     if (result.data === "-1") {
-                        app.notify(result.msg, "m")
+                        app.notify(result.msg ? result.msg : result.message, "m")
                     } else {
-                        app.notify(result.msg, "b");
+                        app.notify(result.msg ? result.msg : result.message, "b");
                         $location.path(config.urlStockBs)
                     }
                 } else {
-                    app.notify(result.msg, "m")
+                    app.notify(result.msg ? result.msg : result.message, "m")
                 }
             })
         } else {

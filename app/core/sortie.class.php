@@ -260,7 +260,7 @@ class sortieController extends model {
             FROM t_sortie sort 
             inner join t_magasin m on m.id_mag=mag_sort_dst  
             WHERE sort.actif=1 
-            AND sort.user_sort in (SELECT id_user from t_user where mag_user=" . $_SESSION['userMag'] . ")
+            WHERE sort.mag_sort_src =  ".$_SESSION["userMag"]."
                 order by sort.id_sort DESC";
         else
             $query = "SELECT sort.id_sort,sort.bon_sort,sort.actif,
@@ -398,13 +398,13 @@ class sortieController extends model {
         }
 
         if ($_SESSION['userMag'] != 0)
-            $query = "SELECT sort.id_sort,sort.vu,sort.bon_sort,sort.actif,
+            $query = 'SELECT sort.id_sort,sort.vu,sort.bon_sort,sort.actif,
            sort.date_sort,sort.mag_sort_dst as id_mag,sort.login_sort,m.nom_mag,
            sort.rejeter,sort.motif  
             FROM t_sortie sort 
-            inner join t_magasin m on m.id_mag=mag_sort_dst  
-            WHERE sort.user_sort in (SELECT id_user from t_user where mag_user=" . $_SESSION['userMag'] . ") 
-            order by sort.id_sort DESC limit 100";
+            inner join t_magasin m on m.id_mag=mag_sort_dst
+            WHERE sort.mag_sort_src =  '.$_SESSION["userMag"].'
+            order by sort.id_sort DESC limit 100';
         else
             $query = "SELECT sort.id_sort,sort.vu,sort.bon_sort,sort.actif,
            sort.date_sort,sort.mag_sort_dst as id_mag,sort.login_sort,m.nom_mag,sort.motif  

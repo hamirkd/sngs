@@ -91,6 +91,36 @@ class magasinController extends model {
         }
         $this->response('', 204); 
     }
+
+    
+    
+
+    public function getMyMagasinsAcces() {
+        if ($this->get_request_method() != "GET") {
+            $this->response('', 406);
+        }
+
+        $query = "SELECT m.*  FROM t_magasin m WHERE id_mag in (SELECT mag_id FROM t_magadin_user WHERE  user_id=".$_SESSION['userId'].") order by m.nom_mag";
+        
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+        if ($r->num_rows > 0) {
+            $result = array();
+            while ($row = $r->fetch_assoc()) {
+                $result[] = $row;
+            }
+            $response = array("status" => 0,
+                "datas" => $result,
+                "msg" => "");
+            $this->response($this->json($response), 200);  
+        } else {
+            $response = array("status" => 0,
+                "datas" => "",
+                "msg" => "");
+            $this->response($this->json($response), 200);  
+        }
+        $this->response('', 204); 
+    }
     
     public function getExceptMagasins() {
         if ($this->get_request_method() != "GET") {

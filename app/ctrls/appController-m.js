@@ -118,6 +118,10 @@ angular.module("sngs").controller("appCtrl", ["$rootScope", "localStorageService
         })
     };
     $scope.changerMagasin = function(id_mag, nom_mag) {
+        if (id_mag == -1) {
+            location.reload();
+            return;
+        }
         app.waiting.show = true;
         app.userPfl.mag = nom_mag;
         app.userPfl.mg = id_mag;
@@ -138,6 +142,21 @@ angular.module("sngs").controller("appCtrl", ["$rootScope", "localStorageService
             }
         });
     };
+
+    $scope.getMyMagasinsAcces = function() {
+        task = prmutils.getMyMagasinsAcces();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.myMagasinsAcces = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        });
+    }
+
+    $scope.getMyMagasinsAcces();
 
     $scope.getAllMagasins = function() {
         task = prmutils.getAllMagasins();
@@ -252,7 +271,7 @@ angular.module("sngs").controller("appCtrl", ["$rootScope", "localStorageService
     app.refreshmagCache = function() {
         localStorageService.remove("magasinsCache")
     };
-    app.notify = function(msg, c) {
+    app.notify = function(msg, c, duree = 2000) {
         var cl = "#ab0909";
         if (c === "b") {
             cl = "#09ab09"
@@ -269,7 +288,7 @@ angular.module("sngs").controller("appCtrl", ["$rootScope", "localStorageService
         });
         setTimeout(function() {
             elem.click()
-        }, 2000);
+        }, duree);
         elem.hide().appendTo("body").slideDown()
     }
 

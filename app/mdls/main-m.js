@@ -309,6 +309,7 @@ sngs = angular.module("sngs", ["sngs.services", "ngRoute", "ngResource", "base64
                 var objectID = $route.current.params.objectID;
                 var task = prmutils.getSortie(objectID);
                 return task.promise.then(function(result) {
+                    // console.log(result)
                     if (result.err == 0) {
                         console.log(result)
                         return result

@@ -6,7 +6,7 @@ class DB {
     const DB_USER = "root";
     const DB_PASSWORD = "adminroot";
     const DB = "bd_songo_sgns";
-    const PROPRIETAIRE = "GBCYS";
+    const PROPRIETAIRE = "LINA ENTREPRISE";
 
     protected $proprietaire;
     private $characterSet;
