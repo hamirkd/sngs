@@ -595,7 +595,7 @@ sngs.controller("stockInvCtrl", ["$scope", '$http', 'config', "$rootScope", "prm
                 try {
                     var response = JSON.parse(php_script_response);
                     if (response.status == -1) {
-                        app.notify(JSON.stringify(response.msg ? response.msg : response.message), "m", 10000)
+                        app.notify(JSON.stringify(response.message), "m", 10000)
                     } else {
                         $scope.datas = JSON.parse(php_script_response);
                         $scope.datas = $scope.datas.datas;
@@ -2018,11 +2018,12 @@ sngs.controller("stockBsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
     };
 
 
-    $scope.rejetersrt = function(bonEntree) {
-        var task = prmutils.rejetersrt(bonEntree);
+    $scope.rejetersrtRenvoye = function(bonEntree) {
+        var task = prmutils.rejetersrtRenvoye(bonEntree);
         task.promise.then(function(result) {
+            console.log(result)
             if (result.err === 0) {
-                app.notify("Le bon a été relancé", "b");
+                app.notify(result.message, "b");
                 bonEntree.rejeter = 0;
                 $("#detailsPannel").css("right", "-800px");
             } else {
@@ -2099,8 +2100,8 @@ sngs.controller("stockEditBsCtrl", ["$scope", "$rootScope", "config", "$location
         return angular.equals(original, $scope.sortie)
     };
 
-    $scope.rejetersrt = function(fac) {
-        var task = prmutils.rejetersrt(fac);
+    $scope.rejetersrtRenvoye = function(fac) {
+        var task = prmutils.rejetersrtRenvoye(fac);
         task.promise.then(function(result) {
             if (result.err === 0) {
                 app.notify("Le bon a été relancé", "b");
@@ -2141,13 +2142,13 @@ sngs.controller("stockEditBsCtrl", ["$scope", "$rootScope", "config", "$location
                 console.log(result)
                 if (result.err === 0) {
                     if (result.data === "-1") {
-                        app.notify(result.msg ? result.msg : result.message, "m")
+                        app.notify(result.message, "m")
                     } else {
-                        app.notify(result.msg ? result.msg : result.message, "b");
+                        app.notify(result.message, "b");
                         $location.path(config.urlStockBs)
                     }
                 } else {
-                    app.notify(result.msg ? result.msg : result.message, "m")
+                    app.notify(result.message, "m")
                 }
             })
         } else {
@@ -2157,14 +2158,14 @@ sngs.controller("stockEditBsCtrl", ["$scope", "$rootScope", "config", "$location
                 console.log(result)
                 if (result.err === 0) {
                     if (result.data === "-1") {
-                        app.notify(result.msg == undefined ? result.message : result.msg, "m")
+                        app.notify(result.message)
                     } else {
-                        app.notify(result.msg == undefined ? result.message : result.msg, "b");
+                        app.notify(result.message);
                         $location.path(config.urlStockBs)
                     }
                 } else {
                     console.log(result);
-                    app.notify(result.msg, "m");
+                    app.notify(result.message, "m");
                 }
             })
         }

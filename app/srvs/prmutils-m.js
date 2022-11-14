@@ -62,6 +62,9 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     servicesObject.rejetersrt = function(obj) {
         return dao.getData(config.mdlStockSs + "rejetersrt", obj)
     };
+    servicesObject.rejetersrtRenvoye = function(obj) {
+        return dao.getData(config.mdlStockSs + "rejetersrtRenvoye", obj)
+    };
     servicesObject.bonvusrt = function(obj) {
         return dao.getData(config.mdlStockSs + "bonvusrt", obj)
     };

@@ -1,1 +1,46 @@
-UPDATE t_sortie set rejeter=!rejeter,motif='ds' WHERE id_sort=6532 
+SELECT v.id_vrsmnt,DATE(v.date_vrsmnt) as date_vrsmnt, v.mnt_vrsmnt,v.obj_vrsmnt,v.code_caissier_vrsmnt,
+            b.nom_bank
+                           FROM 
+                           t_versement v
+                           INNER JOIN t_banque b ON v.bank_vrsmnt=b.id_bank
+                           WHERE   v.caissier_vrsmnt in (SELECT id_user FROM t_user WHERE mag_user=20)
+                             AND date(v.date_vrsmnt)='2022-11-09' Order By v.date_vrsmnt DESCSELECT v.id_vrsmnt,DATE(v.date_vrsmnt) as date_vrsmnt, v.mnt_vrsmnt,v.obj_vrsmnt,v.code_caissier_vrsmnt,
+            b.nom_bank
+                           FROM 
+                           t_versement v
+                           INNER JOIN t_banque b ON v.bank_vrsmnt=b.id_bank
+                           WHERE   v.caissier_vrsmnt in (SELECT id_user FROM t_user WHERE mag_user=20)
+                             AND date(v.date_vrsmnt)='2022-11-09' Order By v.date_vrsmnt DESCSELECT v.id_vrsmnt,DATE(v.date_vrsmnt) as date_vrsmnt, v.mnt_vrsmnt,v.obj_vrsmnt,v.code_caissier_vrsmnt,
+            b.nom_bank
+                           FROM 
+                           t_versement v
+                           INNER JOIN t_banque b ON v.bank_vrsmnt=b.id_bank
+                           WHERE   v.caissier_vrsmnt in (SELECT id_user FROM t_user WHERE mag_user=20)
+                             AND date(v.date_vrsmnt)='2022-11-09' Order By v.date_vrsmnt DESCSELECT v.id_vrsmnt,DATE(v.date_vrsmnt) as date_vrsmnt, v.mnt_vrsmnt,v.obj_vrsmnt,v.code_caissier_vrsmnt,
+            b.nom_bank
+                           FROM 
+                           t_versement v
+                           INNER JOIN t_banque b ON v.bank_vrsmnt=b.id_bank
+                           WHERE   v.caissier_vrsmnt in (SELECT id_user FROM t_user WHERE mag_user=20)
+                             AND date(v.date_vrsmnt)='2022-11-09' Order By v.date_vrsmnt DESCSELECT v.id_vrsmnt,DATE(v.date_vrsmnt) as date_vrsmnt, v.mnt_vrsmnt,v.obj_vrsmnt,v.code_caissier_vrsmnt,
+            b.nom_bank
+                           FROM 
+                           t_versement v
+                           INNER JOIN t_banque b ON v.bank_vrsmnt=b.id_bank
+                           WHERE   v.caissier_vrsmnt in (SELECT id_user FROM t_user WHERE mag_user=20)
+                             AND date(v.date_vrsmnt) between '2021-11-09' 
+                AND '2022-11-09' Order By v.date_vrsmnt DESCSELECT v.id_vrsmnt,DATE(v.date_vrsmnt) as date_vrsmnt, v.mnt_vrsmnt,v.obj_vrsmnt,v.code_caissier_vrsmnt,
+            b.nom_bank
+                           FROM 
+                           t_versement v
+                           INNER JOIN t_banque b ON v.bank_vrsmnt=b.id_bank
+                           WHERE   v.caissier_vrsmnt in (SELECT id_user FROM t_user WHERE mag_user=20)
+                             AND date(v.date_vrsmnt) between '2021-11-09' 
+                AND '2022-11-09' Order By v.date_vrsmnt DESCSELECT v.id_vrsmnt,DATE(v.date_vrsmnt) as date_vrsmnt, v.mnt_vrsmnt,v.obj_vrsmnt,v.code_caissier_vrsmnt,
+            b.nom_bank
+                           FROM 
+                           t_versement v
+                           INNER JOIN t_banque b ON v.bank_vrsmnt=b.id_bank
+                           WHERE   v.caissier_vrsmnt in (SELECT id_user FROM t_user WHERE mag_user=20)
+                             AND date(v.date_vrsmnt) between '2014-11-09' 
+                AND '2022-11-09' Order By v.date_vrsmnt DESC

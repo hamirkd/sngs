@@ -218,7 +218,6 @@ class decaissementController extends model {
         $query.=" Order By v.date_vrsmnt DESC";
 
 
-
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
         if ($r->num_rows > 0) {

@@ -260,7 +260,7 @@ class sortieController extends model {
             FROM t_sortie sort 
             inner join t_magasin m on m.id_mag=mag_sort_dst  
             WHERE sort.actif=1 
-            WHERE sort.mag_sort_src =  ".$_SESSION["userMag"]."
+            AND sort.mag_sort_src =  ".$_SESSION["userMag"]."
                 order by sort.id_sort DESC";
         else
             $query = "SELECT sort.id_sort,sort.bon_sort,sort.actif,
@@ -946,6 +946,36 @@ class sortieController extends model {
             $response = array("status" => 0,
                 "datas" => $r,
                 "msg" => "Vous avez rejeté le bon [$id] !!!");
+            $this->response($this->json($response), 200);
+        } catch (Exception $exc) {
+            $this->mysqli->rollback();
+            $this->mysqli->autocommit(TRUE);
+            $response = array("status" => 1,
+                "datas" => "",
+                "msg" => $exc->getMessage());
+
+            $this->response($this->json($response), 200);
+        }
+    }
+
+
+    public function rejetersrtRenvoye() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+
+        $fact = $_POST;
+
+        $id = intval($fact['id_sort']);
+        $motif = $fact['motif'];
+        try {
+            $query = "UPDATE t_sortie set rejeter=0 WHERE id_sort=$id ";
+
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+            $response = array("status" => 0,
+                "datas" => $r,
+                "msg" => "Vous avez renvoyé le bon [".$id."] !!!");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $this->mysqli->rollback();

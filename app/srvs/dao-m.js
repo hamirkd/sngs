@@ -28,11 +28,11 @@ angular.module("sngs").factory("dao", ["$http", "$q", "config", "$base64", "loca
             reponse = retrieve.status == 0 ? {
                 err: 0,
                 data: retrieve.datas,
-                message: retrieve.msg
+                message: retrieve.message
             } : {
                 err: 1,
                 data: "",
-                message: retrieve.msg
+                message: retrieve.message
             };
             task.resolve(reponse)
         }
@@ -82,11 +82,11 @@ angular.module("sngs").factory("dao", ["$http", "$q", "config", "$base64", "loca
             reponse = retrieve.status == 0 ? {
                 err: 0,
                 data: retrieve.datas,
-                message: retrieve.msg
+                message: retrieve.message
             } : {
                 err: 1,
                 data: "",
-                message: retrieve.msg
+                message: retrieve.message
             };
             localStorageService.set(cacheId, JSON.stringify(retrieve.datas));
             task.resolve(reponse)

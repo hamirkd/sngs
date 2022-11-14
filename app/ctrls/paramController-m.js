@@ -373,11 +373,17 @@ sngs.controller("paramEditMagCtrl", ["$scope", "$rootScope", "config", "dao", "$
         model: {}
     };
     $scope.types = [{
-        name: "secondaire",
-        label: "Secondaire"
+        name: "BOUTIQUE",
+        label: "BOUTIQUE"
+    }, {
+        name: "MAGASIN",
+        label: "MAGASIN"
     }, {
         name: "primaire",
         label: "Primaire"
+    }, {
+        name: "secondaire",
+        label: "Secondaire"
     }];
     $rootScope.pageTitle = "Boutique/Magasin";
     var objectID = ($routeParams.objectID) ? parseInt($routeParams.objectID) : 0;
