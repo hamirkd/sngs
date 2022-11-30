@@ -446,7 +446,7 @@ sngs.controller(" venteGrtCtrl", ["$window", "$scope", "$rootScope", "prmutils",
                         new_vente: result.data
                     });
                     $scope.emptyForm();
-                    app.notify(result.message.message, "b");
+                    app.notify(result.message, "b");
                     $scope.djob = false;
                     if (confirm("Voulez vous Imprimer la facture de la Garantie ? ") === true) {
                         $window.open("app/raps/factgrt.php?f=" + result.message.f)
@@ -757,7 +757,7 @@ sngs.controller("venteCrdtCtrl", ["$window", "$scope", "$rootScope", "prmutils",
                         new_vente: result.data
                     });
                     $scope.emptyForm();
-                    app.notify(result.message.message, "b");
+                    app.notify(result.message, "b");
                     $scope.djob = false;
                     if (confirm("Voulez vous Imprimer la facture ? ") === true) {
                         $window.open("app/raps/fact.php?f=" + result.message.f)
@@ -1043,7 +1043,7 @@ sngs.controller("venteProCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
                     $scope.djob = false
                 } else {
                     $scope.emptyForm();
-                    app.notify(result.message.message, "b");
+                    app.notify(result.message, "b");
                     $scope.djob = false;
                     if (confirm("Voulez vous Imprimer la facture ? ") === true) {
                         $window.open("app/raps/pro.php?f=" + result.message.f)
@@ -1320,7 +1320,7 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
                         new_vente: result.data
                     });
                     $scope.emptyForm();
-                    app.notify(result.message.message, "b");
+                    app.notify(result.message, "b");
                     $scope.djob = false;
                     if (confirm("Voulez vous Imprimer la facture ? ") === true) {
                         $window.open("app/raps/fact.php?f=" + result.message.f)

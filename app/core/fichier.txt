@@ -43,4 +43,49 @@ SELECT v.id_vrsmnt,DATE(v.date_vrsmnt) as date_vrsmnt, v.mnt_vrsmnt,v.obj_vrsmnt
                            INNER JOIN t_banque b ON v.bank_vrsmnt=b.id_bank
                            WHERE   v.caissier_vrsmnt in (SELECT id_user FROM t_user WHERE mag_user=20)
                              AND date(v.date_vrsmnt) between '2014-11-09' 
-                AND '2022-11-09' Order By v.date_vrsmnt DESC
+                AND '2022-11-09' Order By v.date_vrsmnt DESCselect ar.*,
+COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
+				COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art 
+				from (select a.id_art,s.qte_stk,c.nom_cat,a.code_art,a.nom_art
+		from t_stock s 
+		inner join t_article a on s.art_stk=a.id_art
+		inner join t_categorie_article c ON a.cat_art=c.id_cat
+		where s.qte_stk>0 
+		and c.id_cat=128
+		and s.mag_stk=2) ar
+		inner join (select * from t_prix_article GROUP BY art_prix_art DESC) tpa
+		on ar.id_art=tpa.art_prix_art
+		LEFT JOIN ( SELECT  art_prix_art_mag,mag_prix_art_mag,prix_mini_art_mag
+              , prix_gros_art_mag
+           FROM t_prix_article_magasin group by mag_prix_art_mag DESC
+	            ) mag ON  mag.art_prix_art_mag = ar.id_art AND  mag.mag_prix_art_mag = 21num_fac**=22022-7093query**=SELECT code_fact,date(date_fact) as date_fact FROM t_facture_vente where mag_fact=2 AND bl_tva=0  AND YEAR(date_fact)='2022' order by id_fact DESC LIMIT 1select ar.*,
+COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
+				COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art 
+				from (select a.id_art,s.qte_stk,c.nom_cat,a.code_art,a.nom_art
+		from t_stock s 
+		inner join t_article a on s.art_stk=a.id_art
+		inner join t_categorie_article c ON a.cat_art=c.id_cat
+		where s.qte_stk>0 
+		and c.id_cat=130
+		and s.mag_stk=2) ar
+		inner join (select * from t_prix_article GROUP BY art_prix_art DESC) tpa
+		on ar.id_art=tpa.art_prix_art
+		LEFT JOIN ( SELECT  art_prix_art_mag,mag_prix_art_mag,prix_mini_art_mag
+              , prix_gros_art_mag
+           FROM t_prix_article_magasin group by mag_prix_art_mag DESC
+	            ) mag ON  mag.art_prix_art_mag = ar.id_art AND  mag.mag_prix_art_mag = 2select ar.*,
+COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
+				COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art 
+				from (select a.id_art,s.qte_stk,c.nom_cat,a.code_art,a.nom_art
+		from t_stock s 
+		inner join t_article a on s.art_stk=a.id_art
+		inner join t_categorie_article c ON a.cat_art=c.id_cat
+		where s.qte_stk>0 
+		and c.id_cat=128
+		and s.mag_stk=2) ar
+		inner join (select * from t_prix_article GROUP BY art_prix_art DESC) tpa
+		on ar.id_art=tpa.art_prix_art
+		LEFT JOIN ( SELECT  art_prix_art_mag,mag_prix_art_mag,prix_mini_art_mag
+              , prix_gros_art_mag
+           FROM t_prix_article_magasin group by mag_prix_art_mag DESC
+	            ) mag ON  mag.art_prix_art_mag = ar.id_art AND  mag.mag_prix_art_mag = 21num_fac**=22022-7094query**=SELECT code_fact,date(date_fact) as date_fact FROM t_facture_vente where mag_fact=2 AND bl_tva=0  AND YEAR(date_fact)='2022' order by id_fact DESC LIMIT 1
