@@ -26,18 +26,18 @@ class uniteController extends model {
                  
                 $response = array("status" => 0,
                     "datas" => $result,
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             }
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => "Mauvais identifiant de l'unite");
+                "message" => "Mauvais identifiant de l'unite");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Veuillez fournie un identifiant de l'unite !");
+            "message" => "Veuillez fournie un identifiant de l'unite !");
         $this->response($this->json($response), 200);
     }
 
@@ -56,13 +56,13 @@ class uniteController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);  
         }
         else {
              $response = array("status" => 0,
                 "datas" =>"",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200); 
         }
         $this->response('', 204); 
@@ -103,13 +103,13 @@ class uniteController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $unite,
-                    "msg" => "unite article creee avec success!");
+                    "message" => "unite article creee avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -145,12 +145,12 @@ class uniteController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => $unite,
-                    "msg" => "Unite article [UA" . $id . "] modifiee avec success!");
+                    "message" => "Unite article [UA" . $id . "] modifiee avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -171,12 +171,12 @@ class uniteController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "Unite supprimee avec success!");
+                    "message" => "Unite supprimee avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }

@@ -228,7 +228,7 @@ angular.module("sngs").controller("appCtrl", ["$rootScope", "localStorageService
         }
     }, config.INTERVAL_ALERTES, false);
     var ivsrtae = $interval(function() {
-        if (app.userPfl.length !== 0) {
+        if (app.userPfl && app.userPfl.length !== 0) {
             $scope.getsrtnba()
         }
     }, config.INTERVAL_ALERTES, false);
@@ -275,6 +275,9 @@ angular.module("sngs").controller("appCtrl", ["$rootScope", "localStorageService
         var cl = "#ab0909";
         if (c === "b") {
             cl = "#09ab09"
+        }
+        if (c === "w") {
+            cl = "#FFF933"
         }
         var elem = $("<div>", {
             id: "NoifyMessage",

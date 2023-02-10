@@ -27,12 +27,12 @@ class sortieController extends model {
             $result = $r->fetch_assoc();
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -52,12 +52,12 @@ class sortieController extends model {
             $result = $r->fetch_assoc();
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -78,12 +78,12 @@ class sortieController extends model {
             $result = $r->fetch_assoc();
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -104,18 +104,18 @@ class sortieController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $result,
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             }
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => "Mauvais identifiant de la sortie");
+                "message" => "Mauvais identifiant de la sortie");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Veuillez fournir un identifiant de la sortie !");
+            "message" => "Veuillez fournir un identifiant de la sortie !");
         $this->response($this->json($response), 200);
     }
 
@@ -146,12 +146,12 @@ class sortieController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -182,7 +182,7 @@ class sortieController extends model {
 
         $response = array("status" => 0,
             "datas" => $r,
-            "msg" => "");
+            "message" => "");
         $this->response($this->json($response), 200);
 
         $this->response('', 204);
@@ -204,7 +204,7 @@ class sortieController extends model {
 
         $response = array("status" => 0,
             "datas" => $r,
-            "msg" => "");
+            "message" => "");
         $this->response($this->json($response), 200);
 
         $this->response('', 204);
@@ -239,12 +239,12 @@ class sortieController extends model {
                 throw new Exception($this->mysqli->error . __LINE__);
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
             $this->response($this->json($response), 200);
         }
     }
@@ -278,12 +278,12 @@ class sortieController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -309,12 +309,12 @@ class sortieController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -327,18 +327,18 @@ class sortieController extends model {
         if ($this->get_request_method() != "POST") {
             $response = array("status" => 0,
         "datas" => "-1",
-        "msg" => "Veuillez choisir un fichier !");
+        "message" => "Veuillez choisir un fichier !");
             $this->response($response, 406);
         }
         $response = array("status" => 0,
         "datas" => $_POST,
-        "msg" => "Veuillez choisir un fichier !");
+        "message" => "Veuillez choisir un fichier !");
 
         $this->response($this->json($response), 200);
         if(!isset($_FILES['fichierImporte'])){
             $response = array("status" => 1,
             "datas" => $_FILES,
-            "msg" => "Veuillez choisir un fichier !");
+            "message" => "Veuillez choisir un fichier !");
 
             $this->response($this->json($response), 200);
         }
@@ -368,7 +368,7 @@ class sortieController extends model {
                         if($item[0]!='code'||$item[0]!='nom_mag'||$item[0]!='nom_cat'||$item[1]!='nom_art'||$item[1]!='ecart'){
                             $response = array("status" => 0,
                                         "datas" => "-1",
-                                        "msg" => "Veuillez verifier l'ordre!");
+                                        "message" => "Veuillez verifier l'ordre!");
                             $this->response($this->json($response), 200);
                         }
                     }
@@ -384,7 +384,7 @@ class sortieController extends model {
                     }
                 $response = array("status" => 0,
                 "datas" => $data,
-                "msg" => "Veuillez verifier avec l'importation!");
+                "message" => "Veuillez verifier avec l'importation!");
 
                 $this->response($this->json($response), 200);
 
@@ -421,12 +421,12 @@ class sortieController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -453,7 +453,6 @@ class sortieController extends model {
             FROM t_sortie sort 
             inner join t_magasin m on m.id_mag=mag_sort_dst  
             WHERE 1=1 AND sort.rejeter=1  order by sort.id_sort DESC limit 100";
-
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
         if ($r->num_rows > 0) {
@@ -463,12 +462,12 @@ class sortieController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -503,12 +502,12 @@ class sortieController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -536,12 +535,12 @@ class sortieController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -572,12 +571,12 @@ class sortieController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
 
@@ -643,12 +642,12 @@ class sortieController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
 
@@ -717,13 +716,13 @@ class sortieController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $sortie,
-                    "msg" => "sortie  cree avec success!");
+                    "message" => "sortie  cree avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -791,12 +790,12 @@ class sortieController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $sortie,
-                    "msg" => "Bon de Sortie [BS-" . $id . "] modifie avec success!");
+                    "message" => "Bon de Sortie [BS-" . $id . "] modifie avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -818,12 +817,12 @@ class sortieController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "Bon de Sortie [BS-" . $id . "] supprime avec success!");
+                    "message" => "Bon de Sortie [BS-" . $id . "] supprime avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -874,13 +873,13 @@ class sortieController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $sortstock,
-                    "msg" => "article enregistre dans le bon de sortie avec success!");
+                    "message" => "article enregistre dans le bon de sortie avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -897,7 +896,7 @@ class sortieController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Ce Bon de sortie existe deja ..Impossible de continuer l'operation");
+                "message" => "Ce Bon de sortie existe deja ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }
@@ -910,7 +909,7 @@ class sortieController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Ce bon de sortie existe deja ..Impossible de continuer l'operation");
+                "message" => "Ce bon de sortie existe deja ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }
@@ -923,7 +922,7 @@ class sortieController extends model {
         if ($r->num_rows > 0) {
                 $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Ces articles existent dans le stock");
+                "message" => "Ces articles existent dans le stock");
                 $this->response($this->json($response), 200);
         }
         
@@ -945,14 +944,14 @@ class sortieController extends model {
 
             $response = array("status" => 0,
                 "datas" => $r,
-                "msg" => "Vous avez rejeté le bon [$id] !!!");
+                "message" => "Vous avez rejeté le bon [$id] !!!");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $this->mysqli->rollback();
             $this->mysqli->autocommit(TRUE);
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
 
             $this->response($this->json($response), 200);
         }
@@ -975,14 +974,14 @@ class sortieController extends model {
 
             $response = array("status" => 0,
                 "datas" => $r,
-                "msg" => "Vous avez renvoyé le bon [".$id."] !!!");
+                "message" => "Vous avez renvoyé le bon [".$id."] !!!");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $this->mysqli->rollback();
             $this->mysqli->autocommit(TRUE);
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
 
             $this->response($this->json($response), 200);
         }
@@ -1004,14 +1003,14 @@ class sortieController extends model {
 
             $response = array("status" => 0,
                 "datas" => $r,
-                "msg" => "Bon en attente d'entree de Stock Marquer comme recu avec success!!!");
+                "message" => "Bon en attente d'entree de Stock Marquer comme recu avec success!!!");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $this->mysqli->rollback();
             $this->mysqli->autocommit(TRUE);
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
 
             $this->response($this->json($response), 200);
         }
@@ -1031,14 +1030,14 @@ class sortieController extends model {
 
             $response = array("status" => 0,
                 "datas" => $r,
-                "msg" => "Toutes les sorties de stock Marquer comme vu avec success!!!");
+                "message" => "Toutes les sorties de stock Marquer comme vu avec success!!!");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $this->mysqli->rollback();
             $this->mysqli->autocommit(TRUE);
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
 
             $this->response($this->json($response), 200);
         }
@@ -1057,14 +1056,14 @@ class sortieController extends model {
 
             $response = array("status" => 0,
                 "datas" => $r,
-                "msg" => "Tous les Bons en attente d'entree de stock Marquer comme vu avec success!!!");
+                "message" => "Tous les Bons en attente d'entree de stock Marquer comme vu avec success!!!");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $this->mysqli->rollback();
             $this->mysqli->autocommit(TRUE);
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
 
             $this->response($this->json($response), 200);
         }

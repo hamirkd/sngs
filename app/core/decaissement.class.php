@@ -26,12 +26,12 @@ class decaissementController extends model {
              $result = $r->fetch_assoc(); 
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -115,12 +115,12 @@ class decaissementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -166,12 +166,12 @@ class decaissementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -227,12 +227,12 @@ class decaissementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -270,12 +270,12 @@ class decaissementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -321,12 +321,12 @@ class decaissementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -360,12 +360,12 @@ class decaissementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -416,7 +416,7 @@ class decaissementController extends model {
 
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => " Depense  effectue avec success!");
+                    "message" => " Depense  effectue avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
@@ -424,14 +424,14 @@ class decaissementController extends model {
                 $this->mysqli->autocommit(TRUE);
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
         } else {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Attention donnees incorrectes!");
+                "message" => "Attention donnees incorrectes!");
 
             $this->response($this->json($response), 200);
         }
@@ -479,7 +479,7 @@ class decaissementController extends model {
 
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => " Provision  effectue avec success!");
+                    "message" => " Provision  effectue avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
@@ -487,14 +487,14 @@ class decaissementController extends model {
                 $this->mysqli->autocommit(TRUE);
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
         } else {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Attention donnees incorrectes!");
+                "message" => "Attention donnees incorrectes!");
 
             $this->response($this->json($response), 200);
         }
@@ -533,12 +533,12 @@ class decaissementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -589,7 +589,7 @@ class decaissementController extends model {
 
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => " Versement  effectue avec success!");
+                    "message" => " Versement  effectue avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
@@ -597,14 +597,14 @@ class decaissementController extends model {
                 $this->mysqli->autocommit(TRUE);
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
         } else {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Attention donnees incorrectes!");
+                "message" => "Attention donnees incorrectes!");
 
             $this->response($this->json($response), 200);
         }
@@ -629,7 +629,7 @@ $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
 $response = array("status" => 0,
  "datas" => $r,
- "msg" => "Depense Marquer comme vu avec success!!!");
+ "message" => "Depense Marquer comme vu avec success!!!");
 $this->response($this->json($response), 200);
 
 } catch (Exception $exc) {
@@ -637,7 +637,7 @@ $this->mysqli->rollback();
 $this->mysqli->autocommit(TRUE);
 $response = array("status" => 1,
  "datas" => "",
- "msg" => $exc->getMessage());
+ "message" => $exc->getMessage());
 
 $this->response($this->json($response), 200);
 } 
@@ -659,7 +659,7 @@ $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
 $response = array("status" => 0,
  "datas" => $r,
- "msg" => "Toutes les depenses Marquer comme vu avec success!!!");
+ "message" => "Toutes les depenses Marquer comme vu avec success!!!");
 $this->response($this->json($response), 200);
 
 } catch (Exception $exc) {
@@ -667,7 +667,7 @@ $this->mysqli->rollback();
 $this->mysqli->autocommit(TRUE);
 $response = array("status" => 1,
  "datas" => "",
- "msg" => $exc->getMessage());
+ "message" => $exc->getMessage());
 
 $this->response($this->json($response), 200);
 } 

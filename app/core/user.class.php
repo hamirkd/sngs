@@ -26,18 +26,18 @@ class userController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $result,
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             }
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => "Mauvais identifiant du user");
+                "message" => "Mauvais identifiant du user");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Veuillez fournir un identifiant du  user !");
+            "message" => "Veuillez fournir un identifiant du  user !");
         $this->response($this->json($response), 200);
     }
 
@@ -67,12 +67,12 @@ class userController extends model {
             
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -115,13 +115,13 @@ class userController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $user,
-                    "msg" => "utilisateur cree avec success!");
+                    "message" => "utilisateur cree avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -140,7 +140,7 @@ class userController extends model {
         $this->isExistcodeUpdt($user['user']['code_user'], $id);
         $this->isExistloginUpdt($user['user']['login_user'], $id);
 
-        $column_names = array('nom_user', 'login_user', 'prenom_user', 'code_user', 'mail_user','regl_credit','vente_credit','facture_vente_annulee');
+        $column_names = array('nom_user', 'login_user', 'prenom_user', 'code_user', 'mail_user','regl_credit','vente_credit','facture_vente_annulee','droit_facture_vente_annulee_today','droit_controle_prix_vente');
         $keys = array_keys($user['user']);
         $columns = '';
         $values = '';
@@ -165,12 +165,12 @@ class userController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => $user,
-                    "msg" => "Utilisateur [" . $id . "] modifie avec success!");
+                    "message" => "Utilisateur [" . $id . "] modifie avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -191,7 +191,7 @@ class userController extends model {
             if (!empty($user['user']['apwd_user']) && md5($user['user']['apwd_user']) != $user['user']['pass_user']) {
                 $response = array("status" => 0,
                     "datas" => "-1",
-                    "msg" => "Mot de passe actuel incorrect");
+                    "message" => "Mot de passe actuel incorrect");
                 $this->response($this->json($response), 200);
             }
 
@@ -220,12 +220,12 @@ class userController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "Profil Modifie avec success!");
+                    "message" => "Profil Modifie avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -249,12 +249,12 @@ class userController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "Utilisateur supprime avec success!");
+                    "message" => "Utilisateur supprime avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -270,7 +270,7 @@ class userController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Ce code utilisateur existe deja ..Impossible de continuer l'operation");
+                "message" => "Ce code utilisateur existe deja ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }
@@ -283,7 +283,7 @@ class userController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Ce code utilisateur existe deja ..Impossible de continuer l'operation");
+                "message" => "Ce code utilisateur existe deja ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }
@@ -297,7 +297,7 @@ class userController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Ce identifiant/login utilisateur existe deja ..Impossible de continuer l'operation");
+                "message" => "Ce identifiant/login utilisateur existe deja ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }
@@ -311,7 +311,7 @@ class userController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Ce identifiant/login utilisateur existe deja ..Impossible de continuer l'operation");
+                "message" => "Ce identifiant/login utilisateur existe deja ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }
@@ -333,12 +333,12 @@ class userController extends model {
                 throw new Exception($this->mysqli->error . __LINE__);
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
             $this->response($this->json($response), 200);
         }
     }
@@ -360,12 +360,12 @@ class userController extends model {
                 throw new Exception($this->mysqli->error . __LINE__);
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
             $this->response($this->json($response), 200);
         }
     }
@@ -384,12 +384,12 @@ class userController extends model {
                 throw new Exception($this->mysqli->error . __LINE__);
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "Mot de passe reinitialise avec success");
+                "message" => "Mot de passe reinitialise avec success");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
             $this->response($this->json($response), 200);
         }
     }
@@ -413,12 +413,12 @@ class userController extends model {
             
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -439,18 +439,18 @@ class userController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $result,
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             }
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => "Mauvais identifiant de profil");
+                "message" => "Mauvais identifiant de profil");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Veuillez fournir un identifiant du  user !");
+            "message" => "Veuillez fournir un identifiant du  user !");
         $this->response($this->json($response), 200);
     }
 
@@ -475,12 +475,12 @@ class userController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $user,
-                    "msg" => "profil ajouté avec success!");
+                    "message" => "profil ajouté avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -502,7 +502,7 @@ class userController extends model {
             if (!empty($user['user']['apwd_user']) && md5($user['user']['apwd_user']) != $user['user']['pass_user']) {
                 $response = array("status" => 0,
                     "datas" => "-1",
-                    "msg" => "Mot de passe actuel incorrect");
+                    "message" => "Mot de passe actuel incorrect");
                 $this->response($this->json($response), 200);
             }
 
@@ -533,12 +533,12 @@ class userController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "Profil Modifie avec success!");
+                    "message" => "Profil Modifie avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -566,12 +566,12 @@ class userController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $user,
-                    "msg" => "profil modifié avec success!");
+                    "message" => "profil modifié avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage().json_encode($r));
+                    "message" => $exc->getMessage().json_encode($r));
 
                 $this->response($this->json($response), 200);
             }
@@ -594,12 +594,12 @@ class userController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "Profil supprimé avec success!");
+                    "message" => "Profil supprimé avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -634,19 +634,19 @@ class userController extends model {
                     
                     $response = array("status" => 0,
                         "datas" => $result,
-                        "msg" => "");
+                        "message" => "");
                     $this->response($this->json($response), 200);
                 } else {
                     $response = array("status" => 0,
                         "datas" => "",
-                        "msg" => "");
+                        "message" => "");
                     $this->response($this->json($response), 200);
                 }
                 $this->response('', 204);
         } catch (Exception $exc) {
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
             $this->response($this->json($response), 200);
         }
         
@@ -680,7 +680,7 @@ class userController extends model {
                     
         $response = array("status" => 0,
             "datas" => $result,
-            "msg" => "");
+            "message" => "");
         $this->response($this->json($response), 200);
 
     }

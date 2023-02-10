@@ -16,6 +16,8 @@ function authentication(){
         $_SESSION['reglCredit'] = $result->regl_credit;
         $_SESSION['venteCredit'] = $result->vente_credit;
         $_SESSION['factureVenteAnnulee'] = $result->facture_vente_annulee;
+        $_SESSION['droitFactureVenteAnnuleeToday'] = $result->droit_facture_vente_annulee_today;
+        $_SESSION['droitControlePrixVente'] = $result->droit_controle_prix_vente;
 
     }
 }

@@ -26,18 +26,18 @@ class commandeController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $result,
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             }
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => "Mauvais identifiant de la commande");
+                "message" => "Mauvais identifiant de la commande");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Veuillez fournie un identifiant de la commande !");
+            "message" => "Veuillez fournie un identifiant de la commande !");
         $this->response($this->json($response), 200);
     }
 
@@ -70,12 +70,12 @@ class commandeController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -101,7 +101,7 @@ class commandeController extends model {
 
         $response = array("status" => 0,
             "datas" => $r,
-            "msg" => "");
+            "message" => "");
         $this->response($this->json($response), 200);
 
         $this->response('', 204);
@@ -123,7 +123,7 @@ class commandeController extends model {
 
         $response = array("status" => 0,
             "datas" => $r,
-            "msg" => "");
+            "message" => "");
         $this->response($this->json($response), 200);
 
         $this->response('', 204);
@@ -157,12 +157,12 @@ class commandeController extends model {
                 throw new Exception($this->mysqli->error . __LINE__);
             $response = array("status" => 0,
                 "datas" => $this->showCmdOf($id),
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
             $this->response($this->json($response), 200);
         }
     }
@@ -214,12 +214,12 @@ class commandeController extends model {
 
             $response = array("status" => 0,
                 "datas" => $resp,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
             $this->response($this->json($response), 200);
         }
     }
@@ -259,12 +259,12 @@ class commandeController extends model {
 
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
             $this->response($this->json($response), 200);
         }
     }
@@ -299,12 +299,12 @@ class commandeController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -331,12 +331,12 @@ class commandeController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -372,12 +372,12 @@ class commandeController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -436,12 +436,12 @@ class commandeController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -483,12 +483,12 @@ class commandeController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -519,12 +519,12 @@ class commandeController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
 
@@ -579,12 +579,12 @@ class commandeController extends model {
       }
       $response = array("status" => 0,
       "datas" => $result,
-      "msg" => "");
+      "message" => "");
       $this->response($this->json($response), 200);
       } else {
       $response = array("status" => 0,
       "datas" => "",
-      "msg" => "");
+      "message" => "");
       $this->response($this->json($response), 200);
       }
 
@@ -652,12 +652,12 @@ class commandeController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
 
@@ -730,12 +730,12 @@ class commandeController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -790,13 +790,13 @@ class commandeController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $commande,
-                    "msg" => "commande  cree avec success!");
+                    "message" => "commande  cree avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -870,14 +870,14 @@ class commandeController extends model {
 
       $response = array("status" => 0,
       "datas" => $r,
-      "msg" => "Bon en attente Directement entree en Stock avec success!!!");
+      "message" => "Bon en attente Directement entree en Stock avec success!!!");
       $this->response($this->json($response), 200);
       } catch (Exception $exc) {
       $this->mysqli->rollback();
       $this->mysqli->autocommit(TRUE);
       $response = array("status" => 1,
       "datas" => "",
-      "msg" => $exc->getMessage());
+      "message" => $exc->getMessage());
 
       $this->response($this->json($response), 200);
       }
@@ -908,12 +908,12 @@ class commandeController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $commande,
-                    "msg" => "Commande [CMD" . $id . "] modifie avec success!");
+                    "message" => "Commande [CMD" . $id . "] modifie avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -943,12 +943,12 @@ class commandeController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -989,13 +989,13 @@ class commandeController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $appstock,
-                    "msg" => "article enregistre dans la ommande avec success!");
+                    "message" => "article enregistre dans la ommande avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -1018,12 +1018,12 @@ class commandeController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "Commande supprime avec success!");
+                    "message" => "Commande supprime avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -1089,13 +1089,13 @@ class commandeController extends model {
 
       $response = array("status" => 0,
       "datas" => $appstock,
-      "msg" => "article cmdvisionne avec success!");
+      "message" => "article cmdvisionne avec success!");
 
       $this->response($this->json($response), 200);
       } catch (Exception $exc) {
       $response = array("status" => 1,
       "datas" => "",
-      "msg" => $exc->getMessage());
+      "message" => $exc->getMessage());
 
       $this->response($this->json($response), 200);
       }
@@ -1112,7 +1112,7 @@ class commandeController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "cette commande existe deja ..Impossible de continuer l'operation");
+                "message" => "cette commande existe deja ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }
@@ -1125,7 +1125,7 @@ class commandeController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "cette commande existe deja ..Impossible de continuer l'operation");
+                "message" => "cette commande existe deja ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }
@@ -1138,7 +1138,7 @@ class commandeController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Des articles ont deja ete enregistres sous cette commande ..Impossible de continuer l'operation");
+                "message" => "Des articles ont deja ete enregistres sous cette commande ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }

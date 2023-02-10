@@ -34,7 +34,7 @@ class administrationController extends model {
         }
         $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "Sauvegarde effectuee avec succes");
+                "message" => "Sauvegarde effectuee avec succes");
             $this->response($this->json($response), 200);
       
     }

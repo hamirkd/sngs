@@ -25,18 +25,18 @@ class articleController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $result,
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             }
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => "Mauvais identifiant de l'article");
+                "message" => "Mauvais identifiant de l'article");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Veuillez fournie un identifiant de l' article !");
+            "message" => "Veuillez fournie un identifiant de l' article !");
         $this->response($this->json($response), 200);
     }
 
@@ -61,12 +61,12 @@ class articleController extends model {
             /* file_put_contents("articles.json", json_encode($result)); */
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -94,12 +94,12 @@ class articleController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -125,12 +125,12 @@ class articleController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -156,12 +156,12 @@ class articleController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -217,20 +217,21 @@ class articleController extends model {
                 $rek_update = "UPDATE t_prix_article SET a_jour=1,date_prix=now() WHERE art_prix_art=$lastInsertID AND a_jour=0";
                 
                 $r = $this->mysqli->query($rek_update) or die($this->mysqli->error . __LINE__);
-
-                $rek_insert = "INSERT INTO t_prix_article (art_prix_art,prix_mini_art,prix_max_art,prix_gros_art,prix_achat_art,date_prix) VALUES($lastInsertID,$pm,$pg,$pa,now())";
+                $log = $_SESSION['userLogin'];
+                $ide = $_SESSION['userId'];
+                $rek_insert = "INSERT INTO t_prix_article (art_prix_art,prix_mini_art,prix_max_art,prix_gros_art,prix_achat_art,date_prix,created_by,user_login) VALUES($lastInsertID,$pm,$pg,$pa,now(),$ide,'$log')";
                 
                 $r = $this->mysqli->query($rek_insert) or die($this->mysqli->error . __LINE__);
 
                 $response = array("status" => 0,
                     "datas" => $article,
-                    "msg" => "article cree avec success!");
+                    "message" => "article cree avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -285,20 +286,21 @@ class articleController extends model {
                 
        
                 $r = $this->mysqli->query($rek_update) or die($this->mysqli->error . __LINE__);
-                
-                $rek_insert = "INSERT INTO t_prix_article (art_prix_art,prix_mini_art,prix_max_art,prix_gros_art,prix_achat_art,date_prix) VALUES($id,$pm,$pmx,$pg,$pa,now())";
+                $log = $_SESSION['userLogin'];
+                $ide = $_SESSION['userId'];
+                $rek_insert = "INSERT INTO t_prix_article (art_prix_art,prix_mini_art,prix_max_art,prix_gros_art,prix_achat_art,date_prix,created_by,user_login) VALUES($id,$pm,$pmx,$pg,$pa,now(),$ide,'$log')";
                 $r = $this->mysqli->query($rek_insert) or die($this->mysqli->error . __LINE__);
-                // $file = fopen("fichier.txt", "a");
-                // fwrite($file,$rek_insert);
-                // fclose($file);
+                $file = fopen("fichier.txt", "a");
+                fwrite($file,$rek_insert);
+                fclose($file);
                 $response = array("status" => 0,
                     "datas" => $article,
-                    "msg" => "Article article [A" . $id . "] modifie avec success!");
+                    "message" => "Article article [A" . $id . "] modifie avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -320,12 +322,12 @@ class articleController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "Article supprime avec success!");
+                    "message" => "Article supprime avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -351,7 +353,7 @@ class articleController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
     }
@@ -375,7 +377,7 @@ class articleController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Cet article existe deja ..Impossible de continuer l'operation");
+                "message" => "Cet article existe deja ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }
@@ -388,7 +390,7 @@ class articleController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Cet article existe deja ..Impossible de continuer l'operation");
+                "message" => "Cet article existe deja ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }
@@ -401,7 +403,7 @@ class articleController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Cet Article a deja participe a des operations de ventes ..Impossible de continuer l'operation");
+                "message" => "Cet Article a deja participe a des operations de ventes ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
 
@@ -411,7 +413,7 @@ class articleController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Cet Article a deja participe a des operations d'approvisionnements ..Impossible de continuer l'operation");
+                "message" => "Cet Article a deja participe a des operations d'approvisionnements ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }

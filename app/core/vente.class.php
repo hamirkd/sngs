@@ -137,12 +137,12 @@ class venteController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -198,7 +198,7 @@ class venteController extends model {
 
             $response = array("status" => 0,
                 "datas" => array("vj" => $result, "gj" => $gj, "ej" => $ej),
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $gj = $this->getGarantiesEncaiss($sliceg);
@@ -206,7 +206,7 @@ class venteController extends model {
 
             $response = array("status" => 0,
                 "datas" => array("vj" => null, "gj" => $gj, "ej" => $ej),
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -518,7 +518,7 @@ class venteController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $lastopvnt,
-                    "msg" => array("message" => "Vente a credit effectuee avec success!", "f" => $factID));
+                    "message" => array("message" => "Vente a credit effectuee avec success!", "f" => $factID));
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
@@ -526,7 +526,7 @@ class venteController extends model {
                 $this->mysqli->autocommit(TRUE);
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -698,7 +698,7 @@ class venteController extends model {
 
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => array("message" => "Facture Pro Forma creee avec success!", "f" => $factID));
+                    "message" => array("message" => "Facture Pro Forma creee avec success!", "f" => $factID));
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
@@ -706,7 +706,7 @@ class venteController extends model {
                 $this->mysqli->autocommit(TRUE);
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -890,7 +890,7 @@ class venteController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $lastopvnt,
-                    "msg" => array("message" => "Garantie effectuee avec success!", "f" => $factID));
+                    "message" => array("message" => "Garantie effectuee avec success!", "f" => $factID));
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
@@ -898,7 +898,7 @@ class venteController extends model {
                 $this->mysqli->autocommit(TRUE);
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -1084,7 +1084,7 @@ class venteController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $lastopvnt,
-                    "msg" => array("message" => "Vente au comptant effectuee avec success!!", "f" => $factID));
+                    "message" => array("message" => "Vente au comptant effectuee avec success!!", "f" => $factID));
 
 
                 $this->response($this->json($response), 200);
@@ -1093,7 +1093,7 @@ class venteController extends model {
                 $this->mysqli->autocommit(TRUE);
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -1134,7 +1134,7 @@ class venteController extends model {
 
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "Prix modifies effectuee avec success!");
+                "message" => "Prix modifies effectuee avec success!");
 
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
@@ -1142,7 +1142,7 @@ class venteController extends model {
             $this->mysqli->autocommit(TRUE);
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
 
             $this->response($this->json($response), 200);
         }
@@ -1204,7 +1204,7 @@ class venteController extends model {
 
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "Article ajoute a la facture avec success!");
+                "message" => "Article ajoute a la facture avec success!");
 
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
@@ -1212,7 +1212,7 @@ class venteController extends model {
             $this->mysqli->autocommit(TRUE);
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
 
             $this->response($this->json($response), 200);
         }
@@ -1369,7 +1369,7 @@ class venteController extends model {
 
           $response = array("status" => 0,
           "datas" => "",
-          "msg" => "Article ajoute a la pro forma avec success!");
+          "message" => "Article ajoute a la pro forma avec success!");
 
           $this->response($this->json($response), 200);
           } catch (Exception $exc) {
@@ -1377,7 +1377,7 @@ class venteController extends model {
           $this->mysqli->autocommit(TRUE);
           $response = array("status" => 1,
           "datas" => "",
-          "msg" => $exc->getMessage());
+          "message" => $exc->getMessage());
 
           $this->response($this->json($response), 200);
           } */
@@ -1385,7 +1385,7 @@ class venteController extends model {
 
     public function getMagArticlePrices($id_art, $id_mag) {
 
-        $query = "SELECT ta.prix_mini_art_mag as prix_mini_art ,ta.prix_gros_art_mag as prix_gros_art  FROM 
+        $query = "SELECT ta.prix_mini_art_mag as prix_mini_art , ta.prix_max_art_mag as prix_max_art ,ta.prix_gros_art_mag as prix_gros_art  FROM 
              t_prix_article_magasin ta GROUP BY ta.art_prix_art_mag DESC 
              WHERE ta.art_prix_art_mag=$id_art AND ta.mag_prix_art_mag=$id_mag";
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
@@ -1412,12 +1412,12 @@ class venteController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -1450,12 +1450,12 @@ class venteController extends model {
                 }
                 $response = array("status" => 0,
                     "datas" => $result,
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             } else {
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             }
         }
@@ -1489,12 +1489,12 @@ class venteController extends model {
                 }
                 $response = array("status" => 0,
                     "datas" => $result,
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             } else {
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             }
         }
@@ -1517,12 +1517,12 @@ inner join (select * from t_stock where qte_stk > 0 GROUP BY mag_stk) sm ON m.id
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -1538,7 +1538,8 @@ inner join (select * from t_stock where qte_stk > 0 GROUP BY mag_stk) sm ON m.id
             $id_cat = intval($this->_request['id_cat']);
             $query = "select ar.*,
 COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
-				COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art 
+COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art ,
+COALESCE( mag.prix_max_art_mag, tpa.prix_max_art) as prix_max_art 
 				from (select a.id_art,s.qte_stk,c.nom_cat,a.code_art,a.nom_art
 		from t_stock s 
 		inner join t_article a on s.art_stk=a.id_art
@@ -1549,7 +1550,7 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
 		inner join (select * from t_prix_article GROUP BY art_prix_art DESC) tpa
 		on ar.id_art=tpa.art_prix_art
 		LEFT JOIN ( SELECT  art_prix_art_mag,mag_prix_art_mag,prix_mini_art_mag
-              , prix_gros_art_mag
+        , prix_max_art_mag, prix_gros_art_mag
            FROM t_prix_article_magasin group by mag_prix_art_mag DESC
 	            ) mag ON  mag.art_prix_art_mag = ar.id_art AND  mag.mag_prix_art_mag = $id_mag";
 $file = fopen("fichier.txt", "a");
@@ -1562,7 +1563,7 @@ $file = fopen("fichier.txt", "a");
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
     }
@@ -1577,7 +1578,8 @@ $file = fopen("fichier.txt", "a");
             $id_cat = intval($this->_request['id_cat']);
             $query = "select ar.*,
 COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
-				COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art 
+COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art ,
+COALESCE( mag.prix_max_art_mag, tpa.prix_max_art) as prix_max_art 
 				from (select a.id_art,s.qte_stk,c.nom_cat,a.code_art,a.nom_art
 		from t_stock s 
 		inner join t_article a on s.art_stk=a.id_art
@@ -1588,7 +1590,7 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
 		inner join (select * from t_prix_article GROUP BY art_prix_art DESC) tpa
 		on ar.id_art=tpa.art_prix_art
 		LEFT JOIN ( SELECT  art_prix_art_mag,mag_prix_art_mag,prix_mini_art_mag
-              , prix_gros_art_mag
+        , prix_gros_art_mag, prix_max_art_mag
            FROM t_prix_article_magasin group by mag_prix_art_mag DESC
 	            ) mag ON  mag.art_prix_art_mag = ar.id_art AND  mag.mag_prix_art_mag = $id_mag";
 
@@ -1599,7 +1601,7 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
     }
@@ -1614,7 +1616,8 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
             $id_cat = intval($this->_request['id_cat']);
             $query = "select ar.*,
 COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
-				COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art 
+COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art ,
+COALESCE( mag.prix_max_art_mag, tpa.prix_max_art) as prix_max_art 
 				from (select a.id_art,s.qte_stk,c.nom_cat,a.code_art,a.nom_art
 		from t_stock s 
 		inner join t_article a on s.art_stk=a.id_art
@@ -1625,7 +1628,7 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
 		inner join (select * from t_prix_article GROUP BY art_prix_art DESC) tpa
 		on ar.id_art=tpa.art_prix_art
 		LEFT JOIN ( SELECT  art_prix_art_mag,mag_prix_art_mag,prix_mini_art_mag
-              , prix_gros_art_mag
+        , prix_gros_art_mag, prix_max_art_mag
            FROM t_prix_article_magasin group by mag_prix_art_mag DESC
 	            ) mag ON  mag.art_prix_art_mag = ar.id_art AND  mag.mag_prix_art_mag = $id_mag";
 
@@ -1636,7 +1639,7 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
     }
@@ -1651,7 +1654,8 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
             $id_cat = intval($this->_request['id_cat']);
             $query = "select ar.*,
 COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
-				COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art 
+COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art ,
+COALESCE( mag.prix_max_art_mag, tpa.prix_max_art) as prix_max_art 
 				from (select a.id_art,s.qte_stk,c.nom_cat,a.code_art,a.nom_art
 		from t_stock s 
 		inner join t_article a on s.art_stk=a.id_art
@@ -1662,7 +1666,7 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
 		inner join (select * from t_prix_article GROUP BY art_prix_art DESC) tpa
 		on ar.id_art=tpa.art_prix_art
 		LEFT JOIN ( SELECT  art_prix_art_mag,mag_prix_art_mag,prix_mini_art_mag
-              , prix_gros_art_mag
+        , prix_gros_art_mag , prix_max_art_mag
            FROM t_prix_article_magasin group by mag_prix_art_mag DESC
 	            ) mag ON  mag.art_prix_art_mag = ar.id_art AND  mag.mag_prix_art_mag = $id_mag";
 
@@ -1673,7 +1677,7 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
     }
@@ -1689,7 +1693,8 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
 
         $query = "select ar.*,
 COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
-				COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art 
+COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art ,
+COALESCE( mag.prix_max_art_mag, tpa.prix_max_art) as prix_max_art 
 				from (select a.id_art,s.qte_stk,c.nom_cat,a.code_art,a.nom_art
 		from t_stock s 
 		inner join t_article a on s.art_stk=a.id_art
@@ -1699,7 +1704,7 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
 		inner join (select * from t_prix_article GROUP BY art_prix_art DESC) tpa
 		on ar.id_art=tpa.art_prix_art
 		LEFT JOIN ( SELECT  art_prix_art_mag,mag_prix_art_mag,prix_mini_art_mag
-              , prix_gros_art_mag
+              , prix_gros_art_mag,prix_max_art_mag
            FROM t_prix_article_magasin group by mag_prix_art_mag DESC
 	            ) mag ON  mag.art_prix_art_mag = ar.id_art AND  mag.mag_prix_art_mag = $id_mag";
 
@@ -1710,7 +1715,7 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
         }
         $response = array("status" => 0,
             "datas" => $result,
-            "msg" => "");
+            "message" => "");
         $this->response($this->json($response), 200);
     }
 
@@ -1723,7 +1728,8 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
 
         $query = "select ar.*,
 COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
-				COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art 
+COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art ,
+COALESCE( mag.prix_max_art_mag, tpa.prix_max_art) as prix_max_art 
 				from (select a.id_art,s.qte_stk,c.nom_cat,a.code_art,a.nom_art
 		from t_stock s 
 		inner join t_article a on s.art_stk=a.id_art
@@ -1739,7 +1745,7 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
         }
         $response = array("status" => 0,
             "datas" => $result,
-            "msg" => "");
+            "message" => "");
         $this->response($this->json($response), 200);
     }
 
@@ -1780,12 +1786,12 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
 
             $response = array("status" => 0,
                 "datas" => array("vj" => $result, "ej" => $ej),
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -1905,7 +1911,7 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
 
             $response = array("status" => 0,
                 "datas" => array("datej" => $dtj),
-                "msg" => array("message" => "success"));
+                "message" => array("message" => "success"));
 
 
             $this->response($this->json($response), 200);
@@ -1914,7 +1920,7 @@ COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
             $this->mysqli->autocommit(TRUE);
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
 
             $this->response($this->json($response), 200);
         }

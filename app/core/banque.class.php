@@ -25,18 +25,18 @@ class banqueController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $result,
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             }
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => "Mauvais identifiant de la banque");
+                "message" => "Mauvais identifiant de la banque");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Veuillez fournie un identifiant de la banque !");
+            "message" => "Veuillez fournie un identifiant de la banque !");
         $this->response($this->json($response), 200);
     }
 
@@ -55,12 +55,12 @@ class banqueController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -103,13 +103,13 @@ class banqueController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $banque,
-                    "msg" => "banque  creee avec success!");
+                    "message" => "banque  creee avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -147,12 +147,12 @@ class banqueController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => $banque,
-                    "msg" => "Banque  [BNK" . $id . "] modifiee avec success!");
+                    "message" => "Banque  [BNK" . $id . "] modifiee avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -174,12 +174,12 @@ class banqueController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "Banque supprimee avec success!");
+                    "message" => "Banque supprimee avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -195,7 +195,7 @@ class banqueController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Cette banque existe deja ..Impossible de continuer l'operation");
+                "message" => "Cette banque existe deja ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }
@@ -208,7 +208,7 @@ class banqueController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Cette Banque existe deja ..Impossible de continuer l'operation");
+                "message" => "Cette Banque existe deja ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }
@@ -221,7 +221,7 @@ class banqueController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Cet Article a deja participe a des operations de versements ..Impossible de continuer l'operation");
+                "message" => "Cet Article a deja participe a des operations de versements ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         } 
     }

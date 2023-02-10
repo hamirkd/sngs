@@ -1354,6 +1354,9 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
         art = angular.copy(art_);
         art.or_pm = parseFloat(art_.prix_mini_art);
         art.or_mnt = parseInt($scope.appvente.qte_appro_art) * parseFloat(art_.prix_mini_art);
+        console.log(art_)
+        console.log($scope.appvente)
+            // return;
         if ((parseInt($scope.appvente.qte_appro_art) <= 0 || $scope.appvente.qte_appro_art === null || typeof $scope.appvente.qte_appro_art === undefined)) {
             app.notify(" Veuillez revoir la quantite saisie ..! ", " m");
             return false
@@ -1361,6 +1364,17 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
         if ((parseInt($scope.appvente.qte_appro_art) > $scope.stock.qte_stk)) {
             app.notify(" Quantite superieure a la valeur disponible ..! ", "m");
             return false
+        }
+
+        if (art.prix_mini_art > 0 && parseFloat($scope.appvente.prix_var) < art.prix_mini_art) {
+            app.notify(" Impossible d'ajouter. Le prix de vente est trop bas ..! ", "m", 10000);
+            if (!app.userPfl.droitControlePrixVente)
+                return false
+        }
+        if (art.prix_max_art > 0 && parseFloat($scope.appvente.prix_var) > art.prix_max_art) {
+            // app.notify(" Impossible d'ajouter. Le prix de vente est trop haut ..! ", "m", 10000);
+            app.notify("Vous êtes entrain de vendre au delas du prix fixer..! ", "w", 2000);
+            //return false
         }
         art.prix_mini_art = (parseFloat($scope.appvente.prix_var) >= 0) ? parseFloat($scope.appvente.prix_var) : art.prix_mini_art;
         art.qte = $scope.appvente.qte_appro_art;

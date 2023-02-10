@@ -61,9 +61,18 @@
                                 <label style="display: contents;"><input name="vente_credit" checked="" type="radio" ng-model="user.vente_credit" value="1" checked><span class="check"></span> Oui </label>
                             <label style="display: contents;"><input name="vente_credit" type="radio" ng-model="user.vente_credit" value="0"><span class="check"></span> Non </label></label>
 
+                            <label>Peut-il annuler une facture de vente d'aujourd'hui ? 
+                                <label style="display: contents;"><input name="droit_facture_vente_annulee_today" checked="" type="radio" ng-model="user.droit_facture_vente_annulee_today" value="1" checked><span class="check"></span> Oui </label>
+                            <label style="display: contents;"><input name="droit_facture_vente_annulee_today" type="radio" ng-model="user.droit_facture_vente_annulee_today" value="0"><span class="check"></span> Non </label></label>
+
                             <label>Peut-il annuler une facture de vente ? 
                                 <label style="display: contents;"><input name="facture_vente_annulee" checked="" type="radio" ng-model="user.facture_vente_annulee" value="1" checked><span class="check"></span> Oui </label>
                             <label style="display: contents;"><input name="facture_vente_annulee" type="radio" ng-model="user.facture_vente_annulee" value="0"><span class="check"></span> Non </label></label>
+
+
+                            <label> Peut-il vendre au dessus ou en dessous du prix fixer ? 
+                                <label style="display: contents;"><input name="droit_controle_prix_vente" checked="" type="radio" ng-model="user.droit_controle_prix_vente" value="1" checked><span class="check"></span> Oui </label>
+                            <label style="display: contents;"><input name="droit_controle_prix_vente" type="radio" ng-model="user.droit_controle_prix_vente" value="0"><span class="check"></span> Non </label></label>
                         </div>
                     </td>
                     <td>

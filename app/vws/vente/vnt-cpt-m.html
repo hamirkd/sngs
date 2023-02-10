@@ -58,11 +58,17 @@
                     <div class="input-control select span4" data-role="input-control"><select ng-model="mCategorie" ng-options="categorie.id_cat as categorie.nom_cat|uppercase for categorie in categories|filter:filterItemcat|orderBy:'nom_cat':false" ng-change="loadArticlesOfCategorie(0,mCategorie)" ng-click="loadExtCategories(0)"
                             ng-disabled="!appvente.vnt_clt"></select><span style="position:absolute;" title="Actualiser la liste des categories" class="icon-cycle" ng-click="app.refreshextcatmagCache()"></span></div>
                 </td>
-                <td><label>Art[<a href="#/prmart/0" title="Ajouter/Creer un article" target="_BLANK">+</a>] <span
-                            ng-if="app.PRMS.apu && appvente.art_appro_art.prix_mini_art>=0">(PU:<span
-                                class="fg-red">{{appvente.art_appro_art.prix_mini_art|currency}}</span>)</span>
-                        &nbsp;&nbsp;<span class="input-control text span2" style=""><input ng-model="filterItem"
-                                placeholder="filtre" type="text"></span></label>
+                <td><label>
+                    <!-- Art[<a href="#/prmart/0" title="Ajouter/Creer un article" target="_BLANK">+</a>] -->
+                    
+                    <span class="input-control text span2" style=""><input ng-model="filterItem"
+                        placeholder="filtre" type="text"></span>
+                    <span
+                            ng-if="app.PRMS.apu && appvente.art_appro_art.prix_mini_art>=0">(
+                                PU Mini:<span class="fg-red">{{appvente.art_appro_art.prix_mini_art|currency:"":0}}</span>
+                                Max:<span class="fg-red">{{appvente.art_appro_art.prix_max_art|currency:"":0}}</span>
+                                Gros:<span class="fg-red">{{appvente.art_appro_art.prix_gros_art|currency:"":0}}</span>
+                            )</span></label>
                     <div class="input-control select span6" data-role="input-control"><select name='art_appro_art' ng-model="appvente.art_appro_art" ng-options="article.nom_art|uppercase for article in articles|filter:filterItem|orderBy:'nom_art':false" ng-change="getStocka(appvente.art_appro_art.id_art,0)" ng-disabled="!appvente.vnt_clt"
                             required></select><span style="position:absolute;" title="Actualiser la liste des articles" class="icon-cycle" ng-click="loadArticlesOfCategorie(0,mCategorie)"></span></div>
                 </td>

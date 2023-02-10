@@ -26,12 +26,12 @@ class reglementController extends model {
             $result = $r->fetch_assoc();
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -103,12 +103,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -153,12 +153,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -209,12 +209,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -277,12 +277,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -330,12 +330,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -409,12 +409,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -459,12 +459,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -527,12 +527,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -579,12 +579,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -647,12 +647,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -695,12 +695,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -732,12 +732,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -769,12 +769,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -798,13 +798,13 @@ class reglementController extends model {
 
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Valeurs incorrectes de la dette!");
+            "message" => "Valeurs incorrectes de la dette!");
         $this->response($this->json($response), 200);
     }
 
@@ -827,13 +827,13 @@ class reglementController extends model {
 
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Valeurs incorrectes de la dette!");
+            "message" => "Valeurs incorrectes de la dette!");
         $this->response($this->json($response), 200);
     }
 
@@ -907,7 +907,7 @@ class reglementController extends model {
 
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => " Versement avance effectue avec success!");
+                    "message" => " Versement avance effectue avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
@@ -915,7 +915,7 @@ class reglementController extends model {
                 $this->mysqli->autocommit(TRUE);
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -1052,7 +1052,7 @@ class reglementController extends model {
                 $this->mysqli->autocommit(TRUE);
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -1061,7 +1061,7 @@ class reglementController extends model {
 
         $response = array("status" => 0,
             "datas" => "",
-            "msg" => " Reglement avance effectue avec success!");
+            "message" => " Reglement avance effectue avec success!");
 
         $this->response($this->json($response), 200);
     }
@@ -1099,12 +1099,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -1143,12 +1143,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -1187,12 +1187,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -1231,12 +1231,12 @@ class reglementController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -1261,13 +1261,13 @@ class reglementController extends model {
 
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Valeurs incorrectes de la creance!");
+            "message" => "Valeurs incorrectes de la creance!");
         $this->response($this->json($response), 200);
     }
 
@@ -1306,13 +1306,13 @@ class reglementController extends model {
 
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Valeurs incorrectes de la creance!");
+            "message" => "Valeurs incorrectes de la creance!");
         $this->response($this->json($response), 200);
     }
 
@@ -1357,13 +1357,13 @@ class reglementController extends model {
 
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Valeur incorrecte du creancier!");
+            "message" => "Valeur incorrecte du creancier!");
         $this->response($this->json($response), 200);
     }
 
@@ -1414,13 +1414,13 @@ class reglementController extends model {
 
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Valeur incorrecte du creancier!");
+            "message" => "Valeur incorrecte du creancier!");
         $this->response($this->json($response), 200);
     }
 
@@ -1522,7 +1522,7 @@ class reglementController extends model {
 
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => " Remise  effectuee avec success!");
+                    "message" => " Remise  effectuee avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
@@ -1530,7 +1530,7 @@ class reglementController extends model {
                 $this->mysqli->autocommit(TRUE);
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -1617,7 +1617,7 @@ class reglementController extends model {
 
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => " Versement avance effectue avec success!");
+                    "message" => " Versement avance effectue avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
@@ -1625,7 +1625,7 @@ class reglementController extends model {
                 $this->mysqli->autocommit(TRUE);
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -1814,7 +1814,7 @@ class reglementController extends model {
                 $this->mysqli->autocommit(TRUE);
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -1823,7 +1823,7 @@ class reglementController extends model {
 
         $response = array("status" => 0,
             "datas" => "",
-            "msg" => " Reglement avance effectue avec success!");
+            "message" => " Reglement avance effectue avec success!");
 
         $this->response($this->json($response), 200);
     }
@@ -2006,7 +2006,7 @@ class reglementController extends model {
                 $this->mysqli->autocommit(TRUE);
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -2015,7 +2015,7 @@ class reglementController extends model {
 
         $response = array("status" => 0,
             "datas" => "",
-            "msg" => " Versement avance effectue avec success!");
+            "message" => " Versement avance effectue avec success!");
 
         $this->response($this->json($response), 200);
     }
@@ -2036,14 +2036,14 @@ class reglementController extends model {
 
             $response = array("status" => 0,
                 "datas" => $r,
-                "msg" => "Reglement Marquer comme vu avec success!!!");
+                "message" => "Reglement Marquer comme vu avec success!!!");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $this->mysqli->rollback();
             $this->mysqli->autocommit(TRUE);
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
 
             $this->response($this->json($response), 200);
         }
@@ -2063,14 +2063,14 @@ class reglementController extends model {
 
             $response = array("status" => 0,
                 "datas" => $r,
-                "msg" => "Tous les reglements Marquer comme vu avec success!!!");
+                "message" => "Tous les reglements Marquer comme vu avec success!!!");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $this->mysqli->rollback();
             $this->mysqli->autocommit(TRUE);
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
 
             $this->response($this->json($response), 200);
         }

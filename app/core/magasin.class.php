@@ -27,18 +27,18 @@ class magasinController extends model {
                  
                 $response = array("status" => 0,
                     "datas" => $result,
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             }
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => "Mauvais identifiant du magasin");
+                "message" => "Mauvais identifiant du magasin");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Veuillez fournie un identifiant du  magasin !");
+            "message" => "Veuillez fournie un identifiant du  magasin !");
         $this->response($this->json($response), 200);
     }
 
@@ -52,12 +52,12 @@ class magasinController extends model {
             $_SESSION['nomMag'] = $this->_request['nom_mag'];
             $response = array("status" => 0,
                 "datas" => array("userMag"=>$this->_request['id_mag'],"nomMag"=>$this->_request['nom_mag']),
-                "msg" => "Vous avez changé de magasin");
+                "message" => "Vous avez changé de magasin");
             $this->response($this->json($response), 200);
         }
         $response = array("status" => -1,
                 "datas" => "",
-                "msg" => "Impossible de changer de magasin");
+                "message" => "Impossible de changer de magasin");
             $this->response($this->json($response), 200);
     }
     
@@ -81,12 +81,12 @@ class magasinController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);  
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);  
         }
         $this->response('', 204); 
@@ -111,12 +111,12 @@ class magasinController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);  
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);  
         }
         $this->response('', 204); 
@@ -141,12 +141,12 @@ class magasinController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);  
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);  
         }
         $this->response('', 204); 
@@ -168,12 +168,12 @@ class magasinController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);  
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);  
         }
         $this->response('', 204); 
@@ -198,12 +198,12 @@ class magasinController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200); 
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200); 
         }
         $this->response('', 204); 
@@ -246,13 +246,13 @@ class magasinController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $magasin,
-                    "msg" => "magasin magasin cree avec success!");
+                    "message" => "magasin magasin cree avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -289,12 +289,12 @@ class magasinController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => $magasin,
-                    "msg" => "Magasin magasin [MAG" . $id . "] modifie avec success!");
+                    "message" => "Magasin magasin [MAG" . $id . "] modifie avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -315,12 +315,12 @@ class magasinController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "Magasin supprime avec success!");
+                    "message" => "Magasin supprime avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }

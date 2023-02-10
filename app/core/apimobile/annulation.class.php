@@ -1,8 +1,9 @@
 <?php
 
-require_once ("api-class/model.php");
-require_once ("api-class/helpers.php");
-require_once ("api-class/audit_log.class.php");
+require_once ("../api-class/model.php");
+require_once ("../api-class/helpers.php");
+require_once ("../api-class/audit_log.class.php");
+require_once ("../api-class/authentification.php");
 
 class annulationController extends model {
 
@@ -2278,6 +2279,7 @@ class annulationController extends model {
 }
  session_name('SessSngS');
 session_start();
+authentication();
 
 if (isset($_SESSION['userId'])) {
     $app = new annulationController;

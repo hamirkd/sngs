@@ -476,12 +476,29 @@ sngs.controller("annulVntCtrl", ["$scope", "$rootScope", "prmutils", function($s
         }
     };
     $scope.undo = function(fac) {
+        var today = new Date();
+        var date_enr = new Date(fac.date_enr);
+        date_enr.setHours(0, 0, 0, 0)
+        today.setHours(0, 0, 0, 0)
+            // console.log(fac);
+            // console.log(date_enr);
+            // console.log(today);
+            // console.log("today != date_enr", today.toDateString() != date_enr.toDateString());
 
-        if (!app.userPfl.factureVenteAnnulee) {
-            app.notify("Vous n'êtes pas autorisés à annuler une facture, veuillez contacter un supérieur ", "m");
+        if (app.userPfl.factureVenteAnnulee) {
+
+        } else if (app.userPfl.droitFactureVenteAnnuleeToday) {
+            if (today.toDateString() != date_enr.toDateString()) {
+                app.notify("La date d'annulation de cette facture est dépassée, veuillez contacter votre supérieur pour l'annuler", "m", 5000);
+                return;
+            }
+        } else {
+            app.notify("Vous n'êtes pas autorisés à annuler une facture, veuillez contacter un supérieur ", "m", 5000);
             return;
         }
+
         var vls = prompt("Le motif de l'annulation SVP !! ", "");
+        if (!vls) return
         vls = vls.trim();
         if (vls) {
             console.log(fac);

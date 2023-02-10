@@ -58,12 +58,12 @@ class stockController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $approvisionnement,
-                    "msg" => "Correction de stock  Effectuee avec success!");
+                    "message" => "Correction de stock  Effectuee avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -100,12 +100,12 @@ class stockController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $approvisionnement,
-                    "msg" => "Adresse definie avec success!");
+                    "message" => "Adresse definie avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -129,7 +129,7 @@ class stockController extends model {
 
         $response = array("status" => 0,
             "datas" => $r,
-            "msg" => "");
+            "message" => "");
         $this->response($this->json($response), 200);
 
         $this->response('', 204);
@@ -209,7 +209,7 @@ class stockController extends model {
 
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "Fusion effectuee avec success!");
+                "message" => "Fusion effectuee avec success!");
 
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
@@ -217,7 +217,7 @@ class stockController extends model {
             $this->mysqli->autocommit(TRUE);
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
 
             $this->response($this->json($response), 200);
         }
@@ -280,12 +280,12 @@ from t_stock s
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -319,12 +319,12 @@ from t_stock s
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -354,12 +354,12 @@ from t_stock s
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -403,12 +403,12 @@ from t_stock s
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -462,12 +462,12 @@ from t_stock s
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -519,12 +519,12 @@ WHERE s.qte_stk <= a.seuil_art";
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -548,7 +548,7 @@ WHERE s.qte_stk <= a.seuil_art";
 
         $response = array("status" => 0,
             "datas" => $result,
-            "msg" => "");
+            "message" => "");
         $this->response($this->json($response), 200);
     }
 
@@ -575,13 +575,13 @@ WHERE s.qte_stk <= a.seuil_art";
             $result['qteg']=$res2['qteg'];
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Valeurs incorrectes d'article et de magasin pour le stock !");
+            "message" => "Valeurs incorrectes d'article et de magasin pour le stock !");
         $this->response($this->json($response), 200);
     }
 
@@ -601,13 +601,13 @@ WHERE s.qte_stk <= a.seuil_art";
 
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Valeurs incorrectes d'article et de magasin pour le stock !");
+            "message" => "Valeurs incorrectes d'article et de magasin pour le stock !");
         $this->response($this->json($response), 200);
     }
 
@@ -633,12 +633,12 @@ WHERE s.qte_stk <= a.seuil_art";
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -679,13 +679,13 @@ WHERE s.qte_stk <= a.seuil_art";
 
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Valeurs incorrectes d'article et de magasin pour le stock !");
+            "message" => "Valeurs incorrectes d'article et de magasin pour le stock !");
         $this->response($this->json($response), 200);
     }
 

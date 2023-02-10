@@ -74,12 +74,12 @@ class etatController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -144,12 +144,12 @@ class etatController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -211,12 +211,12 @@ class etatController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -276,12 +276,12 @@ class etatController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -312,12 +312,12 @@ class etatController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -351,12 +351,12 @@ class etatController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -561,12 +561,12 @@ class etatController extends model {
 
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
 
             $this->response($this->json($response), 200);
         }
@@ -789,12 +789,12 @@ class etatController extends model {
 
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
 
             $this->response($this->json($response), 200);
         }
@@ -2092,7 +2092,7 @@ AND MONTH(date_fact)=12";
 
         $response = array("status" => 0,
             "datas" => $result,
-            "msg" => "");
+            "message" => "");
         $this->response($this->json($response), 200);
     }
 
@@ -2125,13 +2125,13 @@ AND MONTH(date_fact)=12";
 
                 $response = array("status" => 0,
                     "datas" => $message . " -- " . $sok,
-                    "msg" => "Message envoye avec success!");
+                    "message" => "Message envoye avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -2321,12 +2321,12 @@ AND MONTH(date_fact)=12";
 
             $response = array("status" => 0,
                 "datas" => array("details" => $result, "qtestk" => $qtestk, "r" => $blselbtk),
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
 
             $this->response($this->json($response), 200);
         }

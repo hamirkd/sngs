@@ -14,7 +14,7 @@ class Stock {
 if(!isset($_FILES['fichierImporte'])){
     $response = array("status" => 1,
     "datas" => $_FILES,
-    "msg" => "Veuillez choisir un fichier !");
+    "message" => "Veuillez choisir un fichier !");
     // $this->response($this->json($response), 200);
 }
 
@@ -32,7 +32,7 @@ require_once dirname(__FILE__) . '/../../libs/excel/PHPExcel.php';
 
 // $response = array("status" => 1,
 // "datas" => $_FILES,
-// "msg" => "Veuillez choisir un fichier !");
+// "message" => "Veuillez choisir un fichier !");
 // print_r($response);
 $inputFileName = $_FILES["fichierInventaire"]["tmp_name"];
 $spreadsheet = PHPExcel_IOFactory::load($inputFileName);
@@ -47,7 +47,7 @@ $data = [];
                 if($item['A']!='code'||$item['B']!='nom_mag'||$item["C"]!='nom_cat'||$item["D"]!='nom_art'||$item["E"]!='qte_the'||$item["F"]!='qte_phy'){
                     $response = array("status" => -1,
                                 "datas" => "-1",
-                                "msg" => "Veuillez verifier l'ordre des champs, code|nom_mag|nom_cat|nom_art|qte_the|qte_phy");
+                                "message" => "Veuillez verifier l'ordre des champs, code|nom_mag|nom_cat|nom_art|qte_the|qte_phy");
                     echo json_encode($response);
                     return;
                 }
@@ -84,7 +84,7 @@ $data = [];
             }
         $response = array("status" => 0,
         "datas" => $data,
-        "msg" => "Veuillez verifier avec l'importation!");
+        "message" => "Veuillez verifier avec l'importation!");
         
         echo json_encode($response);
         // $this->response($this->json($response), 200);

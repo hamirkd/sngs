@@ -18,12 +18,12 @@ class sController extends model {
         if (isset($_SESSION['userId'])) {
             $response = array("status" => 0,
                 "datas" => 1,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => 0,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
     }

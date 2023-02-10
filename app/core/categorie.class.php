@@ -24,18 +24,18 @@ class categorieController extends model {
                 $result = $r->fetch_assoc();
                 $response = array("status" => 0,
                     "datas" => $result,
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             }
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => "Mauvais identifiant de la categorie");
+                "message" => "Mauvais identifiant de la categorie");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Veuillez fournie un identifiant de la categorie !");
+            "message" => "Veuillez fournie un identifiant de la categorie !");
         $this->response($this->json($response), 200);
     }
 
@@ -55,12 +55,12 @@ class categorieController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -83,12 +83,12 @@ class categorieController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -132,13 +132,13 @@ class categorieController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $categorie,
-                    "msg" => "Categorie d'article creee avec success!");
+                    "message" => "Categorie d'article creee avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -176,12 +176,12 @@ class categorieController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => $categorie,
-                    "msg" => "Categorie d'article [CA" . $id . "] modifiee avec success!");
+                    "message" => "Categorie d'article [CA" . $id . "] modifiee avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -203,12 +203,12 @@ class categorieController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "Categorie supprimee avec success!");
+                    "message" => "Categorie supprimee avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -224,7 +224,7 @@ class categorieController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Cette categorie d'article existe deja ..Impossible de continuer l'operation");
+                "message" => "Cette categorie d'article existe deja ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }
@@ -238,7 +238,7 @@ class categorieController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Cette Categorie existe deja ..Impossible de continuer l'operation");
+                "message" => "Cette Categorie existe deja ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }
@@ -251,7 +251,7 @@ class categorieController extends model {
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Des Article ont deja ete enregistres dan cette categorie ..Impossible de continuer l'operation");
+                "message" => "Des Article ont deja ete enregistres dan cette categorie ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         } 
     }

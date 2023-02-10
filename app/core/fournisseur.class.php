@@ -25,18 +25,18 @@ class fournisseurController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $result,
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             }
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => "Mauvais identifiant du fournisseur");
+                "message" => "Mauvais identifiant du fournisseur");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Veuillez fournie un identifiant du  fournisseur !");
+            "message" => "Veuillez fournie un identifiant du  fournisseur !");
         $this->response($this->json($response), 200);
     }
 
@@ -80,12 +80,12 @@ class fournisseurController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -129,12 +129,12 @@ order by f.nom_frns";
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -183,13 +183,13 @@ order by f.nom_frns";
 
                 $response = array("status" => 0,
                     "datas" => $fournisseur,
-                    "msg" => "fournisseur cree avec success!");
+                    "message" => "fournisseur cree avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -232,12 +232,12 @@ order by f.nom_frns";
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => $fournisseur,
-                    "msg" => "Fournisseur fournisseur [CLT" . $id . "] modifie avec success!");
+                    "message" => "Fournisseur fournisseur [CLT" . $id . "] modifie avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -259,12 +259,12 @@ order by f.nom_frns";
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "Fournisseur supprime avec success!");
+                    "message" => "Fournisseur supprime avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -289,12 +289,12 @@ order by f.nom_frns";
                 throw new Exception($this->mysqli->error . __LINE__);
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => $exc->getMessage());
+                "message" => $exc->getMessage());
             $this->response($this->json($response), 200);
         }
     }
@@ -307,7 +307,7 @@ order by f.nom_frns";
         if ($r->num_rows > 0) {
             $response = array("status" => 0,
                 "datas" => "-1",
-                "msg" => "Ce fournisseur a deja participe a des operations de d'approvisionnements ..Impossible de continuer l'operation");
+                "message" => "Ce fournisseur a deja participe a des operations de d'approvisionnements ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
     }

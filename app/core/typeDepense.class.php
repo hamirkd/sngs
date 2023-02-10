@@ -26,18 +26,18 @@ class typeDepenseController extends model {
                  
                 $response = array("status" => 0,
                     "datas" => $result,
-                    "msg" => "");
+                    "message" => "");
                 $this->response($this->json($response), 200);
             }
             $response = array("status" => 1,
                 "datas" => "",
-                "msg" => "Mauvais identifiant du type de depense");
+                "message" => "Mauvais identifiant du type de depense");
             $this->response($this->json($response), 200);
         }
 
         $response = array("status" => 1,
             "datas" => "",
-            "msg" => "Veuillez fournie un identifiant du type de depense !");
+            "message" => "Veuillez fournie un identifiant du type de depense !");
         $this->response($this->json($response), 200);
     }
 
@@ -56,13 +56,13 @@ class typeDepenseController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);  
         }
         else {
              $response = array("status" => 0,
                 "datas" =>"",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200); 
         }
         $this->response('', 204); 
@@ -103,13 +103,13 @@ class typeDepenseController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $typedepense,
-                    "msg" => "type depense cree avec success!");
+                    "message" => "type depense cree avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -145,12 +145,12 @@ class typeDepenseController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => $typedepense,
-                    "msg" => "Type depense [TD" . $id . "] modifie avec success!");
+                    "message" => "Type depense [TD" . $id . "] modifie avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }
@@ -171,12 +171,12 @@ class typeDepenseController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 $response = array("status" => 0,
                     "datas" => "",
-                    "msg" => "Type depense supprime avec success!");
+                    "message" => "Type depense supprime avec success!");
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
                 $this->response($this->json($response), 200);
             }
         }

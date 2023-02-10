@@ -31,13 +31,13 @@ class utilisateurController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);  
         }
         else {
              $response = array("status" => 0,
                 "datas" =>"",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);  
         }
         $this->response('', 204); 

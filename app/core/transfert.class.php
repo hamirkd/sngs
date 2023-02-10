@@ -76,12 +76,12 @@ class transfertController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200); 
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200); 
         }
         $this->response('', 204); 
@@ -141,7 +141,7 @@ class transfertController extends model {
                 
                 $response = array("status" => 0,
                     "datas" => $appstock,
-                    "msg" => "Transfert effectue avec success!");
+                    "message" => "Transfert effectue avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
@@ -149,7 +149,7 @@ class transfertController extends model {
                 $this->mysqli->autocommit(TRUE);
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -175,7 +175,7 @@ class transfertController extends model {
 
         $response = array("status" => 0,
             "datas" => $r,
-            "msg" => "Transfert Supprime avec success!!!");
+            "message" => "Transfert Supprime avec success!!!");
         $this->response($this->json($response), 200);
 
         $this->response('', 204);

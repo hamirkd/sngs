@@ -26,12 +26,12 @@ class deffectueuxController extends model {
              $result = $r->fetch_assoc(); 
             $response = array("status" => 0,
                 "datas" => $result,
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "msg" => "");
+                "message" => "");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -70,13 +70,13 @@ class deffectueuxController extends model {
 
                 $response = array("status" => 0,
                     "datas" => $appstock,
-                    "msg" => "Destockage  effectue avec success!");
+                    "message" => "Destockage  effectue avec success!");
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $response = array("status" => 1,
                     "datas" => "",
-                    "msg" => $exc->getMessage());
+                    "message" => $exc->getMessage());
 
                 $this->response($this->json($response), 200);
             }
@@ -175,12 +175,12 @@ $result[] = $row;
 }
 $response = array("status" => 0,
  "datas" => $result,
- "msg" => "");
+ "message" => "");
 $this->response($this->json($response), 200);
 } else {
 $response = array("status" => 0,
  "datas" => "",
- "msg" => "");
+ "message" => "");
 $this->response($this->json($response), 200);
 }
 $this->response('', 204);
@@ -205,7 +205,7 @@ $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
 $response = array("status" => 0,
  "datas" => $r,
- "msg" => "Destockage Annuler avec success!!!");
+ "message" => "Destockage Annuler avec success!!!");
 $this->response($this->json($response), 200);
 
 } catch (Exception $exc) {
@@ -213,7 +213,7 @@ $this->mysqli->rollback();
 $this->mysqli->autocommit(TRUE);
 $response = array("status" => 1,
  "datas" => "",
- "msg" => $exc->getMessage());
+ "message" => $exc->getMessage());
 
 $this->response($this->json($response), 200);
 } 
@@ -237,7 +237,7 @@ $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
 $response = array("status" => 0,
  "datas" => $r,
- "msg" => "Destockage Marquer comme vu avec success!!!");
+ "message" => "Destockage Marquer comme vu avec success!!!");
 $this->response($this->json($response), 200);
 
 } catch (Exception $exc) {
@@ -245,7 +245,7 @@ $this->mysqli->rollback();
 $this->mysqli->autocommit(TRUE);
 $response = array("status" => 1,
  "datas" => "",
- "msg" => $exc->getMessage());
+ "message" => $exc->getMessage());
 
 $this->response($this->json($response), 200);
 } 
@@ -267,7 +267,7 @@ $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
 $response = array("status" => 0,
  "datas" => $r,
- "msg" => "Tous les destockage Marquer comme vu avec success!!!");
+ "message" => "Tous les destockage Marquer comme vu avec success!!!");
 $this->response($this->json($response), 200);
 
 } catch (Exception $exc) {
@@ -275,7 +275,7 @@ $this->mysqli->rollback();
 $this->mysqli->autocommit(TRUE);
 $response = array("status" => 1,
  "datas" => "",
- "msg" => $exc->getMessage());
+ "message" => $exc->getMessage());
 
 $this->response($this->json($response), 200);
 } 
