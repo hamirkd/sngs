@@ -38,7 +38,7 @@ class venteController extends model {
         $query = "SELECT f.*, (SELECT nom_clt FROM t_client WHERE id_clt=f.clnt_fact) as clt, 
                         (select nom_mag FROM t_magasin WHERE id_mag = f.mag_fact) as magasin
                          FROM t_facture_vente f
-                         WHERE 1=1 $condMag ORDER BY date_fact DESC limit $limit_debut , $taille";
+                         WHERE 1=1 $condMag ORDER BY date_enr DESC limit $limit_debut , $taille";
                      
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
@@ -47,11 +47,8 @@ class venteController extends model {
             while ($row = $r->fetch_assoc()) {
                 $result[] = $row;
             }
-            
-
             $response = array("status" => 0,
                 "datas" =>  $result);
-                
             $this->response($this->json($response), 200);
         } else { 
             $response = array("status" => 0,
@@ -61,6 +58,56 @@ class venteController extends model {
         }
         $this->response('', 500);
     }
+    
+    public function searchFacture() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+        $condMag = "";
+        $pst = $_POST;
+        $limit_debut = 0;
+        $taille = 30;
+        if(isset($pst['limit_debut'])){
+            $limit_debut = $pst['limit_debut'];
+            if($limit_debut<0){
+                $limit_debut = 0;
+            }
+        }
+        if(isset($pst['taille'])){
+            $taille = $pst['taille'];
+            if($taille<0){
+                $taille = 30;
+            }
+        }
+
+        $numerofacture = $_POST['numerofacture'];
+
+        if ($_SESSION['userMag'] > 0)
+            $condMag = "AND f.mag_fact=" . $_SESSION['userMag'] . "";
+        $query = "SELECT f.*, (SELECT nom_clt FROM t_client WHERE id_clt=f.clnt_fact) as clt, 
+                        (select nom_mag FROM t_magasin WHERE id_mag = f.mag_fact) as magasin
+                         FROM t_facture_vente f
+                         WHERE 1=1 $condMag AND f.code_fact like '%$numerofacture%' ORDER BY date_enr DESC  limit $limit_debut , $taille";
+                     
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+        if ($r->num_rows > 0) {
+            $result = array();    
+            while ($row = $r->fetch_assoc()) {
+                $result[] = $row;
+            }
+            $response = array("status" => 0,
+                "datas" =>  $result);
+            $this->response($this->json($response), 200);
+        } else { 
+            $response = array("status" => 0,
+                "datas" => null,
+                "message" => "NOT FOUND");
+            $this->response($this->json($response), 404);
+        }
+        $this->response('', 500);
+    }
+
     
    
     public function getVentesSearch() {

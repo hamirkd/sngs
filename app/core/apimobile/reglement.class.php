@@ -1,7 +1,8 @@
 <?php
 
-require_once ("api-class/model.php");
-require_once ("api-class/helpers.php");
+require_once ("../api-class/model.php");
+require_once ("../api-class/helpers.php");
+require_once ("../api-class/authentification.php");
 
 class reglementController extends model {
 
@@ -1155,12 +1156,34 @@ class reglementController extends model {
     }
 
     public function getCreancesgClients() {
-        if ($this->get_request_method() != "GET") {
+        if ($this->get_request_method() != "POST") {
             $this->response('', 406);
         }
+        
+        $pst = $_POST;
+        $limit_debut = 0;
+        $taille = 100;
+        if(isset($pst['limit_debut'])){
+            $limit_debut = $pst['limit_debut'];
+            if($limit_debut<0){
+                $limit_debut = 0;
+            }
+        }
+        if(isset($pst['taille'])){
+            $taille = $pst['taille'];
+            if($taille<0){
+                $taille = 100;
+            }
+        }
+        $condClient = "";
+        if(isset($pst['nomclient'])){
+            $nomclient = $pst['nomclient'];
+            $condClient = " AND c.nom_clt like '%$nomclient%' ";
+        }
 
+        
         $c_us = " AND 1=1 ";
-        if ($_SESSION['mode_clnt_uniq'] == 0)
+         if (isset($_SESSION['mode_clnt_uniq'])&&$_SESSION['mode_clnt_uniq'] == 0)
             $c_us = " AND c.user_clt in (SELECT id_user from t_user where mag_user=" . $_SESSION['userMag'] . ")";
 
 
@@ -1168,21 +1191,22 @@ class reglementController extends model {
         if ($_SESSION['userMag'] > 0)
             $condMag = "AND f.mag_fact=" . $_SESSION['userMag'] . "";
 
-        $query = "SELECT c.id_clt,c.code_clt,c.nom_clt
+
+        $query = "SELECT c.id_clt,c.code_clt,c.nom_clt,(SUM(crdt_fact) - SUM(som_verse_crdt)) as mnt_reste
                            FROM 
                            t_facture_vente f
                            INNER JOIN t_client c ON f.clnt_fact=c.id_clt 
                            WHERE f.bl_fact_crdt=1 AND f.bl_fact_grt=0 AND f.sup_fact=0
-                          $c_us
+                          $c_us $condClient
                            AND f.bl_crdt_regle=0 AND f.crdt_fact>0 AND (f.crdt_fact-f.som_verse_crdt)>0 $condMag
-                           GROUP BY c.id_clt ORDER BY c.nom_clt ASC";
+                           GROUP BY c.id_clt ORDER BY c.nom_clt ASC limit $limit_debut , $taille";
 
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
         if ($r->num_rows > 0) {
             $result = array();
             while ($row = $r->fetch_assoc()) {
-                $row['mnt_reste'] = $this->fctGetCreancegDetails($row['id_clt']);
+                // $row['mnt_reste'] = $this->fctGetCreancegDetails($row['id_clt']);
                 $result[] = $row;
             }
             $response = array("status" => 0,
@@ -1336,46 +1360,56 @@ class reglementController extends model {
         if ($this->get_request_method() != "GET") {
             $this->response('', 406);
         }
+        
+        $condMag = " 1=1 ";
+        if ($_SESSION['userMag'] > 0)
+            $condMag = $condMag." AND f.mag_fact=" . $_SESSION['userMag'] . "";
 
         if (!empty($this->_request['id_clt'])) {
             $id_clt = intval($this->_request['id_clt']);
-            $query = "SELECT c.id_clt,c.code_clt,c.nom_clt,SUM(crdt_fact) as mnt_creditg,SUM(som_verse_crdt) as som_verseg,
-    SUM(remise_vnt_fact) as remiseg
-                 FROM t_facture_vente f
-                  INNER JOIN t_client c ON f.clnt_fact=c.id_clt
-                 WHERE f.mag_fact=" . $_SESSION['userMag'] . " 
-                     AND f.clnt_fact=$id_clt AND 
-                           f.sup_fact=0 AND
-                          f.crdt_fact>0 AND
-                         f.bl_fact_crdt=1 AND f.bl_fact_grt=0 AND f.bl_crdt_regle=0
-                    GROUP BY c.id_clt LIMIT 1";
+            $query = "SELECT a.code_art,a.nom_art,
+                         v.id_vnt,f.bl_bic,f.bl_tva,v.qte_vnt,v.pu_theo_vnt,v.mnt_theo_vnt,v.date_vnt,f.caissier_fact,
+                         f.code_fact,f.bl_fact_grt,date(f.date_fact) as date_fact,f.code_caissier_fact
+                          FROM t_vente v 
+                         INNER JOIN t_article a ON v.article_vnt=a.id_art
+                         INNER JOIN t_facture_vente f ON v.facture_vnt=f.id_fact
+                          WHERE $condMag AND f.clnt_fact=$id_clt AND f.bl_fact_crdt=1 AND f.bl_fact_grt=0 AND f.bl_crdt_regle=0 ORDER BY v.id_vnt DESC,a.nom_art ASC";
 
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
-            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
-
-            $result = $r->fetch_assoc();
-
+        if ($r->num_rows > 0) {
+            $result = array();
+            while ($row = $r->fetch_assoc()) {
+                $result[] = $row;
+            }
             $response = array("status" => 0,
                 "datas" => $result,
                 "message" => "");
             $this->response($this->json($response), 200);
+        } else {
+            $response = array("status" => 0,
+                "datas" => "",
+                "message" => "");
+            $this->response($this->json($response), 404);
         }
-
-        $response = array("status" => 1,
-            "datas" => "",
-            "message" => "Valeur incorrecte du creancier!");
-        $this->response($this->json($response), 200);
     }
+
+        $this->response('', 404);
+    }
+
 
     public function fctGetCreancegDetails($id_clt) {
 
-
+        $cond = " 1=1 ";
+        if($_SESSION['userMag']>0){
+            $cond = $cond." AND f.mag_fact=" . $_SESSION['userMag']." ";
+        }
         if (!empty($id_clt)) {
             $id_clt = intval($id_clt);
             $query = "SELECT (SUM(crdt_fact)-SUM(som_verse_crdt)) as mnt_reste
                  FROM t_facture_vente f
                   INNER JOIN t_client c ON f.clnt_fact=c.id_clt
-                 WHERE f.mag_fact=" . $_SESSION['userMag'] . " 
+                 WHERE $cond 
                      AND f.clnt_fact=$id_clt
                          AND f.crdt_fact>0 AND f.sup_fact=0 AND
                          f.bl_fact_crdt=1 AND f.bl_fact_grt=0 AND f.bl_crdt_regle=0
@@ -2080,6 +2114,7 @@ class reglementController extends model {
 
 session_name('SessSngS');
 session_start();
+authentication();
 if (isset($_SESSION['userId'])) {
     $app = new reglementController;
     $app->processApp();

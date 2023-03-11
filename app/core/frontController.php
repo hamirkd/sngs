@@ -19,7 +19,7 @@ class frontController extends model {
         if (!empty($this->_request['login']) and !empty($this->_request['password'])) {
             $login = $this->esc($this->_request['login']);
             $password = $this->esc($this->_request['password']);
-            $query = "SELECT id_user,login_user,nom_user,prenom_user,sexe_user,code_user,profil_user,vente_credit,facture_vente_annulee,droit_facture_vente_annulee_today,droit_controle_prix_vente,regl_credit,COALESCE(act_mag,3) as act_mag ,COALESCE(mag_user,0) as mag_user ,COALESCE(resa_mag,0) as resa_mag ,COALESCE(nom_mag,'TOUS') as nom_mag,COALESCE(code_mag,'MT') as code_mag FROM t_user LEFT JOIN t_magasin ON t_user.mag_user=t_magasin.id_mag WHERE login_user = '$login' AND pass_user = '" . md5($password) . "' AND (actif=1 OR actif IS NULL) LIMIT 1";
+            $query = "SELECT id_user,login_user,nom_user,prenom_user,sexe_user,code_user,profil_user,vente_credit,facture_vente_annulee,droit_facture_vente_annulee_today,droit_controle_prix_vente,droit_reglement_facture_credit,regl_credit,COALESCE(act_mag,3) as act_mag ,COALESCE(mag_user,0) as mag_user ,COALESCE(resa_mag,0) as resa_mag ,COALESCE(nom_mag,'TOUS') as nom_mag,COALESCE(code_mag,'MT') as code_mag FROM t_user LEFT JOIN t_magasin ON t_user.mag_user=t_magasin.id_mag WHERE login_user = '$login' AND pass_user = '" . md5($password) . "' AND (actif=1 OR actif IS NULL) LIMIT 1";
             
             $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
@@ -55,6 +55,7 @@ class frontController extends model {
                 $_SESSION['factureVenteAnnulee'] = $result['facture_vente_annulee'];
                 $_SESSION['droitFactureVenteAnnuleeToday'] = $result['droit_facture_vente_annulee_today'];
                 $_SESSION['droitControlePrixVente'] = $result['droit_controle_prix_vente'];
+                $_SESSION['droitReglementFactureCredit'] = $result['droit_reglement_facture_credit'];
                 
                 /* options */
                 $_SESSION['tf'] = $result['tva_fact'];

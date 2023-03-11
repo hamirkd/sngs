@@ -85,13 +85,14 @@
                             Client</a></li>
                 </ul>
             </li>
-            <li ng-if="app.userPfl.mg!=0"><a href="" class="dropdown-toggle"><span class="icon-cc-nd"></span>&nbsp;
-                    Credits</a>
+
+            <li ng-if="app.userPfl.droitReglementFactureCredit==1"><a href="" class="dropdown-toggle"><span class="icon-cc-nd"></span>&nbsp;
+                Credits</a>
                 <ul class="dropdown-menu light" data-role="dropdown">
-                    <li ng-if="app.userPfl.mg!=0"><a href="#/rglmtclt"><span class="icon-newspaper"></span>&nbsp; Par
-                            Facture</a></li>
-                    <li ng-if="app.userPfl.mg!=0"><a href="#/rglmtcltg"><span class="icon-user-2"></span>&nbsp; Par
-                            Client</a></li>
+                    <li><a href="#/rglmtclt"><span class="icon-newspaper"></span>&nbsp; Par
+                        Facture</a></li>
+                    <li><a href="#/rglmtcltg"><span class="icon-user-2"></span>&nbsp; Par
+                        Client</a></li>
                 </ul>
             </li>
             <li ng-if="app.userPfl.mg!=0"><a href="" class="dropdown-toggle"><span class="icon-user-3"></span>&nbsp;

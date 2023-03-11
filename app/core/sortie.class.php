@@ -583,6 +583,54 @@ class sortieController extends model {
         $this->response('', 204);
     }
 
+    
+
+    public function searchBon() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+
+        $numerobon = $_POST['numerobon'];
+
+        if ($_SESSION['userMag'] != 0)
+            $query = "SELECT sort.id_sort,sort.bon_vu,sort.bon_sort,
+            sort.date_sort,sort.mag_sort_src as id_mag,sort.rejeter,sort.motif,sort.login_sort,m.nom_mag,s.nom_mag as nom_mag_sort_dst  
+            FROM t_sortie sort 
+            inner join t_magasin m on m.id_mag=mag_sort_src 
+            inner join t_magasin s on s.id_mag=mag_sort_dst  
+            WHERE sort.mag_sort_dst =" . $_SESSION['userMag'] . "
+                AND  sort.bon_sort like '%$numerobon%'  order by sort.id_sort DESC limit 20";
+        else
+            $query = "SELECT sort.id_sort,sort.bon_vu,sort.bon_sort,
+            sort.date_sort,sort.mag_sort_src as id_mag,sort.rejeter,sort.motif,sort.login_sort,m.nom_mag,s.nom_mag as nom_mag_sort_dst  
+            FROM t_sortie sort 
+            inner join t_magasin m on m.id_mag=mag_sort_src
+            inner join t_magasin s on s.id_mag=mag_sort_dst    
+            WHERE sort.bon_sort like '%$numerobon%' order by sort.id_sort DESC limit 20";
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        // $response = array("status" => 0,
+        //     "datas" => $query,
+        //     "message" => "");
+        // $this->response($this->json($response), 200);
+        // exit();
+        if ($r->num_rows > 0) {
+            $result = array();
+            while ($row = $r->fetch_assoc()) {
+                $result[] = $row;
+            }
+            $response = array("status" => 0,
+                "datas" => $result,
+                "message" => "");
+            $this->response($this->json($response), 200);
+        } else {
+            $response = array("status" => 0,
+                "datas" => "",
+                "message" => "");
+            $this->response($this->json($response), 200);
+        }
+        $this->response('', 204);
+    }
+
     public function getEtaSort() {
         if ($this->get_request_method() != "POST") {
             $this->response('', 406);

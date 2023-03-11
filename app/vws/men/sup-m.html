@@ -63,6 +63,16 @@
     </li>
     <li><a class="dropdown-toggle" href="#"><span class="icon-dollar"></span> Reglements</a>
         <ul class="dropdown-menu inverse" data-role="dropdown">
+
+            <li ng-if="app.userPfl.droitReglementFactureCredit==1"><a href="" class="dropdown-toggle"><span class="icon-cc-nd"></span>&nbsp;
+                Credits</a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li><a href="#/rglmtclt"><span class="icon-newspaper"></span>&nbsp; Par
+                        Facture</a></li>
+                    <li><a href="#/rglmtcltg"><span class="icon-user-2"></span>&nbsp; Par
+                        Client</a></li>
+                </ul>
+            </li>
             <li><a href="" class="dropdown-toggle"><span class="icon-undo"></span>&nbsp; Annuler</a>
                 <ul class="dropdown-menu light" data-role="dropdown">
                     <li ng-if="app.PRMS.grt"><a href="#/annregclgrt"><span class="icon-xing"></span>&nbsp; Avances Garanties</a></li>
