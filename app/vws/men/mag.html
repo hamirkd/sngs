@@ -1,0 +1,274 @@
+<ul ng-if="!app.PRMS.pfls" class="element-menu">
+    <li>
+        <a href="#" class="dropdown-toggle"><span class="icon-cart"></span> Ventes</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li ng-if="app.PRMS.grt"><a href="#/vntgrt"><span class="icon-flip-2"></span>&nbsp; Garantie</a></li>
+            <li><a ng-if="app.userPfl.venteCredit==1" href="#/vntcrdt"><span class="icon-cc-nd"></span>&nbsp; A credit</a></li>
+            <li><a href="#/vntcpt"><span class="icon-cc"></span>&nbsp; Au comptant</a></li>
+            <li ng-if="app.userPfl.mg!=0"><a href="#/vntpro"><span class="icon-clipboard-2"></span>&nbsp; Pro Forma</a></li>
+            <div class="divider"></div>
+            <li ng-if="app.PRMS.grt"><a href="#/fctvntgrt"><span class="icon-newspaper"></span>&nbsp; Factures Garanties</a></li>
+            <li><a href="#/fctvntcrdt"><span class="icon-newspaper"></span>&nbsp; Factures Credits</a></li>
+            <li><a href="#/fctvnt"><span class="icon-newspaper"></span>&nbsp; Factures Comptants</a></li>
+            <li ng-if="app.PRMS.grt"><a href="#/fctvntgrtenc"><span class="icon-newspaper"></span>&nbsp; Fact Garanties Encaiss</a></li>
+            <li><a href="#/fctpro"><span class="icon-clipboard-2"></span>&nbsp; Fact Pro Forma</a></li>
+            <li><a href="#/fctvnttva"><span class="icon-newspaper"></span>&nbsp; Factures Tva</a></li>
+            <div ng-if="!app.PRMS.resa" class="divider"></div>
+            <li ng-if="!app.PRMS.resa"><a href="#/annvnt"><span class="icon-undo"></span>&nbsp; Annuler Facture</a></li>
+            <div class="divider"></div>
+            <li><a href="#vnteta"><span class="icon-stats-2"></span>&nbsp; Etat ventes</a></li>
+            <li><a href="#/facteta"><span class="icon-copy"></span>&nbsp; Etat Factures</a></li>
+
+        </ul>
+    </li>
+    <li>
+        <a href="#" class="dropdown-toggle"><span class="icon-layers"></span> Stock</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <!--            <li>
+                             <a href="#" class="dropdown-toggle"><span class="icon-box-database"></span>&nbsp;Commandes</a>
+                            <ul class="dropdown-menu light" data-role="dropdown">
+                                <li ><a href="#/stkcmd"> <span class="icon-cube"></span>&nbsp; Nouvelle commande</a></li> 
+                                <li><a href="#/stkbcmd"><span class="icon-copy"></span>&nbsp; Bon commande</a></li>
+                                <li><a href="#/ancmd"><span class="icon-undo"></span>&nbsp;Details/Annuler Cmd</a></li>
+                                <li><a href="#/etacmd"><span class="icon-stats-2"></span>&nbsp;Etat Cmd</a></li>
+                            </ul>
+                        </li> -->
+            <li>
+                <a href="#" class="dropdown-toggle"><span class="icon-database"></span>&nbsp; Entrees</a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li>
+                        <a href="#/stkas"> <span class="icon-download-2"></span>&nbsp; Nouvelle entree</a>
+                    </li>
+                    <li><a href="#/stkba"><span class="icon-copy"></span>&nbsp; Bon Entree</a></li>
+                    <li ng-if="app.PRMS.bonatt"><a href="#/stkbaae"><span class="icon-copy"></span>&nbsp; Bons en Attentes</a></li>
+                    <li ng-if="!app.PRMS.resa"><a href="#/anapp"><span class="icon-undo"></span>&nbsp;Details/Annuler Approv</a></li>
+                    <li><a href="#/etaapp"><span class="icon-stats-2"></span>&nbsp;Etat Approv</a></li>
+                </ul>
+            </li>
+            <div class="divider"></div>
+            <li>
+                <a href="#" class="dropdown-toggle"><span class="icon-box-remove"></span>&nbsp;Sorties</a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li>
+                        <a href="#/stkss"> <span class="icon-upload-3"></span>&nbsp; Nouvelle Sortie</a>
+                    </li>
+                    <li><a href="#/stkbs"><span class="icon-copy"></span>&nbsp; Bons Sortie</a></li>
+                    <li ng-if="!app.PRMS.resa"><a href="#/ansort"><span class="icon-undo"></span>&nbsp;Details/Annuler Sortie</a></li>
+                    <li><a href="#/etasort"><span class="icon-stats-2"></span>&nbsp;Etat Sorties</a></li>
+                </ul>
+            </li>
+            <div ng-if="app.PRMS.trsf" class="divider"></div>
+            <li ng-if="app.PRMS.trsf">
+                <a href="#" class="dropdown-toggle"><span class="icon-flag-2"></span>&nbsp; Transfert de stock</a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li>
+                        <a href="#/stktrf"> <span class="icon-download-2"></span>&nbsp; Nouveau Transfert</a>
+                    </li>
+                    <li><a href="#/stketatrsf"><span class="icon-stats-2"></span>&nbsp; Etat</a></li>
+                </ul>
+            </li>
+            <div ng-if="!app.PRMS.resa || (app.PRMS.resa && app.userPfl.pfl==1)" class="divider"></div>
+            <li ng-if="!app.PRMS.resa || (app.PRMS.resa && app.userPfl.pfl==1)">
+                <a href="#" class="dropdown-toggle"><span class="icon-finder"></span>&nbsp; Destockage stock</a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li>
+                        <a href="#/stkdeff"> <span class="icon-download-2"></span>&nbsp; Nouv Destockage</a>
+                    </li>
+                    <div class="divider"></div>
+                    <li ng-if="!app.PRMS.resa"><a href="#/stketadeff"><span class="icon-stats-2"></span>&nbsp; Etat</a></li>
+                </ul>
+            </li>
+            <div class="divider"></div>
+            <li><a href="#/stklrt"><span class="icon-link-2"></span>&nbsp; Alerte Stock</a></li>
+            <div class="divider"></div>
+            <li><a href="#/stketa"><span class="icon-stats-2"></span>&nbsp; Inventaire stock</a></li>
+            <div class="divider"></div>
+            <li><a href="#/austk"><span class="icon-compass-3"></span>&nbsp; Autres stock ...</a></li>
+            <div class="divider"></div>
+            <li><a href="#/ficar"><span class="icon-copy"></span>&nbsp; Fiche Article</a></li>
+        </ul>
+    </li>
+
+
+    <li>
+        <a class="dropdown-toggle" href="#"><span class="icon-dollar"></span> Reglements</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li ng-if="app.PRMS.grt">
+                <a href="" class="dropdown-toggle"><span class="icon-flip-2"></span>&nbsp; Garanties</a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li><a href="#/rglmtgrtclt"><span class="icon-newspaper"></span>&nbsp; Par Facture</a></li>
+                    <li><a href="#/rglmtgrtcltg"><span class="icon-user-2"></span>&nbsp; Par Client</a></li>
+                </ul>
+            </li>
+            <!--       <li>
+                <a href="" class="dropdown-toggle"><span class="icon-cc-nd"></span>&nbsp; Credits</a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li><a href="#/rglmtclt"><span class="icon-newspaper"></span>&nbsp; Par Facture</a></li>
+                    <li><a href="#/rglmtcltg"><span class="icon-user-2"></span>&nbsp; Par Client</a></li>
+                </ul>
+            </li> -->
+
+            <li><a href="" class="dropdown-toggle"><span class="icon-cc-nd"></span>&nbsp; Credits</a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li><a href="#/rglmtclt"><span class="icon-newspaper"></span>&nbsp; Par Facture</a></li>
+                    <li><a href="#/rglmtcltg"><span class="icon-user-2"></span>&nbsp; Par Client</a></li>
+                </ul>
+            </li>
+            <div class="divider"></div>
+            <li>
+                <a href="" class="dropdown-toggle"><span class="icon-user-3"></span>&nbsp; Fournisseurs</a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li><a href="#/rglmtfrns"><span class="icon-newspaper"></span>&nbsp; Par BE</a></li>
+                    <li><a href="#/rglmtfrnsg"><span class="icon-user-2"></span>&nbsp; Par Fournisseur</a></li>
+                </ul>
+            </li>
+            <div ng-if="!app.PRMS.resa" class="divider"></div>
+            <li ng-if="!app.PRMS.resa">
+                <a href="" class="dropdown-toggle"><span class="icon-undo"></span>&nbsp; Annuler</a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li ng-if="app.PRMS.grt"><a href="#/annregclgrt"><span class="icon-xing"></span>&nbsp; Avances Garanties</a></li>
+                    <li><a href="#/annregcl"><span class="icon-user-2"></span>&nbsp; Reglements Clients</a></li>
+                    <li><a href="#/annregfr"><span class="icon-user-3"></span>&nbsp; Regl..s Fournisseurs</a></li>
+                </ul>
+            </li>
+            <div class="divider"></div>
+            <li>
+                <a href="#" class="dropdown-toggle"><span class="icon-stats-2"></span>&nbsp; Etats </a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li ng-if="app.PRMS.grt"><a href="#/etarglcgrt"><span class="icon-xing"></span>&nbsp; Avances Garanties</a></li>
+                    <li><a href="#/etarglc"><span class="icon-xing"></span>&nbsp;Reglements Clients</a></li>
+                    <li><a href="#etarglf"><span class="icon-flattr"></span>&nbsp;Regl..s Fournisseurs</a></li>
+                    <div class="divider"></div>
+                    <li><a href="#/etaretpay"><span class="icon-clock"></span>&nbsp;Retard Payements</a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+
+    <li>
+        <a class="dropdown-toggle" href="#"> <span class="icon-medal"></span> Sorties de Caisse</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li><a href="#/dep"><span class="icon-medal-2"></span>&nbsp; Nouv Depense</a></li>
+            <li><a href="#/vers"><span class="icon-cabinet"></span>&nbsp; Nouv Versement</a></li>
+            <li ng-if="!app.PRMS.resa">
+                <a href="" class="dropdown-toggle"><span class="icon-undo"></span>&nbsp; Annuler sorties</a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li><a href="#/anndep"><span class="icon-medal-2"></span>&nbsp; Depenses</a></li>
+                    <li><a href="#/annvers"><span class="icon-cabinet"></span>&nbsp; Versements</a></li>
+                </ul>
+            </li>
+            <li><a href="#/etadep"><span class="icon-stats-2"></span>&nbsp; Etats Depenses</a></li>
+            <li><a href="#/etavers"><span class="icon-stats"></span>&nbsp; Etats Versements</a></li>
+        </ul>
+    </li>
+
+
+    <li>
+        <a class="dropdown-toggle" href="#"> <span class="icon-pie"></span>Caisse</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li><a href="#/caiss"><span class="icon-gift"></span>&nbsp; Provision Caisse</a></li>
+            <li ng-if="!app.PRMS.resa">
+                <a href="#/anncaiss"><span class="icon-medal-2"></span>&nbsp; Annuler Provision</a>
+            </li>
+            <li><a href="#/etacaiss"><span class="icon-stats-2"></span>&nbsp; Etats Provisions Caisse</a></li>
+            <li><a href="#/etacais"><span class="icon-dollar-2"></span>&nbsp; Etats caisse jour</a></li>
+            <li><a href="#/etacaisp"><span class="icon-dollar-2"></span>&nbsp; Etats caisse period</a></li>
+            <!--<li><a href="#/etamargp"><span class="icon-dollar-2"></span>&nbsp; Etats Marges period</a></li>-->
+        </ul>
+    </li>
+
+    <li>
+        <a class="dropdown-toggle" href="#"><span class="icon-address-book"></span> Etats</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li ng-if="app.PRMS.grt"><a href="#/etagrt"><span class="icon-flip-2"></span>&nbsp; Etats Garanties</a></li>
+            <li><a href="#/etacrce"><span class="icon-xing"></span>&nbsp; Etats Credits</a></li>
+            <li><a href="#/etadet"><span class="icon-flattr"></span>&nbsp; Etats dettes</a></li>
+        </ul>
+    </li>
+    <li>
+        <a class="dropdown-toggle" href="#"><span class="icon-cog"></span> Parametrage</a>
+        <ul class="dropdown-menu inverse place-right" data-role="dropdown">
+            <li><a href="#/prmart"><span class="icon-tag"></span>&nbsp;Articles</a></li>
+            <li><a href="#/prmclt"><span class="icon-user-2"></span>&nbsp; Clients</a></li>
+            <li><a href="#/prmfrns"><span class="icon-user-3"></span>&nbsp; Fournisseurs</a></li>
+            <li><a href="#/prmtd"><span class="icon-hash"></span>&nbsp;Natures depenses</a></li>
+            <li><a href="#/prmbnk"><span class="icon-barcode"></span>&nbsp;Comptes bancaires</a></li>
+            <li><a href="#/prmcat"><span class="icon-cube"></span>&nbsp;Categories d'articles</a></li>
+            <li><a href="#/prmunit"><span class="icon-droplet"></span>&nbsp;Unites d'articles</a></li>
+        </ul>
+    </li>
+</ul>
+
+
+
+<!-- STRICT -->
+
+<ul ng-if="app.PRMS.pfls" class="element-menu">
+    <li>
+        <a href="#" class="dropdown-toggle"><span class="icon-database"></span>&nbsp; Entrees</a>
+        <ul class="dropdown-menu light" data-role="dropdown">
+            <li>
+                <a href="#/stkas"> <span class="icon-download-2"></span>&nbsp; Nouvelle entree</a>
+            </li>
+            <li><a href="#/stkba"><span class="icon-copy"></span>&nbsp; Bon Entree</a></li>
+            <li ng-if="app.PRMS.bonatt"><a href="#/stkbaae"><span class="icon-copy"></span>&nbsp; Bons en Attentes</a></li>
+            <li ng-if="!app.PRMS.resa"><a href="#/anapp"><span class="icon-undo"></span>&nbsp;Details/Annuler Approv</a></li>
+            <li><a href="#/etaapp"><span class="icon-stats-2"></span>&nbsp;Etat Approv</a></li>
+        </ul>
+    </li>
+    <!--    <li>
+            <ul class="dropdown-menu light" data-role="dropdown">
+                <li  ><a href="#/stkcmd"> <span class="icon-cube"></span>&nbsp; Nouvelle commande</a></li> 
+                <li><a href="#/stkbcmd"><span class="icon-copy"></span>&nbsp; Bon commande</a></li>
+                <li><a href="#/ancmd"><span class="icon-undo"></span>&nbsp;Details/Annuler Cmd</a></li>
+                <li><a href="#/etacmd"><span class="icon-stats-2"></span>&nbsp;Etat Cmd</a></li>
+            </ul>
+        </li> -->
+    <li>
+        <a href="#" class="dropdown-toggle"><span class="icon-box-remove"></span>&nbsp;Sorties</a>
+        <ul class="dropdown-menu light" data-role="dropdown">
+            <li>
+                <a href="#/stkss"> <span class="icon-upload-3"></span>&nbsp; Nouvelle Sortie</a>
+            </li>
+            <li><a href="#/stkbs"><span class="icon-copy"></span>&nbsp; Bons Sortie</a></li>
+            <li><a href="#/ansort"><span class="icon-undo"></span>&nbsp;Details/Annuler Sortie</a></li>
+            <li><a href="#/etasort"><span class="icon-stats-2"></span>&nbsp;Etat Sorties</a></li>
+        </ul>
+    </li>
+    <li ng-if="app.PRMS.trsf">
+        <a href="#" class="dropdown-toggle"><span class="icon-flag-2"></span>&nbsp; Transferts</a>
+        <ul class="dropdown-menu light" data-role="dropdown">
+            <li>
+                <a href="#/stktrf"> <span class="icon-download-2"></span>&nbsp; Nouveau Transfert</a>
+            </li>
+            <li><a href="#/stketatrsf"><span class="icon-stats-2"></span>&nbsp; Etat</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="#" class="dropdown-toggle"><span class="icon-finder"></span>&nbsp; Destockage</a>
+        <ul class="dropdown-menu light" data-role="dropdown">
+            <li>
+                <a href="#/stkdeff"> <span class="icon-download-2"></span>&nbsp; Nouv Destockage</a>
+            </li>
+            <div class="divider"></div>
+            <li ng-if="!app.PRMS.resa"><a href="#/stketadeff"><span class="icon-stats-2"></span>&nbsp; Etat</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="#" class="dropdown-toggle"><span class="icon-layers"></span> Stock</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li><a href="#/stklrt"><span class="icon-link-2"></span>&nbsp; Alerte Stock</a></li>
+            <li><a href="#/stketa"><span class="icon-stats-2"></span>&nbsp; Inventaire stock</a></li>
+            <div class="divider"></div>
+            <li><a href="#/austk"><span class="icon-compass-3"></span>&nbsp; Autres stock ...</a></li>
+        </ul>
+    </li>
+    <li>
+        <a class="dropdown-toggle" href="#"><span class="icon-cog"></span> Parametrage</a>
+        <ul class="dropdown-menu inverse place-right" data-role="dropdown">
+            <li><a href="#/prmart"><span class="icon-tag"></span>&nbsp;Articles</a></li>
+            <li><a href="#/prmcat"><span class="icon-cube"></span>&nbsp;Categories d'articles</a></li>
+            <li><a href="#/prmunit"><span class="icon-droplet"></span>&nbsp;Unites d'articles</a></li>
+        </ul>
+    </li>
+</ul>

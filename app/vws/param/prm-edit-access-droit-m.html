@@ -1,0 +1,79 @@
+<link href="public/bootstrap-3.4.1-dist/css/bootstrap.css" rel="stylesheet">
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/prmaccess" class="element"><span class="icon-list"></span>
+                        {{title}} </a><span class="element-divider"></span>
+                    <div class="no-tablet-portrait" ng-show="profil.id_profil"><span class="element-divider"></span><a class="element brand" href="#/prmaccess/0"><span class="icon-plus-2"></span> Nouveau
+                            profil </a><span class="element-divider"></span><a class="element brand place-right"><span class="icon-pencil"></span> Modification du profil : <span class='fg-active-green'>{{profil.code_profil}}</span></a></div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <form name="form">
+        <fieldset>
+            <legend></legend>
+            <form>
+                <div class="container padding">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="">
+                                <label>Profil </label>
+                                <div class="input-control select span4" data-role="input-control">
+                                    <select ng-model="droit.profil_id">
+                                <option ng-repeat="data in profils" value="{{data.id_profil}}" >{{data.lib_profil}} [{{data.code_profil}}]</option>
+                            </select></div>
+                            </div>
+                            <div class="">
+                                <label>Magasin</label>
+                                <div class="input-control select span4" data-role="input-control">
+                                    <select ng-model="droit.mag_id">
+                                <option ng-repeat="data in magasins" value="{{data.id_mag}}" >{{data.nom_mag}} [{{data.code_mag}}]</option>
+                            </select></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8" ng-show="profil_droits.length> 0">
+                            <table class="table">
+                                <tr>
+                                    <th>Profil</th>
+                                    <th>Magasin</th>
+                                    <th>Code</th>
+                                    <th>Libelle</th>
+                                    <th>Etat</th>
+                                </tr>
+                                <tr ng-repeat="data in profil_droits">
+                                    <td>{{data.profil}}</td>
+                                    <td>{{data.magasin}}</td>
+                                    <td>{{data.code_droit}}</td>
+                                    <td>{{data.lib_droit}}</td>
+                                    <td>
+                                        <div class="row">
+                                            <label style="display: contents;"><input name="{{data.id_droit}}" checked="" type="radio" ng-model="data.etat" value="1" checked><span class="check"></span> Oui </label>
+                                            <label style="display: contents;"><input name="{{data.id_droit}}" type="radio" ng-model="data.etat" value="0"><span class="check"></span> Non </label>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            </table>
+                            <div class="padding" style="float:right;">
+                                <br>
+                                <button class="primary" ng-click="enregistrer(droit,profil_droits)">Enregistrer</button> &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="padding">
+                        <br>
+                        <button class="primary" ng-click="getDroit(droit);" ng-disabled="form.$invalid"><span
+                        class="icon-forward"></span> {{buttonText}}</button> &nbsp;
+                    </div>
+                </div>
+
+            </form>
+
+        </fieldset>
+    </form>
+</div>

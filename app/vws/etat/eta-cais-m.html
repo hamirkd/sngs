@@ -1,0 +1,126 @@
+<div class="example">
+    <form name="form">
+        <fieldset>
+            <legend>{{title}}</legend>
+            <table class="table table-striped">
+                <tr>
+                    <td><button class="success big_size" ng-click="searchFDay();"><i
+                                class="icon-meter-medium on-left on-left-more"></i>Aujourd'hui</button></td>
+                    <td><label ng-show="app.userPfl.mg==0">Magasin</label>
+                        <div ng-show="app.userPfl.mg==0" accesskey="" class="input-control select span4"
+                            data-role="input-control"><select name="magasin" ng-model="search.magasin"
+                                ng-options="magasin.id_mag as magasin.nom_mag | uppercase for magasin in magasins">
+                                <option value=""></option>
+                            </select><input type="hidden" name="ras" value="ras"></div>
+                    </td>
+                    <td><label>Date du/debut</label>
+                        <div class="input-control text span2"><input type="text" placeholder="jj/mm/aaaa"
+                                name="date_deb" ng-model="search.date_deb"></div>
+                    </td>
+                    <td><label>Date Fin</label>
+                        <div class="input-control text span2"><input type="text" name="date_fin"
+                                ng-model="search.date_fin" placeholder="jj/mm/aaaa"></div>
+                    </td>
+                    <td><button class="primary big_size" ng-click="searchF();"><i
+                                class="icon-calendar on-left on-left-more"></i>Executer</button></td>
+                </tr>
+                <tr>
+                    <td>
+                        <h3>Ventes au comptant</h3>
+                    </td>
+                    <td>
+                        <h3><span class="fg-red">{{caisse.comptant | currency}} </span></h3>
+                        <h5><span ng-show="app.userPfl.mg==0">MARGE : {{caisse.margecpt | currency}} </span></h5>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>
+                        <h3>Depenses</h3>
+                    </td>
+                    <td>
+                        <h3><span class="fg-red">{{caisse.depense | currency}} </span></h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h3>Provisions de Caisse</h3>
+                    </td>
+                    <td>
+                        <h3><span class="fg-red">{{caisse.provision | currency}} </span></h3>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>
+                        <h3>Regl fourn..rs</h3>
+                    </td>
+                    <td>
+                        <h3><span class="fg-red">{{caisse.dette | currency}} </span></h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h3>Reglements Clients</h3>
+                    </td>
+                    <td>
+                        <h3><span class="fg-red">{{caisse.creance | currency}} </span></h3>
+                        <h5><span ng-show="app.userPfl.mg==0">MARGE : {{caisse.margecrdt | currency}} </span></h5>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>
+                        <h3>Remises</h3>
+                    </td>
+                    <td>
+                        <h3><span class="fg-red">{{caisse.remise | currency}} </span></h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h3 ng-if="app.PRMS.grt">Garanties Encaissee</h3>
+                    </td>
+                    <td>
+                        <h3 ng-if="app.PRMS.grt"><span class="fg-red">{{caisse.grtencaiss | currency}} </span></h3>
+                        <h5 ng-if="app.PRMS.grt"><span ng-show="app.userPfl.mg==0">MARGE : {{caisse.margegrtencaiss |
+                                currency}} </span></h5>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>
+                        <h3>Versements</h3>
+                    </td>
+                    <td>
+                        <h3><span class="fg-red">{{caisse.versement | currency}} </span></h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h2><strong>Total Entrees</strong></h2>
+                    </td>
+                    <td>
+                        <h2><span class="fg-red"><strong>{{(caisse.comptant+ caisse.grtencaiss + caisse.creance +
+                                    caisse.provision)| currency}} </strong></span></h2>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>
+                        <h2><strong>Total Sorties</strong></h2>
+                    </td>
+                    <td>
+                        <h2><span class="fg-red"><strong>{{(caisse.depense + caisse.dette + caisse.versement)|
+                                    currency}} </strong></span>
+                            <h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="bg-grayLighter" align="center">
+                        <h1><strong>Total Caisse : <span class="fg-red">{{(caisse.comptant + caisse.grtencaiss +
+                                    caisse.creance + caisse.provision - caisse.depense - caisse.dette -
+                                    caisse.versement)| currency}} </span></strong></h1>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>

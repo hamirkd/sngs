@@ -1,0 +1,47 @@
+<div class="grid">
+    <div class="row">
+        <div class="example">
+            <fiedlset>
+                <legend style="width:100%;">
+                    <table width="100%">
+                        <tr>
+                            <td>{{title}}</td>
+                            <td><span class="input-control text span2" style=""><input ng-model="filterText" placeholder="filtre" type="text"></span></td>
+                            <td>Total : {{filtered.length}}</td>
+                            <td>
+                                <form ng-submit="rechF()"><button class="inverse" style="float:right;"><i class="icon-search on-left on-left-more"></i>Ok</button><span class="input-control text span3" style="margin-right:1px;float:right"><input type="text" name="fact" ng-model="rech.vare" placeholder="Date :JJ/MM/AAAA"></span></form>
+                            </td>
+                        </tr>
+                    </table>
+                </legend>
+                <div class="col-md-12" ng-show="depenses.length> 0" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                    <table class="table striped bordered condensed hovered">
+                        <thead>
+                            <th class='text-left'>Date&nbsp;</th>
+                            <th class='text-left'>Objet&nbsp;</th>
+                            <th class='text-left'>Caissier&nbsp;</th>
+                            <th class='text-left'>Montant&nbsp;</th>
+                            <th class='text-left'>&nbsp;</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in filtered=(depenses|filter:filterText)" ng-click="select($index)" class="liste" ng-class="{'info':$index == index,'strike':(data.supok),'red':(data.supok)}">
+                                <td class="fg-orange">{{data.date_dep |uppercase}}</td>
+                                <td>{{data.details_dep |lowercase}}</td>
+                                <td>{{data.code_user_dep | uppercase}}</td>
+                                <td class="fg-red">{{data.mnt_dep | currency}}</td>
+                                <td><a ng-if="app.PRMS.resa && app.userPfl.pfl==1 && !data.supok" href ng-click='undo(data)'><i class="icon-undo on-left"></i> Annuler</a>
+                                    <a ng-if="!app.PRMS.resa && app.userPfl.id==data.user_dep && !data.supok" href ng-click='undo(data)'><i class="icon-undo on-left"></i> Annuler</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12" ng-show="depenses.length == 0">
+                    <div class="col-md-12" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                        <h4>Aucune depesense ... !</h4>
+                    </div>
+                </div>
+            </fiedlset>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,108 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/prmart" class="element"><span class="icon-list"></span>
+                        Liste des articles </a><span class="element-divider"></span>
+                    <div class="no-tablet-portrait" ng-show="article.id_art"><span class="element-divider"></span><a
+                            class="element brand" href="#/prmart/0"><span class="icon-plus-2"></span> Nouveau article
+                        </a><span class="element-divider"></span><a class="element brand place-right"><span
+                                class="icon-pencil"></span> Modification de l' article : <span
+                                class='fg-active-green'>{{article.code_art}}</span></a></div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example" style="z-index: 1;">
+    <form name="form">
+        <fieldset>
+            <legend>{{title}}</legend>
+            <table width="100%">
+                <tr>
+                    <td><label>Article</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="nom_art"
+                                placeholder="libelle" type="text" tabindex="1" ng-model="article.nom_art"
+                                required><button type="button" class="btn-clear"></button></div>
+                    </td>
+                    <td><label>Prix mini</label>
+                        <div class="input-control text span4" data-role="input-control"><input class="fg-cobalt"
+                                name="prix_mini_art" placeholder="Prix minimum" type="number" tabindex="4"
+                                ng-model="article.prix_mini_art" required></div>
+                    </td>
+                    <td><label>Marque</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="marq_art"
+                                placeholder="marque" type="text" tabindex="-1" ng-model="article.marq_art"><button
+                                type="button" class="btn-clear"></button></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Categorie</label>
+                        <div class="input-control select span4" data-role="input-control"><select id="eidcat"
+                                ng-model="article.cat_art"
+                                ng-options="categorie.id_cat as categorie.nom_cat|uppercase for categorie in categories"
+                                ng-click="getcat()" tabindex="2" required></select><span style="position:absolute;"
+                                title="Actualiser la liste des categories articles" class="icon-cycle"
+                                ng-click="app.refreshcatCache()"></span></div>
+                    </td>
+                    <td><label>Prix Gros</label>
+                        <div class="input-control text span4" data-role="input-control"><input class="fg-magenta"
+                                name="prix_gros_art" placeholder="Prix en gros" tabindex="5" type="number"
+                                ng-model="article.prix_gros_art" required><button type="button"
+                                class="btn-clear"></button></div>
+                    </td>
+                    <td><label>Modele</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="model_art"
+                                placeholder="modele" type="text" tabindex="-1" ng-model="article.model_art"><button
+                                type="button" class="btn-clear"></button></div>
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Unite</label>
+                        <div class="input-control select span4" data-role="input-control"><select id="eidunit"
+                                name="unite_art" ng-model="article.unite_art"
+                                ng-options="unite.id_unite as unite.nom_unite |uppercase for unite in unites"
+                                ng-click="getunit()" tabindex="3" required></select></div>
+                    </td>
+                    <td><label ng-show="app.PRMS.prxcht && app.userPfl.pfl<=1">Prix d'achat</label>
+                        <div ng-show="app.PRMS.prxcht && app.userPfl.pfl<=1" class="input-control text span4"
+                            data-role="input-control"><input class="fg-green" name="prix_achat_art"
+                                placeholder="Prix achat" tabindex="5" type="number"
+                                ng-model="article.prix_achat_art"><button type="button" class="btn-clear"></button>
+                        </div>
+
+                        <label>Prix Max</label>
+                        <div class="input-control text span4" data-role="input-control"><input class="fg-magenta"
+                                name="prix_max_art" placeholder="Prix en max" tabindex="5" type="number"
+                                ng-model="article.prix_max_art" required><button type="button"
+                                class="btn-clear"></button></div>
+                                
+                    </td>
+                    <td rowspan="2"><label>Autres caracteristiques</label>
+                        <div class="input-control textarea span4" data-role="input-control"><textarea name="caract_art"
+                                placeholder="autres caracteristiques" tabindex="-1"
+                                ng-model="article.caract_art"></textarea></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Seuil minimal de stock</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="seuil_art"
+                                placeholder="seuil de stock" type="number" tabindex="6" ng-model="article.seuil_art">
+                        </div>
+                    </td>
+                    <td><label>Reference</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="ref_art"
+                                placeholder="Reference article" type="text" tabindex="-1"
+                                ng-model="article.ref_art"><button type="button" class="btn-clear"></button></div>
+                    </td>
+                </tr>
+            </table><button class="primary" ng-click="save(article);" tabindex="7"
+                ng-disabled="isClean() || form.$invalid"><span class="icon-checkmark"></span> {{buttonText}}</button>
+            &nbsp; <button class="danger" ng-click="deleted(article)" tabindex="8" ng-show="article.id_art"><span
+                    class="icon-cancel-2"></span> Supprimer</button>
+        </fieldset>
+    </form>
+</div>

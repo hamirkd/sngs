@@ -1,0 +1,139 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/stkba" class="element"><span class="icon-list"></span> Liste BE </a><a class="element btn_search"><span class="icon-search"></span> Nouveau Critere de recherche </a>
+                    <a ng-if="app.userPfl.mg!=0" href="#/stkba/0" class="element bg-lightOrange"><span class="icon-plus"></span>&nbsp;<span class="icon-copy"></span> Nouveau Bon d'entree </a>
+                    <a ng-if="app.userPfl.mg!=0" href="#/stkas" class="element bg-lightGreen"><span class="icon-plus"></span>&nbsp;<span class="icon-download-2"></span> Nouvelle Entree de stock </a>
+                    <a ng-if="!app.PRMS.resa" href="#/anapp" class="element"><span class="icon-undo"></span> Details/Annuler </a><span class="element-divider"></span></div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <div class="row">
+        <div class="example">
+            <fiedlset>
+                <legend style="width:100%;">
+                    <table width="100%">
+                        <tr>
+                            <td>{{title}}</td>
+                            <td><span class="input-control text span2" style=""><input ng-model="filterText" placeholder="filtre" type="text"></span></td>
+                            <td>Total : {{filtered.length}}</td>
+                            <td><a ng-hide="approvisionnements.length == 0" class="button warning" align="right" style="float:right;margin-right:50px;" href="./app/raps/stk-app.php?d={{search.date_deb}}&f={{search.date_fin}}&mg={{search.magasin}}&art={{search.article}}&cat={{search.categorie}}&frns={{search.fournisseur}}&bc={{search.bc}}"
+                                    target="_BLANK"><span class="icon-printer"></span>{{app.txtprint}}</a>
+                                <a ng-hide="approvisionnements.length == 0" class="button success" align="left" style="margin-left:50px;" href="./app/raps/stk-appxls.php?d={{search.date_deb}}&f={{search.date_fin}}&mg={{search.magasin}}&art={{search.article}}&cat={{search.categorie}}&frns={{search.fournisseur}}&bc={{search.bc}}"
+                                    target="_BLANK"><span class="icon-file-excel"></span>Excel</a>
+                            </td>
+                        </tr>
+                    </table>
+                </legend>
+                <div class="col-md-12" ng-show="approvisionnements.length> 0" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                    <table class="table striped bordered condensed hovered">
+                        <thead>
+                            <th class='text-left'>Date Bon&nbsp;</th>
+                            <th class='text-left'>No Bon&nbsp;</th>
+                            <th class='text-left'>Article&nbsp;</th>
+                            <th class='text-left'>Qte&nbsp;</th>
+                            <th class='text-left'>Prix&nbsp;</th>
+                            <th class='text-left'>Montant&nbsp;</th>
+                            <th class='text-left'>Magasin&nbsp;</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in filtered=(approvisionnements|filter:filterText)" class="liste">
+                                <td>{{data.date_appro|date:'dd/MM/yyyy'}}</td>
+                                <td>{{data.bon_liv_appro|uppercase}} <br/># {{data.nom_frns|uppercase}}</td>
+                                <td>{{data.nom_art |uppercase}}</td>
+                                <td>{{data.qte_appro_art}}</td>
+                                <td>{{data.prix_appro_art |number:0}}</td>
+                                <td>{{(data.qte_appro_art * data.prix_appro_art)|currency}}</td>
+                                <td>{{data.nom_mag|uppercase}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" align="right">
+                                    <h3><span>TOTAUX : QTE </span></h3>
+                                </td>
+                                <td>
+                                    <h3><span class="fg-blue"> {{ getTotalQte() | number:0 }}</span></h3>
+                                </td>
+                                <td>
+                                    <h3><span class="">MNT :</span></h3>
+                                </td>
+                                <td colspan="2">
+                                    <h3><span class="fg-red"> {{ getTotalMnt() | currency }}</span></h3>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12" ng-show="approvisionnements.length == 0">
+                    <div class="col-md-12" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                        <h4>Aucun approvisionnement correspondant a ce critere ... !</h4>
+                    </div>
+                </div>
+            </fiedlset>
+        </div>
+        <div class="example" id="searchPannel">
+            <fieldset>
+                <legend><a class="toggle_search" href=""><span class=" icon-arrow-right-3"></span></a> Nouveau Filtre</legend>
+                <form name="form">
+                    <div style="max-height:500px;overflow:auto;">
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Date du/debut</label>
+                                        <div class="input-control text span2"><input type="text" placeholder="jj/mm/aaaa" name="date_deb" ng-model="search.date_deb"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="stagger"><label>Date Fin</label>
+                                        <div class="input-control text span2"><input type="text" name="date_fin" ng-model="search.date_fin" placeholder="jj/mm/aaaa"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Type de Commande</label>
+                                    <div class="input-control select span4" data-role="input-control"><select ng-model="search.bc"><option value=""></option><option value="0">COMPTANT</option><option value="1">A CREDIT</option></select></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Magasin</label>
+                                        <div class="input-control select span4" data-role="input-control"><select ng-model="search.magasin" ng-options="magasin.id_mag as magasin.nom_mag | uppercase for magasin in magasins" ng-click="getmag()"><option value=""></option></select></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="input-control select span6" data-role="input-control"><label>Fournisseurs &nbsp;&nbsp;<span class="input-control text span2" style=""><input ng-model="filterfrns" placeholder="filtre" type="text"></span></label><select ng-model="search.fournisseur" ng-options="fournisseur.id_frns as fournisseur.nom_frns | uppercase for fournisseur in fournisseurs|filter:filterfrns"
+                                            ng-click="getfrns()"><option value=""></option></select></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="input-control select span6" data-role="input-control"><label>Article &nbsp;&nbsp;<span class="input-control text span2" style=""><input ng-model="filterItem" placeholder="filtre" type="text"></span></label><select ng-model="search.article" ng-options="article.id_art as article.nom_art | uppercase for article in articles|filter:filterItem|orderBy:'nom_art':false"
+                                            ng-click="getart()"><option value=""></option></select><span style="position:absolute;" title="Actualiser la liste des articles" class="icon-cycle" ng-click="app.refreshartCache()"></span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="input-control select span6" data-role="input-control"><label>Categorie &nbsp;&nbsp;<span class="input-control text span2" style=""><input ng-model="filterItemcat" placeholder="filtre" type="text"></span></label><select ng-model="search.categorie" ng-options="categorie.id_cat as categorie.nom_cat | uppercase for categorie in categories|filter:filterItemcat"
+                                            ng-click="getcat()"><option value=""></option><span style="position:absolute;" title="Actualiser la liste des categories articles" class="icon-cycle" ng-click="app.refreshcatCache()"></span></select></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div><button class="primary" ng-click="searchF();"><i class="icon-search on-left on-left-more"></i>Valider</button> &nbsp; <button class="inverse" type="reset" class="button"><i class="icon-undo on-left on-left-more"></i> Annuler </button></form>
+            </fieldset>
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        $(".toggle_search").on("click", function() {
+            $("#searchPannel").css("right", "-700px")
+        });
+        $(".btn_search").on("click", function() {
+            $("#searchPannel").css("right", "0")
+        })
+    });
+</script>

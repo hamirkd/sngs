@@ -1,0 +1,15 @@
+Modification au niveau de base de donnée
+
+1. Ajouter une colonne rejeter dans t_sortie
+2. ajouter une colonne prix_max_art dans t_prix_article valeur null et par defaut 0
+3. prix_max_art_mag
+4. a_jour
+
+ALTER TABLE `t_sortie_article` ADD `sort_mag` INT NULL AFTER `sort_sort_art`;
+ALTER TABLE `t_sortie_article` ADD `inventaire` VARCHAR NULL AFTER `date_enr`;
+
+Creation de la table t_inventaire
+
+Création des colonnes dans la table user
+vente_credit
+regl_credit

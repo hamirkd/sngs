@@ -1,0 +1,55 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/prmaccess/0" class="element"><span
+                    class="icon-plus-2"></span> Nouvel profil </a><span class="element-divider"></span>
+                    <a href="#/prmaccessdroit" class="element"><span
+                        class="icon-cog"></span> Droits </a>
+                </div>
+
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <div class="row">
+        <fiedlset>
+            <legend>{{title}} | Filtre :
+                <div class="input-control text span4 pull-right"><input ng-model="filterText" placeholder="filtre" type="text"></div>
+            </legend>
+            <div class="col-md-12" ng-show="profils.length> 0" style="min-height: 380px;max-height: 380px;overflow: auto;">
+                <table class="table striped bordered condensed hovered">
+                    <thead>
+                        <th class='text-left'>Code Profil&nbsp; </th>
+                        <th class='text-left'>Libelle Profil &nbsp;</th>
+                        <th class='text-left'>Action&nbsp;</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in profils | filter:filterText" class="liste">
+                            <td>{{data.code_profil|uppercase}}</td>
+                            <td>{{data.lib_profil|uppercase}}</td>
+                            <td>
+                                &nbsp;
+                                <div class="tab-content-segment" title="Editer" style="float:right;">
+                                    <a href="#/prmaccess/{{data.id_profil}}" class="fluent-button">&nbsp;<i
+                                        class="icon-pencil"></i>&nbsp;</a>
+                                </div>
+                                &nbsp;
+                                <div class="tab-content-segment" title="Configuration des droits" style="float:right;">
+                                    <a href="#/prmaccessdroit/{{data.id_profil}}" class="fluent-button">&nbsp;<i
+                                        class="icon-user"></i>&nbsp;</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" ng-show="profils.length == 0">
+                <div class="col-md-12">
+                    <h4>Aucun profil ... !</h4>
+                </div>
+            </div>
+        </fiedlset>
+    </div>
+</div>

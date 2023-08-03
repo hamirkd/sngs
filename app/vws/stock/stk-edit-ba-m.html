@@ -1,0 +1,89 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/stkba" class="element"><span class="icon-list"></span>
+                        Liste BE </a><a ng-if="app.userPfl.mg!=0" href="#/stkas" class="element bg-lightGreen"><span
+                            class="icon-plus"></span>&nbsp;<span class="icon-download-2"></span> Nouvelle Entree de
+                        stock </a><a ng-if="!app.PRMS.resa" href="#/anapp" class="element"><span
+                            class="icon-undo"></span> Details/Annuler </a><a href="#/etaapp" class="element"><span
+                            class="icon-stats-2"></span> Etat Approv </a><span class="element-divider"></span>
+                    <div class="no-tablet-portrait" ng-show="approvisionnement.id_appro"><span
+                            class="element-divider"></span><a ng-if="app.userPfl.mg!=0"
+                            class="element brand bg-lightOrange" href="#/stkba/0"><span class="icon-plus-2"></span>
+                            Nouveau Bordereau </a><span class="element-divider"></span><a
+                            class="element brand place-right"><span class="icon-pencil"></span> Modification du bon :
+                            <span class='fg-amber'>{{approvisionnement.bon_liv_appro}}</span></a></div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <form name="form">
+        <fieldset>
+            <legend>{{title}}</legend>
+            <table width="100%">
+                <tr>
+                    <td>
+                        <div class="input-control checkbox"><label><input name="bl_bon_dette" type="checkbox"
+                                    ng-model="approvisionnement.bl_bon_dette" ng-disabled="isDisabled"
+                                    ng-checked="approvisionnement.bl_bon_dette" /><span class="check"></span> Achat
+                                &agrave; cr&eacute;dit ? </label></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><label>Numero du Bon</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="bon_liv_appro"
+                                placeholder="Numero du bon" type="text" ng-model="approvisionnement.bon_liv_appro"
+                                required><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    </td>
+                    <td><label>Date Entree/achat</label>
+                        <div class="input-control text span4"><input type="text" placeholder="JJ/MM/AAAA"
+                                name="date_appro" ng-disabled="!app.PRMS.defdat" ng-model="approvisionnement.date_appro"
+                                required></div>
+                    </td>
+                    <td><label ng-show="approvisionnement.bl_bon_dette">Avance</label>
+                        <div ng-show="approvisionnement.bl_bon_dette" class="input-control text span4"
+                            data-role="input-control"><input ng-disabled="isDisabled || buttonText=='Modifier' "
+                                class="fg-cobalt" name="dette_appro" placeholder="Avance sur dette" type="number"
+                                ng-model="approvisionnement.dette_appro"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Fournisseurs</label>
+                        <div class="input-control select span4" data-role="input-control"><select name='frns_appro'
+                                ng-disabled="buttonText=='Modifier'" ng-model="approvisionnement.frns_appro"
+                                ng-options="fournisseur.id_frns as fournisseur.nom_frns|uppercase for fournisseur in fournisseurs"
+                                ng-change="plafond(approvisionnement.frns_appro)" required>{{fournisseur}}
+                            </select><label ng-hide="!plafondFrns">Plafond Credit autorise :</label><span
+                                ng-hide="!plafondFrns" class="fg-red">{{plafondFrns | currency}} F CFA</span></div>
+                    </td>
+                    <td rowspan="2"><label>Montant de l'achat</label>
+                        <div class="input-control text span4" data-role="input-control"><input class="fg-cobalt"
+                                ng-disabled="buttonText=='Modifier'" name="mnt_revient_appro" placeholder="Ex : 250 000"
+                                title="Valeur approximative de tout l'achat" type="number"
+                                ng-model="approvisionnement.mnt_revient_appro" ng-change="VerifPlafond()"
+                                ng-disabled="!approvisionnement.frns_appro"></div>
+                    </td>
+                    <td><label ng-show="approvisionnement.bl_bon_dette">Reste &agrave; payer</label>
+                        <div ng-show="approvisionnement.bl_bon_dette" class="input-control text span4"
+                            data-role="input-control"><input ng-disabled="isDisabled" class="fg-magenta" name="reste"
+                                placeholder="Reste a payer" type="number"
+                                value='{{approvisionnement.mnt_revient_appro-approvisionnement.dette_appro}}'></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <button class="primary" ng-show="buttonText" ng-click="save(approvisionnement);"
+                ng-disabled="isClean() || form.$invalid"><span class="icon-checkmark"></span> {{buttonText}}</button>
+            &nbsp; <button class="danger" ng-click="deleted(approvisionnement)"
+                ng-show="approvisionnement.id_appro"><span class="icon-cancel-2"></span> Supprimer</button>
+        </fieldset>
+    </form>
+</div>

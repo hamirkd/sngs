@@ -1,0 +1,109 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/stkba" class="element"><span class="icon-list"></span>
+                        Liste BE </a><a ng-if="app.userPfl.mg!=0" href="#/stkba/0" class="element bg-lightOrange"><span
+                            class="icon-plus"></span>&nbsp;<span class="icon-copy"></span> Nouveau Bon d'entree </a><a
+                        ng-if="app.userPfl.mg!=0" href="#/stkas" class="element bg-lightGreen"><span
+                            class="icon-plus"></span>&nbsp;<span class="icon-download-2"></span> Nouvelle Entree de
+                        stock </a><a ng-if="!app.PRMS.resa" href="#/anapp" class="element"><span
+                            class="icon-undo"></span> Details/Annuler </a><a href="#/etaapp" class="element"><span
+                            class="icon-stats-2"></span> Etat Approv </a><span class="element-divider"></span></div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <div class="row">
+        <div class="span9">
+            <div class="example">
+                <fiedlset>
+                    <legend style="width:100%;">
+                        <table width="100%">
+                            <tr>
+                                <td>{{title}}</td>
+                                <td><span class="input-control text span2" style=""><input ng-model="filterText"
+                                            placeholder="filtre" type="text"></span></td>
+                                <td>Total : {{filtered.length}}</td>
+                                <td>
+                                    <form ng-submit="rechF()"><button class="inverse" style="float:right;"><i
+                                                class="icon-search on-left on-left-more"></i>Ok</button><span
+                                            class="input-control text span3" style="margin-right:1px;float:right"><input
+                                                type="text" name="fact" ng-model="rech.vare"
+                                                placeholder="No bon ou Fournisseur"></span></form>
+                                </td>
+                            </tr>
+                        </table>
+                    </legend>
+                    <div class="col-md-12" ng-show="approvisionnements.length> 0"
+                        style="min-height: 400px;max-height: 400px;overflow: auto;">
+                        <table class="table striped bordered condensed hovered">
+                            <thead>
+                                <th class='text-left'>Date&nbsp;</th>
+                                <th class='text-left'>No Bon&nbsp;</th>
+                                <th class='text-left'>Fournisseur&nbsp;</th>
+                                <th class='text-left'>&nbsp;</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in filteredbons=(approvisionnements|filter:filterText)"
+                                    ng-click="select($index)" class="liste" ng-class="{'info':$index == index}">
+                                    <td>{{data.date_appro|date:'dd/MM/yyyy'}}</td>
+                                    <td><a href ng-click="showDetails(data)" data-hint='Cliquez pour voir les details'
+                                            data-hint-position='top'><i class="icon-eye"></i> {{data.bon_liv_appro}}</a>
+                                        &nbsp; <a title="Modifier le bon"
+                                            ng-if="data.id_appro!=1 && app.userPfl.id==data.user_appro"
+                                            href="#/stkba/{{data.id_appro}}" class="fg-green">&nbsp;<i
+                                                class="icon-pencil"></i>&nbsp;</a></td>
+                                    <td>{{data.nom_frns |uppercase}}</td>
+                                    <td><a ng-if="(!app.PRMS.resa && app.userPfl.id==data.user_appro)|| (!app.PRMS.resa && app.userPfl.pfl<=1)"
+                                            href ng-click='undo(data)'><i class="icon-undo on-left on-left-more"></i>
+                                            Annuler</a><a ng-if="app.PRMS.resa && app.userPfl.pfl<=1" href
+                                            ng-click='undo(data)'><i class="icon-undo on-left on-left-more"></i>
+                                            Annuler</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" ng-show="approvisionnements.length == 0">
+                        <div class="col-md-12" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                            <h4>Aucun Bon d'entree ... !</h4>
+                        </div>
+                    </div>
+                </fiedlset>
+            </div>
+        </div>
+        <div class="span7" style="float:right;">
+            <div class="example">
+                <fieldset>
+                    <legend>Articles du bon : <span class="fg-red">{{num_fact}}</span><span
+                            class="input-control text span2" style=""><input ng-model="filterText2" placeholder="filtre"
+                                type="text"></span></legend>
+                    <div class="col-md-12" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                        <table class="table striped bordered condensed hovered">
+                            <thead>
+                                <th class='text-left'>Magasin&nbsp;</th>
+                                <th class='text-left'>Designation&nbsp;</th>
+                                <th class='text-left'>Qte&nbsp;</th>
+                                <th class='text-left'>&nbsp;</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in filtererticles=(details|filter:filterText2)">
+                                    <td>{{data.code_mag |uppercase}} <br /><span title="Date"
+                                            class="fg-blue my-small-font">{{data.date_appro_art}}</span></td>
+                                    <td>{{data.nom_art |uppercase}}</td>
+                                    <td>{{data.qte_appro_art | uppercase}}</td>
+                                    <td><a ng-if="(!app.PRMS.resa && app.userPfl.id==data.user_appro) || (!app.PRMS.resa && app.userPfl.pfl<=1) "
+                                            href ng-click='undoa(data)' title="supprimer"><i
+                                                class="icon-cancel on-left on-left-more"></i></a><a
+                                            ng-if="app.PRMS.resa && app.userPfl.pfl<=1" href ng-click='undoa(data)'
+                                            title="supprimer"><i class="icon-cancel on-left on-left-more"></i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>

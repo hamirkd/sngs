@@ -1,0 +1,39 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/prmaccess" class="element"><span class="icon-list"></span>
+                        Liste des profils </a><span class="element-divider"></span>
+                    <div class="no-tablet-portrait" ng-show="profil.id_profil"><span class="element-divider"></span><a class="element brand" href="#/prmaccess/0"><span class="icon-plus-2"></span> Nouveau
+                            profil </a><span class="element-divider"></span><a class="element brand place-right"><span class="icon-pencil"></span> Modification du profil : <span class='fg-active-green'>{{profil.code_profil}}</span></a></div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <form name="form">
+        <fieldset>
+            <legend>{{title}}</legend>
+            <table width="95%">
+                <tr>
+                    <td><label>Code profil (5 caracteres maxi)</label>
+                        <div class="input-control text span4" data-role="input-control"><input placeholder="code" type="text" ng-model="profil.code_profil" required><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    </td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <td><label>Libelle</label>
+                        <div class="input-control text span4" data-role="input-control"><input placeholder="libelle" type="text" ng-model="profil.lib_profil" required><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    </td>
+
+                    <td></td>
+                </tr>
+                <tr></tr>
+            </table>
+            <button class="primary" ng-click="save(profil);" ng-disabled="form.$invalid"><span
+                    class="icon-checkmark"></span> {{buttonText}}</button> &nbsp; <button class="danger" ng-click="deleted(profil)" ng-show="profil.id_profil"><span class="icon-cancel-2"></span> Supprimer</button>
+        </fieldset>
+    </form>
+</div>

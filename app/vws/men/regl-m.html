@@ -1,0 +1,60 @@
+<ul ng-if="!app.PRMS.pfls" class="element-menu">
+    <li><a href="#" class="dropdown-toggle"><span class="icon-cart"></span> Ventes</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li ng-if="app.PRMS.grt"><a href="#/vntgrt"><span class="icon-flip-2"></span>&nbsp; Garantie</a></li>
+            <li><a ng-if="app.userPfl.venteCredit==1" href="#/vntcrdt"><span class="icon-cc-nd"></span>&nbsp; A credit</a></li>
+            <li ng-if="app.userPfl.mg!=0"><a href="#/vntpro"><span class="icon-clipboard-2"></span>&nbsp; Pro Forma</a>
+            </li>
+            <div class="divider"></div>
+            <li ng-if="app.PRMS.grt"><a href="#/fctvntgrt"><span class="icon-newspaper"></span>&nbsp; Factures
+                    Garanties</a></li>
+            <li><a href="#/fctvntcrdt"><span class="icon-newspaper"></span>&nbsp; Factures Credits</a></li>
+            <li><a href="#/fctvnt"><span class="icon-newspaper"></span>&nbsp; Factures Comptants</a></li>
+            <li ng-if="app.PRMS.grt"><a href="#/fctvntgrtenc"><span class="icon-newspaper"></span>&nbsp; Fact Garanties
+                    Encaiss</a></li>
+            <li><a href="#/fctpro"><span class="icon-clipboard-2"></span>&nbsp; Fact Pro Forma</a></li>
+            <li><a href="#/fctvnttva"><span class="icon-newspaper"></span>&nbsp; Factures Tva</a></li>
+            <div ng-if="!app.PRMS.resa" class="divider"></div>
+            <div class="divider"></div>
+            <li><a href="#vnteta"><span class="icon-stats-2"></span>&nbsp; Etat ventes</a></li>
+            <li><a href="#/facteta"><span class="icon-copy"></span>&nbsp; Etat Factures</a></li>
+        </ul>
+    </li>
+    <li><a href="#" class="dropdown-toggle"><span class="icon-layers"></span> Stock</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li><a href="#/ficar"><span class="icon-copy"></span>&nbsp; Fiche Article</a></li>
+        </ul>
+    </li>
+    <li><a class="dropdown-toggle" href="#"><span class="icon-dollar"></span> Reglements</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li ng-if="app.PRMS.grt"><a href="" class="dropdown-toggle"><span class="icon-flip-2"></span>&nbsp;
+                    Garanties</a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li><a href="#/rglmtgrtclt"><span class="icon-newspaper"></span>&nbsp; Par Facture</a></li>
+                    <li><a href="#/rglmtgrtcltg"><span class="icon-user-2"></span>&nbsp; Par Client</a></li>
+                </ul>
+            </li>
+            <li><a href="" class="dropdown-toggle"><span class="icon-cc-nd"></span>&nbsp; Credits</a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li><a href="#/rglmtclt"><span class="icon-newspaper"></span>&nbsp; Par Facture</a></li>
+                    <li><a href="#/rglmtcltg"><span class="icon-user-2"></span>&nbsp; Par Client</a></li>
+                </ul>
+            </li>
+            <div ng-if="!app.PRMS.resa" class="divider"></div>
+            <div class="divider"></div>
+            <li><a href="#" class="dropdown-toggle"><span class="icon-stats-2"></span>&nbsp; Etats </a>
+                <ul class="dropdown-menu light" data-role="dropdown">
+                    <li ng-if="app.PRMS.grt"><a href="#/etarglcgrt"><span class="icon-xing"></span>&nbsp; Avances
+                            Garanties</a></li>
+                    <li><a href="#/etarglc"><span class="icon-xing"></span>&nbsp;Reglements Clients</a></li>
+                    <div class="divider"></div>
+                    <li><a href="#/etaretpay"><span class="icon-clock"></span>&nbsp;Retard Payements</a></li>
+                    <div class="divider"></div>
+                    <li><a href="#/etacrce"><span class="icon-xing"></span>&nbsp; Etats Credits</a></li>
+
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li><a href="#/prmclt"><span class="icon-user-2"></span>&nbsp; Clients</a></li>
+</ul>

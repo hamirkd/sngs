@@ -1,0 +1,24 @@
+<div ng-if="app.userPfl.pfl==3">
+    <ng-include src="'app/vws/short/mag-short-m.html'"></ng-include>
+</div>
+<div ng-if="app.userPfl.pfl==2">
+    <ng-include src="'app/vws/short/vend-short-m.html'"></ng-include>
+</div>
+<div ng-if="app.userPfl.pfl==4">
+    <ng-include src="'app/vws/short/rens-short-m.html'"></ng-include>
+</div>
+<div ng-if="app.userPfl.pfl==5">
+    <ng-include src="'app/vws/short/cais-short-m.html'"></ng-include>
+</div>
+<div ng-if="app.userPfl.pfl==6">
+    <ng-include src="'app/vws/short/compt-short-m.html'"></ng-include>
+</div>
+<div ng-if="app.userPfl.pfl==1 && app.userPfl.mg==0">
+    <ng-include src="'app/vws/short/sup-short-m.html'"></ng-include>
+</div>
+<div ng-if="app.userPfl.pfl==1 && app.userPfl.mg!=0">
+    <ng-include src="'app/vws/short/adm-short-m.html'"></ng-include>
+</div>
+<div ng-if="app.userPfl.pfl==0 && app.userPfl.mg==0">
+    <ng-include src="'app/vws/short/root-short-m.html'"></ng-include>
+</div>

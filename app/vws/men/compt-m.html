@@ -1,0 +1,57 @@
+<ul class="element-menu">
+    <li><a href="#" class="dropdown-toggle"><span class="icon-cart"></span> Ventes</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li ng-if="app.PRMS.grt"><a href="#/fctvntgrt"><span class="icon-newspaper"></span>&nbsp; Factures
+                    Garanties</a></li>
+            <li><a href="#/fctvntcrdt"><span class="icon-newspaper"></span>&nbsp; Factures Credits</a></li>
+            <li><a href="#/fctvnt"><span class="icon-newspaper"></span>&nbsp; Factures Comptants</a></li>
+            <li ng-if="app.PRMS.grt"><a href="#/fctvntgrtenc"><span class="icon-newspaper"></span>&nbsp; Fact Garanties
+                    Encaiss</a></li>
+            <li><a href="#/fctvnttva"><span class="icon-newspaper"></span>&nbsp; Factures Tva</a></li>
+            <div class="divider"></div>
+            <li><a href="#vnteta"><span class="icon-stats-2"></span>&nbsp; Etat ventes</a></li>
+            <li><a href="#/facteta"><span class="icon-copy"></span>&nbsp; Etat Factures</a></li>
+        </ul>
+    </li>
+    <li><a href="#" class="dropdown-toggle"><span class="icon-layers"></span> Stock</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li><a href="#/etaapp"><span class="icon-stats-2"></span>&nbsp;Etat Approv</a></li>
+            <li><a href="#/etasort"><span class="icon-stats-2"></span>&nbsp;Etat Sorties</a></li>
+            <li><a href="#/stketatrsf"><span class="icon-stats-2"></span>&nbsp; Etat Transferts</a></li>
+            <li><a href="#/stketadeff"><span class="icon-stats-2"></span>&nbsp; Etat Destockage</a></li>
+            <li><a href="#/stketa"><span class="icon-stats-2"></span>&nbsp; Inventaire stock</a></li>
+            <div class="divider"></div>
+            <li><a href="#/austk"><span class="icon-compass-3"></span>&nbsp; Autres stock ...</a></li>
+        </ul>
+    </li>
+    <li><a class="dropdown-toggle" href="#"><span class="icon-dollar"></span> Reglements</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li ng-if="app.PRMS.grt"><a href="#/etarglcgrt"><span class="icon-xing"></span>&nbsp; Avances Garanties</a>
+            </li>
+            <li><a href="#/etarglc"><span class="icon-xing"></span>&nbsp;Reglements Clients</a></li>
+            <li><a href="#etarglf"><span class="icon-flattr"></span>&nbsp;Regl..s Fournisseurs</a></li>
+            <div class="divider"></div>
+            <li><a href="#/etaretpay"><span class="icon-clock"></span>&nbsp;Retard Payements</a></li>
+        </ul>
+    </li>
+    <li><a class="dropdown-toggle" href="#"><span class="icon-medal"></span> Sorties de Caisse</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li><a href="#/etadep"><span class="icon-stats-2"></span>&nbsp; Etats Depenses</a></li>
+            <li><a href="#/etavers"><span class="icon-stats"></span>&nbsp; Etats Versements</a></li>
+        </ul>
+    </li>
+    <li><a class="dropdown-toggle" href="#"><span class="icon-pie"></span>Caisse</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li><a href="#/etacaiss"><span class="icon-stats-2"></span>&nbsp; Etats Provisions Caisse</a></li>
+            <li><a href="#/etacais"><span class="icon-dollar-2"></span>&nbsp; Etats caisse jour</a></li>
+            <li><a href="#/etacaisp"><span class="icon-dollar-2"></span>&nbsp; Etats caisse period</a></li>
+        </ul>
+    </li>
+    <li><a class="dropdown-toggle" href="#"><span class="icon-address-book"></span> Etats</a>
+        <ul class="dropdown-menu inverse" data-role="dropdown">
+            <li ng-if="app.PRMS.grt"><a href="#/etagrt"><span class="icon-flip-2"></span>&nbsp; Etats Garanties</a></li>
+            <li><a href="#/etacrce"><span class="icon-xing"></span>&nbsp; Etats Credits</a></li>
+            <li><a href="#/etadet"><span class="icon-flattr"></span>&nbsp; Etats dettes</a></li>
+        </ul>
+    </li>
+</ul>

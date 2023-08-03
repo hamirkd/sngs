@@ -1,0 +1,128 @@
+<div class="example">
+    <form name="form">
+        <fieldset>
+            <legend>{{title}}</legend>
+            <table class="table table-striped">
+                <tr>
+                    <td><label ng-show="app.userPfl.mg==0 || app.userPfl.pfl==1 ">Magasin</label>
+                        <div ng-show="app.userPfl.mg==0 || app.userPfl.pfl==1" accesskey=""
+                            class="input-control select span4" data-role="input-control"><select name="magasin"
+                                ng-model="search.magasin"
+                                ng-options="magasin.id_mag as magasin.nom_mag | uppercase for magasin in magasins"></select><input
+                                type="hidden" name="ras" value="ras"></div>
+                    </td>
+                    <td>
+                        <div class="input-control select span4"><label>Article &nbsp;&nbsp;<span
+                                    class="input-control text span2" style=""><input ng-model="filterItem"
+                                        placeholder="filtre" type="text"></span></label><select
+                                ng-model="search.article"
+                                ng-options="article.id_art as article.nom_art|uppercase for article in articles|filter:filterItem"
+                                ng-click="getart()">
+                                <option value=""></option>
+                            </select></div>
+                    </td>
+                    <td><label>Date du/debut</label>
+                        <div class="input-control text span2"><input type="text" placeholder="jj/mm/aaaa"
+                                name="date_deb" ng-model="search.date_deb"></div>
+                    </td>
+                    <td><label>Date Fin</label>
+                        <div class="input-control text span2"><input type="text" name="date_fin"
+                                ng-model="search.date_fin" placeholder="jj/mm/aaaa"></div>
+                    </td>
+                    <td><button class="primary big_size" ng-click="searchF();"><i
+                                class="icon-calendar on-left on-left-more"></i>Traiter</button></td>
+                </tr>
+            </table>
+            <div class="col-md-12" ng-show="true" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                <table ng-repeat="fiches in filtered=(fiches|filter:filterText)" class="table table-striped">
+                    <tr class="bg-lightBlue fg-white">
+                        <th colspan="5" style="text-align: left;padding-left:25px;">{{fiches.periode}}</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3>Qte Approvisionnee</h3>
+                        </td>
+                        <td>
+                            <h3><span class="fg-red">{{fiches.qteappro}}</span></h3>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>
+                            <h3>Qte Vendue</h3>
+                        </td>
+                        <td>
+                            <h3><span class="fg-red">{{fiches.qtevente}} </span></h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3>Transferts Recus</h3>
+                        </td>
+                        <td>
+                            <h3><span class="fg-red">{{fiches.qtetransfget}} </span></h3>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>
+                            <h3>Qte Sortie</h3>
+                        </td>
+                        <td>
+                            <h3><span class="fg-red">{{fiches.qtesortie}} </span></h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3></h3>
+                        </td>
+                        <td>
+                            <h3><span class="fg-red"></span></h3>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>
+                            <h3>Qte Transferee</h3>
+                        </td>
+                        <td>
+                            <h3><span class="fg-red">{{fiches.qtetransfset}} </span></h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 ng-if="app.PRMS.grt"></h3>
+                        </td>
+                        <td>
+                            <h3 ng-if="app.PRMS.grt"><span class="fg-red"></span></h3>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>
+                            <h3>Qte Destockee</h3>
+                        </td>
+                        <td>
+                            <h3><span class="fg-red">{{fiches.qtedef}} </span></h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><span style="font-size:25px;font-weight: bold;"><strong>Entrees</strong></span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span
+                                class="fg-red"><strong>{{(fiches.qteappro+fiches.qtetransfget)|number:0}}
+                                </strong></span></td>
+                        <td><span style="font-size:25px;font-weight: bold;"><strong>Sorties </strong></span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span
+                                class="fg-red"><strong>{{(fiches.qtevente+fiches.qtedef+fiches.qtetransfset+fiches.qtesortie)|number:0}}
+                                </strong></span></td>
+                        <td style="text-align: right;"><span style="font-size:25px;font-weight: bold;"><strong>Stock
+                                </strong></span> &nbsp;&nbsp;&nbsp;&nbsp;<span
+                                class="fg-blue"><strong>{{(fiches.qteappro+fiches.qtetransfget+fiches.qteapprob+fiches.qtetransfgetb-fiches.qtevente-fiches.qtedef-fiches.qtetransfset-fiches.qtesortie-fiches.qteventeb-fiches.qtedefb-fiches.qtetransfsetb-fiches.qtesortieb)|number:0}}
+                                </strong></span></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td colspan="5" class="bg-grayLighter" align="center">
+                            <h1><strong>Qte en Stock : <span class="fg-red">{{qtestk || '0'}}</span></strong></h1>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </fieldset>
+    </form>
+</div>

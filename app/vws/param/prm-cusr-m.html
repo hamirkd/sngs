@@ -1,0 +1,76 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/prmcusr/0" class="element"><span
+                            class="icon-plus-2"></span> Nouvel utilisateur </a><span class="element-divider"></span>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <div class="row">
+        <fiedlset>
+            <legend>{{title}} | Filtre :
+                <div class="input-control text span4 pull-right"><input ng-model="filterText" placeholder="filtre" type="text"></div>
+            </legend>
+            <div class="col-md-12" ng-show="users.length> 0" style="min-height: 380px;max-height: 380px;overflow: auto;">
+                <table class="table striped bordered condensed hovered">
+                    <thead>
+                        <th class='text-left'>Code User&nbsp; </th>
+                        <th class='text-left'>Nom &nbsp;</th>
+                        <th class='text-left'>login&nbsp;</th>
+                        <th class='text-left'>Magasin&nbsp;</th>
+                        <th class='text-left'>Action&nbsp;</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in users | filter:filterText" class="liste">
+                            <td>{{data.code_user|uppercase}} <span ng-switch="data.actif"><a ng-switch-when="0"
+                                        title="Compte utilisateur bloque"><span
+                                            class="icon-locked on-left"></span></a>
+                                <a ng-switch-when="1"></a>
+                                </span><span ng-switch="data.veille"><a
+                                        ng-switch-when="1" title="Utilisateur en veille"><span
+                                            class="icon-sun-2 on-left"></span></a>
+                                <a ng-switch-when="0"></a>
+                                </span>
+                            </td>
+                            <td>{{data.prenom_user|uppercase}} {{data.nom_user|uppercase}}</td>
+                            <td>{{data.profil_user}} - {{data.login_user}}</td>
+                            <td>{{data.mag_user|uppercase}}</td>
+                            <td>
+                                &nbsp;<a ng-if="app.userPfl.pfl==0" href="" ng-click="reinit(data.id_user)" title="Reinitialiser le compte"><span class="icon-pinterest on-left"></span>Reinit
+                                    Pass</a> &nbsp;
+                                <div class="tab-content-segment" title="Selectionnez l'operation" style="float:right;"><button class="fluent-button dropdown-toggle"><span
+                                            class="icon-cog"></span></button>
+                                    <ul style="display: none;" class="dropdown-menu" data-role="dropdown">
+                                        <li class=""><a href="#/prmcusr/{{data.id_user}}" class="">&nbsp;<i
+                                                    class="icon-pencil"></i>&nbsp; Editer</a></li>
+                                        <div ng-switch="data.actif">
+                                            <li ng-switch-when="1" class=""><a href="" ng-click="verrou(0,data.id_user)" title="Verrouiller le compte"><span
+                                                        class="icon-locked on-left"></span>Verrouiller</a></li>
+                                            <li ng-switch-when="0" class=""><a href="" ng-click="verrou(1,data.id_user)" title="Deverrouiller le compte"><span
+                                                        class="icon-unlocked on-left"></span>Deverrouiller</a></li>
+                                        </div>
+                                        <div ng-switch="data.veille">
+                                            <li ng-switch-when="0" class=""><a href="" ng-click="veille(1,data.id_user)" title="Mettre l'utilisateur en veille"><span
+                                                        class="icon-sun-2 on-left"></span>Endormir</a></li>
+                                            <li ng-switch-when="1" class=""><a href="" ng-click="veille(0,data.id_user)" title="Remettre l'utilisateur en travail"><span
+                                                        class="icon-sun on-left"></span>Reveiller</a></li>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" ng-show="users.length == 0">
+                <div class="col-md-12">
+                    <h4>Aucun utilisateur ... !</h4>
+                </div>
+            </div>
+        </fiedlset>
+    </div>
+</div>

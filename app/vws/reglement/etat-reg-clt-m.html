@@ -1,0 +1,156 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a class="element btn_search"><span class="icon-search"></span> Nouv Crit recherche </a><span class="element-divider"></span><a ng-if="app.userPfl.mg!=0" href="#/rglmtclt" class="element btn_search"><span class="icon-plus"></span>&nbsp;<span class="icon-newspaper"></span> Clients(/Facture) </a>
+                    <a
+                        ng-if="app.userPfl.mg!=0" href="#/rglmtcltg" class="element btn_search"><span class="icon-plus"></span>&nbsp;<span class="icon-user-2"></span> Clients(/Client) </a><span ng-if="PRMS.VENTE_A_GARANTIE" class="element-divider"></span>
+                        <a ng-if="PRMS.VENTE_A_GARANTIE" href="#/etarglcgrt" class="element btn_search"><span class="icon-stats-2"></span> Etat Avances Garanties </a>
+                        <div class="input-control text span4 fg-blue" style='float: right;'> recherche approfondie :
+                            <form ng-submit="fullSearch()"><input fg-red ng-model="fullSearchText" placeholder="Recherche approfondie.." type="text"></form>
+                        </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <div class="row">
+        <div>
+            <div class="example">
+                <fiedlset>
+                    <legend>{{title}} | Filtre <a ng-hide="creances.length == 0" class="button warning" align="right" style="float:right;margin-right:50px;" href="./app/raps/regclt.php?d={{search.date_deb}}&f={{search.date_fin}}&mg={{search.magasin}}&cs={{search.user}}&clt={{search.client}}&ref={{search.ref}}"
+                            target="_BLANK"><span class="icon-printer"></span>Detail</a><a ng-hide="creances.length == 0" class="button bg-violet fg-white" align="right" style="float:right;margin-right:5px;" href="./app/raps/regcltgl.php?d={{search.date_deb}}&f={{search.date_fin}}&mg={{search.magasin}}&cs={{search.user}}&clt={{search.client}}&ref={{search.ref}}"
+                            target="_BLANK"><span class="icon-printer"></span>Global</a>
+                        <div class="input-control text span4" style='float: right;'><input ng-model="filterText" placeholder="filtrer" type="text"></div>
+                    </legend>
+                    <div class="col-md-12" ng-show="creances.length> 0" style="min-height: 380px;max-height: 380px;overflow: auto;">
+                        <table class="table striped bordered condensed hovered">
+                            <thead>
+                                <th class='text-left'>Date&nbsp;</th>
+                                <th class='text-left'>Num Facture &nbsp; <span ng-show="crnv>0"><a ng-if="app.userPfl.mg==0" href ng-click="tvucr()" title="Tout Marquer comme Vu" class="btn">&nbsp;<i class="fg-red icon-alarm"><span style="font-size:12px;" class="fg-red">(0{{crnv}})</span></i>&nbsp;</a>
+                                    </span>
+                                </th>
+                                <th class='text-left'>Client &nbsp;</th>
+                                <th class='text-left'>Avce Fact &nbsp;</th>
+                                <th class='text-left'>Tot Versment &nbsp;</th>
+                                <th class='text-left'>Refrce &nbsp;</th>
+                                <th class='text-left'>Caissier &nbsp;</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in filtered=(creances| filter:filterText)" class="liste">
+                                    <td>{{data.date_crce_clnt |date:'dd/MM/yyyy'}}</td>
+                                    <td><a href ng-click='getFactArt(data.id_fact,data.code_fact,data.nom_clt)'><i class="icon-eye"></i> {{data.code_fact |uppercase}}</a> &nbsp;&nbsp; <a ng-show="!data.id_reg" class="button warning" align="right" href="./app/raps/regavclt.php?f={{data.id_fact}}&r={{data.id_crce_clnt}}"
+                                            title="Imprimer le reglement" target="_BLANK"><span class="icon-printer"></span></a><a ng-show="data.id_reg.length>0" class="button bg-violet fg-white" align="right" href="./app/raps/regavcltv2.php?f={{data.id_reg}}&r={{data.id_crce_clnt}}"
+                                            title="Imprimer le reglement" target="_BLANK"><span class="icon-printer"></span></a> &nbsp; <a ng-if="data.vu==0 && app.userPfl.mg==0" href ng-click="vucr(data)" title="Marquer comme Vu" class="btn">&nbsp;<i class="icon-alarm"></i>&nbsp;</a>                                        &nbsp;<br><span title="Date Facture" class="my-small-font"> Du {{data.date_fact |date:'dd/MM/yyyy h:mm:ss'}}</span></td>
+                                    <td>{{data.code_clt |uppercase}}-{{data.nom_clt |uppercase}} ({{data.code_mag|uppercase}}) </td>
+                                    <td> {{data.mnt_paye_crce_clnt | currency }} &nbsp;<span ng-if="data.reste<0" class="fg-red"> {{data.reste | currency}}</span> &nbsp;<span ng-if="data.reste>0" title="Reste a payer sur cette facture" class="fg-red my-small-font">[Rst = {{data.reste | number:0}}]</span></td>
+                                    <td>
+                                    &nbsp;<span class="fg-green"> {{data.mnt_glob_crce_clnt | currency }}</span></td>
+                                    <td>{{data.ref_crce_clnt |uppercase}}</td>
+                                    <td>{{data.code_caissier_crce |uppercase}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" align="right">
+                                        <h3><span>Total Des reglements :</span></h3>
+                                    </td>
+                                    <td>
+                                        <h3><span class="fg-red"> {{ getTotal() | currency }} F CFA</span></h3>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" ng-show="creances.length == 0">
+                        <div class="col-md-12">
+                            <h4>Aucune creance ... !</h4>
+                        </div>
+                    </div>
+                </fiedlset>
+            </div>
+        </div>
+        <div class="example" id="searchPannel">
+            <fieldset>
+                <legend><a class="toggle_search" href=""><span class=" icon-arrow-right-3"></span></a> Nouveau Filtre</legend>
+                <form name="form">
+                    <div style="max-height:500px;overflow:auto;">
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Date du/debut</label>
+                                        <div class="input-control text span2"><input type="text" placeholder="jj/mm/aaaa" name="date_deb" ng-model="search.date_deb"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="stagger"><label>Date Fin </label>
+                                        <div class="input-control text span2"><input type="text" name="date_fin" ng-model="search.date_fin" placeholder="jj/mm/aaaa"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Reference</label>
+                                    <div class="input-control text span2"><input type="text" placeholder="cheque xxx" name="ref" ng-model="search.ref"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Magasin</label>
+                                        <div class="input-control select span4" data-role="input-control"><select ng-model="search.magasin" ng-options="magasin.id_mag as magasin.nom_mag | uppercase for magasin in magasins"><option value=""></option></select></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Caissier</label>
+                                        <div class="input-control select span4" data-role="input-control"><select ng-model="search.user" ng-options="user.code_user as user.login_user | uppercase for user in users" ng-click="getuser()"><option value=""></option></select></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="input-control select span6" data-role="input-control"><label>Clients &nbsp;&nbsp;<span class="input-control text span2" style=""><input ng-model="filterItem" placeholder="filtre" type="text"></span></label><select ng-model="search.client" ng-options="client.id_clt as client.nom_clt | uppercase for client in clients|filter:filterItem|orderBy:'nom_clt':false"
+                                            ng-click="getclt()"><option value=""></option></select></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div><button class="primary" ng-click="searchF();"><i class="icon-search on-left on-left-more"></i>Valider</button> &nbsp; <button class="inverse" type="reset" class="button"><i class="icon-undo on-left on-left-more"></i> Annuler </button></form>
+            </fieldset>
+        </div>
+        <div class="example" id="detailsPannel">
+            <fieldset>
+                <legend><a class="toggle_details" href=""><span class=" icon-arrow-right-3"></span></a> Details articles - Facture : <span class='fg-red'>{{factCode}}</span></legend>
+                <div class="col-md-12" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                    <table class="table striped bordered condensed hovered">
+                        <thead>
+                            <th class='text-left'>Designation&nbsp;</th>
+                            <th class='text-left'>Qte&nbsp;</th>
+                            <th class='text-left'>Pu&nbsp;</th>
+                            <th class='text-left'>Mnt&nbsp;</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in filtere=(details)">
+                                <td>{{data.nom_art |uppercase}}</td>
+                                <td>{{data.qte_vnt | uppercase}}</td>
+                                <td>{{data.pu_theo_vnt |uppercase}}</td>
+                                <td>{{data.mnt_theo_vnt |uppercase}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        $(".toggle_search").on("click", function() {
+            $("#searchPannel").css("right", "-700px")
+        });
+        $(".btn_search").on("click", function() {
+            $("#searchPannel").css("right", "0")
+        });
+        $(".toggle_details").on("click", function() {
+            $("#detailsPannel").css("right", "-800px")
+        })
+    });
+</script>
