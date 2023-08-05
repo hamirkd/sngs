@@ -49,19 +49,32 @@ sngs.controller("etaDepCtrl", ["$scope", "$rootScope", "prmutils", function($sco
         })
     };
     // etat
-    // valider = 2
+    // Autorisé = 2
     // rejeter = 3
     // vu = 1
-    $scope.vudep = function(fac,etat) {
+    $scope.vudep = function(fac,etat=1) {
+        fac['action'] = etat;
+        fac['motif'] = "";
+        if(etat==3){
+            var vls = prompt("Le motif du rejet SVP !! ", "");
+            if (!vls) return
+            vls = vls.trim();
+            if (vls) {
+                fac['motif'] = vls;
+            }
+        }
         var task = prmutils.vudep(fac);
         task.promise.then(function(result) {
             app.waiting.show = true;
             if (result.err === 0) {
-                fac.vu = 1;
+                fac.vu = etat;
                 app.waiting.show = false
+                if(etat==3)
+                app.notify(result.message, "m")
+                else app.notify(result.message, "b")
             } else {
                 app.waiting.show = false;
-                app.notify("Ok...", "b")
+                app.notify(result.message, "m")
             }
         })
     };

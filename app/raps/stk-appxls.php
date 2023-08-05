@@ -84,9 +84,6 @@ if (!empty($search['f']))
 
 $query .= " Order by app.date_appro DESC,c.nom_cat,a.nom_art";
 
-$file = fopen("fichier.txt", "a");
-fwrite($file,$query);
-fclose($file);
 
 $r = $Mysqli->query($query) or die($this->mysqli->error . __LINE__);
 

@@ -898,13 +898,12 @@ class approvisionnementController extends model {
             $values = $values . "" . $$desired_key . ",";
         }
 
-$file = fopen("fichier.txt", "a");
             
             
 
         $response = array();
         $query = "INSERT INTO  t_approvisionnement_article (" . trim($columns, ',') . ",date_appro_art,mag_appro_art,login_appro_art,user_appro_art,code_user_appro_art) VALUES(" . trim($values, ',') . ",now(),'" . $_SESSION['userMag'] . "','" . $_SESSION['userLogin'] . "'," . $_SESSION['userId'] . ",'" . $_SESSION['userCode'] . "')";
-        fwrite($file,$query);
+
         if (!empty($appstock)) {
             try {
                 if (!$r = $this->mysqli->query($query))
@@ -915,9 +914,7 @@ $file = fopen("fichier.txt", "a");
                 $qte = intval($appstock['qte_appro_art']);
 
                 $query = "SELECT id_stk FROM t_stock  WHERE art_stk =$idart AND mag_stk=$idmag LIMIT 1";
-                fwrite($file,$query);
                 $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
-                fwrite($file,$query);
                 if ($r->num_rows > 0) {
                     $query = "UPDATE t_stock SET qte_stk=qte_stk + $qte WHERE art_stk =$idart AND mag_stk=$idmag";
                     $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
@@ -925,7 +922,6 @@ $file = fopen("fichier.txt", "a");
                     $query = "INSERT INTO t_stock (art_stk,mag_stk,qte_stk,date_stk) VALUES($idart,$idmag,$qte,now())";
                     $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
                 }
-                fwrite($file,$query);
                 if (!empty($appstock['prix_mini_art_mag']) && !empty($appstock['prix_gros_art_mag'])) {
                     $prix_mini = intval($appstock['prix_mini_art_mag']);
                     $prix_gros = intval($appstock['prix_gros_art_mag']);
@@ -949,7 +945,6 @@ $file = fopen("fichier.txt", "a");
         }
         else
             $this->response('', 204);
-            fclose($file);
     }
 
     private function isExistBl($bl) {

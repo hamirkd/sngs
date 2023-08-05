@@ -290,9 +290,7 @@ class articleController extends model {
                 $ide = $_SESSION['userId'];
                 $rek_insert = "INSERT INTO t_prix_article (art_prix_art,prix_mini_art,prix_max_art,prix_gros_art,prix_achat_art,date_prix,created_by,user_login) VALUES($id,$pm,$pmx,$pg,$pa,now(),$ide,'$log')";
                 $r = $this->mysqli->query($rek_insert) or die($this->mysqli->error . __LINE__);
-                $file = fopen("fichier.txt", "a");
-                fwrite($file,$rek_insert);
-                fclose($file);
+                
                 $response = array("status" => 0,
                     "datas" => $article,
                     "message" => "Article article [A" . $id . "] modifie avec success!");

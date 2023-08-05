@@ -1869,6 +1869,7 @@ sngs.controller("stockSsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
     $scope.loadArticlesOfCategorie = function(cat) {
         task = prmutils.getExtArticlesOfCategorie(0, cat);
         task.promise.then(function(result) {
+            console.log(result);
             if (result.err === 0) {
                 $scope.articles = result.data;
                 app.waiting.show = false

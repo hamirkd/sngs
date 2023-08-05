@@ -13,3 +13,6 @@ Creation de la table t_inventaire
 Création des colonnes dans la table user
 vente_credit
 regl_credit
+
+
+ALTER TABLE `t_depense` ADD `motif` VARCHAR(200) NULL AFTER `date_enr`;

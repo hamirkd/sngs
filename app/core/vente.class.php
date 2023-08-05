@@ -55,9 +55,6 @@ class venteController extends model {
 
         $query.=" ORDER BY Date_vnt DESC,id_vnt DESC  ";
 
-        // $file = fopen("fichier.txt", "a");
-        //     fwrite($file,$query);
-        //     fclose($file);
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
         if ($r->num_rows > 0) {
@@ -968,8 +965,7 @@ class venteController extends model {
                     $ld = $ldt[1];
 
 
-                    $file = fopen("fichier.txt", "a");
-
+                    
                     $lan = $dtfact[0];
 
                     if ($bltva == 1) {
@@ -985,17 +981,13 @@ class venteController extends model {
                         if ($an == $lan)
                             {
                                 $num_fac = $_SESSION['userMag'] . $lan . "-" . str_pad(($ld + 1), 4, "0", STR_PAD_LEFT);
-                                fwrite($file,"1num_fac**=".$num_fac);
-                                fwrite($file,"query**=".$query);
+                                
                             }
                         else{
-                            fwrite($file,"2num_fac**=".$num_fac);
-                            fwrite($file,"2num_fac**=".$num_fac);
                             $num_fac = $_SESSION['userMag'] . $an . "-0001";
                         }
                     }
                     
-                fclose($file);
                 } else {
                     
 
@@ -1553,9 +1545,7 @@ COALESCE( mag.prix_max_art_mag, tpa.prix_max_art) as prix_max_art
         , prix_max_art_mag, prix_gros_art_mag
            FROM t_prix_article_magasin group by mag_prix_art_mag DESC
 	            ) mag ON  mag.art_prix_art_mag = ar.id_art AND  mag.mag_prix_art_mag = $id_mag";
-$file = fopen("fichier.txt", "a");
-            fwrite($file,$query);
-            fclose($file);
+
             $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
             $result = array();
             while ($row = $r->fetch_assoc()) {

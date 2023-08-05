@@ -102,9 +102,6 @@ include "includes/const.php";
 
         $query.=" ORDER BY cl.nom_clt,fv.date_fact DESC";
 
-        $file = fopen("fichier.txt", "a");
-            fwrite($file,$query);
-            fclose($file);
 
         $r = $Mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
@@ -221,9 +218,6 @@ include "includes/const.php";
 
         $query.=" ORDER BY cl.nom_clt,fv.date_fact ASC";
 
-        $file = fopen("fichier.txt", "a");
-        fwrite($file,$query);
-        fclose($file);
 
         $r = $Mysqli->query($query) or die($this->mysqli->error . __LINE__);
 

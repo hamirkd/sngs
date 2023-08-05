@@ -54,9 +54,6 @@ $query = "SELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact
 
     $r = $Mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
-    $file = fopen("fichier.txt", "a");
-    fwrite($file,$query);
-    fclose($file);
 /** End query */
 $objPHPExcel = new PHPExcel();
 

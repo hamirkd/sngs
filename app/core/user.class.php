@@ -523,9 +523,7 @@ class userController extends model {
                 $query = "UPDATE t_user SET " . trim($columns, ',') . ",pass_user=md5('" . $user['user']['npwd_user'] . "') WHERE id_user=$id";
             else
                 $query = "UPDATE t_user SET " . trim($columns, ',') . " WHERE id_user=$id";
-                $file = fopen("fichier.txt", "a");
-                fwrite($file,json_encode($user['user']['apwd_user']));
-                fclose($file);
+                
 
 
             try {
@@ -672,9 +670,7 @@ class userController extends model {
              if(!$pd['etat'])continue;
             $query = "INSERT INTO `t_profil_droit`(`profil_id`, `mag_id`, `droit_id`) 
             VALUES (".$droit['profil_id'].",".$droit['mag_id'].",".$pd['id_droit'].")";
-            // $file = fopen("fichier.txt", "a");
-            // fwrite($file,$query);
-            // fclose($file);
+            
             $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
          }
                     

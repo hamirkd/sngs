@@ -47,9 +47,6 @@ if (!empty($search['cat']))
 
 $query .= " Order by m.nom_mag,ca.nom_cat,a.nom_art";
 
-$file = fopen("fichier.txt", "a");
-            fwrite($file,$query);
-            fclose($file);
 
 $r = $Mysqli->query($query) or die($this->mysqli->error . __LINE__);
 

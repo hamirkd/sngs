@@ -717,9 +717,6 @@ class commandeController extends model {
 
         $query .= " Order by app.date_cmd DESC,app.bon_cmd DESC";
 
-// $file = fopen("fichier.txt", "a");
-//             fwrite($file,$query);
-//             fclose($file);
 
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 

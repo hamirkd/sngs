@@ -46,7 +46,7 @@ class decaissementController extends model {
 
         if ($_SESSION['userMag'] > 0){
             $query = "SELECT date(dep.date_dep) as date_dep,dep.id_dep,dep.vu, dep.mnt_dep,dep.details_dep,dep.code_user_dep,
-            td.lib_type_dep
+            td.lib_type_dep,dep.motif ,dep.validateur 
                            FROM 
                            t_depense dep
                            INNER JOIN t_type_depense td ON dep.type_dep=td.id_type_dep
@@ -70,7 +70,7 @@ class decaissementController extends model {
             
         } else{
             $query1 = "(SELECT date(dep.date_dep) as date_dep,dep.id_dep,dep.vu, dep.mnt_dep,dep.details_dep,dep.code_user_dep,
-            td.lib_type_dep
+            td.lib_type_dep, dep.motif, dep.validateur
                            FROM 
                            t_depense dep
                            INNER JOIN t_type_depense td ON dep.type_dep=td.id_type_dep
@@ -621,15 +621,22 @@ $this->response('', 406);
 $fact = $_POST;
 
 $id = intval($fact['id_dep']);
+$action = intval($fact['action']);
+$motif = $fact['motif'];
+
+// 1 - vue
+// 2 - Autorisé
+// 3 - rejeter
 try {
 
-$query = "UPDATE t_depense set vu=1 WHERE id_dep=$id ";
+
+$query = "UPDATE t_depense set vu=$action, motif='$motif',validateur='" . $_SESSION['userLogin'] . "',id_validateur=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
 
 $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
 $response = array("status" => 0,
  "datas" => $r,
- "message" => "Depense Marquer comme vu avec success!!!");
+ "message" => $action==1?"$query Depense Marquer comme vu avec success!!!":($action==2?"$action Depense Autoriser avec success!!!":"Depense Rejeter avec success!!!"));
 $this->response($this->json($response), 200);
 
 } catch (Exception $exc) {
