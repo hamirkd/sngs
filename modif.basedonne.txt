@@ -16,3 +16,11 @@ regl_credit
 
 
 ALTER TABLE `t_depense` ADD `motif` VARCHAR(200) NULL AFTER `date_enr`;
+
+ALTER TABLE `t_user` CHANGE `covalidateur` `droit_validateur_depense` TINYINT(4) NOT NULL;
+
+validateur_1
+validateur_2
+id_validateur_1
+id_validateur_2
+archive dans magasin

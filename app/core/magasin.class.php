@@ -267,7 +267,7 @@ class magasinController extends model {
         }
         $magasin = $_POST;
         $id = (int) $magasin['id'];
-        $column_names = array('nom_mag','resp_mag','titre_resp_mag', 'type_mag', 'pays_mag', 'ville_mag', 'tel_mag', 'mob_mag', 'fax_mag', 'mail_mag');
+        $column_names = array('nom_mag','resp_mag','titre_resp_mag', 'type_mag', 'pays_mag', 'ville_mag', 'tel_mag', 'mob_mag', 'fax_mag', 'mail_mag', 'archive');
         $keys = array_keys($magasin['magasin']);
         $columns = '';
         $values = '';

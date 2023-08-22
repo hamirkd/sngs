@@ -664,6 +664,10 @@ sngs.controller("etaValStkCtrl", ["$scope", "$rootScope", "prmutils", "config", 
     };
     $rootScope.title = "Valeur du stock";
     $rootScope.pageTitle = "Valeur Stock";
+    $rootScope.val_min = 0;
+    $rootScope.val_max = 0;
+    $scope.totauxMontant = function(list) {
+    }
     $scope.refresh = function() {
         var task;
         task = prmutils.getValStock();
@@ -672,7 +676,13 @@ sngs.controller("etaValStkCtrl", ["$scope", "$rootScope", "prmutils", "config", 
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
                 } else {
-                    $scope.valstocks = result.data
+                    $rootScope.val_min = 0;
+                    $rootScope.val_max = 0;
+                    $scope.valstocks = result.data;
+                    for(let o of $scope.valstocks){
+                        $rootScope.val_min = $rootScope.val_min + Number(o.val_min)  ;
+                        $rootScope.val_max = $rootScope.val_max + Number(o.val_max)  ;
+                    }
                 }
             } else {
                 app.notify("Votre Reseau est momentannement instable ...", "m")

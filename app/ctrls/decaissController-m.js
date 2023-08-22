@@ -24,6 +24,7 @@ sngs.controller("etaDepCtrl", ["$scope", "$rootScope", "prmutils", function($sco
     }
     today = dd + "/" + mm + "/" + yyyy;
     $scope.search.date_deb = today;
+    $scope.search.date_fin = today;
     $scope.gtd = function() {
         var task = prmutils.getTypeDepenses();
         task.promise.then(function(result) {
@@ -72,6 +73,7 @@ sngs.controller("etaDepCtrl", ["$scope", "$rootScope", "prmutils", function($sco
                 if(etat==3)
                 app.notify(result.message, "m")
                 else app.notify(result.message, "b")
+                $scope.searchF();
             } else {
                 app.waiting.show = false;
                 app.notify(result.message, "m")

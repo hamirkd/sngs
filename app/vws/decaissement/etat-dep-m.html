@@ -32,7 +32,7 @@
                             <thead>
                                 <th class='text-left'>Date&nbsp;</th>
                                 <th class='text-left'>Type depense&nbsp;</th>
-                                <th class='text-left'>Montant&nbsp;<span ng-show="depnv>0"><a ng-if="app.userPfl.mg==0"
+                                <th class='text-left'>Montant&nbsp;<span ng-show="depnv>0"><a ng-if="(app.userPfl.mg==0 || app.userPfl.mg==1)"
                                             href ng-click="tvudep()" title="Tout Marquer comme Vu" class="btn">&nbsp;<i
                                                 class="fg-red icon-alarm"><span style="font-size:12px;"
                                                     class="fg-red">(0{{depnv}})</span></i>&nbsp;</a></span></th>
@@ -44,27 +44,47 @@
                                 <tr ng-repeat="data in filtered=(depenses| filter:filterText)" class="liste">
                                     <td>{{data.date_dep |date:'dd/MM/yyyy' }}</td>
                                     <td>{{data.lib_type_dep |uppercase }}</td>
-                                    <td>{{data.mnt_dep | currency}} &nbsp; <a ng-if="data.vu==0 && app.userPfl.mg==0"
+                                    <td>{{data.mnt_dep | currency}} &nbsp; <a ng-if="data.vu==0 && (app.userPfl.mg==0 || app.userPfl.mg==1)"
                                             href ng-click="vudep(data,1)" title="Marquer comme Vu" class="btn">&nbsp;<i
                                                 class="icon-alarm"></i>&nbsp;</a></td>
                                     <td>{{data.details_dep |lowercase}}</td>
                                     <td>{{data.code_user_dep |uppercase}}</td>
                                     <td>
-                                        <a ng-if="(data.vu==0||data.vu==1) && app.userPfl.mg==0"
+
+                                        <a ng-if="(data.vu==0||data.vu==1) && (app.userPfl.droitValidateurDepense==1)"
                                         href ng-click="vudep(data,2)" title="Autoriser" class="btn fg-white bg-green">&nbsp;
                                         Autoriser&nbsp;</a>&nbsp;&nbsp;
-                                        <a ng-if="(data.vu==0||data.vu==1) && app.userPfl.mg==0"
+                                        <a ng-if="(data.vu==0||data.vu==1) && (app.userPfl.droitValidateurDepense==2)"
+                                        href ng-click="vudep(data,4)" title="Autoriser" class="btn fg-white bg-green">&nbsp;
+                                        Autoriser partiellement&nbsp;</a>&nbsp;&nbsp;
+                                        <a ng-if="(data.vu==4) && (app.userPfl.droitValidateurDepense==2) && data.id_validateur_1!==app.userPfl.id"
+                                        href ng-click="vudep(data,5)" title="Autoriser" class="btn fg-white bg-green">&nbsp;
+                                        Autoriser&nbsp;</a>&nbsp;&nbsp;
+
+                                        <a ng-if="(data.vu==0||data.vu==1) && (app.userPfl.droitValidateurDepense==2||app.userPfl.droitValidateurDepense==1)"
                                         href ng-click="vudep(data,3)" title="Rejeter" class="btn fg-white bg-red">&nbsp;
                                         Rejeter&nbsp;</a>
+                                        <a ng-if="(data.vu==4) && (app.userPfl.droitValidateurDepense==2) && data.id_validateur_1!==app.userPfl.id"
+                                        href ng-click="vudep(data,6)" title="Rejeter" class="btn fg-white bg-red">&nbsp;
+                                        Rejeter&nbsp;</a>
                                         <span  ng-if="data.vu==2" class="btn fg-green">
-                                            Autoriser par {{data.validateur}}
+                                            Autoriser par {{data.validateur_1}}
                                         </span>
                                         <span  ng-if="data.vu==3" class="btn fg-red">
-                                            Rejeter par {{data.validateur}}
+                                            Rejeter par {{data.validateur_1}}
                                         </span>
                                         <div  ng-if="data.vu==3" class="fg-red" style="font-size: x-small;">
                                             {{data.motif}}
                                         </div>
+                                        <span  ng-if="data.vu==4" class="btn fg-green">
+                                            Autoriser partiellement par {{data.validateur_1}}
+                                        </span>
+                                        <span  ng-if="data.vu==5" class="btn fg-green">
+                                            Autoriser par {{data.validateur_1}} et {{data.validateur_2}}
+                                        </span>
+                                        <span  ng-if="data.vu==6" class="btn fg-red">
+                                            Rejeter par {{data.validateur_2}}
+                                        </span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -96,14 +116,14 @@
                             <tr>
                                 <td>
                                     <div class="stagger"><label>Date du/debut</label>
-                                        <div class="input-control text span2"><input type="text"
+                                        <div class="input-control text"><input type="text"
                                                 placeholder="jj/mm/aaaa" name="date_deb" ng-model="search.date_deb">
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="stagger"><label>Date Fin</label>
-                                        <div class="input-control text span2"><input type="text" name="date_fin"
+                                        <div class="input-control text"><input type="text" name="date_fin"
                                                 ng-model="search.date_fin" placeholder="jj/mm/aaaa"></div>
                                     </div>
                                 </td>

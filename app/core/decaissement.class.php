@@ -46,7 +46,7 @@ class decaissementController extends model {
 
         if ($_SESSION['userMag'] > 0){
             $query = "SELECT date(dep.date_dep) as date_dep,dep.id_dep,dep.vu, dep.mnt_dep,dep.details_dep,dep.code_user_dep,
-            td.lib_type_dep,dep.motif ,dep.validateur 
+            td.lib_type_dep,dep.motif ,dep.validateur_1, dep.validateur_2 ,dep.id_validateur_1, dep.id_validateur_2
                            FROM 
                            t_depense dep
                            INNER JOIN t_type_depense td ON dep.type_dep=td.id_type_dep
@@ -70,7 +70,7 @@ class decaissementController extends model {
             
         } else{
             $query1 = "(SELECT date(dep.date_dep) as date_dep,dep.id_dep,dep.vu, dep.mnt_dep,dep.details_dep,dep.code_user_dep,
-            td.lib_type_dep, dep.motif, dep.validateur
+            td.lib_type_dep, dep.motif, dep.validateur_1, dep.validateur_2,dep.id_validateur_1, dep.id_validateur_2
                            FROM 
                            t_depense dep
                            INNER JOIN t_type_depense td ON dep.type_dep=td.id_type_dep
@@ -627,10 +627,20 @@ $motif = $fact['motif'];
 // 1 - vue
 // 2 - Autorisé
 // 3 - rejeter
+// 4 - Autorisé partiellement
+// 5 - Dernier validateur Autorise
+// 6 - Dernier validateur rejeter
 try {
 
-
-$query = "UPDATE t_depense set vu=$action, motif='$motif',validateur='" . $_SESSION['userLogin'] . "',id_validateur=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
+if($action == 2)
+$query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_1='" . $_SESSION['userLogin'] . "',id_validateur_1=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
+else if($action == 4)
+$query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_1='" . $_SESSION['userLogin'] . "',id_validateur_1=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
+else if($action == 5)
+$query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_2='" . $_SESSION['userLogin'] . "',id_validateur_2=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
+else if($action == 6)
+$query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_2='" . $_SESSION['userLogin'] . "',id_validateur_2=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
+else $query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_1='" . $_SESSION['userLogin'] . "',id_validateur_1=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
 
 $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 

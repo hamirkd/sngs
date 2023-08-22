@@ -20,18 +20,7 @@
                 <tr>
                     <td><label>Code utilisateur (5 caracteres maxi)</label>
                         <div class="input-control text span4" data-role="input-control"><input placeholder="code" type="text" ng-model="user.code_user" required><button type="button" class="btn-clear" tabindex="-1"></button></div>
-                    </td>
-                    <td><label>Login/Identifiant</label>
-                        <div class="input-control text span4" data-role="input-control"><input placeholder="login" type="text" ng-model="user.login_user" required><button type="button" class="btn-clear" tabindex="-1"></button></div>
-                    </td>
-                    <td><label>Affilie au Magasin </label>
-                        <div class="input-control select span4" data-role="input-control"><select name='mag_user' ng-model="user.mag_user" ng-options="magasin.id_mag as magasin.nom_mag|uppercase for magasin in magasins">
-                                <option value=""></option>
-                            </select></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label>Profil</label>
+                        <label>Profil</label>
                         <div class="input-control select span4" data-role="input-control"><select ng-model="user.profil_user">
                                 <option value="4">Renseignement</option>
                                 <option value="6">Comptabilte/Audit</option>
@@ -42,14 +31,22 @@
                                 <option value="7">Responsable Reglement</option>
                             </select></div>
                     </td>
-                    <td><label>E-mail</label>
-                        <div class="input-control text span4" data-role="input-control"><input placeholder="onyxbf@yahoo.fr" type="email" ng-model="user.mail_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    <td><label>Login/Identifiant</label>
+                        <div class="input-control text span4" data-role="input-control"><input placeholder="login" type="text" ng-model="user.login_user" required><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                        <label>Affilie au Magasin </label>
+                        <div class="input-control select span4" data-role="input-control"><select name='mag_user' ng-model="user.mag_user" ng-options="magasin.id_mag as magasin.nom_mag|uppercase for magasin in magasins">
+                                <option value=""></option>
+                            </select></div>
                     </td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td><label>Nom</label>
                         <div class="input-control text span4" data-role="input-control"><input placeholder="OUEDRAOGO" ng-model="user.nom_user"></div>
+                        <label>Pr&eacute;nom(s) </label>
+                        <div class="input-control text span4" data-role="input-control"><input placeholder="Hamza" type="text" ng-model="user.prenom_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                        <label>E-mail</label>
+                        <div class="input-control text span4" data-role="input-control"><input placeholder="onyxbf@yahoo.fr" type="email" ng-model="user.mail_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                    
                     </td>
                     <td>
                         <div>
@@ -78,17 +75,19 @@
                             <label> Peut-il faire un règlement d'une facture crédite ? 
                                 <label style="display: contents;"><input name="droit_reglement_facture_credit" checked="" type="radio" ng-model="user.droit_reglement_facture_credit" value="1" checked><span class="check"></span> Oui </label>
                             <label style="display: contents;"><input name="droit_reglement_facture_credit" type="radio" ng-model="user.droit_reglement_facture_credit" value="0"><span class="check"></span> Non </label></label>
+                            
+
+                            <label> Peut-il valider une dépense ? </label>
+                                <label style="display: contents;"><input name="droit_validateur_depense" checked="" type="radio" ng-model="user.droit_validateur_depense" value="1" checked><span class="check"></span> Validation Unique </label>
+                                <label style="display: contents;"><input name="droit_validateur_depense" checked="" type="radio" ng-model="user.droit_validateur_depense" value="2" checked><span class="check"></span> Co-Validation </label>
+                            <label style="display: contents;"><input name="droit_validateur_depense" type="radio" ng-model="user.droit_validateur_depense" value="0"><span class="check"></span> Non </label>
+                        
+
                         </div>
-                    </td>
-                    <td>
-
-
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Pr&eacute;nom(s) </label>
-                        <div class="input-control text span4" data-role="input-control"><input placeholder="Hamza" type="text" ng-model="user.prenom_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
-                    </td>
+                    <td></td>
                     <td>
                         <!-- <div ng-if="user.profil_user==6||user.profil_user==5||user.profil_user==3||user.profil_user==2">
                             <label>Peut-il faire une vente à crédit?
@@ -96,7 +95,6 @@
                             <label style="display: contents;"><input name="vente_credit" type="radio" ng-model="user.vente_credit" value="0"><span class="check"></span> Non </label></label>
                         </div> -->
                     </td>
-                    <td></td>
                 </tr>
             </table><button class="primary" ng-click="save(user);" ng-disabled="form.$invalid"><span
                     class="icon-checkmark"></span> {{buttonText}}</button> &nbsp; <button class="danger" ng-click="deleted(user)" ng-show="user.id_user"><span class="icon-cancel-2"></span> Supprimer</button>
