@@ -56,9 +56,8 @@ angular.module("sngs").controller("loginCtrl", ["$rootScope", "$scope", "localSt
                     factureVenteAnnulee: Number(result.data.facture_vente_annulee),
                     droitFactureVenteAnnuleeToday: Number(result.data.droit_facture_vente_annulee_today),
                     droitControlePrixVente: Number(result.data.droit_controle_prix_vente),
-                    droitValidateurDepense: Number(result.data.droit_validateur_depense),
                     droitReglementFactureCredit: Number(result.data.droit_reglement_facture_credit),
-                    droitValidateurDepense: Number(result.data.droit_validateur_depense),
+                    droitValidateurDepense: result.data.droit_validateur_demande,
                     magasins: result.data.magasins
                 };
                 app.options = {

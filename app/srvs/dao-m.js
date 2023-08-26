@@ -25,13 +25,14 @@ angular.module("sngs").factory("dao", ["$http", "$q", "config", "$base64", "loca
 
         function success(response) {
             var retrieve = response.data;
+            console.log(retrieve)
             reponse = retrieve.status == 0 ? {
                 err: 0,
                 data: retrieve.datas,
                 message: retrieve.message
             } : {
                 err: 1,
-                data: "",
+                data: retrieve.datas,
                 message: retrieve.message
             };
             task.resolve(reponse)

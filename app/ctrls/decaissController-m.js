@@ -56,13 +56,16 @@ sngs.controller("etaDepCtrl", ["$scope", "$rootScope", "prmutils", function($sco
     $scope.vudep = function(fac,etat=1) {
         fac['action'] = etat;
         fac['motif'] = "";
-        if(etat==3){
+        if(etat==3||etat==6){
             var vls = prompt("Le motif du rejet SVP !! ", "");
             if (!vls) return
             vls = vls.trim();
             if (vls) {
                 fac['motif'] = vls;
             }
+        }
+        if(fac.montant){
+            app.notify(result.message, "m");
         }
         var task = prmutils.vudep(fac);
         task.promise.then(function(result) {
@@ -123,6 +126,272 @@ sngs.controller("etaDepCtrl", ["$scope", "$rootScope", "prmutils", function($sco
         for (var i = 0; i < $scope.filtered.length; i++) {
             var vente = $scope.filtered[i];
             total += parseInt(vente.mnt_dep)
+        }
+        return total
+    };
+    $scope.searchF()
+}]);
+sngs.controller("etatDemandeCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+    var app = $scope.app;
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Expression de besoin",
+        subtitle: "Etat demandes",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Etat des demandes";
+    $rootScope.pageTitle = "Etat Demandes";
+    $scope.search = {};
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    var sss = today.getTime();
+    if (dd < 10) {
+        dd = "0" + dd
+    }
+    if (mm < 10) {
+        mm = "0" + mm
+    }
+    today = dd + "/" + mm + "/" + yyyy;
+    $scope.search.date_deb = today;
+    $scope.search.date_fin = today;
+    $scope.gtd = function() {
+        var task = prmutils.getTypeDepenses();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.type_depenses = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.gus = function() {
+        task = prmutils.getUsers();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.users = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    // etat
+    // Autorisé = 2
+    // rejeter = 3
+    // vu = 1
+    $scope.vudep = function(fac,etat=1) {
+        fac['action'] = etat;
+        fac['motif'] = "";
+        if(etat==3||etat==6){
+            var vls = prompt("Le motif du rejet SVP !! ", "");
+            if (!vls) return
+            vls = vls.trim();
+            if (vls) {
+                fac['motif'] = vls;
+            }
+        }
+        if(fac.montant){
+            app.notify(result.message, "m");
+        }
+        var task = prmutils.vudep(fac);
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                fac.vu = etat;
+                app.waiting.show = false
+                if(etat==3)
+                app.notify(result.message, "m")
+                else app.notify(result.message, "b")
+                $scope.searchF();
+            } else {
+                app.waiting.show = false;
+                app.notify(result.message, "m")
+            }
+        })
+    };
+    $scope.tvudep = function() {
+        var task = prmutils.tvudep();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                for (var i = 0; i < $scope.depenses.length; i++) {
+                    $scope.depenses[i].vu = 1
+                }
+                $rootScopedepnv = 0;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false;
+                app.notify("Ok...", "b")
+            }
+        })
+    };
+    $scope.searchF = function() {
+        var task;
+        task = prmutils.getEtatDemandes($scope.search);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+
+                    $scope.depenses = result.data
+                        // result.data.sort(function(a, b) {
+                        //     console.log(a.date_dep, b.date_dep, a.date_dep > b.date_dep)
+                        //     return a.date_dep > b.date_dep
+                        // });
+                    $scope.depenses.sort((a, b) => a.date_dep > b.date_dep);
+                    // console.log($scope.depenses);
+                }
+            } else {
+                app.notify("Une erreur est survenue ...", "m")
+            }
+        })
+    };
+    $scope.getTotal = function() {
+        var total = 0;
+        for (var i = 0; i < $scope.filtered.length; i++) {
+            var vente = $scope.filtered[i];
+            total += parseInt(vente.montant)
+        }
+        return total
+    };
+    $scope.searchF()
+}]);
+sngs.controller("etatDemandeValidationCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+    var app = $scope.app;
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Expression de besoin",
+        subtitle: "Validation demandes",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Etat des demandes";
+    $rootScope.pageTitle = "Etat Demandes";
+    $scope.search = {};
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    var sss = today.getTime();
+    if (dd < 10) {
+        dd = "0" + dd
+    }
+    if (mm < 10) {
+        mm = "0" + mm
+    }
+    today = dd + "/" + mm + "/" + yyyy;
+    $scope.search.date_deb = today;
+    $scope.search.date_fin = today;
+    $scope.gtd = function() {
+        var task = prmutils.getTypeDepenses();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.type_depenses = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.gus = function() {
+        task = prmutils.getUsers();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.users = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    // etat
+    // Autorisé = 2
+    // rejeter = 3
+    // vu = 1
+    $scope.vudep = function(fac,etat=1) {
+        fac['action'] = etat;
+        fac['motif'] = "";
+        if(etat==3||etat==6){
+            var vls = prompt("Le motif du rejet SVP !! ", "");
+            if (!vls) return
+            vls = vls.trim();
+            if (vls) {
+                fac['motif'] = vls;
+            }
+        }
+        if(fac.montant){
+            app.notify(result.message, "m");
+        }
+        var task = prmutils.vudep(fac);
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                fac.vu = etat;
+                app.waiting.show = false
+                if(etat==3)
+                app.notify(result.message, "m")
+                else app.notify(result.message, "b")
+                $scope.searchF();
+            } else {
+                app.waiting.show = false;
+                app.notify(result.message, "m")
+            }
+        })
+    };
+    $scope.tvudep = function() {
+        var task = prmutils.tvudep();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                for (var i = 0; i < $scope.depenses.length; i++) {
+                    $scope.depenses[i].vu = 1
+                }
+                $rootScopedepnv = 0;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false;
+                app.notify("Ok...", "b")
+            }
+        })
+    };
+    $scope.searchF = function() {
+        var task;
+        task = prmutils.getEtatDemandes($scope.search);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+
+                    $scope.depenses = result.data
+                        // result.data.sort(function(a, b) {
+                        //     console.log(a.date_dep, b.date_dep, a.date_dep > b.date_dep)
+                        //     return a.date_dep > b.date_dep
+                        // });
+                    $scope.depenses.sort((a, b) => a.date_dep > b.date_dep);
+                    // console.log($scope.depenses);
+                }
+            } else {
+                app.notify("Une erreur est survenue ...", "m")
+            }
+        })
+    };
+    $scope.getTotal = function() {
+        var total = 0;
+        for (var i = 0; i < $scope.filtered.length; i++) {
+            var vente = $scope.filtered[i];
+            total += parseInt(vente.montant)
         }
         return total
     };
@@ -219,6 +488,104 @@ sngs.controller("decaissDepCtrl", ["$scope", "$rootScope", "prmutils", function(
         for (var i = 0; i < $scope.filtered.length; i++) {
             var vente = $scope.filtered[i];
             total += parseInt(vente.mnt_dep)
+        }
+        return total
+    }
+}]);
+sngs.controller("demandeCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+    var app = $scope.app;
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Manifestation de besoin",
+        subtitle: "Demande",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Demandes";
+    $rootScope.pageTitle = "Demandes";
+    $scope.demande = {};
+    var datedemande;
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    var sss = today.getTime();
+    if (dd < 10) {
+        dd = "0" + dd
+    }
+    if (mm < 10) {
+        mm = "0" + mm
+    }
+    datedemande = dd + "/" + mm + "/" + yyyy;
+    if (app.PRMS.resa === 0 || app.PRMS.resa === false) {
+        $scope.demande.date_demande = datedemande
+    } else {
+        var task = prmutils.getDs();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.demande.date_demande = result.data.datej;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    }
+    $scope.gtd = function() {
+        var task = prmutils.getTypeDepenses();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.type_demandes = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.getDemandes = function() {
+        console.log("====")
+        var task = prmutils.getDemandes();
+        task.promise.then(function(result) {
+            console.log("====",result)
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.demandes = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.getDemandes();
+    $scope.save = function(demande) {
+        var task;
+        if (!prmutils.isDate(demande.date_demande)) {
+            app.notify("Le format de la date est incorrect", "m");
+            return false
+        }
+        task = prmutils.saveDemande(demande);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    $scope.demande.montant = null;
+                    $scope.getDemandes();
+                    app.notify(result.message, "b")
+                }
+            } else {
+                app.notify("Une erreur est survenue ..."+result.message, "m")
+            }
+            console.log(result)
+        })
+    };
+    $scope.getTotal = function() {
+        var total = 0;
+        for (var i = 0; i < $scope.filtered.length; i++) {
+            var vente = $scope.filtered[i];
+            total += parseInt(vente.montant)
         }
         return total
     }

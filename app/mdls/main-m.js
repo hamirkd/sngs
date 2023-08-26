@@ -504,6 +504,18 @@ sngs = angular.module("sngs", ["sngs.services", "ngRoute", "ngResource", "base64
         templateUrl: "app/vws/decaissement/decaiss-dep-m.html",
         controller: "decaissDepCtrl"
     });
+    $routeProvider.when("/demande", {
+        templateUrl: "app/vws/demande/demande-m.html",
+        controller: "demandeCtrl"
+    });
+    $routeProvider.when("/demandes", {
+        templateUrl: "app/vws/demande/etat-demande-m.html",
+        controller: "etatDemandeCtrl"
+    });
+    $routeProvider.when("/demandes-validation", {
+        templateUrl: "app/vws/demande/etat-demande-m-validation.html",
+        controller: "etatDemandeValidationCtrl"
+    });
     $routeProvider.when("/vers", {
         templateUrl: "app/vws/decaissement/decaiss-vers-m.html",
         controller: "decaissVersCtrl"

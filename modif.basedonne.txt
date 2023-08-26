@@ -17,7 +17,10 @@ regl_credit
 
 ALTER TABLE `t_depense` ADD `motif` VARCHAR(200) NULL AFTER `date_enr`;
 
-ALTER TABLE `t_user` CHANGE `covalidateur` `droit_validateur_depense` TINYINT(4) NOT NULL;
+
+ALTER TABLE `t_user` ADD `droit_validateur_demande` ENUM('RESPMARKE','RESPACHAT','CONTROGES','PDG','NO') NULL ;
+ALTER TABLE `t_user` CHANGE `droit_validateur_demande` `droit_validateur_demande` ENUM('RESPMARKE','RESPACHAT','CONTROGES','PDG','NO') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'NO';
+
 
 validateur_1
 validateur_2

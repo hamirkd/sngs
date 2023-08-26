@@ -1,0 +1,90 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/demandes" class="element btn_search"><span
+                            class="icon-stats"></span> Liste des demandes </a><span class="element-divider"></span>
+                        </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="example">
+                <fiedlset>
+                    <legend>{{title}} </legend>
+                    <div class="col-md-12" ng-show="demandes.length> 0">
+                        <table class="table striped bordered condensed hovered">
+                            <thead>
+                                <th class='text-left'>Type demande&nbsp;</th>
+                                <th class='text-left'>Montant&nbsp;</th>
+                                <th class='text-left'>Details &nbsp;</th>
+                                <th class='text-left'>Auteur&nbsp;</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in filtered=(demandes | filter:filterText)" class="liste">
+                                    <td>{{data.type_demande|uppercase}}</td>
+                                    <td>{{data.montant |currency}}</td>
+                                    <td>{{data.details}}</td>
+                                    <td>{{data.code_user_demandeur|uppercase}}</td>
+                                </tr>
+                                <tr>
+                                    <td align="right">
+                                        <h3><span>Total :</span></h3>
+                                    </td>
+                                    <td>
+                                        <h3><span class="fg-red"> {{ getTotal() | currency }} F CFA</span></h3>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" ng-show="demandes.length == 0">
+                        <div class="col-md-12">
+                            <h4>Aucune demande ... !</h4>
+                        </div>
+                    </div>
+                </fiedlset>
+            </div>
+        </div>
+        <div class="col-lg-5" style="float:right;">
+            <div class="example">
+                <fieldset>
+                    <legend>Nouvelle demande</legend>
+                    <form name="form">
+                        <table width="100%">
+                            <tr>
+                                <td><label class="col-lg-12">Date demande</label>
+                                    <div class="input-control text col-lg-3"><input type="text" placeholder="jj/mm/aaaa"
+                                            name="date_demande" ng-disabled="!app.PRMS.defdat" ng-model="demande.date_demande"
+                                            class="fg-orange"></div>
+                                <label class="col-lg-12">Montant</label>
+                                    <div class="input-control text col-lg-12" data-role="input-control"><input
+                                            style="height:100%;font-size:20px;" name="montant" placeholder="0"
+                                            type="number" ng-model="demande.montant" required></div>
+                                             
+                                 <label class="col-lg-12">Nature demande</label>
+                                    <div class="input-control select col-lg-6" data-role="input-control"><select
+                                            ng-model="demande.type_demande"
+                                            ng-options="type_demande.id_type_dep as type_demande.lib_type_dep|uppercase for type_demande in type_demandes"
+                                            ng-click="gtd()"></select><span style="position:absolute;"
+                                            title="Actualiser la liste" class="icon-cycle"
+                                            ng-click="app.refrestdCache()"></span></div>
+                                <label class="col-lg-12">+ de details </label>
+                                    <div class="input-control textarea col-lg-12" data-role="input-control"><textarea
+                                            name="details" placeholder="details"
+                                            ng-model="demande.details"></textarea></div>
+                                </td>
+                            </tr>
+                        </table><button class="primary" ng-click="save(demande);"
+                            ng-disabled="form.$invalid || !demande.type_demande"><span
+                                class="icon-checkmark"></span>Valider</button> &nbsp; <button class="inverse"
+                            type="reset" class="button"><i class="icon-undo on-left on-left-more"></i>Annuler </button>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>

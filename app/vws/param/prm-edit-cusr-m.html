@@ -77,10 +77,12 @@
                             <label style="display: contents;"><input name="droit_reglement_facture_credit" type="radio" ng-model="user.droit_reglement_facture_credit" value="0"><span class="check"></span> Non </label></label>
                             
 
-                            <label> Peut-il valider une dépense ? </label>
-                                <label style="display: contents;"><input name="droit_validateur_depense" checked="" type="radio" ng-model="user.droit_validateur_depense" value="1" checked><span class="check"></span> Validation Unique </label>
-                                <label style="display: contents;"><input name="droit_validateur_depense" checked="" type="radio" ng-model="user.droit_validateur_depense" value="2" checked><span class="check"></span> Co-Validation </label>
-                            <label style="display: contents;"><input name="droit_validateur_depense" type="radio" ng-model="user.droit_validateur_depense" value="0"><span class="check"></span> Non </label>
+                            <label> Role du validateur d'expression de besoin ? </label>
+                            <label style="display: contents;"><input name="droit_validateur_demande" checked="" type="radio" ng-model="user.droit_validateur_demande" value="PDG" checked><span class="check"></span> PDG </label>
+                            <label style="display: contents;"><input name="droit_validateur_demande" checked="" type="radio" ng-model="user.droit_validateur_demande" value="RESPACHAT" checked><span class="check"></span> Responsable Achat </label>
+                            <label style="display: contents;"><input name="droit_validateur_demande" checked="" type="radio" ng-model="user.droit_validateur_demande" value="RESPMARKE" checked><span class="check"></span> Responsable Marketing </label>
+                            <label style="display: contents;"><input name="droit_validateur_demande" checked="" type="radio" ng-model="user.droit_validateur_demande" value="CONTROGES" checked><span class="check"></span> Controlleur de gestion </label>
+                            <label style="display: contents;"><input name="droit_validateur_demande" type="radio" ng-model="user.droit_validateur_demande" value="NO"><span class="check"></span> Pas de role </label>
                         
 
                         </div>

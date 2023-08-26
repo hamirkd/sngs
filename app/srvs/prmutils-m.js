@@ -194,6 +194,19 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     servicesObject.getDetteBycode = function(fact) {
         return dao.getData(config.mdlAnnul + "getDetteBycode&vr=" + fact)
     };
+    
+    servicesObject.getDemandes = function() {
+        return dao.getData(config.mdlDemande + "getDemandes")
+    };
+    
+    servicesObject.getEtatDemandes = function(obj) {
+        return dao.getData(config.mdlDemande + "getEtatDemandes", obj)
+    };
+    
+    servicesObject.saveDemande = function(demande) {
+        return dao.getData(config.mdlDemande + "saveDemande", demande)
+    };
+    
     servicesObject.saveDepense = function(depense) {
         return dao.getData(config.mdlDecaiss + "saveDepense", depense)
     };
