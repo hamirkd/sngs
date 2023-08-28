@@ -1,14 +1,16 @@
 <div class="grid">
     <div class="row">
         <div>
+            
             <nav class="navigation-bar white border-bottom">
                 <div class="navigation-bar-content"><a class="element btn_search"><span class="icon-search"></span>
                         Nouveau Critere de recherche </a><span class="element-divider"></span>
                         <a
-                        ng-if="app.userPfl.mg!=0" href="#/dep" class="element btn_search"><span
-                            class="icon-plus"></span>&nbsp;<span class="icon-medal-2"></span> Nouvelle demande </a>
+                        ng-if="app.userPfl.droitValidateurDemande" href="#/demandes-validation" class="element btn_search"><span
+                            class="icon-plus"></span>&nbsp;<span class="icon-medal-2"></span> Validation des demande </a>
                             <a href="#/demande" class="element btn_search"><span
                                 class="icon-plus"></span>&nbsp;<span class="icon-medal-2"></span> Nouvelle demande </a>
+                                
                             
             </nav>
         </div>
@@ -19,10 +21,7 @@
         <div>
             <div class="example">
                 <fiedlset>
-                    <legend>{{title}} | Filtre : <a ng-hide="depenses.length == 0" class="button warning" align="right"
-                            style="float:right;margin-right:50px;"
-                            href="./app/raps/decaiss-dep.php?d={{search.date_deb}}&f={{search.date_fin}}&cs={{search.user}}&td={{search.type_dep}}"
-                            target="_BLANK"><span class="icon-printer"></span>{{app.txtprint}}</a>
+                    <legend>{{title}} | Filtre : 
                         <div class="input-control text span4" style='float: right;'><input ng-model="filterText"
                                 placeholder="filtrer" type="text"></div>
                     </legend>
@@ -32,10 +31,7 @@
                             <thead>
                                 <th class='text-left'>Date&nbsp;</th>
                                 <th class='text-left'>Type depense&nbsp;</th>
-                                <th class='text-left'>Montant&nbsp;<span ng-show="depnv>0"><a ng-if="(app.userPfl.mg==0 || app.userPfl.mg==1)"
-                                            href ng-click="tvudep()" title="Tout Marquer comme Vu" class="btn">&nbsp;<i
-                                                class="fg-red icon-alarm"><span style="font-size:12px;"
-                                                    class="fg-red">(0{{depnv}})</span></i>&nbsp;</a></span></th>
+                                <th class='text-left'>Montant&nbsp;</th>
                                 <th class='text-left'>Details &nbsp;</th>
                                 <th class='text-left'>Demandeur&nbsp;</th>
                                 <th class='text-left'>&nbsp;</th>
@@ -44,47 +40,26 @@
                                 <tr ng-repeat="data in filtered=(depenses| filter:filterText)" class="liste">
                                     <td>{{data.date_demande |date:'dd/MM/yyyy' }}</td>
                                     <td>{{data.type_demande |uppercase }}</td>
-                                    <td>{{data.montant | currency}} &nbsp; <a ng-if="data.vu==0 && (app.userPfl.mg==0 || app.userPfl.mg==1)"
-                                            href ng-click="vudep(data,1)" title="Marquer comme Vu" class="btn">&nbsp;<i
-                                                class="icon-alarm"></i>&nbsp;</a></td>
+                                    <td>{{data.montant | currency}} &nbsp;</td>
                                     <td>{{data.details |lowercase}}</td>
                                     <td>{{data.code_user_demandeur |uppercase}}</td>
                                     <td>
-
-                                        <a ng-if="(data.vu==0||data.vu==1) && (app.userPfl.droitValidateurDepense==1)"
-                                        href ng-click="vudep(data,2)" title="Autoriser" class="btn fg-white bg-green">&nbsp;
-                                        Autoriser&nbsp;</a>&nbsp;&nbsp;
-                                        <a ng-if="(data.vu==0||data.vu==1) && (app.userPfl.droitValidateurDepense==2)"
-                                        href ng-click="vudep(data,4)" title="Autoriser" class="btn fg-white bg-green">&nbsp;
-                                        Autoriser partiellement&nbsp;</a>&nbsp;&nbsp;
-                                        <a ng-if="(data.vu==4) && (app.userPfl.droitValidateurDepense==2) && data.id_validateur_1!==app.userPfl.id"
-                                        href ng-click="vudep(data,5)" title="Autoriser" class="btn fg-white bg-green">&nbsp;
-                                        Autoriser&nbsp;</a>&nbsp;&nbsp;
-
-                                        <a ng-if="(data.vu==0||data.vu==1) && (app.userPfl.droitValidateurDepense==2||app.userPfl.droitValidateurDepense==1)"
-                                        href ng-click="vudep(data,3)" title="Rejeter" class="btn fg-white bg-red">&nbsp;
-                                        Rejeter&nbsp;</a>
-                                        <a ng-if="(data.vu==4) && (app.userPfl.droitValidateurDepense==2) && data.id_validateur_1!==app.userPfl.id"
-                                        href ng-click="vudep(data,6)" title="Rejeter" class="btn fg-white bg-red">&nbsp;
-                                        Rejeter&nbsp;</a>
-                                        <span  ng-if="data.vu==2" class="btn fg-green">
-                                            Autoriser par {{data.validateur_1}}
+                                        <span  ng-if="data.etat!=1 && data.etat!=2" class="btn fg-green">
+                                            En attente chez {{data.next_role}}
+                                            {{data.last_user!=null ?('Dernier validateur : '+data.last_user):''}}
                                         </span>
-                                        <span  ng-if="data.vu==3" class="btn fg-red">
-                                            Rejeter par {{data.validateur_1}}
+                                        <span  ng-if="data.last_user" class="btn fg-green">
+                                            
                                         </span>
-                                        <div  ng-if="data.vu==3" class="fg-red" style="font-size: x-small;">
+                                        <span  ng-if="data.etat==1" class="btn fg-green">
+                                            Autoriser par {{data.last_user}}
+                                        </span>
+                                        <span  ng-if="data.etat==2" class="btn fg-red">
+                                            Rejeter par {{data.last_user}}
+                                        </span>
+                                        <div  ng-if="data.etat==2" class="fg-red" style="font-size: x-small;">
                                             {{data.motif}}
-                                        </div>
-                                        <span  ng-if="data.vu==4" class="btn fg-green">
-                                            Autoriser partiellement par {{data.validateur_1}}
-                                        </span>
-                                        <span  ng-if="data.vu==5" class="btn fg-green">
-                                            Autoriser par {{data.validateur_1}} et {{data.validateur_2}}
-                                        </span>
-                                        <span  ng-if="data.vu==6" class="btn fg-red">
-                                            Rejeter par {{data.validateur_2}}
-                                        </span>
+                                        </div> 
                                     </td>
                                 </tr>
                                 <tr>
@@ -132,7 +107,7 @@
                                 <td>
                                     <div class="stagger"><label>Demandeur</label>
                                         <div class="input-control select span4" data-role="input-control"><select
-                                                ng-model="search.user"
+                                                ng-model="search.demandeur"
                                                 ng-options="user.code_user as user.login_user | uppercase for user in users"
                                                 ng-click="gus()">
                                                 <option value=""></option>
@@ -144,7 +119,7 @@
                                 <td>
                                     <div class="stagger"><label>Nature depense</label>
                                         <div class="input-control select span4" data-role="input-control"><select
-                                                ng-model="search.type_dep"
+                                                ng-model="search.type_demande"
                                                 ng-options="type_dep.id_type_dep as type_dep.lib_type_dep|uppercase for type_dep in type_depenses"
                                                 ng-click="gtd()">
                                                 <option value=""></option>

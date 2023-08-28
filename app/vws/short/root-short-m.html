@@ -4,4 +4,6 @@
 <a ng-if="app.PRMS.grt" href="#/fctvntgrt" class="command-button bg-amber span2 sngs-clear "><i class="icon-newspaper on-left "></i> Factures garanties </a>
 <a href="#/stklrt" class="command-button bg-mauve fg-white span2 sngs-clear "><i class="icon-link-2 on-left "></i> Audit </a>
 
-<a href="#/demande" class="command-button span2 bg-green fg-white sngs-clear"><i class="icon-cc on-left"></i> Expression de besoin </a>
+
+<a ng-if="!app.userPfl.droitValidateurDemande" href="#/demande" class="command-button span2 bg-green fg-white sngs-clear"><i class="icon-cc on-left"></i> Expression de besoin </a>
+<a ng-if="app.userPfl.droitValidateurDemande" href="#/demandes-validation" class="command-button span2 bg-green fg-white sngs-clear"><i class="icon-cc on-left"></i> Validation des demande </a>

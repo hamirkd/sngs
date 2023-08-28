@@ -21,9 +21,6 @@ ALTER TABLE `t_depense` ADD `motif` VARCHAR(200) NULL AFTER `date_enr`;
 ALTER TABLE `t_user` ADD `droit_validateur_demande` ENUM('RESPMARKE','RESPACHAT','CONTROGES','PDG','NO') NULL ;
 ALTER TABLE `t_user` CHANGE `droit_validateur_demande` `droit_validateur_demande` ENUM('RESPMARKE','RESPACHAT','CONTROGES','PDG','NO') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'NO';
 
-
-validateur_1
-validateur_2
-id_validateur_1
-id_validateur_2
+ 
 archive dans magasin
+ALTER TABLE `t_demande` ADD `motif` VARCHAR(200) NULL AFTER `etat`;

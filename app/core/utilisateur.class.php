@@ -14,7 +14,8 @@ class utilisateurController extends model {
             $this->response('', 406);
         }
          
-        if($_SESSION['userMag']==0 && $_SESSION['userProfil']<2)
+        // if($_SESSION['userMag']==0 && $_SESSION['userProfil']<2)
+        if($_SESSION['userMag']==0)
          $query = "SELECT login_user,code_user
               FROM t_user WHERE login_user not in('super','brou','root') AND veille=0 order by login_user";
         else

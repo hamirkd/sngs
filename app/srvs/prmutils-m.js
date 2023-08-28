@@ -24,6 +24,9 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     servicesObject.getdepnv = function() {
         return dao.getData(config.mdlDecaiss + "getdepnv")
     };
+    servicesObject.actionSurDemande = function(obj) {
+        return dao.getData(config.mdlDemande + "actionSurDemande", obj)
+    };
     servicesObject.vudep = function(obj) {
         return dao.getData(config.mdlDecaiss + "vudep", obj)
     };
@@ -201,6 +204,9 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     
     servicesObject.getEtatDemandes = function(obj) {
         return dao.getData(config.mdlDemande + "getEtatDemandes", obj)
+    };
+    servicesObject.getDemandesByRole = function(obj) {
+        return dao.getData(config.mdlDemande + "getDemandesByRole", obj)
     };
     
     servicesObject.saveDemande = function(demande) {
@@ -1105,18 +1111,18 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
         return dao.getData(config.mdlParamFrns + "deleteFournisseur&id=" + objectID)
     };
     servicesObject.getUsers = function() {
-        if (!localStorageService.get("usersCache")) {
+        // if (!localStorageService.get("usersCache")) {
             return dao.getDataGet(config.mdlParamUsrs + "getUsers", "usersCache")
-        } else {
-            var task = $q.defer();
-            reponse = {
-                err: 0,
-                data: JSON.parse(localStorageService.get("usersCache")),
-                message: ""
-            };
-            task.resolve(reponse);
-            return task
-        }
+        // } else {
+        //     var task = $q.defer();
+        //     reponse = {
+        //         err: 0,
+        //         data: JSON.parse(localStorageService.get("usersCache")),
+        //         message: ""
+        //     };
+        //     task.resolve(reponse);
+        //     return task
+        // }
     };
     servicesObject.gs = function() {
         return dao.getData(config.mdlS + "gs")

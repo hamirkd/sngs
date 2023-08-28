@@ -57,7 +57,7 @@ class frontController extends model {
                 $_SESSION['factureVenteAnnulee'] = $result['facture_vente_annulee'];
                 $_SESSION['droitFactureVenteAnnuleeToday'] = $result['droit_facture_vente_annulee_today'];
                 $_SESSION['droitControlePrixVente'] = $result['droit_controle_prix_vente'];
-                $_SESSION['droitValidateurDepense'] = $result['droit_validateur_demande'];
+                $_SESSION['droitValidateurDemande'] = $result['droit_validateur_demande'];
                 $_SESSION['droitReglementFactureCredit'] = $result['droit_reglement_facture_credit'];
                 
                 /* options */

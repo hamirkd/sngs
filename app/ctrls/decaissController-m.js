@@ -145,8 +145,11 @@ sngs.controller("etatDemandeCtrl", ["$scope", "$rootScope", "prmutils", function
     $rootScope.pageTitle = "Etat Demandes";
     $scope.search = {};
     var today = new Date();
+    var today2 = new Date();
+    today2.setMonth(today2.getMonth()+1)
     var dd = today.getDate();
-    var mm = today.getMonth() + 1;
+    var mm = today.getMonth();
+    var mmm = today2.getMonth();
     var yyyy = today.getFullYear();
     var sss = today.getTime();
     if (dd < 10) {
@@ -156,8 +159,9 @@ sngs.controller("etatDemandeCtrl", ["$scope", "$rootScope", "prmutils", function
         mm = "0" + mm
     }
     today = dd + "/" + mm + "/" + yyyy;
+    today2 = dd + "/" + mmm + "/" + yyyy;
     $scope.search.date_deb = today;
-    $scope.search.date_fin = today;
+    $scope.search.date_fin = today2;
     $scope.gtd = function() {
         var task = prmutils.getTypeDepenses();
         task.promise.then(function(result) {
@@ -173,6 +177,7 @@ sngs.controller("etatDemandeCtrl", ["$scope", "$rootScope", "prmutils", function
     $scope.gus = function() {
         task = prmutils.getUsers();
         task.promise.then(function(result) {
+            console.log(result)
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.users = result.data;
@@ -274,12 +279,13 @@ sngs.controller("etatDemandeValidationCtrl", ["$scope", "$rootScope", "prmutils"
         show: true,
         model: {}
     };
-    $rootScope.title = "Etat des demandes";
-    $rootScope.pageTitle = "Etat Demandes";
+    $rootScope.title = "Validation des demandes";
+    $rootScope.pageTitle = "Validation des Demandes";
     $scope.search = {};
     var today = new Date();
     var dd = today.getDate();
-    var mm = today.getMonth() + 1;
+    var mm = today.getMonth();
+    var mmm = today.getMonth() + 1;
     var yyyy = today.getFullYear();
     var sss = today.getTime();
     if (dd < 10) {
@@ -289,8 +295,9 @@ sngs.controller("etatDemandeValidationCtrl", ["$scope", "$rootScope", "prmutils"
         mm = "0" + mm
     }
     today = dd + "/" + mm + "/" + yyyy;
+    today2 = dd + "/" + mmm + "/" + yyyy;
     $scope.search.date_deb = today;
-    $scope.search.date_fin = today;
+    $scope.search.date_fin = today2;
     $scope.gtd = function() {
         var task = prmutils.getTypeDepenses();
         task.promise.then(function(result) {
@@ -319,10 +326,10 @@ sngs.controller("etatDemandeValidationCtrl", ["$scope", "$rootScope", "prmutils"
     // Autorisé = 2
     // rejeter = 3
     // vu = 1
-    $scope.vudep = function(fac,etat=1) {
+    $scope.actionSurDemande = function(fac,etat=1) {
         fac['action'] = etat;
         fac['motif'] = "";
-        if(etat==3||etat==6){
+        if(etat==2){
             var vls = prompt("Le motif du rejet SVP !! ", "");
             if (!vls) return
             vls = vls.trim();
@@ -330,16 +337,15 @@ sngs.controller("etatDemandeValidationCtrl", ["$scope", "$rootScope", "prmutils"
                 fac['motif'] = vls;
             }
         }
-        if(fac.montant){
-            app.notify(result.message, "m");
-        }
-        var task = prmutils.vudep(fac);
+       
+        fac['role']=app.userPfl.droitValidateurDemande;
+        var task = prmutils.actionSurDemande(fac);
         task.promise.then(function(result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 fac.vu = etat;
                 app.waiting.show = false
-                if(etat==3)
+                if(etat==2)
                 app.notify(result.message, "m")
                 else app.notify(result.message, "b")
                 $scope.searchF();
@@ -348,26 +354,11 @@ sngs.controller("etatDemandeValidationCtrl", ["$scope", "$rootScope", "prmutils"
                 app.notify(result.message, "m")
             }
         })
-    };
-    $scope.tvudep = function() {
-        var task = prmutils.tvudep();
-        task.promise.then(function(result) {
-            app.waiting.show = true;
-            if (result.err === 0) {
-                for (var i = 0; i < $scope.depenses.length; i++) {
-                    $scope.depenses[i].vu = 1
-                }
-                $rootScopedepnv = 0;
-                app.waiting.show = false
-            } else {
-                app.waiting.show = false;
-                app.notify("Ok...", "b")
-            }
-        })
-    };
+    }; 
     $scope.searchF = function() {
         var task;
-        task = prmutils.getEtatDemandes($scope.search);
+        $scope.search['role']=app.userPfl.droitValidateurDemande;
+        task = prmutils.getDemandesByRole($scope.search);
         task.promise.then(function(result) {
             if (result.err === 0) {
                 if (result.data === "-1") {

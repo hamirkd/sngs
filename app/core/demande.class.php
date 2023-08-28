@@ -23,7 +23,8 @@ class demandeController extends model {
                         INNER JOIN t_type_depense td ON dem.type_demande=td.id_type_dep
                         WHERE 1=1 ";
 
-        if (!empty($search['type_demande'])) $query.=" AND dem.type_demande=" . intval($search['type_demande']);
+if (!empty($search['type_demande'])) $query.=" AND dem.type_demande=" . intval($search['type_demande']);
+if (!empty($search['demandeur'])) $query.=" AND dem.code_user_demandeur='" .$search['demandeur']."'";
 
         if (!empty($search['date_deb']) && empty($search['date_fin'])) 
         $query.=" AND date(dem.date_demande)='" . isoToMysqldate($search['date_deb']) . "'";
@@ -60,13 +61,12 @@ class demandeController extends model {
 
         $search = $_POST;
 
-        $condition =  $_SESSION['userMag'] > 0 ? " AND mag_demandeur=".$_SESSION['userMag']:" ";
-        $query = "";
-        "SELECT *,td.lib_type_dep as type_demande from t_demande dem
+        $condition =  "";//$_SESSION['userMag'] > 0 ? " AND mag_demandeur=".$_SESSION['userMag']:" ";
+        $query = "SELECT *,td.lib_type_dep as type_demande from t_demande dem
                         INNER JOIN t_type_depense td ON dem.type_demande=td.id_type_dep
-                        WHERE date(dem.date_demande)='" . date("Y-m-d") . "' AND next_role=".$search['role']."
-                        AND etat=0 $condition ORDER BY dem.date_demande DESC";
-
+                        WHERE next_role='".$search['role']."' 
+                        AND (etat=0 || etat is null) $condition ORDER BY dem.date_demande DESC";
+        // echo $query;
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
         if ($r->num_rows > 0) {
@@ -106,12 +106,12 @@ class demandeController extends model {
             }
             $response = array("status" => 0,
                 "datas" => $result,
-                "message" => "$query");
+                "message" => "recuperer avec success");
             $this->response($this->json($response), 200);
         } else {
             $response = array("status" => 0,
                 "datas" => "",
-                "message" => "$query");
+                "message" => "La liste est vide");
             $this->response($this->json($response), 200);
         }
         $this->response('', 204);
@@ -142,6 +142,7 @@ class demandeController extends model {
                         date_demande,
                         user_demandeur_id,
                         login_demandeur,
+                        next_role,
                         code_user_demandeur,
                         mag_demandeur,
                         details) 
@@ -150,7 +151,7 @@ class demandeController extends model {
                               '$date_demande $heure_vnt',
                               
                           " . $_SESSION['userId'] . ",
-                         '" . $_SESSION['userLogin'] . "',
+                         '" . $_SESSION['userLogin'] . "','RESPMARKE',
                          '" . $_SESSION['userCode'] . "',
                          " . $_SESSION['userMag'] . ",
                              '" . $details . "')";
@@ -192,7 +193,7 @@ class demandeController extends model {
         $fact = $_POST;
 
         $id = intval($fact['id_dem']);
-        $role = intval($fact['role']);
+        $role = $fact['role'];
         $action = intval($fact['action']);
         $motif = $fact['motif'];
         // **** ROLE
@@ -221,6 +222,8 @@ class demandeController extends model {
             else if($action == 2){
                 $query = "UPDATE t_demande set etat=$action, motif='$motif',last_user='" . $_SESSION['nom_prenom_user'] . "',last_user_id=" . $_SESSION['userId'] . " WHERE id_dem=$id ";
             }
+            // echo $query;
+            // echo $queryAu;
             $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
             $r = $this->mysqli->query($queryAu) or die($this->mysqli->error . __LINE__);
 
