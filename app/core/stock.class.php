@@ -1,6 +1,7 @@
 <?php
 
 require_once ("api-class/model.php");
+require_once ("api-class/audit_log.class.php");
 
 class stockController extends model {
 
@@ -20,6 +21,9 @@ class stockController extends model {
         $q = intval($approvisionnement['stock']['qte_stk']);
         $bl_approuv = intval($approvisionnement['stock']['bl_approuv']);
         $prec_qte_stk = intval($approvisionnement['stock']['prec_qte_stk']);
+        $log = $_SESSION['userLogin'];
+        $cod = $_SESSION['userCode'];
+        $ide = $_SESSION['userId'];
 
         $det = $_SESSION['userLogin'];
         if($prec_qte_stk==$q){
@@ -49,6 +53,8 @@ class stockController extends model {
             detail_stk='$det'
             WHERE id_stk=$id";
         }
+        $aud = new aditlogController;
+        $aud->auditlog("STOCK", "CORRECTION", "ACTION NON PERMISE", $prec_qte_stk, $q, now(), $ide, $log, $cod, $comm);
         $response = array();
 
         if (!empty($approvisionnement)) {
