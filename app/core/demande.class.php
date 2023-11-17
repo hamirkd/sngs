@@ -2,6 +2,7 @@
 
 require_once ("api-class/model.php");
 require_once ("api-class/helpers.php");
+require_once ("api-class/authentification.php");
 
 class demandeController extends model {
 
@@ -250,6 +251,7 @@ if (!empty($search['demandeur'])) $query.=" AND dem.code_user_demandeur='" .$sea
 
 session_name('SessSngS');
 session_start();
+authentication();
 if (isset($_SESSION['userId'])) {
     $app = new demandeController;
     $app->processApp();
