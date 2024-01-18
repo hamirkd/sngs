@@ -103,6 +103,10 @@
                 Sorties Stock
                 <small class="bg-darkOrange fg-white">0{{srtnv}}</small>
             </a>
+            <a href="#/demandes-validation" ng-show="srtnv>0" class="shortcut teal shortcut1">
+                <i class="icon-box-file"></i>
+                Validation des demande
+            </a>
         </div>
         <div ng-show="app.navbar.show && app.PRMS.bonatt && app.userPfl!='' && app.userPfl.mg!=0 && app.userPfl.pfl!=7"
             style="position:absolute;text-align:center; width:100%; height:0!important;" align="center">

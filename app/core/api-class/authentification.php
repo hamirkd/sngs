@@ -5,6 +5,7 @@ function authentication(){
         // echo "BONJOUR";
         $result=json_decode($_SERVER['HTTP_USERDATA']);
 
+        $_SESSION['nom_prenom_user'] = $result->nom_user .' '.$result->prenom_user;
         $_SESSION['userLogin'] = $result->login_user;
         $_SESSION['userId'] = $result->id_user;
         $_SESSION['userCode'] = $result->code_user;

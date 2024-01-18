@@ -24,3 +24,6 @@ ALTER TABLE `t_user` CHANGE `droit_validateur_demande` `droit_validateur_demande
  
 archive dans magasin
 ALTER TABLE `t_demande` ADD `motif` VARCHAR(200) NULL AFTER `etat`;
+
+
+UPDATE `t_versement` SET `id_mag`=(SELECT `mag_user` FROM `t_user` WHERE `id_user` = t_versement.`caissier_vrsmnt`)

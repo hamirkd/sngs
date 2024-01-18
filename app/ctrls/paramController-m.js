@@ -865,6 +865,12 @@ sngs.controller("paramEditTdCtrl", ["$scope", "$rootScope", "config", "dao", "$l
             app.notify("Veuillez Preciser une valeur pour ce type/nature de depense...", "m");
             return false
         }
+
+        if (app.userPfl.id != 117) {
+            app.notify("Vous ne pouvez pas céer de nature de dépense, veuillez vous reférer à Madame Tapsoba", "m", 10000);
+            return false
+        }
+
         if (objectID <= 0) {
             task = prmutils.insertTypeDepense(type_dep);
             task.promise.then(function(result) {
@@ -1411,6 +1417,23 @@ sngs.controller("paramEditCusrCtrl", ["$scope", "$rootScope", "config", "dao", "
             app.waiting.show = false
         }
     });
+
+    $scope.getcUsers = function() {
+        var task = prmutils.getcUsers();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.users = result.data;
+                for (let user of $scope.users) {
+                    user['nom_prenom_user'] = user.nom_user + ' ' + user.prenom_user + ' - ' + user.code_user;
+                }
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.getcUsers();
     app.title = {
         text: "Parametrages",
         subtitle: "Utilisateur",
@@ -1476,7 +1499,7 @@ sngs.controller("paramEditCusrCtrl", ["$scope", "$rootScope", "config", "dao", "
                     app.notify(result.message, "b");
                     $location.path(config.urlParamCusr)
                 } else {
-                    app.notify("ok ...", "b")
+                    app.notify("ok ............" + result.err, "b")
                 }
             })
         }

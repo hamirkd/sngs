@@ -24,8 +24,8 @@ class demandeController extends model {
                         INNER JOIN t_type_depense td ON dem.type_demande=td.id_type_dep
                         WHERE 1=1 ";
 
-if (!empty($search['type_demande'])) $query.=" AND dem.type_demande=" . intval($search['type_demande']);
-if (!empty($search['demandeur'])) $query.=" AND dem.code_user_demandeur='" .$search['demandeur']."'";
+        if (!empty($search['type_demande'])) $query.=" AND dem.type_demande=" . intval($search['type_demande']);
+        if (!empty($search['demandeur'])) $query.=" AND dem.code_user_demandeur='" .$search['demandeur']."'";
 
         if (!empty($search['date_deb']) && empty($search['date_fin'])) 
         $query.=" AND date(dem.date_demande)='" . isoToMysqldate($search['date_deb']) . "'";
@@ -63,9 +63,12 @@ if (!empty($search['demandeur'])) $query.=" AND dem.code_user_demandeur='" .$sea
         $search = $_POST;
 
         $condition =  "";//$_SESSION['userMag'] > 0 ? " AND mag_demandeur=".$_SESSION['userMag']:" ";
-        $query = "SELECT *,td.lib_type_dep as type_demande from t_demande dem
+        if($search['role']=='RESP'){
+            $condition = " AND next_user_id=".$_SESSION['userId'];
+        }
+        $query = "SELECT *,td.lib_type_dep as type_demande,(SELECT nom_mag FROM t_magasin WHERE id_mag=dem.mag_demandeur) as magasin from t_demande dem
                         INNER JOIN t_type_depense td ON dem.type_demande=td.id_type_dep
-                        WHERE next_role='".$search['role']."' 
+                        WHERE (next_role='".$search['role']."' OR next_user_id=".$_SESSION['userId'].") 
                         AND (etat=0 || etat is null) $condition ORDER BY dem.date_demande DESC";
         // echo $query;
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
@@ -130,10 +133,21 @@ if (!empty($search['demandeur'])) $query.=" AND dem.code_user_demandeur='" .$sea
         $type_demande = intval($demande['type_demande']);
         $details = $this->esc($demande['details']);
         $date_demande = (!empty($demande['date_demande'])) ? isoToMysqldate($demande['date_demande']) : date("Y-m-d");
-
+        $magasin = !empty($demande['magasin']) ? intval($demande['magasin']):$_SESSION['userMag'];
         $response = array();
-
-        if (!empty($type_demande) && !empty($details) && !empty($montant) && $montant > 0) {
+        
+        $query = "SELECT * FROM t_user WHERE id_user = (SELECT resp_user FROM t_user WHERE t_user.id_user =".$_SESSION['userId']." LIMIT 1 )";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        $result = $r->fetch_assoc();
+        $nom_prenom_user = $result['nom_user'] .' '.$result['prenom_user'];
+        $id_user = $result['id_user'];
+        if(empty($id_user)){
+            $response = array("status" => 1,
+            "datas" => "",
+            "message" => "Vous n'avez pas de responsable");
+        $this->response($this->json($response), 200);
+        }
+       else if (!empty($type_demande) && !empty($details) && !empty($montant) && $montant >= 0 && $magasin>0) {
             try {
                 $this->mysqli->autocommit(FALSE);
                 $heure_vnt = date("H:i:s");
@@ -142,7 +156,7 @@ if (!empty($search['demandeur'])) $query.=" AND dem.code_user_demandeur='" .$sea
                         montant,
                         date_demande,
                         user_demandeur_id,
-                        login_demandeur,
+                        login_demandeur,next_user,next_user_id,
                         next_role,
                         code_user_demandeur,
                         mag_demandeur,
@@ -152,9 +166,9 @@ if (!empty($search['demandeur'])) $query.=" AND dem.code_user_demandeur='" .$sea
                               '$date_demande $heure_vnt',
                               
                           " . $_SESSION['userId'] . ",
-                         '" . $_SESSION['userLogin'] . "','RESPMARKE',
+                         '" . $_SESSION['userLogin'] . "','$nom_prenom_user',$id_user,'RESP',
                          '" . $_SESSION['userCode'] . "',
-                         " . $_SESSION['userMag'] . ",
+                         " . $magasin . ",
                              '" . $details . "')";
                 if (!$r = $this->mysqli->query($query))
                     throw new Exception($this->mysqli->error . __LINE__);
@@ -197,8 +211,16 @@ if (!empty($search['demandeur'])) $query.=" AND dem.code_user_demandeur='" .$sea
         $role = $fact['role'];
         $action = intval($fact['action']);
         $motif = $fact['motif'];
+        
+        $query = "SELECT * FROM t_demande WHERE id_dem=$id";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        $result = $r->fetch_assoc();
+        $next_role = $result['next_role'];
+        if($next_role == 'RESP'){
+            $role = 'RESP';
+        }
         // **** ROLE
-        // RESPMARKE
+        // RESP
         // RESPACHAT
         // CONTROGES
         // PDG
@@ -211,8 +233,8 @@ if (!empty($search['demandeur'])) $query.=" AND dem.code_user_demandeur='" .$sea
             // WorkFlow
             // $query = "UPDATE t_demande set etat=$action, motif='$motif',last_user='" . $_SESSION['userLogin'] . "',last_user_id=" . $_SESSION['userId'] . " WHERE id_dem=$id ";
             $queryAu = "INSERT INTO t_historique_workflow SET actu_action=$action, actu_role='$role', actu_user='" . $_SESSION['nom_prenom_user'] . "',actu_user_id=" . $_SESSION['userId'];
-            if($role == 'RESPMARKE' && $action == 1){
-                $query = "UPDATE t_demande set next_role='RESPACHAT', last_user='" . $_SESSION['nom_prenom_user'] . "',last_user_id=" . $_SESSION['userId'] . " WHERE id_dem=$id ";
+            if($role == 'RESP' && $action == 1){
+                $query = "UPDATE t_demande set next_role='RESPACHAT',next_user_id=0, last_user='" . $_SESSION['nom_prenom_user'] . "',last_user_id=" . $_SESSION['userId'] . " WHERE id_dem=$id ";
             }else if($role == 'RESPACHAT' && $action == 1){
                 $query = "UPDATE t_demande set next_role='CONTROGES', last_user='" . $_SESSION['nom_prenom_user'] . "',last_user_id=" . $_SESSION['userId'] . " WHERE id_dem=$id ";
             }else if($role == 'CONTROGES' && $action == 1){

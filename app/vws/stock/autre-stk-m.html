@@ -20,21 +20,21 @@
                     <div class="col-md-12" ng-show="alertes.length> 0" style="min-height: 400px;max-height: 400px;overflow: auto;" when-scrolled="loadMore()">
                         <table class="table striped bordered condensed hovered">
                             <thead>
-                                <th class='text-left'>Designation&nbsp;</th>
-                                <th class='text-left'>Ref&nbsp;</th>
+                                <th class='text-left'>Designation &nbsp;</th>
+                                <th class='text-left'>Ref &nbsp;</th>
                                 <th class='text-left'>Qte &nbsp;</th>
                                 <th class='text-left'>Seuil &nbsp;</th>
-                                <th class='text-left'>Categorie&nbsp;</th>
+                                <th class='text-left'>Categorie &nbsp;</th>
                                 <th class='text-left'>Magasin &nbsp;</th>
-                                <th class='text-left'>Adress&nbsp;</th>
+                                <th class='text-left'>Adresse &nbsp;</th>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="data in filtered=(alertes| filter:filterText)" class="liste">
                                     <td>{{data.nom_art |uppercase}} <span class="fg-red">{{data.prix_mini_art}}</span>#<span class="fg-red">{{data.prix_max_art}}</span></td>
                                     <td>{{data.ref_art |uppercase}}</td>
                                     <td>
-                                        <span class="fg-green" ng-if="app.userPfl.mg==0 || app.userPfl.mg==1"> {{data.qte_stk}}</span>
-                                        <span class="fg-green" ng-if="app.userPfl.mg!=0 && app.userPfl.mg!=1"> {{data.qte_stk>0?'Dispoible':''}}{{app.userPfl.mg}}</span>
+                                        <span class="fg-green" ng-if="app.userPfl.mg==0 || app.userPfl.mg==1 || app.userPfl.id==107"> {{data.qte_stk}}</span>
+                                        <span class="fg-green" ng-if="app.userPfl.mg!=0 && app.userPfl.mg!=1 && app.userPfl.id!=107"> {{data.qte_stk>0?'Dispoible':''}}</span>
                                     </td>
                                     <td>{{data.seuil_art |uppercase}}</td>
                                     <td>{{data.nom_cat |uppercase}}</td>

@@ -139,6 +139,11 @@ sngs.controller("venteEtaCtrl", ["$scope", "$rootScope", "config", "prmutils", f
                     app.notify(result.message, "m")
                 } else {
                     $scope.ventes = result.data
+                    $scope.ventes.forEach(element => {
+                        val.Qte_vnt =  Number(element.Qte_vnt);
+                        val.pu_theo_vnt = Number(element.pu_theo_vnt);
+                        val.mnt_theo_vnt = Number(element.mnt_theo_vnt);
+                    });
                 }
                 $scope.loading = false
             } else {
@@ -147,6 +152,27 @@ sngs.controller("venteEtaCtrl", ["$scope", "$rootScope", "config", "prmutils", f
             }
         })
     }
+    // Groupage des ventes
+    $scope.groupages = function() {
+        var ventesgroupes = [];
+        $scope.ventes.forEach(element => {
+            console.log(element);
+            console.log(ventesgroupes);
+           var valIndex = ventesgroupes.findIndex(p=>element.code_art===p?.code_art);
+           if(valIndex>0){
+            var val = ventesgroupes[valIndex];
+            val.Date_vnt = '';
+            val.Qte_vnt = Number(val.Qte_vnt) + Number(element.Qte_vnt);
+            val.pu_theo_vnt = Number(val.pu_theo_vnt) + Number(element.pu_theo_vnt);
+            val.mnt_theo_vnt = Number(val.mnt_theo_vnt) + Number(element.mnt_theo_vnt);
+           }else {
+            element.Date_vnt = '-';
+            ventesgroupes.push(element);
+           }
+        });
+        $scope.ventes = ventesgroupes;
+    }
+
 }]);
 sngs.controller("venteVntCtrl", ["$scope", "$rootScope", "config", "prmutils", "$interval", "filterFilter", "socket", function($scope, $rootScope, config, prmutils, $interval, filterFilter, socket) {
     var app = $scope.app;

@@ -197,22 +197,32 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     servicesObject.getDetteBycode = function(fact) {
         return dao.getData(config.mdlAnnul + "getDetteBycode&vr=" + fact)
     };
-    
+
+
+
+    servicesObject.saveRetourArticle = function(retourArticle) {
+        return dao.getData(config.mdlRetourArticle + "saveRetourArticle", retourArticle)
+    };
+
+    servicesObject.getEtatRetourArticles = function(obj) {
+        return dao.getData(config.mdlRetourArticle + "getEtatRetourArticles", obj)
+    };
+
     servicesObject.getDemandes = function() {
         return dao.getData(config.mdlDemande + "getDemandes")
     };
-    
+
     servicesObject.getEtatDemandes = function(obj) {
         return dao.getData(config.mdlDemande + "getEtatDemandes", obj)
     };
     servicesObject.getDemandesByRole = function(obj) {
         return dao.getData(config.mdlDemande + "getDemandesByRole", obj)
     };
-    
+
     servicesObject.saveDemande = function(demande) {
         return dao.getData(config.mdlDemande + "saveDemande", demande)
     };
-    
+
     servicesObject.saveDepense = function(depense) {
         return dao.getData(config.mdlDecaiss + "saveDepense", depense)
     };
@@ -1112,17 +1122,17 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     };
     servicesObject.getUsers = function() {
         // if (!localStorageService.get("usersCache")) {
-            return dao.getDataGet(config.mdlParamUsrs + "getUsers", "usersCache")
-        // } else {
-        //     var task = $q.defer();
-        //     reponse = {
-        //         err: 0,
-        //         data: JSON.parse(localStorageService.get("usersCache")),
-        //         message: ""
-        //     };
-        //     task.resolve(reponse);
-        //     return task
-        // }
+        return dao.getDataGet(config.mdlParamUsrs + "getUsers", "usersCache")
+            // } else {
+            //     var task = $q.defer();
+            //     reponse = {
+            //         err: 0,
+            //         data: JSON.parse(localStorageService.get("usersCache")),
+            //         message: ""
+            //     };
+            //     task.resolve(reponse);
+            //     return task
+            // }
     };
     servicesObject.gs = function() {
         return dao.getData(config.mdlS + "gs")

@@ -32,6 +32,10 @@
                         <div class="input-control text span4" style='float: right;'><input ng-model="filterText"
                                 placeholder="filtrer" type="text"></div>
                     </legend>
+                    <div>
+                        <button class="primary" ng-click="groupages();"><i
+                            class="icon-search on-left on-left-more"></i>Grouper les données</button> 
+                    </div>
                     <div class="col-md-12" ng-show="ventes.length> 0"
                         style="min-height: 380px;max-height: 380px;overflow: auto;">
                         <table class="table striped bordered condensed hovered">
@@ -44,8 +48,9 @@
                                 <th class='text-left'>Qte &nbsp;</th>
                                 <th class='text-left'>Pu &nbsp;</th>
                                 <th class='text-left'>Montant &nbsp;</th>
-                                <th ng-if="app.userPfl.pfl==1" class='text-left'>Marge &nbsp;</th>
+                                <th ng-if="app.userPfl.pfl==1 || app.userPfl.pfl==0" class='text-left'>Marge &nbsp;</th>
                                 <th class='text-left'>Caissier &nbsp;</th>
+                                <th ng-if="app.userPfl.pfl==1 || app.userPfl.pfl==0" class='text-left'>Ratio &nbsp;</th>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="data in filtered=(ventes | filter:filterText)" class="liste">
@@ -67,11 +72,12 @@
                                     <td>{{data.Qte_vnt}}</td>
                                     <td>{{data.pu_theo_vnt | currency }}</td>
                                     <td>{{data.mnt_theo_vnt | currency}}</td>
-                                    <td ng-if="app.userPfl.pfl==1"><span title="marge" class="fg-red my-small-font"
+                                    <td ng-if="app.userPfl.pfl==1 || app.userPfl.pfl==0"><span title="marge" class="fg-red my-small-font"
                                             ng-if="data.marge_vnt<0">{{data.marge_vnt | currency}}</span><span
                                             title="marge" class="fg-green my-small-font"
                                             ng-if="data.marge_vnt>=0">{{data.marge_vnt | currency}}</span></td>
                                     <td>{{data.code_caissier_fact |uppercase}}</td>
+                                    <td ng-if="app.userPfl.pfl==1 || app.userPfl.pfl==0">{{(data.mnt_theo_vnt/getTotal()*100 | number)}}%</td>       
                                 </tr>
                                 <tr>
                                     <td colspan="6" align="right">
@@ -89,6 +95,7 @@
                             <h4>Aucune vente ... !</h4>
                         </div>
                     </div>
+
                 </fiedlset>
             </div>
         </div>

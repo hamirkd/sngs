@@ -23,6 +23,8 @@
                             style="float:right;margin-right:50px;"
                             href="./app/raps/decaiss-dep.php?d={{search.date_deb}}&f={{search.date_fin}}&cs={{search.user}}&td={{search.type_dep}}"
                             target="_BLANK"><span class="icon-printer"></span>{{app.txtprint}}</a>
+                            
+                        <button style="float:right;margin-right:50px;" ng-hide="depenses.length == 0" class="button success" ng-click="downloadJSONAsCSV();"><span class="icon-file-excel"></span>Excel</button> 
                         <div class="input-control text span4" style='float: right;'><input ng-model="filterText"
                                 placeholder="filtrer" type="text"></div>
                     </legend>

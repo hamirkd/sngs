@@ -53,8 +53,13 @@ class stockController extends model {
             detail_stk='$det'
             WHERE id_stk=$id";
         }
+        $queryStockPrec = "SELECT * FROM t_stock WHERE id_stk=$id";
+        $r = $this->mysqli->query($queryStockPrec) or die($this->mysqli->error . __LINE__);
+        $result = $r->fetch_assoc();
+        $prec_qte_stk = $result['qte_stk'] ;
+
         $aud = new aditlogController;
-        $aud->auditlog("STOCK", "CORRECTION", "ACTION NON PERMISE", $prec_qte_stk, $q, now(), $ide, $log, $cod, $comm);
+        $aud->auditlog("STOCK", "CORRECTION", "ACTION NON PERMISE", $prec_qte_stk, $q, date('Y-m-d H:i:s'), $ide, $log, $cod, 'id:'.$id);
         $response = array();
 
         if (!empty($approvisionnement)) {

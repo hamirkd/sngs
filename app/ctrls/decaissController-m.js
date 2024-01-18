@@ -53,10 +53,10 @@ sngs.controller("etaDepCtrl", ["$scope", "$rootScope", "prmutils", function($sco
     // Autorisé = 2
     // rejeter = 3
     // vu = 1
-    $scope.vudep = function(fac,etat=1) {
+    $scope.vudep = function(fac, etat = 1) {
         fac['action'] = etat;
         fac['motif'] = "";
-        if(etat==3||etat==6){
+        if (etat == 3 || etat == 6) {
             var vls = prompt("Le motif du rejet SVP !! ", "");
             if (!vls) return
             vls = vls.trim();
@@ -64,7 +64,7 @@ sngs.controller("etaDepCtrl", ["$scope", "$rootScope", "prmutils", function($sco
                 fac['motif'] = vls;
             }
         }
-        if(fac.montant){
+        if (fac.montant) {
             app.notify(result.message, "m");
         }
         var task = prmutils.vudep(fac);
@@ -73,8 +73,8 @@ sngs.controller("etaDepCtrl", ["$scope", "$rootScope", "prmutils", function($sco
             if (result.err === 0) {
                 fac.vu = etat;
                 app.waiting.show = false
-                if(etat==3)
-                app.notify(result.message, "m")
+                if (etat == 3)
+                    app.notify(result.message, "m")
                 else app.notify(result.message, "b")
                 $scope.searchF();
             } else {
@@ -99,6 +99,18 @@ sngs.controller("etaDepCtrl", ["$scope", "$rootScope", "prmutils", function($sco
             }
         })
     };
+    $scope.downloadJSONAsCSV = function() {
+        // Convert JSON data to CSV
+        let csvData = app.jsonToCsv($scope.depenses); // Add .items.data
+        // Create a CSV file and allow the user to download it
+        let blob = new Blob([csvData], { type: 'text/csv' });
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.csv';
+        document.body.appendChild(a);
+        a.click();
+    }
     $scope.searchF = function() {
         var task;
         task = prmutils.getEtatDepenses($scope.search);
@@ -131,6 +143,143 @@ sngs.controller("etaDepCtrl", ["$scope", "$rootScope", "prmutils", function($sco
     };
     $scope.searchF()
 }]);
+
+sngs.controller("etatRetourCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+    var app = $scope.app;
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Retour des articles",
+        subtitle: "Etat des retours",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Etat des retours";
+    $rootScope.pageTitle = "Etat retour";
+    $scope.search = {};
+    $scope.retour = {};
+    var today = new Date();
+    var today2 = new Date();
+    today2.setMonth(today2.getMonth() + 1)
+    var dd = today.getDate();
+    var mm = today.getMonth();
+    var mmm = today2.getMonth();
+    var yyyy = today.getFullYear();
+    var sss = today.getTime();
+    if (dd < 10) {
+        dd = "0" + dd
+    }
+    if (mm < 10) {
+        mm = "0" + mm
+    }
+    today = dd + "/" + mm + "/" + yyyy;
+    today2 = dd + "/" + mmm + "/" + yyyy;
+    $scope.search.date_deb = today;
+    $scope.search.date_fin = today2;
+    $scope.retour = { date_retour: today2 };
+
+    $scope.save = function(retour) {
+        var task;
+        if (!prmutils.isDate(retour.date_retour)) {
+            app.notify("Le format de la date est incorrect", "m");
+            return false
+        }
+        task = prmutils.saveRetourArticle(retour);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    $scope.retour.montant = null;
+                    $scope.searchF();
+                    app.notify(result.message, "b");
+                    $scope.reinitialiser();
+                }
+            } else {
+                app.notify("Une erreur est survenue ..." + result.message, "m")
+            }
+        })
+    };
+
+    $scope.getMyMagasinsAcces = function() {
+        if (app.userPfl.pfl == 1 || app.userPfl.pfl == 0) {
+            task = prmutils.getMagasins();
+        } else {
+            task = prmutils.getMyMagasinsAcces();
+        }
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.myMagasinsAcces = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        });
+    }
+    $scope.getMyMagasinsAcces();
+
+    $scope.gus = function() {
+        task = prmutils.getcUsers();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.users = result.data;
+                for (let user of $scope.users) {
+                    user['nom_prenom_user'] = '[' + user.code_user + '] ' + user.nom_user + ' ' + user.prenom_user;
+                }
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.gus();
+    $scope.getart = function() {
+        task = prmutils.getArticles();
+        task.promise.then(function(result) {
+            app.waiting.show = false;
+            if (result.err === 0) {
+                $scope.articles = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+
+    $scope.reinitialiser = function() {
+        $scope.retour = { date_retour: today2 };
+    };
+    $scope.getart();
+    $scope.searchF = function() {
+        var task;
+        task = prmutils.getEtatRetourArticles($scope.search);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m");
+                } else {
+                    $scope.retours = result.data;
+                    $scope.retours.sort((a, b) => a.date_retour > b.date_retour);
+                }
+            } else {
+                app.notify("Une erreur est survenue ...", "m")
+            }
+        })
+    };
+    $scope.getTotal = function() {
+        var totalQuantite = 0;
+        var totalMontant = 0;
+        for (var i = 0; i < $scope.filtered.length; i++) {
+            var retour = $scope.filtered[i];
+            totalMontant += parseInt(retour.montant)
+            totalQuantite += parseInt(retour.quantite)
+        }
+        return { totalQuantite: totalQuantite, totalMontant: totalMontant };
+    };
+    $scope.searchF()
+}]);
 sngs.controller("etatDemandeCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
     var app = $scope.app;
     app.waiting.show = false;
@@ -146,11 +295,14 @@ sngs.controller("etatDemandeCtrl", ["$scope", "$rootScope", "prmutils", function
     $scope.search = {};
     var today = new Date();
     var today2 = new Date();
-    today2.setMonth(today2.getMonth()+1)
+    today2.setMonth(today.getMonth() + 1);
+    
     var dd = today.getDate();
     var mm = today.getMonth();
-    var mmm = today2.getMonth();
-    var yyyy = today.getFullYear();
+    var mmfin = today2.getMonth();
+    var mmdebut = today.getMonth();
+    var yyyydebut = today.getFullYear();
+    var yyyyfin = today2.getFullYear();
     var sss = today.getTime();
     if (dd < 10) {
         dd = "0" + dd
@@ -158,8 +310,20 @@ sngs.controller("etatDemandeCtrl", ["$scope", "$rootScope", "prmutils", function
     if (mm < 10) {
         mm = "0" + mm
     }
-    today = dd + "/" + mm + "/" + yyyy;
-    today2 = dd + "/" + mmm + "/" + yyyy;
+    if (mmdebut < 10) {
+        mmdebut = "0" + mmdebut
+    }
+    if (mmfin < 10) {
+        mmfin = "0" + mmfin
+    }
+    if (today.getMonth() == 0) {
+        today.setMonth(today.getMonth() - 1);
+        mmdebut = today.getMonth();
+        mmdebut = mmdebut + 1;
+        yyyydebut = today.getFullYear();
+    }
+    today = dd + "/" + mmdebut + "/" + yyyydebut;
+    today2 = dd + "/" + mmfin + "/" + yyyyfin;
     $scope.search.date_deb = today;
     $scope.search.date_fin = today2;
     $scope.gtd = function() {
@@ -191,10 +355,10 @@ sngs.controller("etatDemandeCtrl", ["$scope", "$rootScope", "prmutils", function
     // Autorisé = 2
     // rejeter = 3
     // vu = 1
-    $scope.vudep = function(fac,etat=1) {
+    $scope.vudep = function(fac, etat = 1) {
         fac['action'] = etat;
         fac['motif'] = "";
-        if(etat==3||etat==6){
+        if (etat == 3 || etat == 6) {
             var vls = prompt("Le motif du rejet SVP !! ", "");
             if (!vls) return
             vls = vls.trim();
@@ -202,7 +366,7 @@ sngs.controller("etatDemandeCtrl", ["$scope", "$rootScope", "prmutils", function
                 fac['motif'] = vls;
             }
         }
-        if(fac.montant){
+        if (fac.montant) {
             app.notify(result.message, "m");
         }
         var task = prmutils.vudep(fac);
@@ -211,8 +375,8 @@ sngs.controller("etatDemandeCtrl", ["$scope", "$rootScope", "prmutils", function
             if (result.err === 0) {
                 fac.vu = etat;
                 app.waiting.show = false
-                if(etat==3)
-                app.notify(result.message, "m")
+                if (etat == 3)
+                    app.notify(result.message, "m")
                 else app.notify(result.message, "b")
                 $scope.searchF();
             } else {
@@ -326,10 +490,10 @@ sngs.controller("etatDemandeValidationCtrl", ["$scope", "$rootScope", "prmutils"
     // Autorisé = 2
     // rejeter = 3
     // vu = 1
-    $scope.actionSurDemande = function(fac,etat=1) {
+    $scope.actionSurDemande = function(fac, etat = 1) {
         fac['action'] = etat;
         fac['motif'] = "";
-        if(etat==2){
+        if (etat == 2) {
             var vls = prompt("Le motif du rejet SVP !! ", "");
             if (!vls) return
             vls = vls.trim();
@@ -337,16 +501,16 @@ sngs.controller("etatDemandeValidationCtrl", ["$scope", "$rootScope", "prmutils"
                 fac['motif'] = vls;
             }
         }
-       
-        fac['role']=app.userPfl.droitValidateurDemande;
+
+        fac['role'] = app.userPfl.droitValidateurDemande;
         var task = prmutils.actionSurDemande(fac);
         task.promise.then(function(result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 fac.vu = etat;
                 app.waiting.show = false
-                if(etat==2)
-                app.notify(result.message, "m")
+                if (etat == 2)
+                    app.notify(result.message, "m")
                 else app.notify(result.message, "b")
                 $scope.searchF();
             } else {
@@ -354,10 +518,10 @@ sngs.controller("etatDemandeValidationCtrl", ["$scope", "$rootScope", "prmutils"
                 app.notify(result.message, "m")
             }
         })
-    }; 
+    };
     $scope.searchF = function() {
         var task;
-        $scope.search['role']=app.userPfl.droitValidateurDemande;
+        $scope.search['role'] = app.userPfl.droitValidateurDemande;
         task = prmutils.getDemandesByRole($scope.search);
         task.promise.then(function(result) {
             if (result.err === 0) {
@@ -440,6 +604,18 @@ sngs.controller("decaissDepCtrl", ["$scope", "$rootScope", "prmutils", function(
             }
         })
     };
+
+    task = prmutils.getMagasins();
+    task.promise.then(function(result) {
+        app.waiting.show = true;
+        if (result.err === 0) {
+            $scope.magasins = result.data;
+            $scope.appstock.mag_appro_art = $scope.magasins[0].id_mag;
+            app.waiting.show = false
+        } else {
+            app.waiting.show = false
+        }
+    });
     $scope.getDepenses = function() {
         var task = prmutils.getDepenses();
         task.promise.then(function(result) {
@@ -457,6 +633,10 @@ sngs.controller("decaissDepCtrl", ["$scope", "$rootScope", "prmutils", function(
         var task;
         if (!prmutils.isDate(depense.date_dep)) {
             app.notify("Le format de la date est incorrect", "m");
+            return false
+        }
+        if (app.userPfl.id != 117) {
+            app.notify("Vous ne pouvez pas faire de dépense, veuillez faire une expression de besoin et vous faire rembourser", "m", 10000);
             return false
         }
         task = prmutils.saveDepense(depense);
@@ -539,11 +719,12 @@ sngs.controller("demandeCtrl", ["$scope", "$rootScope", "prmutils", function($sc
         console.log("====")
         var task = prmutils.getDemandes();
         task.promise.then(function(result) {
-            console.log("====",result)
+            console.log("====", result)
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.demandes = result.data;
                 app.waiting.show = false
+                $scope.demande = { date_demande: datedemande }
             } else {
                 app.waiting.show = false
             }
@@ -565,13 +746,33 @@ sngs.controller("demandeCtrl", ["$scope", "$rootScope", "prmutils", function($sc
                     $scope.demande.montant = null;
                     $scope.getDemandes();
                     app.notify(result.message, "b")
+
                 }
             } else {
-                app.notify("Une erreur est survenue ..."+result.message, "m")
+                app.notify("Une erreur est survenue ..." + result.message, "m")
             }
             console.log(result)
         })
     };
+
+
+    $scope.getMyMagasinsAcces = function() {
+        if (app.userPfl.pfl == 1 || app.userPfl.pfl == 0 || app.userPfl.mg == 0) {
+            task = prmutils.getMagasins();
+        } else {
+            task = prmutils.getMyMagasinsAcces();
+        }
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.myMagasinsAcces = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        });
+    }
+    $scope.getMyMagasinsAcces();
     $scope.getTotal = function() {
         var total = 0;
         for (var i = 0; i < $scope.filtered.length; i++) {

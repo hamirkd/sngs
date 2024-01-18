@@ -3,6 +3,10 @@
 require_once ("api-class/model.php");
 require_once ("api-class/helpers.php");
 
+// Include classes
+require_once dirname(__FILE__) . '/../../libs/tbs/tbs_class.php';// Load the TinyButStrong template engine
+require_once dirname(__FILE__) . '/../../libs/tbs/tbs_plugin_opentbs.php';// Load the OpenTBS plugin
+
 class decaissementController extends model {
 
     public $data = "";
@@ -46,7 +50,7 @@ class decaissementController extends model {
 
         if ($_SESSION['userMag'] > 0){
             $query = "SELECT date(dep.date_dep) as date_dep,dep.id_dep,dep.vu, dep.mnt_dep,dep.details_dep,dep.code_user_dep,
-            td.lib_type_dep,dep.motif ,dep.validateur_1, dep.validateur_2 ,dep.id_validateur_1, dep.id_validateur_2
+            td.lib_type_dep,dep.motif
                            FROM 
                            t_depense dep
                            INNER JOIN t_type_depense td ON dep.type_dep=td.id_type_dep
@@ -70,7 +74,7 @@ class decaissementController extends model {
             
         } else{
             $query1 = "(SELECT date(dep.date_dep) as date_dep,dep.id_dep,dep.vu, dep.mnt_dep,dep.details_dep,dep.code_user_dep,
-            td.lib_type_dep, dep.motif, dep.validateur_1, dep.validateur_2,dep.id_validateur_1, dep.id_validateur_2
+            td.lib_type_dep, dep.motif
                            FROM 
                            t_depense dep
                            INNER JOIN t_type_depense td ON dep.type_dep=td.id_type_dep
@@ -379,6 +383,13 @@ class decaissementController extends model {
         $depense = $_POST;
         $mnt_dep = intval($depense['mnt_dep']);
         $type_dep = intval($depense['type_dep']);
+        $mag_depense_id = null;
+        if(isset($depense['mag_depense_id']))
+            $mag_depense_id = $depense['mag_depense_id'];
+        else {
+            $mag_depense_id = $_SESSION['userMag'];
+        }
+
         $details_dep = !empty($depense['details_dep']) ? $this->esc($depense['details_dep']) : "Ras";
         $date_dep = (!empty($depense['date_dep'])) ? isoToMysqldate($depense['date_dep']) : date("Y-m-d");
 
@@ -392,7 +403,7 @@ class decaissementController extends model {
                 $heure_vnt = date("H:i:s");
                 $query = "INSERT INTO  t_depense (
                      	type_dep,
-                     mnt_dep,
+                     mnt_dep,mag_depense_id,
                      date_dep,
                      user_dep,
                      login_dep,
@@ -400,6 +411,7 @@ class decaissementController extends model {
                      details_dep) 
                      VALUES(" . $type_dep . ",
                           " . $mnt_dep . ", 
+                          ".$mag_depense_id.",
                               '$date_dep $heure_vnt',
                               
                           " . $_SESSION['userId'] . ",
@@ -570,7 +582,7 @@ class decaissementController extends model {
                      caissier_vrsmnt,
                      caissier_login_vrsmnt,
                      code_caissier_vrsmnt,
-                     obj_vrsmnt) 
+                     obj_vrsmnt,id_mag) 
                      VALUES(" . $bank_vrsmnt . ",
                           " . $mnt_vrsmnt . ", 
                               '$date_vrsmnt $heure_vnt',
@@ -578,7 +590,8 @@ class decaissementController extends model {
                           " . $_SESSION['userId'] . ",
                          '" . $_SESSION['userLogin'] . "',
                          '" . $_SESSION['userCode'] . "',
-                             '" . $obj_vrsmnt . "')";
+                             '" . $obj_vrsmnt . "',
+                             " . $_SESSION['userMag'] . ")";
 
 
                 if (!$r = $this->mysqli->query($query))
@@ -608,6 +621,15 @@ class decaissementController extends model {
 
             $this->response($this->json($response), 200);
         }
+    }
+    public function bonDeVersement(){
+        // Initialize the TBS instance
+        $TBS = new clsTinyButStrong; // new instance of TBS
+        $TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN); // load the OpenTBS plugin
+        $template = 'demo_ms_word.docx';
+        $TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
+        $TBS->MergeField('description', '-');
+        $TBS->Show(OPENTBS_DOWNLOAD, $output_file_name);
     }
     
     

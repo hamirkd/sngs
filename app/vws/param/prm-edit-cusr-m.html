@@ -12,13 +12,13 @@
         </div>
     </div>
 </div>
-<div class="example">
+<div class="example" style="margin-bottom: 10%;">
     <form name="form">
         <fieldset>
             <legend>{{title}}</legend>
-            <table width="95%">
+            <table width="100%">
                 <tr>
-                    <td><label>Code utilisateur (5 caracteres maxi)</label>
+                    <td width="30%"><label>Code utilisateur (5 caracteres maxi)</label>
                         <div class="input-control text span4" data-role="input-control"><input placeholder="code" type="text" ng-model="user.code_user" required><button type="button" class="btn-clear" tabindex="-1"></button></div>
                         <label>Profil</label>
                         <div class="input-control select span4" data-role="input-control"><select ng-model="user.profil_user">
@@ -31,12 +31,18 @@
                                 <option value="7">Responsable Reglement</option>
                             </select></div>
                     </td>
-                    <td><label>Login/Identifiant</label>
+                    <td width="60%"><label>Login/Identifiant</label>
                         <div class="input-control text span4" data-role="input-control"><input placeholder="login" type="text" ng-model="user.login_user" required><button type="button" class="btn-clear" tabindex="-1"></button></div>
                         <label>Affilie au Magasin </label>
                         <div class="input-control select span4" data-role="input-control"><select name='mag_user' ng-model="user.mag_user" ng-options="magasin.id_mag as magasin.nom_mag|uppercase for magasin in magasins">
                                 <option value=""></option>
                             </select></div>
+                    </td>
+                    <td width="10%">
+                        <label>Responsable </label>
+                        <div class="input-control select span4" data-role="input-control"><select name='resp_user' ng-model="user.resp_user" ng-options="user.id_user as user.nom_prenom_user|uppercase for user in users">
+                                    <option value=""></option>
+                                </select></div>
                     </td>
                 </tr>
                 <tr>
@@ -46,7 +52,7 @@
                         <div class="input-control text span4" data-role="input-control"><input placeholder="Hamza" type="text" ng-model="user.prenom_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
                         <label>E-mail</label>
                         <div class="input-control text span4" data-role="input-control"><input placeholder="onyxbf@yahoo.fr" type="email" ng-model="user.mail_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
-                    
+
                     </td>
                     <td>
                         <div>
@@ -75,15 +81,14 @@
                             <label> Peut-il faire un règlement d'une facture crédite ? 
                                 <label style="display: contents;"><input name="droit_reglement_facture_credit" checked="" type="radio" ng-model="user.droit_reglement_facture_credit" value="1" checked><span class="check"></span> Oui </label>
                             <label style="display: contents;"><input name="droit_reglement_facture_credit" type="radio" ng-model="user.droit_reglement_facture_credit" value="0"><span class="check"></span> Non </label></label>
-                            
+
 
                             <label> Role du validateur d'expression de besoin ? </label>
                             <label style="display: contents;"><input name="droit_validateur_demande" checked="" type="radio" ng-model="user.droit_validateur_demande" value="PDG" checked><span class="check"></span> PDG </label>
-                            <label style="display: contents;"><input name="droit_validateur_demande" checked="" type="radio" ng-model="user.droit_validateur_demande" value="RESPACHAT" checked><span class="check"></span> Responsable Achat </label>
-                            <label style="display: contents;"><input name="droit_validateur_demande" checked="" type="radio" ng-model="user.droit_validateur_demande" value="RESPMARKE" checked><span class="check"></span> Responsable Marketing </label>
                             <label style="display: contents;"><input name="droit_validateur_demande" checked="" type="radio" ng-model="user.droit_validateur_demande" value="CONTROGES" checked><span class="check"></span> Controlleur de gestion </label>
+                            <label style="display: contents;"><input name="droit_validateur_demande" checked="" type="radio" ng-model="user.droit_validateur_demande" value="RESPACHAT" checked><span class="check"></span> Responsable Achat </label>
+                            <label style="display: contents;"><input name="droit_validateur_demande" checked="" type="radio" ng-model="user.droit_validateur_demande" value="RESP" checked><span class="check"></span> Responsable </label>
                             <label style="display: contents;"><input name="droit_validateur_demande" type="radio" ng-model="user.droit_validateur_demande" value="NO"><span class="check"></span> Pas de role </label>
-                        
 
                         </div>
                     </td>

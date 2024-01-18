@@ -54,7 +54,7 @@ class venteController extends model {
             $query.=" AND bl_fact_crdt=1 AND bl_fact_grt=1";
 
         $query.=" ORDER BY Date_vnt DESC,id_vnt DESC  ";
-
+        
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
         if ($r->num_rows > 0) {

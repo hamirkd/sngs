@@ -294,5 +294,18 @@ angular.module("sngs").controller("appCtrl", ["$rootScope", "localStorageService
         }, duree);
         elem.hide().appendTo("body").slideDown()
     }
+    
+    app.jsonToCsv = function(jsonData) {
+        let csv = '';
+        // Get the headers
+        let headers = Object.keys(jsonData[0]);
+        csv += headers.join(';') + '\n';
+        // Add the data
+        jsonData.forEach(function (row) {
+            let data = headers.map(header => JSON.stringify(row[header])).join(';'); // Add JSON.stringify statement
+            csv += data + '\n';
+        });
+        return csv;
+    }
 
 }]);
