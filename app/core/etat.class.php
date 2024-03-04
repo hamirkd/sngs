@@ -2215,7 +2215,6 @@ AND MONTH(date_fact)=12";
                 if (!empty($search['date_deb']) && !empty($search['date_fin'])) {
                     $dated = isoToMysqldate($search['date_deb']);
                     $datef = isoToMysqldate($search['date_fin']);
-
                     while ($dated <= $datef) {
 
                         $qteappro = intval($this->getApproOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
@@ -2224,8 +2223,7 @@ AND MONTH(date_fact)=12";
                         $qtevente = intval($this->getVenteOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
                         $qtesortie = intval($this->getSortieOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
                         $qtedef = intval($this->getDeffOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
-
-                        if ($qteappro > 0 || $qtetransfget > 0 || $qtetransfset > 0 || $qtevente > 0 || $qtesortie > 0 || $qtedef > 0)
+                        if ($qteappro != 0 || $qtetransfget != 0 || $qtetransfset != 0 || $qtevente != 0 || $qtesortie != 0 || $qtedef != 0)
                             $result[] = array(
                                 'periode' => "Date du " . date('d/m/Y', strtotime($dated)),
                                 'qteappro' => intval($this->getApproOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
@@ -2293,7 +2291,7 @@ AND MONTH(date_fact)=12";
                             $qtesortie = intval($this->getSortieOfArticleFrom($search['article'], $dated, $search['magasin']));
                             $qtedef = intval($this->getDeffOfArticleFrom($search['article'], $dated, $search['magasin']));
 
-                            if ($qteappro > 0 || $qtetransfget > 0 || $qtetransfset > 0 || $qtevente > 0 || $qtesortie > 0 || $qtedef > 0)
+                            if ($qteappro != 0 || $qtetransfget != 0 || $qtetransfset != 0 || $qtevente != 0 || $qtesortie != 0 || $qtedef != 0)
                                 $result[] = array(
                                     'periode' => "Date du " . date('d/m/Y', strtotime($dated)),
                                     'qteappro' => intval($this->getApproOfArticleFrom($search['article'], $dated, $search['magasin'])),

@@ -40,6 +40,7 @@
                                                     class="fg-red">(0{{depnv}})</span></i>&nbsp;</a></span></th>
                                 <th class='text-left'>Details &nbsp;</th>
                                 <th class='text-left'>Caissier&nbsp;</th>
+                                <th class='text-left'>Magasin&nbsp;</th>
                                 <th class='text-left'>&nbsp;</th>
                             </thead>
                             <tbody>
@@ -51,6 +52,7 @@
                                                 class="icon-alarm"></i>&nbsp;</a></td>
                                     <td>{{data.details_dep |lowercase}}</td>
                                     <td>{{data.code_user_dep |uppercase}}</td>
+                                    <td>{{data.magasindepense |uppercase}}</td>
                                     <td>
 
                                         <a ng-if="(data.vu==0||data.vu==1) && (app.userPfl.droitValidateurDemande==1)"
@@ -91,7 +93,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2" align="right">
-                                        <h3><span>Total Des depense :</span></h3>
+                                        <h3><span>Total Des depenses :</span></h3>
                                     </td>
                                     <td>
                                         <h3><span class="fg-red"> {{ getTotal() | currency }} F CFA</span></h3>

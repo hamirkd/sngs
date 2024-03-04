@@ -80,7 +80,8 @@ $objPHPExcel->getActiveSheet()
         ->setCellValue('G'.$i, "PU")
         ->setCellValue('H'.$i, "QUANTITE")
         ->setCellValue('I'.$i, "MONTANT")
-        ->setCellValue('I'.$i, "ETAT");
+        ->setCellValue('J'.$i, "ETAT")
+        ->setCellValue('K'.$i, "REMISE");
 
 // Add data
 $i++;
@@ -93,10 +94,11 @@ if ($r->num_rows > 0) {
         $objPHPExcel->getActiveSheet()->setCellValue('D' . $i, ucfirst(strtolower($row['code_fact'])));
         $objPHPExcel->getActiveSheet()->setCellValue('E' . $i, ucfirst(strtolower($row['nom_art'])));
         $objPHPExcel->getActiveSheet()->setCellValue('F' . $i, ucwords(strtolower($row['nom_clt'])));
-        $objPHPExcel->getActiveSheet()->setCellValue('G' . $i, number_format($row['pu_theo_vnt'], 0, ',', ' '));
+        $objPHPExcel->getActiveSheet()->setCellValue('G' . $i, $row['pu_theo_vnt']);
         $objPHPExcel->getActiveSheet()->setCellValue('H' . $i, $row['Qte_vnt']);
-        $objPHPExcel->getActiveSheet()->setCellValue('I' . $i, number_format($row['Qte_vnt'] * $row['pu_theo_vnt'], 2, ',', ' '));
+        $objPHPExcel->getActiveSheet()->setCellValue('I' . $i, $row['Qte_vnt'] * $row['pu_theo_vnt']);
         $objPHPExcel->getActiveSheet()->setCellValue('J' . $i, 'Compta');
+        $objPHPExcel->getActiveSheet()->setCellValue('K' . $i, $row['remise_vnt_fact']);
         $montant+=$row['Qte_vnt'] * $row['pu_theo_vnt'];
         // Add page breaks every 10 rows
         if ($i % 20 == 0) {
@@ -124,7 +126,7 @@ $objPHPExcel->getActiveSheet()
 
 /** VENTE A CREDIT */
 
-$query = "SELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=0 ";
+$query = "SELECT *,time(Date_vnt) as heure_vnt FROM v_etat_ventes WHERE sup_fact=0 AND bl_fact_crdt=1 ";
 
     if (!empty($search['mg']))
         $query.=" AND id_mag=" . intval($search['mg']);
@@ -175,7 +177,8 @@ $objPHPExcel->getActiveSheet()
         ->setCellValue('G'.$i, "PU")
         ->setCellValue('H'.$i, "QUANTITE")
         ->setCellValue('I'.$i, "MONTANT")
-        ->setCellValue('I'.$i, "ETAT");
+        ->setCellValue('J'.$i, "ETAT")
+        ->setCellValue('K'.$i, "REMISE");
 $i++;
 // Add data
 if ($r->num_rows > 0) {
@@ -187,10 +190,11 @@ if ($r->num_rows > 0) {
         $objPHPExcel->getActiveSheet()->setCellValue('D' . $i, ucfirst(strtolower($row['code_fact'])));
         $objPHPExcel->getActiveSheet()->setCellValue('E' . $i, ucfirst(strtolower($row['nom_art'])));
         $objPHPExcel->getActiveSheet()->setCellValue('F' . $i, ucwords(strtolower($row['nom_clt'])));
-        $objPHPExcel->getActiveSheet()->setCellValue('G' . $i, number_format($row['pu_theo_vnt'], 0, ',', ' '));
+        $objPHPExcel->getActiveSheet()->setCellValue('G' . $i, $row['pu_theo_vnt']);
         $objPHPExcel->getActiveSheet()->setCellValue('H' . $i, $row['Qte_vnt']);
-        $objPHPExcel->getActiveSheet()->setCellValue('I' . $i, number_format($row['Qte_vnt'] * $row['pu_theo_vnt'], 2, ',', ' '));
+        $objPHPExcel->getActiveSheet()->setCellValue('I' . $i, $row['Qte_vnt'] * $row['pu_theo_vnt']);
         $objPHPExcel->getActiveSheet()->setCellValue('J' . $i, 'Crédit');
+        $objPHPExcel->getActiveSheet()->setCellValue('K' . $i, $row['remise_vnt_fact']);
         $montant+=$row['Qte_vnt'] * $row['pu_theo_vnt'];
 
         // Add page breaks every 10 rows

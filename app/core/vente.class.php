@@ -1536,7 +1536,7 @@ COALESCE( mag.prix_max_art_mag, tpa.prix_max_art) as prix_max_art
 		from t_stock s 
 		inner join t_article a on s.art_stk=a.id_art
 		inner join t_categorie_article c ON a.cat_art=c.id_cat
-		where s.qte_stk>0 
+		where c.id_cat=999 or s.qte_stk>0 
 		and c.id_cat=$id_cat
 		and s.mag_stk=$id_mag) ar
 		inner join (select * from t_prix_article GROUP BY art_prix_art DESC) tpa

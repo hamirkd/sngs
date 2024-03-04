@@ -1026,11 +1026,11 @@ sngs.controller("paramEditArtArtCtrl", ["$scope", "$rootScope", "config", "dao",
     }
     $scope.article = angular.copy(original);
     $scope.article.id_art = objectID;
-    $scope.article.prix_mini_art = parseInt($scope.article.prix_mini_art);
-    $scope.article.prix_max_art = parseInt($scope.article.prix_max_art);
-    $scope.article.prix_gros_art = parseInt($scope.article.prix_gros_art);
-    $scope.article.prix_achat_art = parseInt($scope.article.prix_achat_art);
-    $scope.article.seuil_art = parseInt($scope.article.seuil_art);
+    $scope.article.prix_mini_art = parseFloat($scope.article.prix_mini_art);
+    $scope.article.prix_max_art = parseFloat($scope.article.prix_max_art);
+    $scope.article.prix_gros_art = parseFloat($scope.article.prix_gros_art);
+    $scope.article.prix_achat_art = parseFloat($scope.article.prix_achat_art);
+    $scope.article.seuil_art = parseFloat($scope.article.seuil_art);
     $scope.isClean = function() {
         return angular.equals(original, $scope.article)
     };
@@ -1056,26 +1056,26 @@ sngs.controller("paramEditArtArtCtrl", ["$scope", "$rootScope", "config", "dao",
     };
     $scope.save = function(article) {
         var task;
-        if (parseInt($scope.article.prix_mini_art) <= 0) {
+        if (parseFloat($scope.article.prix_mini_art) <= 0) {
             app.notify("Attention : prix minimum null", "m");
             return false
         }
-        if (parseInt($scope.article.prix_gros_art) <= 0) {
+        if (parseFloat($scope.article.prix_gros_art) <= 0) {
             app.notify("Attention : prix en gros null", "m");
             return false
         }
-        if (parseInt($scope.article.prix_max_art) <= 0) {
+        if (parseFloat($scope.article.prix_max_art) <= 0) {
             app.notify("Attention : prix en maximum null", "m");
             return false
         }
-        if (parseInt($scope.article.prix_max_art) < parseInt($scope.article.prix_mini_art)) {
+        if (parseFloat($scope.article.prix_max_art) < parseFloat($scope.article.prix_mini_art)) {
             app.notify("Attention : prix en maximum doit être supérieur au prix minimum", "m");
             return false
         }
-        if (parseInt($scope.article.prix_achat_art) <= 0) {
+        if (parseFloat($scope.article.prix_achat_art) <= 0) {
             $scope.article.prix_achat_art = 0
         }
-        if (parseInt($scope.article.seuil_art) < 1) {
+        if (parseFloat($scope.article.seuil_art) < 1) {
             $scope.article.seuil_art = 1
         }
         if (objectID <= 0) {

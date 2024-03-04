@@ -252,6 +252,9 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     servicesObject.getVersements = function() {
         return dao.getData(config.mdlDecaiss + "getVersements")
     };
+    servicesObject.bonDeVersement = function(versement) {
+        return dao.getData(config.mdlDecaiss + "bonDeVersement", versement)
+    };
     servicesObject.getEtatVersements = function(obj) {
         return dao.getData(config.mdlDecaiss + "getEtatVersements", obj)
     };

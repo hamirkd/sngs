@@ -16,7 +16,7 @@ class administrationController extends model {
     
 
      public function save() {
-        $variable = "ANCIEN";// NOUVEAU,ANCIEN,DEVELOPPEMENT
+        $variable = "NOUVEAU";// NOUVEAU,ANCIEN,DEVELOPPEMENT
         $file="c:\SAUVEGARDE_BD_GESTION_STOCK\bkp_gestion_stock_".date("Y-m-d_H\hi").".sql";
         
         switch ($variable) {

@@ -605,7 +605,7 @@ sngs.controller("decaissDepCtrl", ["$scope", "$rootScope", "prmutils", function(
         })
     };
 
-    task = prmutils.getMagasins();
+    task = prmutils.getMyMagasinsAcces();
     task.promise.then(function(result) {
         app.waiting.show = true;
         if (result.err === 0) {
@@ -1062,6 +1062,27 @@ sngs.controller("decaissVersCtrl", ["$scope", "$rootScope", "prmutils", function
             return false
         }
         task = prmutils.saveVersement(versement);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    $scope.versement.mnt_vrsmnt = null;
+                    $scope.getVersements();
+                    app.notify(result.message, "b")
+                }
+            } else {
+                app.notify("Oups! Connexion instable ...", "m")
+            }
+        })
+    };
+    $scope.bonDeVersement = function(versement) {
+        var task;
+        if (!prmutils.isDate(versement.date_vrsmnt)) {
+            app.notify("Le format de la date est incorrect", "m");
+            return false
+        }
+        task = prmutils.bonDeVersement(versement);
         task.promise.then(function(result) {
             if (result.err === 0) {
                 if (result.data === "-1") {

@@ -1565,3 +1565,285 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
         $scope.appvente.art_appro_art = {}
     }
 }]);
+
+sngs.controller("livraisonCtrl", ["$window", "$scope", "$rootScope", "prmutils", "socket", function($window, $scope, $rootScope, prmutils, socket) {
+    var app = $scope.app;
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Facturation",
+        subtitle: "Facturation à Crédit",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Nouvelle Facturation à Crédit";
+    $rootScope.pageTitle = "Facturation à Crédit";
+    $scope.djob = false;
+    $scope.requestingArt = false;
+    $scope.stock = {
+        qte_stk: 0
+    };
+    $scope.items = [];
+    $scope.itemsNewPrices = [];
+    $scope.mnt_total = 0;
+    $scope.appvente = {};
+    $scope.appvente.bl_bic = 0;
+    $scope.appvente.bl_tva = 0;
+    $scope.appvente.remise = 0;
+    $scope.appvente.avance = 0;
+    $scope.creditEncoursClient = 0;
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = "0" + dd
+    }
+    if (mm < 10) {
+        mm = "0" + mm
+    }
+    $scope.num_facture = today;
+    if (app.PRMS.resa === 0 || app.PRMS.resa === false) {
+        $scope.appvente.date_vnt = dd + "/" + mm + "/" + yyyy
+    } else {
+        var task = prmutils.getDs();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.appvente.date_vnt = result.data.datej;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    }
+    $scope.gclt = function() {
+        var task = prmutils.getClients();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.clients = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.gclt();
+    $scope.crdtenc = function() {
+        var task = prmutils.getCreditEncoursOfClient($scope.appvente.vnt_clt.id_clt);
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.creditEncoursClient = parseFloat(result.data.mntcec);
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.save = function(items) {
+        var task;
+        $scope.djob = true;
+        $scope.appvente.remise = ($scope.appvente.remise > 0) ? $scope.appvente.remise : 0;
+        ObjVente = {
+            id_mag: $scope.appvente.mag_appro_art,
+            num_ref_fac: $scope.appvente.ref_fact_vnt,
+            num_fact: $scope.num_facture,
+            id_clt: $scope.appvente.vnt_clt.id_clt,
+            exo_tva_clt: $scope.appvente.vnt_clt.exo_tva_clt,
+            mnt_total: $scope.mnt_total,
+            remise: $scope.appvente.remise,
+            avance: $scope.appvente.avance,
+            date: $scope.appvente.date_vnt,
+            tva: $scope.appvente.bl_tva,
+            bic: $scope.appvente.bl_bic,
+            items: items
+        };
+        task = prmutils.venteCrdt(ObjVente);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m");
+                    $scope.djob = false
+                } else {
+                    socket.emit("new_vente", {
+                        new_vente: result.data
+                    });
+                    $scope.emptyForm();
+                    app.notify(result.message, "b");
+                    $scope.djob = false;
+                    if (confirm("Voulez vous Imprimer la facture ? ") === true) {
+                        $window.open("app/raps/fact.php?f=" + result.message.f)
+                    }
+                }
+            } else {
+                $scope.emptyForm();
+                app.notify("ok ...", "b");
+                $scope.djob = false
+            }
+        })
+    };
+    $scope.add = function(art_) {
+        tot = $scope.getTotal();
+        var art = {};
+        art = angular.copy(art_);
+        art.or_pm = parseFloat(art_.prix_mini_art);
+        art.or_pg = parseFloat(art_.prix_gros_art);
+        art.or_mnt = parseInt($scope.appvente.qte_appro_art) * parseFloat(art_.prix_mini_art);
+        if ((parseInt($scope.appvente.qte_appro_art) <= 0 || $scope.appvente.qte_appro_art === null || typeof $scope.appvente.qte_appro_art === undefined)) {
+            app.notify("Veuillez revoir la quantite saisie ..! ", " m");
+            return false
+        }
+        if ((parseInt($scope.appvente.qte_appro_art) > $scope.stock.qte_stk)) {
+            app.notify("Quantite superieure a la valeur disponible ..! ", "m");
+            return false
+        }
+        art.qte = $scope.appvente.qte_appro_art;
+        art.mnt = ($scope.appvente.bl_gros == 1) ? parseInt(art.qte) * parseFloat(art.prix_gros_art) : parseInt(art.qte) * parseInt(art.prix_mini_art);
+        if (parseInt($scope.appvente.prix_var) >= 0) {
+            art.mnt = parseInt(art.qte) * parseFloat($scope.appvente.prix_var)
+        }
+        
+        if ((parseFloat(art.mnt) + tot) > (parseFloat($scope.appvente.vnt_clt.max_crdt_clt) - parseFloat($scope.creditEncoursClient))) {
+            app.notify(" Attention au plafond maximal de credit autorise ....! ", "m");
+            return false
+        }
+        art.prix_mini_art = ($scope.appvente.bl_gros == 1) ? art.prix_gros_art : art.prix_mini_art;
+        if (parseFloat($scope.appvente.prix_var) >= 0) {
+            art.prix_mini_art = parseFloat($scope.appvente.prix_var)
+        }
+        $scope.items.unshift(art);
+        $scope.appvente.qte_appro_art = null;
+        $scope.stock.qte_stk = 0;
+        $scope.appvente.prix_var = ""
+    };
+    $scope.getTotal = function() {
+        var total = 0;
+        for (var i = 0; i < $scope.items.length; i++) {
+            var item = $scope.items[i];
+            total += parseFloat(item.mnt)
+        }
+        $scope.mnt_total = total;
+        return total
+    };
+    $scope.validRmse = function() {
+        $scope.appvente.remise = (parseFloat($scope.appvente.remise) < parseFloat($scope.getTotal())) ? parseFloat($scope.appvente.remise) : parseInt(0)
+    };
+    $scope.validAvance = function() {
+        $scope.appvente.avance = (parseFloat($scope.appvente.avance) <= parseFloat($scope.getTotal()) - parseFloat($scope.appvente.remise)) ? parseFloat($scope.appvente.avance) : parseInt(0)
+    };
+    $scope.loadArticlesOfCategorie = function(mag, cat) {
+        task = prmutils.getExtArticlesOfCategorie(mag, cat);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                $scope.articles = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        });
+        $scope.appvente.art_appro_art = null;
+        $scope.appvente.qte_appro_art = 0;
+        $scope.appvente.prix_var = ""
+    };
+    $scope.loadExtArticles = function(mag) {
+        task = prmutils.getExtArticles(mag);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                $scope.articles = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.loadExtArticlesOfCategorie = function() {
+        task = prmutils.getExtArticlesOfCategorie(0, 999);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                $scope.articles = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    
+    $scope.getStockm = function(art, mag) {
+        $scope.items = [];
+        task = prmutils.getStock(art, mag);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === null) {
+                    $scope.stock = {
+                        qte_stk: 0
+                    }
+                } else {
+                    $scope.stock = result.data
+                }
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.getStocka = function(art, mag) {
+        $scope.requestingArt = true;
+        task = prmutils.getStock(art, mag);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === null) {
+                    $scope.stock = {
+                        qte_stk: 0
+                    }
+                } else {
+                    $scope.stock = result.data
+                }
+                $scope.requestingArt = false;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        });
+        $scope.appvente.qte_appro_art = 0;
+        $scope.appvente.prix_var = ""
+    };
+    $scope.emptyForm = function() {
+        $scope.items = [];
+        $scope.stock.qte_stk = 0;
+        $scope.appvente.remise = 0;
+        $scope.appvente.avance = 0;
+        $scope.appvente.art_appro_art = {};
+        $scope.mCategorie = "";
+        $scope.appvente.vnt_clt = null
+    };
+    $scope.clearAr = function() {
+        $scope.itemsNewPrices = []
+    };
+    $scope.cleanField = function() {
+        $scope.filterItem = "";
+        $scope.ft = ""
+    };
+    $scope.focusField = function(field) {
+        $("[name='" + field + "' ]").focus();
+        $("[name='" + field + "' ]").select()
+    };
+    $scope.focusEnter = function(keyEvent, field) {
+        if (keyEvent.which === 13) {
+            $("[name='" + field + "' ]").focus();
+            $("[name='" + field + "' ]").select()
+        }
+    };
+    $scope.focusEnterAdd = function(keyEvent, field) {
+        if (keyEvent.which === 13) {
+            $scope.add($scope.appvente.art_appro_art);
+            $("[name='" + field + "' ]").focus();
+            $("[name='" + field + "' ]").select()
+        }
+    };
+    $scope.emptyArticle = function() {
+        $scope.appvente.art_appro_art = {}
+    }
+    $scope.loadExtArticlesOfCategorie();
+}]);

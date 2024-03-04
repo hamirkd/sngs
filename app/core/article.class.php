@@ -208,10 +208,10 @@ class articleController extends model {
                 $rek_update = "UPDATE t_article SET code_art='A" . $lastInsertID . "' WHERE id_art=" . intval($lastInsertID);
                 $r = $this->mysqli->query($rek_update) or die($this->mysqli->error . __LINE__);
 
-                $pm = (intval($article['prix_mini_art']) >= 0) ? intval($article['prix_mini_art']) : 0;
-                $pm = (intval($article['prix_max_art']) >= 0) ? intval($article['prix_max_art']) : 0;
-                $pg = (intval($article['prix_gros_art']) >= 0) ? intval($article['prix_gros_art']) : 0;
-                $pa = (intval($article['prix_achat_art']) >= 0) ? intval($article['prix_achat_art']) : 0;
+                $pm = (floatval($article['prix_mini_art']) >= 0) ? floatval($article['prix_mini_art']) : 0;
+                $pm = (floatval($article['prix_max_art']) >= 0) ? floatval($article['prix_max_art']) : 0;
+                $pg = (floatval($article['prix_gros_art']) >= 0) ? floatval($article['prix_gros_art']) : 0;
+                $pa = (floatval($article['prix_achat_art']) >= 0) ? floatval($article['prix_achat_art']) : 0;
 
                 /** Je modifie l'etat des prix et leurs designant qu'ils ne sont plus a jour */
                 $rek_update = "UPDATE t_prix_article SET a_jour=1,date_prix=now() WHERE art_prix_art=$lastInsertID AND a_jour=0";
@@ -276,10 +276,10 @@ class articleController extends model {
                 if (!$r = $this->mysqli->query($query))
                     throw new Exception($this->mysqli->error . __LINE__);
 
-                $pm = (intval($article['article']['prix_mini_art']) >= 0) ? intval($article['article']['prix_mini_art']) : 0;
-                $pmx = (intval($article['article']['prix_max_art']) >= 0) ? intval($article['article']['prix_max_art']) : 0;
-                $pg = (intval($article['article']['prix_gros_art']) >= 0) ? intval($article['article']['prix_gros_art']) : 0;
-                $pa = (intval($article['article']['prix_achat_art']) >= 0) ? intval($article['article']['prix_achat_art']) : 0;
+                $pm = (floatval($article['article']['prix_mini_art']) >= 0) ? floatval($article['article']['prix_mini_art']) : 0;
+                $pmx = (floatval($article['article']['prix_max_art']) >= 0) ? floatval($article['article']['prix_max_art']) : 0;
+                $pg = (floatval($article['article']['prix_gros_art']) >= 0) ? floatval($article['article']['prix_gros_art']) : 0;
+                $pa = (floatval($article['article']['prix_achat_art']) >= 0) ? floatval($article['article']['prix_achat_art']) : 0;
                 
                 /** Je modifie l'etat des prix et leurs designant qu'ils ne sont plus a jour */
                 $rek_update = "UPDATE t_prix_article SET a_jour=1,date_prix=now() WHERE art_prix_art=$id AND a_jour=0";

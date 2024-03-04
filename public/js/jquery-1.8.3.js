@@ -64,7 +64,7 @@ var
 	// JSON RegExp
 	rvalidchars = /^[\],:{}\s]*$/,
 	rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g,
-	rvalidescape = /\\(?:["\\\/bfnrt]|u[\da-fA-F]{4})/g,
+	rvalidescape = /\\(?:["\\\/bfnrt]|u[\da-fA-F][4])/g,
 	rvalidtokens = /"[^"\\\r\n]*"|true|false|null|-?(?:\d\d*\.|)\d+(?:[eE][\-+]?\d+|)/g,
 
 	// Matches dashed string for camelizing
@@ -5675,7 +5675,7 @@ var nodeNames = "abbr|article|aside|audio|bdi|canvas|data|datalist|details|figca
 	// checked="checked" or checked
 	rchecked = /checked\s*(?:[^=]|=\s*.checked.)/i,
 	rscriptType = /\/(java|ecma)script/i,
-	rcleanScript = /^\s*<!(?:\[CDATA\[|\-\-)|[\]\-]{2}>\s*$/g,
+	rcleanScript = /^\s*<!(?:\[CDATA\[|\-\-)|[\]\-][2]>\s*$/g,
 	wrapMap = {
 		option: [ 1, "<select multiple='multiple'>", "</select>" ],
 		legend: [ 1, "<fieldset>", "</fieldset>" ],

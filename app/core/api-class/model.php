@@ -40,7 +40,7 @@ class model extends REST {
         /* $str = htmlentities($str, ENT_NOQUOTES, $encoding);
 
           $str = preg_replace('#&([A-za-z])(?:acute|grave|cedil|circ|orn|ring|slash|th|tilde|uml);#', '\1', $str);
-          $str = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $str);
+          $str = preg_replace('#&([A-za-z][2])(?:lig);#', '\1', $str);
           $str = preg_replace('#&[^;]+;#', '', $str);
           return $str; */
         /* return strtr($str,

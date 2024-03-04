@@ -50,7 +50,7 @@ class decaissementController extends model {
 
         if ($_SESSION['userMag'] > 0){
             $query = "SELECT date(dep.date_dep) as date_dep,dep.id_dep,dep.vu, dep.mnt_dep,dep.details_dep,dep.code_user_dep,
-            td.lib_type_dep,dep.motif
+            td.lib_type_dep,dep.motif, (SELECT `nom_mag` FROM `t_magasin` WHERE `id_mag`= dep.mag_depense_id) as magasindepense
                            FROM 
                            t_depense dep
                            INNER JOIN t_type_depense td ON dep.type_dep=td.id_type_dep
@@ -582,7 +582,7 @@ class decaissementController extends model {
                      caissier_vrsmnt,
                      caissier_login_vrsmnt,
                      code_caissier_vrsmnt,
-                     obj_vrsmnt,id_mag) 
+                     obj_vrsmnt,id_mag)
                      VALUES(" . $bank_vrsmnt . ",
                           " . $mnt_vrsmnt . ", 
                               '$date_vrsmnt $heure_vnt',
@@ -622,7 +622,7 @@ class decaissementController extends model {
             $this->response($this->json($response), 200);
         }
     }
-    public function bonDeVersement(){
+    public function bonDeVersement() {
         // Initialize the TBS instance
         $TBS = new clsTinyButStrong; // new instance of TBS
         $TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN); // load the OpenTBS plugin
@@ -635,51 +635,50 @@ class decaissementController extends model {
     
     
        
-public function vudep() {
-if ($this->get_request_method() != "POST") {
-$this->response('', 406);
-}
+    public function vudep() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
 
-$fact = $_POST;
+        $fact = $_POST;
 
-$id = intval($fact['id_dep']);
-$action = intval($fact['action']);
-$motif = $fact['motif'];
+        $id = intval($fact['id_dep']);
+        $action = intval($fact['action']);
+        $motif = $fact['motif'];
 
-// 1 - vue
-// 2 - Autorisé
-// 3 - rejeter
-// 4 - Autorisé partiellement
-// 5 - Dernier validateur Autorise
-// 6 - Dernier validateur rejeter
-try {
+        // 1 - vue
+        // 2 - Autorisé
+        // 3 - rejeter
+        // 4 - Autorisé partiellement
+        // 5 - Dernier validateur Autorise
+        // 6 - Dernier validateur rejeter
+        try {
 
-if($action == 2)
-$query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_1='" . $_SESSION['userLogin'] . "',id_validateur_1=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
-else if($action == 4)
-$query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_1='" . $_SESSION['userLogin'] . "',id_validateur_1=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
-else if($action == 5)
-$query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_2='" . $_SESSION['userLogin'] . "',id_validateur_2=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
-else if($action == 6)
-$query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_2='" . $_SESSION['userLogin'] . "',id_validateur_2=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
-else $query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_1='" . $_SESSION['userLogin'] . "',id_validateur_1=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
+            if($action == 2)
+            $query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_1='" . $_SESSION['userLogin'] . "',id_validateur_1=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
+            else if($action == 4)
+            $query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_1='" . $_SESSION['userLogin'] . "',id_validateur_1=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
+            else if($action == 5)
+            $query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_2='" . $_SESSION['userLogin'] . "',id_validateur_2=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
+            else if($action == 6)
+            $query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_2='" . $_SESSION['userLogin'] . "',id_validateur_2=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
+            else $query = "UPDATE t_depense set vu=$action, motif='$motif',validateur_1='" . $_SESSION['userLogin'] . "',id_validateur_1=" . $_SESSION['userId'] . " WHERE id_dep=$id ";
 
-$r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
-$response = array("status" => 0,
- "datas" => $r,
- "message" => $action==1?"$query Depense Marquer comme vu avec success!!!":($action==2?"$action Depense Autoriser avec success!!!":"Depense Rejeter avec success!!!"));
-$this->response($this->json($response), 200);
+            $response = array("status" => 0,
+            "datas" => $r,
+            "message" => $action==1?"$query Depense Marquer comme vu avec success!!!":($action==2?"$action Depense Autoriser avec success!!!":"Depense Rejeter avec success!!!"));
+            $this->response($this->json($response), 200);
 
-} catch (Exception $exc) {
-$this->mysqli->rollback();
-$this->mysqli->autocommit(TRUE);
-$response = array("status" => 1,
- "datas" => "",
- "message" => $exc->getMessage());
-
-$this->response($this->json($response), 200);
-} 
+        } catch (Exception $exc) {
+            $this->mysqli->rollback();
+            $this->mysqli->autocommit(TRUE);
+            $response = array("status" => 1,
+                "datas" => "",
+                "message" => $exc->getMessage());
+            $this->response($this->json($response), 200);
+        } 
 }
 
 

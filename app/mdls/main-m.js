@@ -412,6 +412,10 @@ sngs = angular.module("sngs", ["sngs.services", "ngRoute", "ngResource", "base64
         templateUrl: "app/vws/vente/vnt-eta-m.html",
         controller: "venteEtaCtrl"
     });
+    $routeProvider.when("/facturation", {
+        templateUrl: "app/vws/livraison/create.html",
+        controller: "livraisonCtrl"
+    });
     $routeProvider.when("/facteta", {
         templateUrl: "app/vws/facture/fact-eta-m.html",
         controller: "factureEtaCtrl"
