@@ -635,10 +635,14 @@ sngs.controller("decaissDepCtrl", ["$scope", "$rootScope", "prmutils", function(
             app.notify("Le format de la date est incorrect", "m");
             return false
         }
-        if (app.userPfl.id != 117) {
-            app.notify("Vous ne pouvez pas faire de dépense, veuillez faire une expression de besoin et vous faire rembourser", "m", 10000);
+        if (!app.userPfl.droitDepense){
+            app.notify("Vous n'êtes pas autorisés à faire une dépense, veuillez faire une expression de besoin et vous faire rembourser", "m", 10000);
             return false
         }
+        // if (app.userPfl.id != 117) {
+        //     app.notify("Vous ne pouvez pas faire de dépense, veuillez faire une expression de besoin et vous faire rembourser", "m", 10000);
+        //     return false
+        // }
         task = prmutils.saveDepense(depense);
         task.promise.then(function(result) {
             if (result.err === 0) {
@@ -978,6 +982,24 @@ sngs.controller("etaVersCtrl", ["$scope", "$rootScope", "prmutils", function($sc
                 }
             } else {
                 app.notify("Oupss!! Connexion instable...", "m")
+            }
+        })
+    };
+    $scope.bonDeVersement = function(versement) {
+        var task;
+        console.log("-------", versement)
+        task = prmutils.bonDeVersement(versement);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    $scope.versement.mnt_vrsmnt = null;
+                    $scope.getVersements();
+                    app.notify(result.message, "b")
+                }
+            } else {
+                app.notify("Oups! Connexion instable ...", "m")
             }
         })
     };

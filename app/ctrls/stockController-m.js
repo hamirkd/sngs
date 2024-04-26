@@ -2666,6 +2666,12 @@ sngs.controller("stockEditBaCtrl", ["$scope", "$rootScope", "config", "$location
     $rootScope.pageTitle = "Bon de livraison";
     prmutils.getFournisseurs().promise.then(function(result) {
         $scope.fournisseurs = result.data
+        for (let fournisseur of $scope.fournisseurs) {
+           fournisseur.nom_frns 
+           if(fournisseur.tel_frns && fournisseur.tel_frns.trim().length>0) {
+            fournisseur.nom_frns = fournisseur.nom_frns + " [" + fournisseur.tel_frns + "]";
+           }
+        }
     });
     var objectID = ($routeParams.objectID) ? parseInt($routeParams.objectID) : 0;
     $rootScope.title = (objectID > 0) ? "Modification Bon" : "Nouveau Bon de livraison";

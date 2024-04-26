@@ -106,7 +106,7 @@ class userController extends model {
 
 
         $response = array();
-        $query = "INSERT INTO  t_user (" . trim($columns, ',') . ",mag_user,date_crea_user,profil_user,pass_user) VALUES(" . trim($values, ',') . "," . $mag_user . ",now()," . intval($user['profil_user']) . ",md5('2014stock'))";
+        $query = "INSERT INTO  t_user (" . trim($columns, ',') . ",mag_user,date_crea_user,profil_user,pass_user) VALUES(" . trim($values, ',') . "," . $mag_user . ",now()," . intval($user['profil_user']) . ",md5('Noor@2024'))";
 
         if (!empty($user)) {
             try {
@@ -379,7 +379,7 @@ class userController extends model {
         $client = $_GET;
         $id = (int) $client['id']; 
 
-        $query = "UPDATE  t_user set pass_user= md5('2014stock') WHERE id_user=$id";
+        $query = "UPDATE  t_user set pass_user= md5('Noor@2024') WHERE id_user=$id";
         $response = array();
         try {
             if (!$r = $this->mysqli->query($query))

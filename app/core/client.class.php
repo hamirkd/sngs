@@ -87,7 +87,7 @@ class clientController extends model {
         if ($_SESSION['mode_clnt_uniq'] == 0)
             $cond = "c.user_clt in (SELECT id_user from t_user where mag_user=" . $_SESSION['userMag'] . ")";
 
-        $query = "SELECT c.id_clt,c.exo_tva_clt,c.code_clt,c.nom_clt,c.max_crdt_clt,c.credit_en_cours_clt  FROM t_client c WHERE actif=1 
+        $query = "SELECT c.id_clt,c.exo_tva_clt,c.code_clt,c.nom_clt,c.max_crdt_clt,c.credit_en_cours_clt,c.tel_clt  FROM t_client c WHERE actif=1 
             AND $cond order by c.nom_clt";
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 

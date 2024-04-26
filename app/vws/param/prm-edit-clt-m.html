@@ -15,13 +15,13 @@
             <legend>{{title}}</legend>
             <table width="96%" boder="1">
                 <tr>
-                    <td><label>Nom/Raison sociale</label>
+                    <td><label>Nom/Raison sociale <span class="fg-red">*</span></label>
                         <div class="input-control text span4" data-role="input-control"><input name="nom_clt" placeholder="M. Tanga Jean de Dieu" type="text" ng-model="client.nom_clt" required><button type="button" class="btn-clear" tabindex="-1"></button></div><label>Exhonorer des Taxes ?</label>
                         <div class="input-control select span4"
                             data-role="input-control"><select name="exo_tva_clt" ng-model="client.exo_tva_clt" ng-options="exo.name as exo.label for exo in exos"></select></div>
                     </td>
-                    <td><label>Telephone</label>
-                        <div class="input-control text span4" data-role="input-control"><input name="tel_clt" placeholder="+00226 50 20 24 78" type="text" ng-model="client.tel_clt"><button type="button" class="btn-clear" tabindex="-1"></button></div><label>E-mail</label>
+                    <td><label>Telephone  <span class="fg-red">*</span></label>
+                        <div class="input-control text span4" data-role="input-control"><input name="tel_clt" placeholder="+00226 50 20 24 78" type="text" ng-model="client.tel_clt" required><button type="button" class="btn-clear" tabindex="-1"></button></div><label>E-mail</label>
                         <div class="input-control text span4" data-role="input-control"><input name="mail_clt" placeholder="exemple@gmail.com" type="email" ng-model="client.mail_clt"><button type="button" class="btn-clear" tabindex="-1"></button></div>
                     </td>
                     <td><label>No RCCM</label>
@@ -61,4 +61,5 @@
                 </tr>
             </table><button class="primary" ng-click="save(client);" ng-disabled="isClean() || form.$invalid"><span class="icon-checkmark"></span> {{buttonText}}</button> &nbsp; <button class="danger" ng-click="deleted(client)" ng-show="client.id_clt"><span class="icon-cancel-2"></span> Supprimer</button></fieldset>
     </form>
+    <span class="fg-red">Les champs * sont obligatoires</span>
 </div>

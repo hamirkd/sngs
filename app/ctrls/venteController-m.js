@@ -1365,6 +1365,12 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.clients = result.data;
+                for(let client of $scope.clients) {
+                    if(client.tel_clt && client.tel_clt.trim().length>0)
+                    {
+                        client.nom_clt = client.nom_clt + " [" + client.tel_clt+"]"
+                    }
+                }
                 app.waiting.show = false
             } else {
                 app.waiting.show = false

@@ -626,10 +626,10 @@ class decaissementController extends model {
         // Initialize the TBS instance
         $TBS = new clsTinyButStrong; // new instance of TBS
         $TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN); // load the OpenTBS plugin
-        $template = 'demo_ms_word.docx';
+        $template = 'documents/demo_ms_word.docx';
         $TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
         $TBS->MergeField('description', '-');
-        $TBS->Show(OPENTBS_DOWNLOAD, $output_file_name);
+        $TBS->Show(OPENTBS_DOWNLOAD, "bon.docx");
     }
     
     
