@@ -251,6 +251,40 @@ sngs.controller("paramEditCltCtrl", ["$scope", "$rootScope", "localStorageServic
         model: {}
     };
     $rootScope.pageTitle = "Client";
+    $scope.type_clients = [
+        {
+            name: "PARTICULIER",
+            label: "PARTICULIER"
+        },
+        {
+            name: "MECANICIEN",
+            label: "MECANICIEN"
+        }, 
+        {
+            name: "REVENDEUR",
+            label: "REVENDEUR"
+        }, 
+        {
+            name: "GARAGE",
+            label: "GARAGE"
+        }, 
+        {
+            name: "ENTREPRISE",
+            label: "ENTREPRISE"
+        },
+        {
+            name: "TRANSPORTEUR",
+            label: "TRANSPORTEUR"
+        },
+        {
+            name: "GROSSISTE",
+            label: "GROSSISTE"
+        },
+        {
+            name: "",
+            label: ""
+        },
+];
     $scope.exos = [{
         name: 0,
         label: "Non [ Paye les taxes]"
@@ -258,6 +292,27 @@ sngs.controller("paramEditCltCtrl", ["$scope", "$rootScope", "localStorageServic
         name: 1,
         label: "Oui [Ne Paye pas les taxes]"
     }];
+    $scope.delais_clients = [
+    {
+        name: 0,
+        label: "0 jours"
+    }, {
+        name: 5,
+        label: "5 jours"
+    }, {
+        name: 15,
+        label: "15 jours"
+    }, {
+        name: 30,
+        label: "30 jours"
+    }, {
+        name: 45,
+        label: "45 jours"
+    },{
+        name: 60,
+        label: "60 jours"
+    },
+];
     var objectID = ($routeParams.objectID) ? parseInt($routeParams.objectID) : 0;
     $rootScope.title = (objectID > 0) ? "Modification Client" : "Nouveau Client";
     $scope.buttonText = (objectID > 0) ? "Modifier" : "Ajouter";

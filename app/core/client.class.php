@@ -53,7 +53,7 @@ class clientController extends model {
         if ($_SESSION['mode_clnt_uniq'] == 0)
             $cond = " c.user_clt in (SELECT id_user from t_user where mag_user=" . $_SESSION['userMag'] . ")";
 
-        $query = "SELECT c.id_clt,c.exo_tva_clt,c.code_clt,c.nom_clt,c.max_crdt_clt,c.credit_en_cours_clt  FROM t_client c WHERE actif=1 
+        $query = "SELECT c.id_clt,c.exo_tva_clt,c.code_clt,c.nom_clt,c.max_crdt_clt,c.credit_en_cours_clt,c.tel_clt  FROM t_client c WHERE actif=1 
             AND $cond order by c.nom_clt";
 
 
@@ -290,7 +290,7 @@ class clientController extends model {
         }
 
         $client = $_POST;
-        $column_names = array('nom_clt', 'sexe_clt', 'type_clt', 'adr_clt', 'bp_clt', 'regime_clt', 'situation_clt', 'division_clt', 'forme_juri_clt', 'ifu_clt', 'rccm_clt', 'pays_clt', 'ville_clt', 'tel_clt', 'mob_clt', 'fax_clt', 'mail_clt', 'siteweb_clt');
+        $column_names = array('nom_clt', 'sexe_clt', 'type_clt','delai_pay_fact', 'adr_clt', 'bp_clt', 'regime_clt', 'situation_clt', 'division_clt', 'forme_juri_clt', 'ifu_clt', 'rccm_clt', 'pays_clt', 'ville_clt', 'tel_clt', 'mob_clt', 'fax_clt', 'mail_clt', 'siteweb_clt');
         $keys = array_keys($client);
         $columns = '';
         $values = '';

@@ -455,7 +455,6 @@ class venteController extends model {
                          '" . $_SESSION['userLogin'] . "',
                          '" . $_SESSION['userCode'] . "')";
 
-
                 if (!$r = $this->mysqli->query($query))
                     throw new Exception($this->mysqli->error . __LINE__);
                 $factID = $this->mysqli->insert_id;

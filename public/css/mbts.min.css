@@ -4569,7 +4569,7 @@ a {
 .metro .navigation-bar {
     width: 100%;
     display: block;
-    background-color: #1ba1e2;
+    background-color: #58a943;
     color: #fff
 }
 
@@ -6440,7 +6440,7 @@ a {
     display: block;
     float: left;
     width: 0;
-    background-color: #1ba1e2;
+    background-color: #58a943;
     height: 100%
 }
 
@@ -6891,7 +6891,7 @@ a {
 }
 
 .metro .sidebar.light li.active a {
-    background-color: #1ba1e2;
+    background-color: #58a943;
     color: #fff
 }
 
@@ -6991,7 +6991,7 @@ a {
 .metro .calendar .calendar-header,
 .metro .calendar .calendar-header td a:hover,
 .metro .calendar .calendar-header th a:hover {
-    background-color: #1ba1e2;
+    background-color: #58a943;
     color: #fff
 }
 
@@ -9463,7 +9463,7 @@ a {
 }
 
 .metro .label.info {
-    background-color: #1ba1e2;
+    background-color: #58a943;
     color: #fff
 }
 
@@ -14654,7 +14654,7 @@ optgroup {
 }
 
 .background-screen {
-    background: url(../images/tiles-bg3.jpg) center center no-repeat fixed;
+    background: url(../images/tiles-bg-noor.jpg) center center no-repeat fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

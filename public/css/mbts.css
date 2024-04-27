@@ -4022,7 +4022,7 @@ a {
 .metro .navbar {
   width: 100%;
   display: block;
-  background-color: #1ba1e2;
+  background-color: #58a943;
   color: #ffffff;
 }
 .metro .navigation-bar .navigation-bar-content,
@@ -5785,7 +5785,7 @@ a {
   display: block;
   float: left;
   width: 0;
-  background-color: #1ba1e2;
+  background-color: #58a943;
   height: 100%;
 }
 .metro .progress-bar.small {
@@ -6189,7 +6189,7 @@ a {
   color: #999999;
 }
 .metro .sidebar.light li.active a {
-  background-color: #1ba1e2;
+  background-color: #58a943;
   color: #ffffff;
 }
 .metro .accordion > .accordion-frame {
@@ -6274,7 +6274,7 @@ a {
   color: #1d1d1d;
 }
 .metro .calendar .calendar-header {
-  background-color: #1ba1e2;
+  background-color: #58a943;
   color: #ffffff;
 }
 .metro .calendar .calendar-header td,
@@ -6287,7 +6287,7 @@ a {
 }
 .metro .calendar .calendar-header td a:hover,
 .metro .calendar .calendar-header th a:hover {
-  background-color: #1ba1e2;
+  background-color: #58a943;
   color: #ffffff;
 }
 .metro .calendar .calendar-actions td,
@@ -7570,7 +7570,7 @@ a {
   transition: all 0.2s ease;
 }
 .metro .stepper > ul li.current {
-  background-color: #1ba1e2;
+  background-color: #58a943;
 }
 .metro .stepper > ul li.current:hover {
   background-color: #00ccff;
@@ -8505,7 +8505,7 @@ a {
   color: #ffffff;
 }
 .metro .label.info {
-  background-color: #1ba1e2;
+  background-color: #58a943;
   color: #ffffff;
 }
 .metro hr {

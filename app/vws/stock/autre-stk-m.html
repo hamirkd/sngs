@@ -33,8 +33,8 @@
                                     <td>{{data.nom_art |uppercase}} <span class="fg-red">{{data.prix_mini_art}}</span>#<span class="fg-red">{{data.prix_max_art}}</span></td>
                                     <td>{{data.ref_art |uppercase}}</td>
                                     <td>
-                                        <span class="fg-green" ng-if="app.userPfl.mg==0 || app.userPfl.mg==1 || app.userPfl.id==107"> {{data.qte_stk}}</span>
-                                        <span class="fg-green" ng-if="app.userPfl.mg!=0 && app.userPfl.mg!=1 && app.userPfl.id!=107"> {{data.qte_stk>0?'Dispoible':''}}</span>
+                                        <span class="fg-green"> {{data.qte_stk}}</span>
+                                        <!-- <span class="fg-green" ng-if="app.userPfl.mg!=0 && app.userPfl.mg!=1 && app.userPfl.id!=107"> {{data.qte_stk>0?'Dispoible':''}}</span> -->
                                     </td>
                                     <td>{{data.seuil_art |uppercase}}</td>
                                     <td>{{data.nom_cat |uppercase}}</td>
