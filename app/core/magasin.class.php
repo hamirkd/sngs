@@ -50,6 +50,8 @@ class magasinController extends model {
         if (!empty($this->_request['nom_mag'])) {
             $_SESSION['userMag'] = $this->_request['id_mag'];
             $_SESSION['nomMag'] = $this->_request['nom_mag'];
+            $query = "UPDATE t_user SET profil_user=(SELECT profil_id FROM t_magadin_user WHERE mag_id=".$this->_request['id_mag']."), mag_user=".$this->_request['id_mag'];
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
             $response = array("status" => 0,
                 "datas" => array("userMag"=>$this->_request['id_mag'],"nomMag"=>$this->_request['nom_mag']),
                 "message" => "Vous avez changé de magasin");
@@ -101,7 +103,8 @@ class magasinController extends model {
         }
 
         $query = "SELECT m.*  FROM t_magasin m WHERE id_mag in (SELECT mag_id FROM t_magadin_user WHERE  user_id=".$_SESSION['userId'].") order by m.nom_mag";
-        
+        $query = "SELECT mag_id as id_mag,ifnull(SELECT nom_mag FROM t_magasin WHERE id_mag=t_magasin_user.mag_id,'TOUS') as nom_mag FROM t_magasin_user WHERE user_id=".$_SESSION['userId'].")  order by m.nom_mag";
+        $query = "SELECT mag_id as id_mag,ifnull((SELECT nom_mag FROM t_magasin WHERE id_mag=t_magadin_user.mag_id),'TOUS') as nom_mag FROM t_magadin_user WHERE user_id=".$_SESSION['userId']." order by nom_mag;";
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
         if ($r->num_rows <= 0) {

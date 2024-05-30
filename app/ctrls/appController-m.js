@@ -133,12 +133,14 @@ angular.module("sngs").controller("appCtrl", ["$rootScope", "localStorageService
                 app.notify(result.message, "b");
                 app.waiting.show = false;
                 app.userPfl.mg = result.data.userMag;
-                location.reload();
+                //location.reload();
+                app.logOut()
             } else {
                 app.userPfl.mg = 0;
                 app.notify(result.message, "m")
                 app.waiting.show = false
-                location.reload();
+                //location.reload();
+                app.logOut()
             }
         });
     };

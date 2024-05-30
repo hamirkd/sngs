@@ -25,6 +25,7 @@ $query = "SELECT a.code_art,
                  u.nom_unite,
                  p.prix_mini_art,
                  p.prix_gros_art,
+                 p.prix_maxi_art,
                  p.prix_achat_art  
                  FROM t_article a 
                       left join (select * from t_prix_article GROUP BY art_prix_art DESC) p on a.id_art=p.art_prix_art 
@@ -58,7 +59,8 @@ $objPHPExcel->getActiveSheet()->setCellValue('A1', "CATEGORIE")
         ->setCellValue('H1', "MARQUE")
         ->setCellValue('I1', "MODEL")
         ->setCellValue('J1', "REFERENCE")
-        ->setCellValue('K1', "AUTRES_CARACT");
+        ->setCellValue('K1', "AUTRES_CARACT")
+        ->setCellValue('L1', "PRX_MAXI");
 
 
 // Add data
@@ -77,6 +79,7 @@ if ($r->num_rows > 0) {
         $objPHPExcel->getActiveSheet()->setCellValue('I' . $i, $row['model_art']);
         $objPHPExcel->getActiveSheet()->setCellValue('J' . $i, $row['ref_art']);
         $objPHPExcel->getActiveSheet()->setCellValue('K' . $i, $row['caract_art']);
+        $objPHPExcel->getActiveSheet()->setCellValue('L' . $i, $row['prix_maxi_art']);
 
         // Add page breaks every 10 rows
         if ($i % 25 == 0) {
