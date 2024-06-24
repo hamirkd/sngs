@@ -1,0 +1,188 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a class="element btn_search"><span class="icon-search"></span>
+                        Nouveau Critere de recherche </a><span class="element-divider"></span>
+                    <a class="element btn_reinitialiser" ng-click="reinitialiser();"><span class="icon-plus"></span>&nbsp;<span
+                            class="icon-medal-2"></span> Nouveau decharge </a>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <div class="row">
+        <div class="col-lg-12" id="etatdecharge">
+            <div class="example">
+                <fiedlset>
+                    <legend>{{title}} </legend>
+                    <div class="col-md-12" ng-show="decharges.length> 0">
+                        <table class="table striped bordered condensed hovered">
+                            <thead>
+                                <th class='text-left'>Date&nbsp;</th>
+                                <th class='text-left'>Article&nbsp;</th>
+                                <th class='text-left'>Quantité&nbsp;</th>
+                                <th class='text-left'>Montant&nbsp;</th>
+                                <th class='text-left'>Motif &nbsp;</th>
+                                <th class='text-left'>dechargeneur&nbsp;</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in filtered=(decharges | filter:filterText)" class="liste">
+                                    <td>{{data.date_decharge|date}}</td>
+                                    <td>{{data.article|uppercase}}</td>
+                                    <td>{{data.quantite |number}}</td>
+                                    <td>{{data.montant |currency}}</td>
+                                    <td>{{data.motif}}</td>
+                                    <td>{{data.login_decharge|uppercase}}</td>
+                                </tr>
+                                <tr>
+                                    <td align="right" colspan="2">
+                                        <h3><span>Total :</span></h3>
+                                    </td>
+                                    <td>
+                                        <h3><span class="fg-red"></span></h3>
+                                    </td>
+                                    <td colspan="2">
+                                        <h3><span class="fg-red"> {{ getTotal().totalMontant | currency }} F CFA</span></h3>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" ng-show="decharges.length == 0">
+                        <div class="col-md-12">
+                            <h4>Aucun decharge ... !</h4>
+                        </div>
+                    </div>
+                </fiedlset>
+            </div>
+        </div>
+        <div class="col-lg-5 hidden" style="float:right;" id="nouveaudecharge">
+            <div class="example">
+                <fieldset>
+                    <legend>Nouveau decharge</legend>
+                    <form name="form">
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <label class="col-lg-12">Date decharge</label>
+                                    <div class="input-control text col-lg-3"><input type="text" placeholder="jj/mm/aaaa" name="date_decharge" ng-model="decharge.date_decharge" class="fg-orange"></div>
+                                    <label>Type</label>
+                        <div class="input-control select col-lg-3" data-role="input-control"><select ng-model="decharge.typedecharge">
+                                <option value="RECEVOIR">RECEVOIR</option>
+                                <option value="ENVOYER">ENVOYER</option>
+                            </select></div>
+                                    
+                        <label>Responsable </label>
+                        <div class="input-control select  col-lg-3" data-role="input-control"><select name='responsable' ng-model="decharge.responsable" ng-options="user.id_user as user.nom_prenom_user|uppercase for user in users">
+                                    <option value=""></option>
+                                </select></div>
+
+
+                                    <label>Client &nbsp;&nbsp;[<a href="#/prmclt/0" title="Ajouter un client" target="_BLANK">+</a>]<span class="input-control text span2"><input ng-model="ft"
+                                        placeholder="filtre" type="text" ng-focus=""></span></label>
+                            <div class="input-control  select col-lg-3" data-role="input-control"><select name='clt'
+                                    ng-model="decharge.clt"
+                                    ng-options="client.nom_clt |uppercase for client in clients|filter:ft|orderBy:'nom_clt':false"
+                                    ng-change="focusField('montant')" required></select><span style="position:absolute;"
+                                    title="Actualiser la liste des clients" class="icon-cycle" ng-click="gclt()"></span></div>
+                       
+                                    
+                                    
+                                    <label class="col-lg-12">Montant</label>
+                                    <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="montant" placeholder="0" type="number" ng-model="decharge.montant" required></div>
+
+                                    <label class="col-lg-12" ng-show="app.userPfl.mg==0 || app.userPfl.pfl==1">Magasin </label>
+                                    <div class="input-control select col-lg-6" data-role="input-control" ng-show="app.userPfl.mg==0 || app.userPfl.pfl==1">
+                                        <select ng-model="decharge.magasin" ng-options="magasin.id_mag as magasin.nom_mag|uppercase for magasin in myMagasinsAcces"></select>
+                                    </div>
+                                    <label class="col-lg-12">Motif </label>
+                                    <div class="input-control textarea col-lg-12" data-role="input-control"><textarea name="motif" placeholder="Motif du decharge" ng-model="decharge.motif"></textarea></div>
+                                </td>
+                            </tr>
+                        </table><button class="primary" ng-click="save(decharge);" ng-disabled="form.$invalid || !decharge.article"><span
+                                class="icon-checkmark"></span>Valider</button> &nbsp; <button class="inverse" type="reset" class="button"><i class="icon-undo on-left on-left-more"></i>Annuler </button>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="example" id="searchPannel">
+            <fieldset>
+                <legend><a class="toggle_search" href=""><span class=" icon-arrow-right-3"></span></a> Nouveau Filtre
+                </legend>
+                <form name="form">
+                    <div style="max-height:500px;overflow:auto;">
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Date du/debut</label>
+                                        <div class="input-control text"><input type="text" placeholder="jj/mm/aaaa" name="date_deb" ng-model="search.date_deb">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="stagger"><label>Date Fin</label>
+                                        <div class="input-control text"><input type="text" name="date_fin" ng-model="search.date_fin" placeholder="jj/mm/aaaa"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>dechargeneur</label>
+                                        <div class="input-control select span4" data-role="input-control"><select ng-model="search.dechargeneur" ng-options="user.id_user as user.nom_prenom_user | uppercase for user in users"><option value=""></option></select></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>&nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="input-control text span4" style="">
+                                        <input ng-model="filterItemFiltre"
+                                            placeholder="filtre" type="text"></span>
+                                    <div class="stagger"><label>Article</label>
+                                        <div class="input-control select span4" data-role="input-control">
+                                            <select ng-model="search.article" ng-options="article.id_art as article.nom_art|uppercase for article in articles|filter:filterItemFiltre">
+                                                <option value=""></option>
+                                            </select></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div><button class="primary" ng-click="searchF();"><i
+                            class="icon-search on-left on-left-more"></i>Valider</button> &nbsp; <button class="inverse" type="reset" class="button"><i class="icon-undo on-left on-left-more"></i> Annuler </button>
+                </form>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        $(".toggle_search").on("click", function() {
+            $("#searchPannel").css("right", "-700px")
+        });
+        $(".btn_search").on("click", function() {
+            $("#searchPannel").css("right", "0")
+        });
+        $(".btn_reinitialiser").on("click", function() {
+            console.log($(".etatdecharge"))
+            if ($("#etatdecharge").hasClass("col-lg-7")) {
+                $("#etatdecharge").removeClass("col-lg-7")
+                $("#etatdecharge").addClass("col-lg-12");
+                $("#nouveaudecharge").addClass("hidden");
+            } else {
+                $("#etatdecharge").removeClass("col-lg-12");
+                $("#etatdecharge").addClass("col-lg-7");
+                $("#nouveaudecharge").removeClass("hidden");
+            }
+        });
+
+
+    });
+</script>

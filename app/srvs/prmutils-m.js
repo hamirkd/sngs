@@ -208,6 +208,15 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
         return dao.getData(config.mdlRetourArticle + "getEtatRetourArticles", obj)
     };
 
+    
+    servicesObject.saveDecharge = function(decharge) {
+        return dao.getData(config.mdlDecharge + "saveDecharge", decharge)
+    };
+
+    servicesObject.getEtatDecharges = function(obj) {
+        return dao.getData(config.mdlDecharge + "getEtatDecharges", obj)
+    };
+
     servicesObject.getDemandes = function() {
         return dao.getData(config.mdlDemande + "getDemandes")
     };

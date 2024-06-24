@@ -73,6 +73,7 @@ angular.module("sngs").factory("config", function() {
         mdlDecaiss: "decaissement.class.php?x=",
         mdlDemande: "demande.class.php?x=",
         mdlRetourArticle: "retour-article.class.php?x=",
+        mdlDecharge: "decharge.class.php?x=",
         mdlAnnul: "annulation.class.php?x=",
         timeout: 0,
         INTERVAL_VNT_JOUR: 30000,

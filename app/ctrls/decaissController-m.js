@@ -200,6 +200,43 @@ sngs.controller("etatRetourCtrl", ["$scope", "$rootScope", "prmutils", function(
             }
         })
     };
+    
+    $scope.gclt = function() {
+        var task = prmutils.getOrClients();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.clients = result.data;
+                for(let client of $scope.clients) {
+                    if(client.tel_clt && client.tel_clt.trim().length>0)
+                    {
+                        client.nom_clt = client.nom_clt + " [" + client.tel_clt+"]"
+                    }
+                }
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.gclt();
+
+    $scope.getcUsers = function() {
+        var task = prmutils.getcUsers();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.users = result.data;
+                for (let user of $scope.users) {
+                    user['nom_prenom_user'] = user.nom_user + ' ' + user.prenom_user + ' - ' + user.code_user;
+                }
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.getcUsers();
 
     $scope.getMyMagasinsAcces = function() {
         if (app.userPfl.pfl == 1 || app.userPfl.pfl == 0) {
@@ -275,6 +312,94 @@ sngs.controller("etatRetourCtrl", ["$scope", "$rootScope", "prmutils", function(
             var retour = $scope.filtered[i];
             totalMontant += parseInt(retour.montant)
             totalQuantite += parseInt(retour.quantite)
+        }
+        return { totalQuantite: totalQuantite, totalMontant: totalMontant };
+    };
+    $scope.searchF()
+}]);
+
+
+sngs.controller("etatDechargeCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+    var app = $scope.app;
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Decharge",
+        subtitle: "Etat des decharges",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Etat des decharges";
+    $rootScope.pageTitle = "Etat decharge";
+    $scope.search = {};
+    $scope.decharge = {};
+    var today = new Date();
+    var today2 = new Date();
+    today2.setMonth(today2.getMonth() + 1)
+    var dd = today.getDate();
+    var mm = today.getMonth();
+    var mmm = today2.getMonth();
+    var yyyy = today.getFullYear();
+    var sss = today.getTime();
+    if (dd < 10) {
+        dd = "0" + dd
+    }
+    if (mm < 10) {
+        mm = "0" + mm
+    }
+    today = dd + "/" + mm + "/" + yyyy;
+    today2 = dd + "/" + mmm + "/" + yyyy;
+    $scope.search.date_deb = today;
+    $scope.search.date_fin = today2;
+    $scope.decharge = { date_decharge: today2 };
+
+    $scope.save = function(decharge) {
+        var task;
+        if (!prmutils.isDate(decharge.date_decharge)) {
+            app.notify("Le format de la date est incorrect", "m");
+            return false
+        }
+        task = prmutils.saveDecharge(decharge);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    $scope.decharge.montant = null;
+                    $scope.searchF();
+                    app.notify(result.message, "b");
+                    $scope.reinitialiser();
+                }
+            } else {
+                app.notify("Une erreur est survenue ..." + result.message, "m")
+            }
+        })
+    };
+    
+
+    $scope.reinitialiser = function() {
+        $scope.decharge = { date_decharge: today2 };
+    };
+    $scope.searchF = function() {
+        var task;
+        task = prmutils.getEtatDecharges($scope.search);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m");
+                } else {
+                    $scope.decharges = result.data;
+                }
+            } else {
+                app.notify("Une erreur est survenue ...", "m")
+            }
+        });
+    };
+    $scope.getTotal = function() {
+        var totalMontant = 0;
+        for (var i = 0; i < $scope.filtered.length; i++) {
+            var decharge = $scope.filtered[i];
+            totalMontant += parseInt(decharge.montant);
         }
         return { totalQuantite: totalQuantite, totalMontant: totalMontant };
     };
@@ -990,17 +1115,9 @@ sngs.controller("etaVersCtrl", ["$scope", "$rootScope", "prmutils", function($sc
         console.log("-------", versement)
         task = prmutils.bonDeVersement(versement);
         task.promise.then(function(result) {
-            if (result.err === 0) {
-                if (result.data === "-1") {
-                    app.notify(result.message, "m")
-                } else {
-                    $scope.versement.mnt_vrsmnt = null;
-                    $scope.getVersements();
-                    app.notify(result.message, "b")
-                }
-            } else {
-                app.notify("Oups! Connexion instable ...", "m")
-            }
+            console.log(result,'')
+            const blob = new Blob(result);
+            window.open(URL.createObjectURL(result), '_blank');
         })
     };
     $scope.getTotal = function() {

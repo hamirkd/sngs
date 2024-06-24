@@ -513,6 +513,12 @@ sngs = angular.module("sngs", ["sngs.services", "ngRoute", "ngResource", "base64
         templateUrl: "app/vws/retour-article/retour-article.html",
         controller: "etatRetourCtrl"
     });
+    
+    $routeProvider.when("/decharge", {
+        templateUrl: "app/vws/decharge/decharge.html",
+        controller: "etatDechargeCtrl"
+    });
+
     $routeProvider.when("/demande", {
         templateUrl: "app/vws/demande/demande-m.html",
         controller: "demandeCtrl"

@@ -50,7 +50,8 @@ class magasinController extends model {
         if (!empty($this->_request['nom_mag'])) {
             $_SESSION['userMag'] = $this->_request['id_mag'];
             $_SESSION['nomMag'] = $this->_request['nom_mag'];
-            $query = "UPDATE t_user SET profil_user=(SELECT profil_id FROM t_magadin_user WHERE mag_id=".$this->_request['id_mag']."), mag_user=".$this->_request['id_mag'];
+            $query = "UPDATE t_user SET profil_user=(SELECT profil_id FROM t_magadin_user WHERE mag_id=".$this->_request['id_mag']." and user_id=".$_SESSION['userId'].') ';
+            $query =$query. " , mag_user=".$this->_request['id_mag'].' where id_user='.$_SESSION['userId'];
             $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
             $response = array("status" => 0,
                 "datas" => array("userMag"=>$this->_request['id_mag'],"nomMag"=>$this->_request['nom_mag']),
