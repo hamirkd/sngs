@@ -1692,6 +1692,10 @@ sngs.controller("stockTrfCtrl", ["$scope", "$rootScope", "prmutils", function($s
             app.notify("La boutique/Magasin doit etre different(e) de celle(delui) de destination...", "m");
             return false
         }
+        if (true) {
+            app.notify("Vous n'avez pas la possibilite de faire des transferts, veuillez passer par un bon de sortie", "m");
+            return false
+        }
         task = prmutils.transfStock(appstock);
         task.promise.then(function(result) {
             if (result.err === 0) {
