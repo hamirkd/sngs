@@ -74,6 +74,7 @@ angular.module("sngs").factory("config", function() {
         mdlDemande: "demande.class.php?x=",
         mdlRetourArticle: "retour-article.class.php?x=",
         mdlAnnul: "annulation.class.php?x=",
+        mdlPaiement: "paiement.class.php?x=",
         timeout: 0,
         INTERVAL_VNT_JOUR: 30000,
         INTERVAL_VNT_RPT_VNT_JOUR: 110000,

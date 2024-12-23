@@ -405,6 +405,146 @@ sngs.controller("etatDechargeCtrl", ["$scope", "$rootScope", "prmutils", functio
     };
     $scope.searchF()
 }]);
+
+sngs.controller("etatPaiementCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+    var app = $scope.app;
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Etat des paiements",
+        subtitle: "Etat paiement",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Etat des paiements";
+    $rootScope.pageTitle = "Etat Paiements";
+    $scope.search = {};
+    var today = new Date();
+    var today2 = new Date();
+    today2.setMonth(today.getMonth() + 1);
+    
+    var dd = today.getDate();
+    var mm = today.getMonth();
+    var mmfin = today2.getMonth();
+    var mmdebut = today.getMonth();
+    var yyyydebut = today.getFullYear();
+    var yyyyfin = today2.getFullYear();
+    var sss = today.getTime();
+    if (dd < 10) {
+        dd = "0" + dd
+    }
+    if (mm < 10) {
+        mm = "0" + mm
+    }
+    if (mmdebut < 10) {
+        mmdebut = "0" + mmdebut
+    }
+    if (mmfin < 10) {
+        mmfin = "0" + mmfin
+    }
+    if (today.getMonth() == 0) {
+        today.setMonth(today.getMonth() - 1);
+        mmdebut = today.getMonth();
+        mmdebut = mmdebut + 1;
+        yyyydebut = today.getFullYear();
+    }
+    if (mmfin == "00") {
+        mmfin = "01";
+    }
+    today = dd + "/" + mmdebut + "/" + yyyydebut;
+    today2 = dd + "/" + mmfin + "/" + yyyyfin;
+    $scope.search.date_deb = today;
+    $scope.search.date_fin = today2;
+    
+    /*$scope.gus = function() {
+        task = prmutils.getUsers();
+        task.promise.then(function(result) {
+            console.log(result)
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.users = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };*/
+     
+    $scope.downloadJSONAsCSV = function() {
+        // Convert JSON data to CSV
+        let csvData = app.jsonToCsv($scope.paiements); // Add .items.data
+        // Create a CSV file and allow the user to download it
+        let blob = new Blob([csvData], { type: 'text/csv' });
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.csv';
+        document.body.appendChild(a);
+        a.click();
+    }
+
+    $scope.searchF = function() {
+        var task;
+        task = prmutils.getEtatPaiements($scope.search);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    $scope.paiements = result.data
+                    $scope.paiements.sort((a, b) => a.date_paiement > b.date_paiement);
+                }
+            } else {
+                app.notify("Une erreur est survenue ...", "m")
+            }
+        })
+    };
+    $scope.getTotal = function() {
+        var total = 0;
+        for (var i = 0; i < $scope.filtered.length; i++) {
+            var vente = $scope.filtered[i];
+            total += parseInt(vente.montant)
+        }
+        return total
+    };
+    $scope.searchF();
+    $scope.getMyMagasinsAcces = function() {
+        if (app.userPfl.pfl == 1 || app.userPfl.pfl == 0) {
+            task = prmutils.getMagasins();
+        } else {
+            task = prmutils.getMyMagasinsAcces();
+        }
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.myMagasinsAcces = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        });
+    }
+    $scope.getMyMagasinsAcces();
+
+    $scope.gus = function() {
+        task = prmutils.getcUsers();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                console.log(result.data)
+                $scope.users = result.data;
+                for (let user of $scope.users) {
+                    user['nom_prenom_user'] = '[' + user.code_user + '] ' + user.nom_user + ' ' + user.prenom_user;
+                }
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.gus();
+    
+}]);
 sngs.controller("etatDemandeCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
     var app = $scope.app;
     app.waiting.show = false;
@@ -911,6 +1051,164 @@ sngs.controller("demandeCtrl", ["$scope", "$rootScope", "prmutils", function($sc
         return total
     }
 }]);
+
+
+sngs.controller("paiementCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+    var app = $scope.app;
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Paiement",
+        subtitle: "Paiement",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Paiements";
+    $rootScope.pageTitle = "Paiements";
+    $scope.paiement = {};
+    var datepaiement;
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    var sss = today.getTime();
+    if (dd < 10) {
+        dd = "0" + dd
+    }
+    if (mm < 10) {
+        mm = "0" + mm
+    }
+    datepaiement = dd + "/" + mm + "/" + yyyy;
+    if (app.PRMS.resa === 0 || app.PRMS.resa === false) {
+        $scope.paiement.date_paiement = datepaiement
+    } else {
+        var task = prmutils.getDs();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.paiement.date_paiement = result.data.datej;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    }
+    
+    $scope.getPaiements = function() {
+        var task = prmutils.getPaiements();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.paiements = result.data;
+                app.waiting.show = false
+                $scope.paiement = { date_paiement: datepaiement }
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    
+    $scope.downloadJSONAsCSV = function() {
+        // Convert JSON data to CSV
+        let csvData = app.jsonToCsv($scope.paiements); // Add .items.data
+        // Create a CSV file and allow the user to download it
+        let blob = new Blob([csvData], { type: 'text/csv' });
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'paiements.csv';
+        document.body.appendChild(a);
+        a.click();
+    }
+    $scope.getPaiements();
+    $scope.save = function(paiement) {
+        var task;
+        if (!prmutils.isDate(paiement.date_paiement)) {
+            app.notify("Le format de la date est incorrect", "m");
+            return false
+        }
+        task = prmutils.savePaiement(paiement);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    $scope.paiement = { date_paiement: datepaiement };
+                    $scope.getPaiements();
+                    app.notify(result.message, "b")
+                    $(".btn_reinitialiser").click();
+
+                }
+            } else {
+                app.notify("Une erreur est survenue ..." + result.message, "m")
+            }
+            console.log(result)
+        })
+    };
+    $scope.actionSurReglement = function(data, etat) {
+        console.log("----------------", data, etat);
+        if (etat == 2 && confirm("Voulez vous vraiment annuler cet paiement ? ") === true) {
+
+        }
+    }
+    
+    $scope.ajouterOuModifier = function(paiement) {
+        console.log("-------")
+        var task;
+        if (!paiement.id_paiement) {
+            $scope.paiement = { date_paiement: datepaiement };
+            return false
+        } else {
+            $scope.paiement = paiement;
+        }
+    };
+
+   
+    $scope.gus = function() {
+        task = prmutils.getcUsers();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                console.log(result.data)
+                $scope.users = result.data;
+                for (let user of $scope.users) {
+                    user['nom_prenom_user'] = user.nom_user + ' ' + user.prenom_user + ' [' + user.code_user + '] ';
+                }
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.gus();
+
+    $scope.getMyMagasinsAcces = function() {
+        if (app.userPfl.pfl == 1 || app.userPfl.pfl == 0 || app.userPfl.mg == 0) {
+            task = prmutils.getMagasins();
+        } else {
+            task = prmutils.getMyMagasinsAcces();
+        }
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.myMagasinsAcces = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        });
+    }
+    $scope.getMyMagasinsAcces();
+    $scope.getTotal = function() {
+        var total = 0;
+        for (var i = 0; i < $scope.filtered.length; i++) {
+            var paiement = $scope.filtered[i];
+            total += parseInt(paiement.montant)
+        }
+        return total
+    }
+}]);
+
 sngs.controller("etaCaissCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
     var app = $scope.app;
     app.waiting.show = false;

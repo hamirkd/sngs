@@ -279,7 +279,7 @@ angular.module("sngs").controller("appCtrl", ["$rootScope", "localStorageService
             cl = "#09ab09"
         }
         if (c === "w") {
-            cl = "#FFF933"
+            cl = "#c99717"
         }
         var elem = $("<div>", {
             id: "NoifyMessage",

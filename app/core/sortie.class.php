@@ -641,21 +641,23 @@ class sortieController extends model {
 
         if ($_SESSION['userMag'] != 0)
             $query = "SELECT sort.bon_sort,sort.date_sort,
-                a.nom_art,m.nom_mag,c.nom_cat,
+                a.nom_art,m.nom_mag,c.nom_cat,mr.nom_mag as nom_mag_src,
                 apa.qte_sort_art
                 FROM t_sortie sort
                 INNER JOIN t_sortie_article apa ON sort.id_sort=apa.sort_sort_art
                 INNER JOIN t_magasin m on m.id_mag=sort.mag_sort_dst
-                INNER JOIN t_article a ON apa.art_sort_art=a.id_art 
+                INNER JOIN t_article a ON apa.art_sort_art=a.id_art
+                INNER JOIN t_magasin mr on mr.id_mag=sort.mag_sort_src 
                 INNER JOIN t_categorie_article c ON c.id_cat=a.cat_art
                 WHERE sort.mag_sort_src=" . intval($_SESSION['userMag']);
         else
             $query = "SELECT sort.bon_sort,sort.date_sort,
-                a.nom_art,m.nom_mag,c.nom_cat,
+                a.nom_art,m.nom_mag,c.nom_cat,mr.nom_mag as nom_mag_src,
                 apa.qte_sort_art
                 FROM t_sortie sort
                 INNER JOIN t_sortie_article apa ON sort.id_sort=apa.sort_sort_art
                 INNER JOIN t_magasin m on m.id_mag=sort.mag_sort_dst
+                INNER JOIN t_magasin mr on mr.id_mag=sort.mag_sort_src
                 INNER JOIN t_article a ON apa.art_sort_art=a.id_art 
                 INNER JOIN t_categorie_article c ON c.id_cat=a.cat_art
                 WHERE 1=1";

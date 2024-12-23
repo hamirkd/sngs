@@ -17,6 +17,11 @@
                                     ng-checked="appvente.bl_bic" ng-change="" /><span class="check"></span> BIC (2%) ?
                             </label></div>
                     </td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="input-control select span4" data-role="input-control"><select name="type_reglement"
+                            ng-model="appvente.type_reglement"
+                            ng-options="exo.name as exo.label for exo in type_reglements" required></select></div>
+                    </td>
                 </tr>
             </table>
         </legend>
@@ -27,7 +32,8 @@
                     <div class="input-control text span2"><input type="text" placeholder="jj/mm/aaaa" name="date_vnt"
                             ng-disabled="!app.PRMS.defdat" ng-model="appvente.date_vnt" class="fg-orange"></div>
                 </td>
-                <td><label>Client &nbsp;&nbsp;[<a href="#/prmclt/0" title="Ajouter un client" target="_BLANK">+</a>]<span class="input-control text span2"><input ng-model="ft"
+                <td><label>Client &nbsp;&nbsp;[<a href="#/prmclt/0" title="Ajouter un client" target="_BLANK">+</a>]
+                    <span class="input-control text span2"><input ng-model="ft"
                                 placeholder="filtre" type="text" ng-focus=""></span></label>
                     <div class="input-control select span6" data-role="input-control"><select name='vnt_clt'
                             ng-model="appvente.vnt_clt"
@@ -35,6 +41,23 @@
                             ng-change="focusField('art_appro_art')" required></select><span style="position:absolute;"
                             title="Actualiser la liste des clients" class="icon-cycle" ng-click="gclt()"></span></div>
                 </td>
+                
+                <td colspan="2">
+                    <div style="display: flex;" ng-if="appvente.type_reglement === 'ORANGEMONEY'">
+                    <label>Numero &nbsp;&nbsp;
+                        <span class="input-control text span2">
+                            <input ng-model="ref" placeholder="filtre" type="text" ng-focus=""></span>
+                        </label>
+                            <button class="success"
+                        ng-click="rechercheReferencePaiement(ref);" ng-disabled=""><span class="icon-search  on-left on-left-more"></span>
+                        Rechercher</button></div>
+                        <div ng-if="depot && depot.code">
+                            <label>{{depot.code}} </label>
+                            <label>{{depot.nom_expediteur}}|{{depot.montant}} </label>
+                         
+                        </div>
+                </td>
+
             </tr>
             <tr ng-if="!app.PRMS.cat">
                 <td><label>Art <span ng-if="app.PRMS.apu && appvente.art_appro_art.prix_mini_art>=0">(PU:<span

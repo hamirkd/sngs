@@ -1152,6 +1152,23 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     servicesObject.doSave = function() {
         return dao.getData(config.mdlParamAdmin + "save")
     };
+    
+    servicesObject.getPaiement = function(objectID) {
+        return dao.getData(config.mdlPaiement + "getPaiement&code=" + objectID)
+    };
+    
+    servicesObject.getPaiements = function() {
+        return dao.getData(config.mdlPaiement + "getPaiements")
+    };
+    
+
+    servicesObject.getEtatPaiements = function(obj) {
+        return dao.getData(config.mdlPaiement + "getEtatPaiements", obj)
+    };
+    servicesObject.savePaiement = function(obj) {
+        return dao.getData(config.mdlPaiement + "savePaiement", obj)
+    };
+
     servicesObject.isDate = function(strDate) {
         if (strDate.length != 10) {
             return false

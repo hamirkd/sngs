@@ -209,7 +209,7 @@ class articleController extends model {
                 $r = $this->mysqli->query($rek_update) or die($this->mysqli->error . __LINE__);
 
                 $pm = (floatval($article['prix_mini_art']) >= 0) ? floatval($article['prix_mini_art']) : 0;
-                $pm = (floatval($article['prix_max_art']) >= 0) ? floatval($article['prix_max_art']) : 0;
+                $pmax = (floatval($article['prix_max_art']) >= 0) ? floatval($article['prix_max_art']) : 0;
                 $pg = (floatval($article['prix_gros_art']) >= 0) ? floatval($article['prix_gros_art']) : 0;
                 $pa = (floatval($article['prix_achat_art']) >= 0) ? floatval($article['prix_achat_art']) : 0;
 
@@ -219,7 +219,7 @@ class articleController extends model {
                 $r = $this->mysqli->query($rek_update) or die($this->mysqli->error . __LINE__);
                 $log = $_SESSION['userLogin'];
                 $ide = $_SESSION['userId'];
-                $rek_insert = "INSERT INTO t_prix_article (art_prix_art,prix_mini_art,prix_max_art,prix_gros_art,prix_achat_art,date_prix,created_by,user_login) VALUES($lastInsertID,$pm,$pg,$pa,now(),$ide,'$log')";
+                $rek_insert = "INSERT INTO t_prix_article (art_prix_art,prix_mini_art,prix_max_art,prix_gros_art,prix_achat_art,date_prix,created_by,user_login) VALUES($lastInsertID,$pm,$pmax,$pg,$pa,now(),$ide,'$log')";
                 
                 $r = $this->mysqli->query($rek_insert) or die($this->mysqli->error . __LINE__);
 

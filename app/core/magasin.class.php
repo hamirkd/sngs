@@ -105,7 +105,7 @@ class magasinController extends model {
 
         $query = "SELECT m.*  FROM t_magasin m WHERE id_mag in (SELECT mag_id FROM t_magadin_user WHERE  user_id=".$_SESSION['userId'].") order by m.nom_mag";
         $query = "SELECT mag_id as id_mag,ifnull(SELECT nom_mag FROM t_magasin WHERE id_mag=t_magasin_user.mag_id,'TOUS') as nom_mag FROM t_magasin_user WHERE user_id=".$_SESSION['userId'].")  order by m.nom_mag";
-        $query = "SELECT mag_id as id_mag,ifnull((SELECT nom_mag FROM t_magasin WHERE id_mag=t_magadin_user.mag_id),'TOUS') as nom_mag FROM t_magadin_user WHERE user_id=".$_SESSION['userId']." order by nom_mag;";
+        $query = "SELECT distinct mag_id as id_mag,ifnull((SELECT nom_mag FROM t_magasin WHERE id_mag=t_magadin_user.mag_id),'TOUS') as nom_mag FROM t_magadin_user WHERE user_id=".$_SESSION['userId']." order by nom_mag;";
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
         if ($r->num_rows <= 0) {

@@ -917,6 +917,8 @@ class venteController extends model {
         $exo_tva_clt = intval($appVentecpts['exo_tva_clt']);
         $remise = intval($appVentecpts['remise']);
         $mnt_crdt = doubleval($appVentecpts['mnt_total']);
+        $reference_paiement = $appVentecpts['reference_paiement'];
+        $type_reglement = $appVentecpts['type_reglement'];
 
         /* remise */
         $mnt_crdt -=$remise;
@@ -1000,7 +1002,7 @@ class venteController extends model {
 
                 $query = "INSERT INTO  t_facture_vente (
                      code_fact,
-                     clnt_fact,
+                     clnt_fact,type_reglement,reference_paiement,
                      mag_fact, 
                      bl_tva,
                      bl_bic, 
@@ -1013,7 +1015,7 @@ class venteController extends model {
                      login_caissier_fact,
                      code_caissier_fact) 
                      VALUES('" . $num_fac . "',
-                          $client,
+                          $client,'$type_reglement','$reference_paiement',
                           " . $id_mag . ",  
                           " . $bltva . ",
                           " . $blbic . ", 
@@ -1069,6 +1071,11 @@ class venteController extends model {
                     }
                 }
                 $lastopvnt = $this->getDetailsOfFacture($factID);
+                
+                if (isset($reference_paiement)) {
+                    $query = "UPDATE t_paiement set ref_facture_vente='$num_fac',facture_vnt=$factID, used_paiement_code_user='".$_SESSION['userCode']."', mag_paiement=$id_mag WHERE code='$reference_paiement'";
+                    $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+                }
                 $this->mysqli->commit();
                 $this->mysqli->autocommit(TRUE);
 

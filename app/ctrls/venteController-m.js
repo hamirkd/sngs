@@ -1290,11 +1290,22 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
     $scope.stock = {
         qte_stk: 0
     };
+    $scope.type_reglements = [
+        {
+            name: "ESPECE",
+            label: "ESPECE"
+        },
+        {
+            name: "ORANGEMONEY",
+            label: "ORANGE MONEY"
+        }
+    ];
     $scope.items = [];
     $scope.itemsNewPrices = [];
-    $scope.appvente = {};
+    $scope.appvente = {type_reglement: 'ORANGEMONEY'};
     $scope.appvente.bl_bic = 0;
     $scope.appvente.bl_tva = 0;
+    $scope.depot = {};
     var datevnt;
     var today = new Date();
     var dd = today.getDate();
@@ -1340,8 +1351,18 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
             bic: $scope.appvente.bl_bic,
             vnt_clt: $scope.appvente.vnt_clt.id_clt,
             exo_tva_clt: $scope.appvente.vnt_clt.exo_tva_clt,
+            type_reglement: $scope.appvente.type_reglement,
+            reference_paiement: $scope.depot.code,
             items: items
         };
+        if (ObjVente.type_reglement === 'ORANGEMONEY') {
+            if(ObjVente.mnt_total != $scope.depot.montant) {
+                app.notify("Veuillez verifier les montants de " + ObjVente.type_reglement + " et la facture", "m");
+                return;
+            }
+        } else {
+            ObjVente.reference_paiement = null;
+        }
         task = prmutils.venteCpt(ObjVente);
         task.promise.then(function(result) {
             if (result.err === 0) {
@@ -1384,6 +1405,24 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
             }
         })
     };
+    
+    $scope.rechercheReferencePaiement = function(numeroRef) {
+        app.waiting.show = true;
+        var task = prmutils.getPaiement(numeroRef);
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            $scope.depot = undefined;
+            if (result.err === 0) {
+                $scope.depot = result.data[0];
+
+                app.waiting.show = false
+            } else {
+                app.notify(result.message, "m");
+                app.waiting.show = false
+            }
+        })
+    };
+    
     $scope.gclt();
     $scope.vercours = function() {
         alert("oura")
@@ -1405,12 +1444,22 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
             return false
         }
 
-        if (art.prix_mini_art > 0 && parseFloat($scope.appvente.prix_var) < art.prix_mini_art) {
+        if (art.prix_mini_art > 0 && parseFloat($scope.appvente.prix_var) < art.prix_mini_art && $scope.appvente.qte_appro_art<10) {
             app.notify(" Impossible d'ajouter. Le prix de vente est trop bas ..! ", "m", 10000);
             if (!app.userPfl.droitControlePrixVente)
                 return false
         }
-        if (art.prix_max_art > 0 && parseFloat($scope.appvente.prix_var) > art.prix_max_art) {
+        if (art.prix_gros_art > 0 && parseFloat($scope.appvente.prix_var) < art.prix_gros_art && $scope.appvente.qte_appro_art>=10) {
+            app.notify(" Impossible d'ajouter. Le prix de vente est trop bas pour une vente en gros..! ", "m", 10000);
+            if (!app.userPfl.droitControlePrixVente)
+                return false
+        }
+        if (art.prix_gros_art > 0 && parseFloat($scope.appvente.prix_var) > art.prix_gros_art && $scope.appvente.qte_appro_art >= 10) {
+            app.notify("Vous êtes entrain de vendre au delas du prix fixer..! Vous pouvez vendre au prix en gros", "w", 10000);
+            if (!app.userPfl.droitControlePrixVente)
+                return false
+        }
+        if (art.prix_max_art > 0 && parseFloat($scope.appvente.prix_var) > art.prix_max_art && $scope.appvente.qte_appro_art<10) {
             // app.notify(" Impossible d'ajouter. Le prix de vente est trop haut ..! ", "m", 10000);
             app.notify("Vous êtes entrain de vendre au delas du prix fixer..! ", "w", 2000);
             //return false

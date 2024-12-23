@@ -36,6 +36,7 @@
                         <thead>
                             <th class='text-left'>Date Bon&nbsp;</th>
                             <th class='text-left'>No Bon&nbsp;</th>
+                            <th class='text-left'>Source&nbsp;</th>
                             <th class='text-left'>Beneficiaire&nbsp;</th>
                             <th class='text-left'>Categorie&nbsp;</th>
                             <th class='text-left'>Article&nbsp;</th>
@@ -45,6 +46,7 @@
                             <tr ng-repeat="data in filtered=(sorties|filter:filterText)" class="liste">
                                 <td>{{data.date_sort|date:'dd/MM/yyyy'}}</td>
                                 <td>{{data.bon_sort|uppercase}}</td>
+                                <td>{{data.nom_mag_src|uppercase}}</td>
                                 <td>{{data.nom_mag|uppercase}}</td>
                                 <td>{{data.nom_cat|uppercase}}</td>
                                 <td>{{data.nom_art |uppercase}}</td>

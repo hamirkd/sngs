@@ -19,6 +19,7 @@ function authentication(){
         $_SESSION['droitFactureVenteAnnuleeToday'] = $result->droit_facture_vente_annulee_today;
         $_SESSION['droitControlePrixVente'] = $result->droit_controle_prix_vente;
         $_SESSION['droitValidateurDemande'] = $result->droit_validateur_demande;
+        $_SESSION['droitPaiement'] = $result->droit_paiement;
         $_SESSION['droitReglementFactureCredit'] = $result->droit_reglement_facture_credit;
 
     }

@@ -1201,6 +1201,11 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
                 app.waiting.show = false
             }
         })
+        
+        const approvisionnement = $scope.approvisionnements.find(approvis => approvis.id_appro === $scope.appstock.appro_appro_art);
+        if (approvisionnement) {
+            $scope.appstock.referenceStock = approvisionnement.bon_liv_appro
+        }
     };
     $scope.undobl = function(data) {
         var task = prmutils.undoEntArt(data);
@@ -1299,6 +1304,14 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         $scope.loadArticles(0)
     }
     $scope.getStock = function(art, mag) {
+        
+        const article = $scope.articles.find(article => article.id_art === art);
+        console.log(article)
+        console.log(article)
+        if (article) {
+            $scope.appstock.propositionLabel = article.nom_art
+            $scope.appstock.referenceLabel = article.reference
+        }
         task = prmutils.getStock(art, mag);
         task.promise.then(function(result) {
             if (result.err === 0) {
@@ -1314,6 +1327,7 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
                 app.waiting.show = false
             }
         });
+        
         $scope.getPrices(art, mag)
     };
     $scope.getPrices = function(art, mag) {
@@ -2971,6 +2985,11 @@ sngs.controller("stockBaAeCtrl", ["$scope", "$rootScope", "config", "prmutils", 
         })
     };
     $scope.apprvae = function(fac) {
+        
+        if (!app.userPfl.droitApprovisionnement){
+            app.notify("Vous n'êtes pas autorisés à faire un approvisionnement, veuillez informer votre supérieur ou contacter l'administrateur", "m", 10000);
+            return false;
+        }
         var task = prmutils.apprvae(fac);
         task.promise.then(function(result) {
             app.waiting.show = true;

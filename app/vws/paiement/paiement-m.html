@@ -1,0 +1,157 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/paiements" class="element btn_search"><span
+                            class="icon-stats"></span> Liste des paiements </a><span class="element-divider"></span>
+                            
+                            <a class="element btn_reinitialiser"  ng-click="ajouterOuModifier({});"><span class="icon-plus"></span>&nbsp;<span
+                                    class="icon-medal-2"></span> Nouveau paiement </a>
+                
+                                    <div class="input-control checkbox"><label
+                                        class=""><input name="" type="checkbox" ng-model="showAllDetail"
+                                            ng-checked="showAllDetail" ng-change="" /><span class="check"></span> Afficher tout
+                                    </label></div>
+
+
+                                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <div class="">
+        <div>
+            <div class="example">
+                <fiedlset>
+                    <legend>{{title}} 
+
+                        <button style="float:right;margin-right:50px;" ng-hide="paiements.length == 0" class="button success" ng-click="downloadJSONAsCSV();"><span class="icon-file-excel"></span>Excel</button> 
+
+                <div class="input-control text span4" style='float: right;'>
+
+                    <input ng-model="filterText"
+                    placeholder="filtrer" type="text"></div>
+
+                    </legend>
+                    <div class="col-md-12" ng-show="paiements.length> 0">
+                        <table class="table striped bordered condensed hovered">
+                            <thead>
+                                <th class='text-left'>Type paiement&nbsp;</th>
+                                <th class='text-left'>Code&nbsp;</th>
+                                <th class='text-left'>Date paiement&nbsp;</th>
+                                <th class='text-left'>Nom expediteur&nbsp;</th>
+                                <th class='text-left' ng-show="showAllDetail">caissier&nbsp;</th>
+                                <th class='text-left' ng-show="showAllDetail">Facture lié&nbsp;</th>
+                                <th class='text-left'>Magasin&nbsp;</th>
+                                <th class='text-left'>Montant &nbsp;</th>
+                                <th class='text-left' ng-show="showAllDetail">Auteur&nbsp;</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in filtered=(paiements | filter:filterText)" class="liste">
+                                    <td>{{data.type_paiement|uppercase}}</td>
+                                    <td>{{data.code|uppercase}}</td>
+                                    <td>{{data.date_paiement }}</td>
+                                    <td>{{data.nom_expediteur|uppercase}}</td>
+                                    <td ng-show="showAllDetail">{{data.used_paiement_code_user|uppercase}}</td>
+                                    <td ng-show="showAllDetail">{{data.ref_facture_vente|uppercase}}</td>
+                                    <td>{{data.nom_mag|uppercase}}</td>
+                                    <td>{{data.montant |currency}}</td>
+                                    <td ng-show="showAllDetail">{{data.login_paiement |uppercase}}</td>
+                                    <td>
+
+                                        <a
+                                        href ng-click="actionSurReglement(data,1)" title="Valider" class="btn fg-white bg-green">&nbsp;
+                                        &nbsp;</a>&nbsp;&nbsp;
+ 
+                                        <a 
+                                        href ng-click="actionSurReglement(data,2)" title="Rejeter" class="btn fg-white bg-red">&nbsp;
+                                        &nbsp;</a> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right">
+                                        <h3><span>Total :</span></h3>
+                                    </td>
+                                    <td>
+                                        <h3><span class="fg-red"> {{ getTotal() | currency }} F CFA</span></h3>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" ng-show="paiements.length == 0">
+                        <div class="col-md-12">
+                            <h4>Aucune paiement trouvé ... !</h4>
+                        </div>
+                    </div>
+                </fiedlset>
+            </div>
+        </div>
+            <div class="example col-lg-5"  id="searchPannel">
+                <fieldset>
+                    <legend><a  class="inverse" href=""><span class=" icon-arrow-right-3"></span></a>Nouveau paiement</legend>
+                    <form name="form">
+                        <div   style="max-height:500px;overflow:auto;">
+                        <table width="100%">
+                            <tr>
+                                <td><label class="col-lg-12">Date paiement</label>
+                                    <div class="input-control text col-lg-3"><input type="text" placeholder="jj/mm/aaaa" name="date_paiement" ng-model="paiement.date_paiement" class="fg-orange" required></div>
+                                    <label class="col-lg-12">Code</label>
+                                    <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="code" placeholder="Exemple : PP241218.2142.25716627" type="text" ng-model="paiement.code" required></div>
+                                    <label class="col-lg-12">Montant</label>
+                                    <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="montant" placeholder="0" type="number" ng-model="paiement.montant" required></div>
+                                    <label class="col-lg-12">Nom expéditeur</label>
+                                    <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="nom_expediteur" placeholder="Nom du client" type="text" ng-model="paiement.nom_expediteur"></div>
+                                    <label class="col-lg-12">Boutique </label>
+                                    <div class="input-control select col-lg-6" data-role="input-control">
+                                        <select ng-model="paiement.mag_paiement" ng-options="magasin.id_mag as magasin.nom_mag|uppercase for magasin in myMagasinsAcces">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                    <label class="col-lg-12">Caissier </label>
+                                    <label class="col-lg-12"> &nbsp;&nbsp;<span class="input-control text span2">
+                                    <input ng-model="filterItem" placeholder="filtre" type="text" /></span></label>
+                                    <div class="input-control select col-lg-6" data-role="input-control">
+                                        <select ng-model="paiement.used_paiement_code_user" ng-options="user.code_user as user.nom_prenom_user | uppercase for user in users|filter:filterItem|orderBy:'nom_prenom_user':false" ng-click="gus()">
+                                            <option value=""></option>
+                                            </select>
+                                    </div>
+                                    <label class="col-lg-12">Référence facture</label>
+                                    <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="facture_vnt" placeholder="Ex : 22024-0216" type="text" ng-model="paiement.facture_vnt"></div>
+                                </td>
+                            </tr>
+                        </table>
+                        <span class="element-divider"></span>
+                        <div style="padding-top: 10%;"><button class="primary" ng-click="save(paiement);" ng-disabled="form.$invalid || !paiement.code || !paiement.montant || !paiement.date_paiement"><span
+                                class="icon-checkmark"></span>Valider</button> &nbsp; <button class="inverse" type="reset" class="button"><i class="icon-undo on-left on-left-more"></i>Annuler </button>
+                            </div>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+
+
+
+    </div>
+</div>
+
+
+<script>
+    $(function() {
+        
+        
+        $(".btn_reinitialiser").on("click", function() {
+            console.log($("#searchPannel").css("right"))
+            if ($("#searchPannel").css("right") === '0px') {
+                $("#searchPannel").css("right", "-700%");
+            } else {
+                $("#searchPannel").css("right", "0")
+            }
+        });
+            $(".inverse").on("click", function() {
+                console.log("------")
+                $(".btn_reinitialiser").click();
+            })
+    });
+</script>

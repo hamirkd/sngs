@@ -882,6 +882,17 @@ class approvisionnementController extends model {
 
         $appstock = $_POST;
 
+        // AJOUT DE APPRO
+        $id = intval($appstock['art_appro_art']);
+        $query = "SELECT a.*,p.prix_mini_art,p.prix_max_art,p.prix_gros_art,p.prix_achat_art  FROM t_article a left join (select * from t_prix_article  WHERE a_jour=0 GROUP BY art_prix_art DESC) p on a.id_art=p.art_prix_art WHERE a.id_art =$id LIMIT 1";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+        if ($r->num_rows > 0) {
+            $result = $r->fetch_assoc();
+        }
+        $result['nom_art'] = $appstock['propositionLabel'];
+        $appstock['art_appro_art'] = $this->insertArticle($result);
+        
 
         $column_names = array('appro_appro_art', 'art_appro_art', 'qte_appro_art', 'prix_appro_art');
 
@@ -898,12 +909,12 @@ class approvisionnementController extends model {
             $values = $values . "" . $$desired_key . ",";
         }
 
-            
-            
 
         $response = array();
         $query = "INSERT INTO  t_approvisionnement_article (" . trim($columns, ',') . ",date_appro_art,mag_appro_art,login_appro_art,user_appro_art,code_user_appro_art) VALUES(" . trim($values, ',') . ",now(),'" . $_SESSION['userMag'] . "','" . $_SESSION['userLogin'] . "'," . $_SESSION['userId'] . ",'" . $_SESSION['userCode'] . "')";
-
+        // echo $_POST['art_appro_art'];
+        // echo $query;
+        // return;
         if (!empty($appstock)) {
             try {
                 if (!$r = $this->mysqli->query($query))
@@ -984,6 +995,73 @@ class approvisionnementController extends model {
                 "message" => "Des articles ont deja ete enregistres sous ce bordereau ..Impossible de continuer l'operation");
             $this->response($this->json($response), 200);
         }
+    }
+    private function insertArticle($article_) {
+        $article = $article_;
+        $lastInsertID = $article['id_art'];
+        if ($this->isExistArt($article['nom_art'])) {
+            return $lastInsertID;
+        }
+
+        $column_names = array('nom_art', 'ref_art', 'seuil_art', 'marq_art', 'model_art', 'cat_art', 'unite_art', 'caract_art');
+        $keys = array_keys($article);
+        $columns = '';
+        $values = '';
+        foreach ($column_names as $desired_key) {
+            if (!in_array($desired_key, $keys)) {
+                $$desired_key = '';
+            } else {
+                if ($desired_key == "seuil_art" || $desired_key == "cat_art" || $desired_key == "unite_art")
+                    $$desired_key = intval($article[$desired_key]);
+                else
+                    $$desired_key = $this->esc($article[$desired_key]);
+            }
+            $columns = $columns . $desired_key . ',';
+            if ($desired_key == "seuil_art" || $desired_key == "cat_art" || $desired_key == "unite_art")
+                $values = $values . "" . $$desired_key . ",";
+            else
+                $values = $values . "'" . $$desired_key . "',";
+        }
+
+        $query = "INSERT INTO  t_article (" . trim($columns, ',') . ") VALUES(" . trim($values, ',') . ")";
+        $lastInsertID = $article['id_art'];
+        if (!empty($article)) {
+            try {
+                if (!$r = $this->mysqli->query($query))
+                    throw new Exception($this->mysqli->error . __LINE__);
+                $lastInsertID = $this->mysqli->insert_id;
+                $rek_update = "UPDATE t_article SET code_art='A" . $lastInsertID . "' WHERE id_art=" . intval($lastInsertID);
+                $r = $this->mysqli->query($rek_update) or die($this->mysqli->error . __LINE__);
+
+                $pm = (floatval($article['prix_mini_art']) >= 0) ? floatval($article['prix_mini_art']) : 0;
+                $pmax = (floatval($article['prix_max_art']) >= 0) ? floatval($article['prix_max_art']) : 0;
+                $pg = (floatval($article['prix_gros_art']) >= 0) ? floatval($article['prix_gros_art']) : 0;
+                $pa = (floatval($article['prix_achat_art']) >= 0) ? floatval($article['prix_achat_art']) : 0;
+
+                /** Je modifie l'etat des prix et leurs designant qu'ils ne sont plus a jour */
+                $rek_update = "UPDATE t_prix_article SET a_jour=1,date_prix=now() WHERE art_prix_art=$lastInsertID AND a_jour=0";
+
+                $r = $this->mysqli->query($rek_update) or die($this->mysqli->error . __LINE__);
+                $log = $_SESSION['userLogin'];
+                $ide = $_SESSION['userId'];
+
+                $rek_insert = "INSERT INTO t_prix_article (art_prix_art,prix_mini_art,prix_max_art,prix_gros_art,prix_achat_art,date_prix,created_by,user_login) VALUES($lastInsertID,$pm,$pg,$pmax,$pa,now(),$ide,'$log')";
+                
+                $r = $this->mysqli->query($rek_insert) or die($this->mysqli->error . __LINE__);
+            } catch (Exception $exc) {
+            }
+        }
+        return $lastInsertID;
+    }
+    private function isExistArt($var) {
+        $var = $this->esc($var);
+        $query = "SELECT id_art FROM t_article WHERE nom_art ='$var'";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+        if ($r->num_rows > 0) {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -31,3 +31,8 @@ UPDATE `t_versement` SET `id_mag`=(SELECT `mag_user` FROM `t_user` WHERE `id_use
 
 ALTER TABLE `t_user` ADD `droit_depense` TINYINT NULL DEFAULT '0' AFTER `droit_reglement_facture_credit`;
 ALTER TABLE `t_user` ADD `droit_annule_depense` TINYINT NULL DEFAULT '0' AFTER `droit_reglement_facture_credit`;
+ALTER TABLE `t_user` ADD `droit_approvisionnement` TINYINT NULL DEFAULT '0' AFTER `droit_annule_depense`;
+
+
+
+ALTER TABLE `t_facture_vente` ADD `type_reglement` VARCHAR(50) NULL DEFAULT NULL AFTER `bl_caiss`, ADD `reference_paiement` VARCHAR(50) NULL DEFAULT NULL AFTER `type_reglement`;

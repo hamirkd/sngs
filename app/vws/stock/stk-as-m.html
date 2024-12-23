@@ -40,8 +40,9 @@
                                 ng-options="categorie.id_cat as categorie.nom_cat|uppercase for categorie in categories|filter:filterItemcat"
                                 ng-change="loadArticlesOfCategorie(mCategorie)" ng-click="getcat()"></select><span
                                 style="position:absolute;" title="Actualiser la liste des categories articles"
-                                class="icon-cycle" ng-click="app.refreshcatCache()"></span></div><label>Article[<a
-                                href="#/prmart/0" title="Ajouter/Creer un article" target="_BLANK">+</a>]
+                                class="icon-cycle" ng-click="app.refreshcatCache()"></span></div>
+                                <label>Article
+                                    [<a href="#/prmart/0" title="Ajouter/Creer un article" target="_BLANK">+</a>]
                             &nbsp;&nbsp;<span class="input-control text span2" style=""><input ng-model="filterItem"
                                     placeholder="filtre" type="text"></span></label>
                         <div class="input-control select span4" data-role="input-control"><select name='art_appro_art'
@@ -51,8 +52,12 @@
                                 required></select><span style="position:absolute;"
                                 title="Actualiser la liste des articles" class="icon-cycle"
                                 ng-click="loadArticlesOfCategorie(mCategorie)"></span></div>
+                                <label>Proposition nom [{{appstock.referenceLabel}}] [{{appstock.referenceStock}}]</label>
+                                <label>
+                                    <span class="input-control text span6" style=""><input ng-model="appstock.propositionLabel"
+                                    placeholder="filtre" type="text"></span></label>
                     </td>
-                    <td rowspan="3">
+                    <td style="width: 10px;">
                         <div class="span5">
                             <div class="notice marker-on-bottom " style="padding:5px;font-size:10px;;">
                                 <div class="fg-white">REMARQUE: Definir les nouveaux prix (detail,gros) de ce article
