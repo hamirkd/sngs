@@ -508,14 +508,18 @@ class venteController extends model {
                 $this->verserAvance($factID, $id_clt, $avance, $mnt_crdt, $remise, $date_vnt);
                 $lastopvnt = $this->getDetailsOfFacture($factID);
 
+                $response = $this->controlePlafondJourMoisAnnee($id_mag);
+                if (!empty($response)) {
+                    $this->mysqli->rollback();
+                    $this->mysqli->autocommit(TRUE);
 
-                $this->mysqli->commit();
-                $this->mysqli->autocommit(TRUE);
-
-                $response = array("status" => 0,
-                    "datas" => $lastopvnt,
+                } else {
+                    $this->mysqli->commit();
+                    $this->mysqli->autocommit(TRUE);
+                    $response = array("status" => 0,
+                        "datas" => $lastopvnt,
                     "message" => array("message" => "Vente a credit effectuee avec success!", "f" => $factID));
-
+                }
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
                 $this->mysqli->rollback();
@@ -906,7 +910,6 @@ class venteController extends model {
             $this->response('', 406);
         }
 
-
         $appVentecpts = $_POST;
         $items = $appVentecpts['items'];
         $id_mag = intval($_SESSION['userMag']);
@@ -1076,14 +1079,14 @@ class venteController extends model {
                     $query = "UPDATE t_paiement set ref_facture_vente='$num_fac',facture_vnt=$factID, used_paiement_code_user='".$_SESSION['userCode']."', mag_paiement=$id_mag WHERE code='$reference_paiement'";
                     $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
                 }
+                
                 $this->mysqli->commit();
                 $this->mysqli->autocommit(TRUE);
-
-
                 $response = array("status" => 0,
                     "datas" => $lastopvnt,
                     "message" => array("message" => "Vente au comptant effectuee avec success!!", "f" => $factID));
-
+                
+                
 
                 $this->response($this->json($response), 200);
             } catch (Exception $exc) {
@@ -1096,6 +1099,73 @@ class venteController extends model {
                 $this->response($this->json($response), 200);
             }
         }
+    }
+    public function controlePlafondJourMoisAnnee($id_mag) {
+        // Recuperation du cumule de vente du jour
+        $query = "SELECT * FROM t_magasin m WHERE m.id_mag = $id_mag ";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        $result = $r->fetch_assoc();
+        $plafond_jour = $result['plafond_jour'];
+        $plafond_mois = $result['plafond_mois'];
+        $plafond_annee = $result['plafond_annee'];
+        if ($plafond_jour>0) {
+            $query = "SELECT IFNULL(SUM(f.crdt_fact),0) as mntcpt FROM t_facture_vente f WHERE f.mag_fact = $id_mag ";
+            $query.= " AND f.bl_fact_crdt=1  AND f.sup_fact=0 AND  f.bl_crdt_regle=0 AND f.crdt_fact>0 AND (f.crdt_fact-f.som_verse_crdt)>0 ";
+            $query.= " AND DATE(f.date_enr)='" . date('Y-m-d') . "'";
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+            $result = $r->fetch_assoc();
+            if ($result['mntcpt']>=$plafond_jour) {
+                $response = array("status" => 1,
+                    "datas" => "",
+                    "message" => "Vous avez atteint le plafond autorisé du jour " . $result['mntcpt']. " / " . $plafond_jour);
+                return $response;
+            }
+        }
+        if ($plafond_jour>0) {
+            $query = "SELECT IFNULL(SUM(f.crdt_fact),0) as mntcpt FROM t_facture_vente f WHERE f.mag_fact = $id_mag ";
+            $query.= " AND f.bl_fact_crdt=1  AND f.sup_fact=0 AND  f.bl_crdt_regle=0 AND f.crdt_fact>0 AND (f.crdt_fact-f.som_verse_crdt)>0 ";
+            $query.= " AND DATE(f.date_enr)= CURDATE()";
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+            $result = $r->fetch_assoc();
+            if ($result['mntcpt']>$plafond_jour) {
+                $response = array("status" => 1,
+                    "datas" => "",
+                    "message" => "Vous avez atteint le plafond autorisé du jour " . $result['mntcpt']. " / " . $plafond_jour);
+                return $response;
+            }
+        }
+        
+        else if ($plafond_mois>0) {
+            $query = "SELECT IFNULL(SUM(f.crdt_fact),0) as mntcpt FROM t_facture_vente f WHERE f.mag_fact = $id_mag ";
+            $query.= " AND f.bl_fact_crdt=1  AND f.sup_fact=0 AND  f.bl_crdt_regle=0 AND f.crdt_fact>0 AND (f.crdt_fact-f.som_verse_crdt)>0 ";
+            $query.= " AND YEAR(f.date_enr) = YEAR(CURDATE())  AND MONTH(f.date_enr) = MONTH(CURDATE())";
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+            $result = $r->fetch_assoc();
+            if ($result['mntcpt']>$plafond_mois) {
+                $response = array("status" => 1,
+                    "datas" => "",
+                    "message" => "Vous avez atteint le plafond autorisé du mois " . $result['mntcpt']. " / " . $plafond_mois);
+                return $response;
+            }
+        } 
+        
+        else if ($plafond_annee>0) {
+            $query = "SELECT IFNULL(SUM(f.crdt_fact),0) as mntcpt FROM t_facture_vente f WHERE f.mag_fact = $id_mag ";
+            $query.= " AND f.bl_fact_crdt=1  AND f.sup_fact=0 AND  f.bl_crdt_regle=0 AND f.crdt_fact>0 AND (f.crdt_fact-f.som_verse_crdt)>0 ";
+            $query.= " AND YEAR(f.date_enr) = YEAR(CURDATE()) ";
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+            $result = $r->fetch_assoc();
+            if ($result['mntcpt']>$plafond_annee) {
+                $response = array("status" => 1,
+                    "datas" => "",
+                    "message" => "Vous avez atteint le plafond autorisé de l'année " . $result['mntcpt']. " / " . $plafond_annee);
+                return $response;
+            }
+        }
+        return null;
+        
+
+                    
     }
 
     public function rdfP() {

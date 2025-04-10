@@ -528,6 +528,84 @@ sngs.controller("etaDetCtrl", ["$scope", "$rootScope", "prmutils", "config", "$i
         })
     }
 }]);
+sngs.controller("etaCaisControleurCtrl", ["$scope", "$rootScope", "config", "prmutils", "$interval", function($scope, $rootScope, config, prmutils, $interval) {
+    var app = $scope.app;
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Etat",
+        subtitle: "Caisse",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Etat de la caisse";
+    $rootScope.pageTitle = "Etat Caisse";
+    
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = "0" + dd
+    }
+    if (mm < 10) {
+        mm = "0" + mm
+    }
+    today = dd + "/" + mm + "/" + yyyy;
+    //$scope.search.date_deb = today;
+
+    $scope.search = {date_deb : today,date_fin : today};
+    var bl_query_day;
+    bl_query_day = true;
+    task = prmutils.getAllMagasins();
+    task.promise.then(function(result) {
+        app.waiting.show = true;
+        if (result.err === 0) {
+            $scope.magasins = result.data;
+            app.waiting.show = false
+        } else {
+            app.waiting.show = false
+        }
+    });
+    $scope.searchF = function() {
+        bl_query_day = false;
+        var task;
+        task = prmutils.getExtEtatCaisseControleur($scope.search);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    $scope.caisse = result.data
+                }
+            } else {
+                app.notify("Veuillez bien specifier la date ou la la bonne plage ...", "m")
+            }
+        })
+    };
+    
+    $scope.searchFDay = function() {
+        $scope.search = {date_deb : today,date_fin : today};
+        $scope.searchF();
+    };
+    $scope.searchFDay();
+    if (app.PRMS.dynl) {
+        var ivs = $interval(function() {
+            if (bl_query_day === true) {
+                $scope.searchFDay()
+            }
+        }, config.INTERVAL_ETAT_CAIS_JOUR, false);
+        var iv = $interval(function() {
+            if (bl_query_day === false) {
+                $scope.searchF()
+            }
+        }, config.INTERVAL_ETAT_CAIS_DATE, false);
+        $scope.$on("$destroy", function() {
+            $interval.cancel(ivs);
+            $interval.cancel(iv)
+        })
+    }
+}]);
 sngs.controller("etaCaisCtrl", ["$scope", "$rootScope", "config", "prmutils", "$interval", function($scope, $rootScope, config, prmutils, $interval) {
     var app = $scope.app;
     app.waiting.show = false;

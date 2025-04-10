@@ -19,12 +19,11 @@ class dechargeController extends model {
         $search = $_POST;
 
         $condition =  $_SESSION['userMag'] > 0 ? " AND mag_decharge=".$_SESSION['userMag']:" ";
-        $query =  "SELECT *,td.nom_art as article from t_decharge decharge
-                        INNER JOIN t td ON decharge.art_decharge_art=td.id_art
-                        WHERE 1=1 ";
+        $query =  "SELECT * from t_decharge decharge WHERE 1=1 ";
 
         if (!empty($search['magasin'])) $query.=" AND decharge.mag_decharge=" . intval($search['magasin']);
-        if (!empty($search['dechargeneur'])) $query.=" AND decharge.user_decharge_id='" .$search['dechargeneur']."'";
+        if (!empty($search['dechargeur'])) $query.=" AND decharge.user_decharge_id='" .$search['dechargeur']."'";
+        if (!empty($search['client'])) $query.=" AND decharge.client_id='" .$search['client']."'";
 
         if (!empty($search['date_deb']) && empty($search['date_fin'])) 
         $query.=" AND date(decharge.date_decharge)='" . isoToMysqldate($search['date_deb']) . "'";
@@ -62,35 +61,29 @@ class dechargeController extends model {
         }
 
         $decharge = $_POST;
-        $quantite = intval($decharge['quantite']);
         $montant = intval($decharge['montant']);
-        $article = intval($decharge['article']);
         $motif = $this->esc($decharge['motif']);
         $magasin = !empty($decharge['magasin']) ? intval($decharge['magasin']):$_SESSION['userMag'];
         $date_decharge = (!empty($decharge['date_decharge'])) ? isoToMysqldate($decharge['date_decharge']) : date("Y-m-d");
+        $user_decharge_id = $decharge['user_decharge_id'];
+        $type_decharge = $decharge['type_decharge'];
+        $client_id = $decharge['client_id'];
+        $type_decharge = $decharge['type_decharge'];
+        $nom_prenom_dechargeur = $decharge['nom_prenom_dechargeur'];
+        $nom_prenom_client = $decharge['nom_prenom_client'];
+        
         $response = array();
-        if (!empty($article) && $magasin>0 &&!empty($quantite) &&$quantite>0 &&   !empty($montant) && $montant >= 0) {
+        if ($magasin>0 && !empty($montant) && $montant >= 0) {
             try {
                 $this->mysqli->autocommit(FALSE);
                 $heure_vnt = date("H:i:s");
-                $query = "INSERT INTO  t_decharge (
-                     	art_decharge_art,
-                        quantite,
-                        montant,
-                        date_decharge,
-                        user_decharge_id,
-                        login_decharge,
-                        mag_decharge,
-                        motif) 
-                     VALUES(" . $article . ",
-                          " . $quantite . ", 
-                          " . $montant . ", 
-                              '$date_decharge $heure_vnt',
-                              
-                          " . $_SESSION['userId'] . ",
-                         '" . $_SESSION['userLogin'] . "',
-                         " . $magasin . ",
-                             '" . $motif . "')";
+                $query = "INSERT INTO  t_decharge(mag_decharge, user_decharge_id,
+                client_id, date_decharge, montant, login_decharge, motif_decharge,
+                type_decharge, nom_prenom_dechargeur, nom_prenom_client) 
+                    VALUES($magasin, $user_decharge_id, $client_id , '$date_decharge $heure_vnt',
+                    $montant,'" . $_SESSION['userLogin'] . "','" . $motif . "','" . $type_decharge . "',
+                    '$nom_prenom_dechargeur','$nom_prenom_client')";
+                    // echo $query;
                 if (!$r = $this->mysqli->query($query))
                     throw new Exception($this->mysqli->error . __LINE__);
 

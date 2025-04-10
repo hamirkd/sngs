@@ -29,11 +29,13 @@ angular.module("sngs").factory("dao", ["$http", "$q", "config", "$base64", "loca
             reponse = retrieve.status == 0 ? {
                 err: 0,
                 data: retrieve.datas,
-                message: retrieve.message
+                message: retrieve.message,
+                blob: retrieve
             } : {
                 err: 1,
                 data: retrieve.datas,
-                message: retrieve.message
+                message: retrieve.message,
+                blob: retrieve
             };
             task.resolve(reponse)
         }
@@ -83,7 +85,8 @@ angular.module("sngs").factory("dao", ["$http", "$q", "config", "$base64", "loca
             reponse = retrieve.status == 0 ? {
                 err: 0,
                 data: retrieve.datas,
-                message: retrieve.message
+                message: retrieve.message,
+                blob: retrieve
             } : {
                 err: 1,
                 data: "",
@@ -118,8 +121,17 @@ angular.module("sngs").factory("dao", ["$http", "$q", "config", "$base64", "loca
             })
         }
     }
+    function getDataFromUrl(urlAction, info) {
+        var url = config.serverUrl + urlAction;
+        var basic = "Basic " + $base64.encode("sngs:stock");
+        var headers = $http.defaults.headers.common;
+        headers.Authorization = basic;
+        window.open(url)
+        
+    }
     return {
         getData: getData,
-        getDataGet: getDataGet
+        getDataGet: getDataGet,
+        getDataFromUrl: getDataFromUrl
     }
 }]);

@@ -384,6 +384,7 @@ class decaissementController extends model {
         $mnt_dep = intval($depense['mnt_dep']);
         $type_dep = intval($depense['type_dep']);
         $mag_depense_id = null;
+        $mag_source_id = $_SESSION['userMag'];
         if(isset($depense['mag_depense_id']))
             $mag_depense_id = $depense['mag_depense_id'];
         else {
@@ -403,7 +404,7 @@ class decaissementController extends model {
                 $heure_vnt = date("H:i:s");
                 $query = "INSERT INTO  t_depense (
                      	type_dep,
-                     mnt_dep,mag_depense_id,
+                     mnt_dep,mag_depense_id,src_dep
                      date_dep,
                      user_dep,
                      login_dep,
@@ -411,7 +412,7 @@ class decaissementController extends model {
                      details_dep) 
                      VALUES(" . $type_dep . ",
                           " . $mnt_dep . ", 
-                          ".$mag_depense_id.",
+                          ".$mag_depense_id.",$mag_source_id
                               '$date_dep $heure_vnt',
                               
                           " . $_SESSION['userId'] . ",
@@ -628,8 +629,8 @@ class decaissementController extends model {
         $TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN); // load the OpenTBS plugin
         $template = 'documents/demo_ms_word.docx';
         $TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
-        $TBS->MergeField('description', '-');
-        $TBS->Show(OPENTBS_DOWNLOAD, "bon.docx");
+        $TBS->MergeField('description', 'DAO Hamadou');
+        echo $TBS->Show(OPENTBS_DOWNLOAD, "bon.docx");
     }
     
     
@@ -716,6 +717,7 @@ $this->response($this->json($response), 200);
 
 session_name('SessSngS');
 session_start();
+// $app = new decaissementController;
 if (isset($_SESSION['userId'])) {
     $app = new decaissementController;
     $app->processApp();

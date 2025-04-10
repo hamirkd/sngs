@@ -1601,7 +1601,7 @@ class reglementController extends model {
                 $query = "UPDATE t_facture_vente SET som_verse_crdt=som_verse_crdt + $mnt_avance, date_reg_fact= CONCAT('$date_reg',' ',time(now())) WHERE id_fact =$id_fac";
                 $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
-                $query = " SELECT SUM(mnt_paye_crce_clnt) as mnt FROM t_creance_client WHERE 	fact_crce_clnt=$id_fac";
+                $query = " SELECT SUM(mnt_paye_crce_clnt) as mnt FROM t_creance_client WHERE fact_crce_clnt=$id_fac";
                 $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
                 $result = $r->fetch_assoc();
                 $mnt = $result['mnt'];

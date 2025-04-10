@@ -22,6 +22,7 @@
                     <fiedlset>
                         <legend>{{title}} | Filtre :
                             <div class="input-control text span4" style='float: right;'><input ng-model="filterText" placeholder="filtrer" type="text"></div>
+                            <button style="float:right;margin-right:50px;" ng-hide="depenses.length == 0" class="button success" ng-click="downloadJSONAsCSV();"><span class="icon-file-excel"></span>Excel</button> 
                         </legend>
                         <div class="col-md-12" ng-show="depenses.length> 0" style="min-height: 400px;max-height: 400px;overflow: auto;">
                             <table class="table striped bordered condensed hovered">

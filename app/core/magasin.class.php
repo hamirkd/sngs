@@ -166,8 +166,8 @@ class magasinController extends model {
             $this->response('', 406);
         }
 
-        $query = "SELECT m.*  FROM t_magasin m order by m.nom_mag";
-
+        $query = "SELECT m.* FROM t_magasin m where m.archive = 0 or m.archive = 1 order by m.nom_mag";
+        
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
         if ($r->num_rows > 0) {
@@ -276,7 +276,7 @@ class magasinController extends model {
         }
         $magasin = $_POST;
         $id = (int) $magasin['id'];
-        $column_names = array('nom_mag','resp_mag','titre_resp_mag', 'type_mag', 'pays_mag', 'ville_mag', 'tel_mag', 'mob_mag', 'fax_mag', 'mail_mag', 'archive');
+        $column_names = array('nom_mag','resp_mag','titre_resp_mag', 'type_mag', 'pays_mag', 'ville_mag', 'tel_mag', 'mob_mag', 'fax_mag', 'mail_mag', 'archive', 'plafond_jour', 'plafond_mois', 'plafond_annee');
         $keys = array_keys($magasin['magasin']);
         $columns = '';
         $values = '';

@@ -324,6 +324,10 @@ sngs = angular.module("sngs", ["sngs.services", "ngRoute", "ngResource", "base64
         templateUrl: "app/vws/stock/stk-eta-alerte-m.html",
         controller: "stockAlerteCtrl"
     });
+    $routeProvider.when("/home-magasin-rupture", {
+        templateUrl: "app/vws/stock/stk-eta-alerte-rupture-m.html",
+        controller: "stockAlerteRuptureCtrl"
+    });
     $routeProvider.when("/stketa", {
         templateUrl: "app/vws/stock/stk-eta-m.html",
         controller: "stockEtatCtrl"
@@ -459,6 +463,10 @@ sngs = angular.module("sngs", ["sngs.services", "ngRoute", "ngResource", "base64
     $routeProvider.when("/etarglf", {
         templateUrl: "app/vws/reglement/etat-reg-frns-m.html",
         controller: "etatReglementFrnsCtrl"
+    });
+    $routeProvider.when("/etacais-controlleur", {
+        templateUrl: "app/vws/etat/eta-cais-controleur.html",
+        controller: "etaCaisControleurCtrl"
     });
     $routeProvider.when("/etacais", {
         templateUrl: "app/vws/etat/eta-cais-m.html",

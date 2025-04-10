@@ -52,7 +52,7 @@ class userController extends model {
                          u.login_user,
                          u.code_user,
                          u.profil_user,
-                         u.veille,
+                         u.veille, u.sexe_user,
                          u.actif,
                          COALESCE(m.nom_mag,'TOUS') as mag_user                         
             FROM t_user u LEFT JOIN t_magasin m ON m.id_mag=u.mag_user
@@ -140,7 +140,7 @@ class userController extends model {
         $this->isExistcodeUpdt($user['user']['code_user'], $id);
         $this->isExistloginUpdt($user['user']['login_user'], $id);
 
-        $column_names = array('nom_user', 'login_user', 'prenom_user', 'code_user', 'mail_user','regl_credit','vente_credit','facture_vente_annulee','droit_facture_vente_annulee_today','droit_controle_prix_vente','droit_reglement_facture_credit','droit_paiement');
+        $column_names = array('sexe_user','nom_user', 'login_user', 'prenom_user', 'code_user', 'mail_user','regl_credit','vente_credit','facture_vente_annulee','droit_facture_vente_annulee_today','droit_controle_prix_vente','droit_reglement_facture_credit','droit_paiement');
         $keys = array_keys($user['user']);
         $columns = '';
         $values = '';
@@ -154,10 +154,11 @@ class userController extends model {
         }
 
         $mag_user = $user['user']['mag_user'] ? intval($user['user']['mag_user']) : 0;
+        $sexe_user = $user['user']['sexe_user'];
         $resp_user = $user['user']['resp_user'] ? intval($user['user']['resp_user']) : 0;
         $droit_validateur_demande = (strlen($user['user']['droit_validateur_demande']) > 0 || $user['user']['droit_validateur_demande'] !== 'NO')  ? "'".$user['user']['droit_validateur_demande']."'" : "NULL";
 
-        $query = "UPDATE t_user SET " . trim($columns, ',') . ",mag_user=" . $mag_user . ",profil_user=" . intval($user['user']['profil_user']) . ",droit_validateur_demande=$droit_validateur_demande,resp_user=$resp_user WHERE id_user=$id";
+        $query = "UPDATE t_user SET " . trim($columns, ',') . ",mag_user=" . $mag_user . ",profil_user=" . intval($user['user']['profil_user']) . ",droit_validateur_demande=$droit_validateur_demande,resp_user=$resp_user, sexe_user='$sexe_user' WHERE id_user=$id";
         // echo  $query;
         $response = array();
 

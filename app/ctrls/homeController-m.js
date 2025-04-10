@@ -9,7 +9,7 @@ angular.module("sngs").controller("homeCtrl", ["$scope", "config", "$filter", "$
     app.navbar.show = true;
     app.title = {
         text: config.home,
-        subtitle: "Ventes du jour",
+        subtitle: "Ventes du jour0",
         show: true,
         model: {}
     };

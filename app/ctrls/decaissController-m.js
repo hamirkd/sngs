@@ -347,13 +347,26 @@ sngs.controller("etatDechargeCtrl", ["$scope", "$rootScope", "prmutils", functio
     if (mm < 10) {
         mm = "0" + mm
     }
+    if (mmm < 10) {
+        mmm = "0" + mmm
+    }
     today = dd + "/" + mm + "/" + yyyy;
     today2 = dd + "/" + mmm + "/" + yyyy;
     $scope.search.date_deb = today;
     $scope.search.date_fin = today2;
-    $scope.decharge = { date_decharge: today2 };
+    console.log(app.userPfl.id)
+    $scope.decharge = { date_decharge: today2,user_decharge_id: app.userPfl.id, type_decharge: 'RECEVOIR' };
 
     $scope.save = function(decharge) {
+        client = $scope.clients.find(client=>client.id_clt==decharge.client_id);
+
+        decharge.nom_prenom_client = client.sexe_clt + ' ' + client.nom_clt;
+        
+
+        user = $scope.users.find(user=>user.id_user==decharge.user_decharge_id);
+        decharge.nom_prenom_dechargeur = user.sexe_user + ' ' + user.nom_user + ' ' + user.prenom_user
+
+
         var task;
         if (!prmutils.isDate(decharge.date_decharge)) {
             app.notify("Le format de la date est incorrect", "m");
@@ -375,10 +388,49 @@ sngs.controller("etatDechargeCtrl", ["$scope", "$rootScope", "prmutils", functio
             }
         })
     };
+    $scope.gus = function() {
+        task = prmutils.getcUsers();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                console.log(result.data)
+                $scope.users = result.data.filter(data=>data.actif==1);
+                for (let user of $scope.users) {
+                    user['nom_prenom_user'] = '[' + user.code_user + '] ' + user.nom_user + ' ' + user.prenom_user;
+                }
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.gus();
+    $scope.gclt = function() {
+        var task = prmutils.getOrClients();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.clients = result.data;
+                for(let client of $scope.clients) {
+                    if(client.tel_clt && client.tel_clt.trim().length>0)
+                    {
+                        client['nom_prenom_client'] = client.sexe_clt + ' ' + client.nom_clt + " [" + client.tel_clt+"]"
+                        
+                    }
+                }
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.gclt();
     
 
     $scope.reinitialiser = function() {
         $scope.decharge = { date_decharge: today2 };
+        $scope.decharge = { date_decharge: today2,user_decharge_id: app.userPfl.id, type_decharge: 'RECEVOIR' };
+
     };
     $scope.searchF = function() {
         var task;
@@ -666,6 +718,18 @@ sngs.controller("etatDemandeCtrl", ["$scope", "$rootScope", "prmutils", function
             }
         })
     };
+    $scope.downloadJSONAsCSV = function() {
+        // Convert JSON data to CSV
+        let csvData = app.jsonToCsv($scope.depenses); // Add .items.data
+        // Create a CSV file and allow the user to download it
+        let blob = new Blob([csvData], { type: 'text/csv' });
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.csv';
+        document.body.appendChild(a);
+        a.click();
+    }
     $scope.searchF = function() {
         var task;
         task = prmutils.getEtatDemandes($scope.search);
@@ -1145,10 +1209,48 @@ sngs.controller("paiementCtrl", ["$scope", "$rootScope", "prmutils", function($s
             console.log(result)
         })
     };
-    $scope.actionSurReglement = function(data, etat) {
-        console.log("----------------", data, etat);
-        if (etat == 2 && confirm("Voulez vous vraiment annuler cet paiement ? ") === true) {
+    
+    $scope.updatePaiement = function(paiement) {
+        var task;
+        if (!prmutils.isDate(paiement.date_paiement)) {
+            app.notify("Le format de la date est incorrect", "m");
+            return false
+        }
+        task = prmutils.updatePaiement(paiement);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m", 5000)
+                } else {
+                    $scope.paiement = { date_paiement: datepaiement };
+                    $scope.getPaiements();
+                    app.notify(result.message, "b")
+                    $("#detailsPannel").css("right", "-700px");
 
+                }
+            } else {
+                app.notify("Une erreur est survenue ..." + result.message, "m")
+            }
+            console.log(result)
+        })
+    };
+    $scope.actionSurReglement = function(data, etat) {
+        $scope.paiement = {...data, date_paiement: app.convertDate(data.date_paiement),
+        montant: Number(data.montant), etat:etat };
+        console.log($scope.paiement)
+        if (etat == 2 && confirm("Voulez vous vraiment annuler cet paiement ? ") === true) {
+            var vls = prompt("Le motif du rejet SVP !! ", "");
+            if (!vls) return
+            vls = vls.trim();
+            if (vls) {
+                $scope.paiement['motif'] = vls;
+            }
+            $scope.updatePaiement($scope.paiement);
+            return;
+
+        }
+        if (etat == 1) {
+            $("#detailsPannel").css("right", "0");
         }
     }
     
@@ -1414,8 +1516,11 @@ sngs.controller("etaVersCtrl", ["$scope", "$rootScope", "prmutils", function($sc
         task = prmutils.bonDeVersement(versement);
         task.promise.then(function(result) {
             console.log(result,'')
-            const blob = new Blob(result);
-            window.open(URL.createObjectURL(result), '_blank');
+            // const blob = new Blob(result.blob);
+            // const blob = new Blob([result.blob], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+            const blob = new Blob(result.blob);
+
+            window.open(URL.createObjectURL(blob), '_blank');
         })
     };
     $scope.getTotal = function() {
@@ -1520,19 +1625,6 @@ sngs.controller("decaissVersCtrl", ["$scope", "$rootScope", "prmutils", function
             return false
         }
         task = prmutils.bonDeVersement(versement);
-        task.promise.then(function(result) {
-            if (result.err === 0) {
-                if (result.data === "-1") {
-                    app.notify(result.message, "m")
-                } else {
-                    $scope.versement.mnt_vrsmnt = null;
-                    $scope.getVersements();
-                    app.notify(result.message, "b")
-                }
-            } else {
-                app.notify("Oups! Connexion instable ...", "m")
-            }
-        })
     };
     $scope.getTotal = function() {
         var total = 0;

@@ -42,6 +42,7 @@
                                 <th class='text-left'>Code&nbsp;</th>
                                 <th class='text-left'>Date paiement&nbsp;</th>
                                 <th class='text-left'>Nom expediteur&nbsp;</th>
+                                <th class='text-left'>Téléphone&nbsp;</th>
                                 <th class='text-left' ng-show="showAllDetail">caissier&nbsp;</th>
                                 <th class='text-left' ng-show="showAllDetail">Facture lié&nbsp;</th>
                                 <th class='text-left'>Magasin&nbsp;</th>
@@ -54,6 +55,7 @@
                                     <td>{{data.code|uppercase}}</td>
                                     <td>{{data.date_paiement|uppercase}}</td>
                                     <td>{{data.nom_expediteur|uppercase}}</td>
+                                    <td>{{data.telephone}}</td>
                                     <td ng-show="showAllDetail">{{data.used_paiement_code_user|uppercase}}</td>
                                     <td ng-show="showAllDetail">{{data.ref_facture_vente|uppercase}}</td>
                                     <td>{{data.nom_mag|uppercase}}</td>
@@ -119,13 +121,21 @@
                                     </td>
                                 </tr>
 
-                            <tr>
-                                <td>
-                                    <div class="stagger"><label>Code paiement</label>
-                                        <div class="input-control text"><input type="text" name="code_paiement" ng-model="search.code_paiement" placeholder="jj/mm/aaaa"></div>
-                                    </div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        <div class="stagger"><label>Code paiement</label>
+                                            <div class="input-control text"><input type="text" name="code_paiement" ng-model="search.code_paiement" placeholder=""></div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="stagger"><label>Numéro de téléphone</label>
+                                            <div class="input-control text"><input type="text" name="telephone" ng-model="search.telephone" placeholder=""></div>
+                                        </div>
+                                    </td>
+                                </tr>
                                 
                             </table>
                         </div><button class="primary" ng-click="searchF();"><i

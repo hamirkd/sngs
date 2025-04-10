@@ -571,6 +571,148 @@ class etatController extends model {
             $this->response($this->json($response), 200);
         }
     }
+    
+    public function getExtEtatCaisseControleur() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+        $result = array();
+
+        $search = $_POST;
+        $magasin = !empty($search['magasin']) ? ' AND id_mag='.$search['magasin']:'';
+        $querymag = "SELECT id_mag,nom_mag,archive,type_mag FROM t_magasin WHERE type_mag='BOUTIQUE' $magasin;";
+        $rmag = $this->mysqli->query($querymag) or die($this->mysqli->error . __LINE__);
+        $result = [];
+        $date_fin = !empty($search['date_fin']) ? $search['date_fin']:null;
+        $date_deb = !empty($search['date_deb']) ? $search['date_deb']: null;
+        while ($rowmag = $rmag->fetch_assoc()) {
+            $row = $this->getExtEtatCaisseControleurByIdMagAndDate($rowmag['id_mag'],$date_deb,$date_fin);
+            if ($row != null) {
+                $row ['nom_mag'] = $rowmag['nom_mag'];
+                $row ['id_mag'] = $rowmag['id_mag'];
+                $somme =  doubleval($row['comptant']) + doubleval($row['credit']) + doubleval($row['remise']) + doubleval($row['creance']) + doubleval($row['depense']);
+                if ($rowmag['archive'] == 1 && $somme > 0) {
+                    $result [] = $row;
+                } else if ($rowmag['type_mag'] !== 'BOUTIQUE' && $somme > 0) {
+                    $result [] = $row;
+                } 
+                else if ($rowmag['archive'] == 0 && $rowmag['type_mag'] == 'BOUTIQUE') {
+                    $result [] = $row;
+                }
+                
+            }
+        }
+        $response = array("status" => 0,
+            "datas" => $result,
+            "message" => "");
+        $this->response($this->json($response), 200);
+
+    }
+    public function getExtEtatCaisseControleurByIdMagAndDate($id_mag,$date_deb,$date_fin) {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+        $result = array();
+
+        try {
+            $search = $_POST;
+
+            $ccpt = "";
+            $crse = "";
+            $crc = "";
+            $grt = "";
+            $crf = "";
+            $cdp = "";
+            $cvrs = "";
+            $prov = "";
+            $dateq = "";
+
+            if (!empty($id_mag)) {
+                $ccpt = " AND f.mag_fact=" . intval($id_mag);
+                $crse = " AND f.mag_fact=" . intval($id_mag);
+                $crc = " AND cr.fact_crce_clnt IN (SELECT id_fact FROM t_facture_vente WHERE id_fact=cr.fact_crce_clnt AND mag_fact=" . intval($id_mag) . ")";
+                $cdp = " AND d.mag_depense_id =" . intval($id_mag);
+                $cvrs = " AND vrs.id_mag =" . intval($id_mag);
+            }
+            
+
+            if (!empty($search['date_deb']) && empty($search['date_fin']))
+                $dateq = "='" . isoToMysqldate($search['date_deb']) . "'";
+
+            if (!empty($search['date_fin']) && empty($search['date_deb']))
+                $dateq = " between '2010-01-01' 
+                AND '" . isoToMysqldate($search['date_fin']) . "'";
+            
+            if (!empty($search['date_fin']) && !empty($search['date_deb']))
+                $dateq = " between '" . isoToMysqldate($search['date_deb']) . "' 
+                AND '" . isoToMysqldate($search['date_fin']) . "'";
+
+            $query = "SELECT 
+                SUM(CASE WHEN f.bl_fact_crdt = 0 THEN f.crdt_fact ELSE 0 END) AS comptant,
+                SUM(CASE WHEN f.bl_fact_crdt = 0 AND f.type_reglement = 'ESPECE' THEN f.crdt_fact ELSE 0 END) AS espece,
+                SUM(CASE WHEN f.bl_fact_crdt = 0 AND f.type_reglement = 'ORANGEMONEY' THEN f.crdt_fact ELSE 0 END) AS om,
+                SUM(CASE WHEN f.bl_fact_crdt = 1 THEN f.crdt_fact ELSE 0 END) AS credit,
+                SUM(f.tva_fact + f.bic_fact) AS taxe,
+                SUM(f.remise_vnt_fact) AS remise
+                FROM t_facture_vente f
+                WHERE f.sup_fact = 0 
+                AND date(f.date_fact) $dateq $ccpt $crse";
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+            if ($r->num_rows > 0) {
+                $res = $r->fetch_assoc();
+                $result['comptant'] = doubleval($res['comptant']);
+                $result['espece'] = doubleval($res['espece']);
+                $result['om'] = doubleval($res['om']);
+                $result['credit'] = doubleval($res['credit']);
+                $result['remise'] = intval($res['remise']);
+            }
+
+            $query = "SELECT sum(cr.mnt_paye_crce_clnt) as creance
+                           FROM 
+                           t_creance_client cr
+                           inner join t_facture_vente f ON cr.fact_crce_clnt=f.id_fact
+                            WHERE f.bl_fact_grt=0 AND f.bl_fact_crdt=1 AND date(cr.date_crce_clnt) $dateq $crc";
+
+
+
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+            if ($r->num_rows > 0) {
+                $res = $r->fetch_assoc();
+                $result['creance'] = intval($res['creance']);
+            }
+
+            $query = "SELECT IFNULL(sum(d.mnt_dep),0) as depense
+                           FROM 
+                           t_depense d
+                            WHERE date(d.date_dep) $dateq $cdp";
+
+
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+            if ($r->num_rows > 0) {
+                $res = $r->fetch_assoc();
+                $result['depense'] = intval($res['depense']);
+            }
+
+            $query = "SELECT IFNULL(sum(vrs.mnt_vrsmnt),0) as versement
+                           FROM 
+                           t_versement vrs
+                            WHERE date(vrs.date_vrsmnt) $dateq $cvrs";
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+            if ($r->num_rows > 0) {
+                $res = $r->fetch_assoc();
+                $result['versement'] = intval($res['versement']);
+            }
+            
+
+            return $result;
+        } catch (Exception $exc) {
+            return null;
+        }
+    }
 
     public function getExtEtatCaisse() {
         if ($this->get_request_method() != "POST") {
@@ -609,6 +751,7 @@ class etatController extends model {
                 $cdp = "";
                 $cvrs = "";
                 $prov = "";
+                $dateq = "";
 
                 if (!empty($search['magasin'])) {
                     $ccpt = " AND f.mag_fact=" . intval($search['magasin']);
@@ -626,8 +769,7 @@ class etatController extends model {
                 $dateq = "='" . isoToMysqldate($search['date_deb']) . "'";
 
             if (!empty($search['date_fin']) && empty($search['date_deb']))
-                $dateq = " between '2010-01-01' 
-                AND '" . isoToMysqldate($search['date_fin']) . "'";
+                $dateq = " < '" . isoToMysqldate($search['date_fin']) . "'";
             
             if (!empty($search['date_fin']) && !empty($search['date_deb']))
                 $dateq = " between '" . isoToMysqldate($search['date_deb']) . "' 

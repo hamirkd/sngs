@@ -492,21 +492,21 @@ from t_stock s
         $search = $_POST;
 
 
-        if ($_SESSION['userMag'] != 0)
+        if ($_SESSION['userMag'] != 0 && empty($search['magasin']))
         /* $query = "SELECT * FROM v_etat_alerte WHERE mag_stk=" . intval($_SESSION['userMag']); */
-            $query = "select s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag  from t_stock s
-   inner join t_magasin m on s.mag_stk=m.id_mag
-  inner join t_article a on s.art_stk=a.id_art
-  inner join t_categorie_article ca on a.cat_art=ca.id_cat
-WHERE s.qte_stk <= a.seuil_art
-AND s.mag_stk=" . intval($_SESSION['userMag']);
+            $query = "select s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,m.code_mag  from t_stock s
+            inner join t_magasin m on s.mag_stk=m.id_mag
+            inner join t_article a on s.art_stk=a.id_art
+            inner join t_categorie_article ca on a.cat_art=ca.id_cat
+            WHERE s.qte_stk <= a.seuil_art
+            AND s.mag_stk=" . intval($_SESSION['userMag']);
         else
         /* $query = "SELECT * FROM v_etat_alerte WHERE 1=1 "; */
-            $query = "select s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag  from t_stock s
-   inner join t_magasin m on s.mag_stk=m.id_mag
-  inner join t_article a on s.art_stk=a.id_art
-  inner join t_categorie_article ca on a.cat_art=ca.id_cat
-WHERE s.qte_stk <= a.seuil_art";
+            $query = "select s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,m.code_mag  from t_stock s
+            inner join t_magasin m on s.mag_stk=m.id_mag
+            inner join t_article a on s.art_stk=a.id_art
+            inner join t_categorie_article ca on a.cat_art=ca.id_cat
+            WHERE s.qte_stk <= a.seuil_art";
 
 
         if (!empty($search['magasin']))
@@ -517,6 +517,8 @@ WHERE s.qte_stk <= a.seuil_art";
 
         if (!empty($search['categorie']))
             $query.=" AND id_cat=" . intval($search['categorie']);
+        
+        //$query.=" AND s.=" . intval($search['categorie']);
 
         $query .= " Order by nom_mag,nom_cat,nom_art";
 
@@ -540,6 +542,7 @@ WHERE s.qte_stk <= a.seuil_art";
         }
         $this->response('', 204);
     }
+
 
     public function getAlCount() {
         if ($this->get_request_method() != "GET") {

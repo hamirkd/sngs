@@ -34,13 +34,13 @@
                             <tbody>
                                 <tr ng-repeat="data in filtered=(alertes | filter:filterText)" class="liste">
                                     <td>{{data.code_art |uppercase}}</td>
-                                    <td>{{data.nom_art |uppercase}} <a ng-if="app.userPfl.pfl==3 || app.userPfl.pfl==1"
-                                            href="#/prmart/{{data.art_stk}}" title="Modifier le nom de l'article"
-                                            class="btn">&nbsp;<i class="icon-pencil"></i>&nbsp;</a></td>
+                                    <td>{{data.nom_art |uppercase}}</td>
                                     <td>{{data.ref_art |uppercase}}</td>
                                     <td>{{data.qte_stk |uppercase}}</td>
                                     <td>{{data.seuil_art |uppercase}}</td>
-                                    <td>{{data.nom_mag |uppercase}}</td>
+                                    <td  title="{{ data.nom_mag | uppercase }}">
+                                        {{data.code_mag |uppercase}}
+                                    </td>
                                     <td>{{data.nom_cat |uppercase}}</td>
                                 </tr>
                             </tbody>

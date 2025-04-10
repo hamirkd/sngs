@@ -52,7 +52,13 @@
                         <div class="input-control text span4" data-role="input-control"><input placeholder="Hamza" type="text" ng-model="user.prenom_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
                         <label>E-mail</label>
                         <div class="input-control text span4" data-role="input-control"><input placeholder="onyxbf@yahoo.fr" type="email" ng-model="user.mail_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
-
+                        <label>Sexe</label>
+                        <div class="input-control radio default-style" data-role="input-control"><label><input
+                                    name="sexe_user" checked="" type="radio" ng-model="user.sexe_user" value="M"
+                                    checked><span class="check"></span> Homme </label></div>
+                        <div class="input-control radio default-style" data-role="input-control"><label><input
+                                    name="sexe_user" type="radio" ng-model="user.sexe_user" value="F"><span
+                                    class="check"></span> Femme </label></div>
                     </td>
                     <td>
                         <div>

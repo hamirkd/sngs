@@ -30,6 +30,11 @@ class model extends REST {
 
     public function processApp() {
         $func = trim(str_replace("/", "", $_REQUEST['x']));
+        
+        if (in_array($func, array("venteCpt", "venteCrdt", "insertApprovisionnement", "insertStockAppro", "insertSortie", "insertStockSort"))) {
+            $this->verifBoutiqueOrMagasinValide();
+        }
+
         if ((int) method_exists($this, $func) > 0)
             $this->$func();
         else
@@ -364,6 +369,32 @@ class model extends REST {
 
             return $result;
         }
+    }
+    /**
+     * Rcuper
+     * @param type $idArticle
+     * @param type $date_debut
+     * @param type $date_fin
+     * @param type $magasin
+     * @return type
+     */
+    public function verifBoutiqueOrMagasinValide() {
+
+        if ($_SESSION['userMag'] > 0) {
+            $magasin = ' AND id_mag='.$_SESSION['userMag'].'';
+            $query = "SELECT id_mag,nom_mag,archive,type_mag FROM t_magasin WHERE archive=0 $magasin;";
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+            if (!($r->num_rows > 0)) {
+                $response = array("status" => 1,
+                "message" => "Cette boutique a ete archivée");
+                $this->response($this->json($response), 200);
+            }
+        } else {
+            $response = array("status" => 1,
+            "message" => "Veuillez choisir une boutique avant de faire cette action");
+            $this->response($this->json($response), 200);
+        }
+        
     }
 
 }

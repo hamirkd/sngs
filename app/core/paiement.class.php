@@ -60,6 +60,7 @@ class paiementController extends model {
         if (!empty($search['code_paiement'])) $query.=" AND pa.code_paiement=" . intval($search['code_paiement']);
         if (!empty($search['mag_paiement'])) $query.=" AND pa.mag_paiement='" .$search['mag_paiement']."'";
         if (!empty($search['used_paiement_code_user'])) $query.=" AND pa.used_paiement_code_user='" .$search['used_paiement_code_user']."'";
+        if (!empty($search['telephone'])) $query.=" AND pa.telephone like '%" .$search['telephone']."%'";
 
         if (!empty($search['date_deb']) && empty($search['date_fin'])) 
         $query.=" AND date(pa.date_paiement)='" . isoToMysqldate($search['date_deb']) . "'";
@@ -103,7 +104,7 @@ class paiementController extends model {
             $this->response($this->json($response), 200);
 
         }
-        $query =  "SELECT *  from t_paiement WHERE code like '%$code' ";
+        $query =  "SELECT *  from t_paiement WHERE code like '%$code' or telephone = '$code'";
 
         $query.=  " AND date_paiement >= DATE_SUB(now(), INTERVAL 7 DAY)";
 
@@ -157,6 +158,7 @@ class paiementController extends model {
         $magasin = !empty($paiement['mag_paiement']) ? intval($paiement['mag_paiement']):'NULL';
         $used_user = isset($paiement['used_paiement_code_user']) ? $this->esc($paiement['used_paiement_code_user']) : '';
         $ref_facture_vente = isset($paiement['ref_facture_vente']) ? $this->esc($paiement['ref_facture_vente']) : '';
+        $telephone = isset($paiement['telephone']) ? $this->esc($paiement['telephone']) : '';
         $response = array();
         
         if (!empty($code) && !empty($montant) && $montant >= 0) {
@@ -172,6 +174,7 @@ class paiementController extends model {
                         login_paiement,
                         used_paiement_code_user,
                         ref_facture_vente,
+                        telephone,
                         mag_paiement,
                         created_at,
                         updated_at) 
@@ -183,6 +186,7 @@ class paiementController extends model {
                             '".$_SESSION['userLogin']."',
                             '$used_user',
                             '$ref_facture_vente',
+                            '$telephone',
                             $magasin, now(), now())";
                 if (!$r = $this->mysqli->query($query))
                     throw new Exception($this->mysqli->error . __LINE__);
@@ -222,19 +226,73 @@ class paiementController extends model {
         $paiement = $_POST;
 
         $code = $paiement['code'];
-        $mag_paiement = $fact['mag_paiement'];
-        $ref_facture_vente = $fact['ref_facture_vente'];
-        $used_paiement_code_user = $fact['used_paiement_code_user'];
+        $ref_facture_vente = isset($paiement['ref_facture_vente']) ? $paiement['ref_facture_vente'] : null;
+
         
+        $mag_paiement = isset($paiement['mag_paiement']) ? $paiement['mag_paiement'] : 'null';
+        $used_paiement_code_user = isset($paiement['used_paiement_code_user']) ? $paiement['used_paiement_code_user'] : null;
+
+        $motif = isset($paiement['motif']) ? $paiement['motif'] : null;
+        $id_paiement = isset($paiement['id_paiement']) ? $paiement['id_paiement'] : null;
+        $etat = isset($paiement['etat']) ? $paiement['etat'] : 0;
+        $montant = isset($paiement['montant']) ? $paiement['montant'] : 0;
         
+        $this->mysqli->autocommit(FALSE);
 
         try {
             
-            $query = "UPDATE t_paiement set mag_paiement='$ref_facture_vente',ref_facture_vente='$ref_facture_vente',
-            used_paiement_code_user='$used_paiement_code_user', updated_at=now() ";
-           
+            if (!empty($ref_facture_vente) &&isset($ref_facture_vente)) {
+                $query = "SELECT * FROM  t_facture_vente WHERE code_fact='$ref_facture_vente';";
+                $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+                if ($r->num_rows != 1) {
+                    $this->mysqli->rollback();
+                    $this->mysqli->autocommit(TRUE);
+                    $response = array("status" => 1,
+                    "datas" => "",
+                    "message" => "La reference de cette facture n'existe pas");
+                    $this->response($this->json($response), 200);
+                }
+                $result = $r->fetch_assoc();
+                if ($result['mnt_theo_fact'] != $montant) {
+                    $this->mysqli->rollback();
+                    $this->mysqli->autocommit(TRUE);
+                    $response = array("status" => 1,
+                    "datas" => "",
+                    "message" => "Le montant de la facture est différente du montant du paiement");
+                    $this->response($this->json($response), 200);
+                }
+                $query = "UPDATE  t_facture_vente SET type_reglement='ORANGEMONEY', reference_paiement='$code' WHERE code_fact='$ref_facture_vente';";
+                //echo $query;
+                $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+                
+                // RECUPERATION DU MAGASIN ET DE L'UTILISATEUR
+                
+                $mag_paiement = $result['mag_fact'];
+                $used_paiement_code_user = $result['code_caissier_fact'];
+            }
+            $query = "SELECT * FROM  t_paiement WHERE id_paiement=$id_paiement AND etat = 0;";
             $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+            if ($r->num_rows != 1) {
+                $this->mysqli->rollback();
+                $this->mysqli->autocommit(TRUE);
+                $response = array("status" => 1,
+                "datas" => "",
+                "message" => "Cet paiement a déjà été validé ou rejeté");
+                $this->response($this->json($response), 200);
+            }
 
+            $query = "UPDATE t_paiement set mag_paiement=$mag_paiement,ref_facture_vente='$ref_facture_vente',
+            used_paiement_code_user='$used_paiement_code_user', updated_at=now(), etat='$etat', motif='$motif' WHERE id_paiement=$id_paiement";
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+            
+            $message = "Modifier avec succes!!!";
+
+            if ($etat === 2) {
+                $message = "Le paiement a été rejeté avec succès";
+            } else if ($etat === 1) {
+                $message = "Le paiement a été validé avec succès";
+            }
+            $this->mysqli->autocommit(TRUE);
             $response = array("status" => 0,
             "datas" => $r,
             "message" => "Modifier avec succes!!!");
@@ -249,11 +307,6 @@ class paiementController extends model {
             $this->response($this->json($response), 200);
         } 
     }
-
-
-
-
-
 }
 
 session_name('SessSngS');

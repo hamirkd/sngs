@@ -562,7 +562,7 @@ sngs.controller("stockInvCtrl", ["$scope", '$http', 'config', "$rootScope", "prm
                         }
                     } else {
 
-                        app.notify("ok ...", "b");
+                        app.notify(result.message, "m", 5000);
                         $scope.djob = false
                     }
                 })
@@ -1128,6 +1128,70 @@ sngs.controller("stockAlerteCtrl", ["$scope", "$rootScope", "prmutils", function
     };
     $scope.searchF()
 }]);
+sngs.controller("stockAlerteRuptureCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+    var app = $scope.app;
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Stock",
+        subtitle: "Alerte stock",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Liste des articles en rupture de stock";
+    $rootScope.pageTitle = "Ruptures de stock";
+    $scope.search = {};
+    task = prmutils.getAllMagasins();
+    task.promise.then(function(result) {
+        app.waiting.show = true;
+        if (result.err === 0) {
+            $scope.magasins = result.data;
+            app.waiting.show = false
+        } else {
+            app.waiting.show = false
+        }
+    });
+    $scope.getcat = function() {
+        task = prmutils.getCategories();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.categories = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.getart = function() {
+        task = prmutils.getArticles();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.articles = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.searchF = function() {
+        var task;
+        task = prmutils.etatAlerte($scope.search);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    $scope.alertes = result.data
+                }
+            } else {
+                app.notify("ok ...", "m")
+            }
+        })
+    };
+    $scope.searchF()
+}]);
 sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", function($scope, $rootScope, config, prmutils) {
     var stockas = $scope.stockas;
     var app = $scope.app;
@@ -1259,7 +1323,8 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
                 }
             } else {
                 app.refreshextcatmagCache();
-                app.notify("ok ...", "b");
+                app.notify(result.message, "m", 5000);
+
                 $scope.djob = false
             }
         });
@@ -1875,7 +1940,8 @@ sngs.controller("stockSsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
                     $scope.djob = false
                 }
             } else {
-                app.notify("ok ...", "b");
+                // app.notify("ok ...", "b");
+                app.notify(result.message, "m", 5000);
                 $scope.djob = false
             }
         });
@@ -2771,7 +2837,9 @@ sngs.controller("stockEditBaCtrl", ["$scope", "$rootScope", "config", "$location
                         window.history.go(-1)
                     }
                 } else {
-                    app.notify("ok ...", "b")
+                    // app.notify("ok ...", "b")
+                    app.notify(result.message, "m", 5000)
+
                 }
             })
         } else {
@@ -2985,8 +3053,7 @@ sngs.controller("stockBaAeCtrl", ["$scope", "$rootScope", "config", "prmutils", 
         })
     };
     $scope.apprvae = function(fac) {
-        
-        if (!app.userPfl.droitApprovisionnement){
+        if (!app.userPfl.droitApprovisionnement) {
             app.notify("Vous n'êtes pas autorisés à faire un approvisionnement, veuillez informer votre supérieur ou contacter l'administrateur", "m", 10000);
             return false;
         }

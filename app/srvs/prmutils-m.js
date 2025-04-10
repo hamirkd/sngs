@@ -262,7 +262,7 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
         return dao.getData(config.mdlDecaiss + "getVersements")
     };
     servicesObject.bonDeVersement = function(versement) {
-        return dao.getData(config.mdlDecaiss + "bonDeVersement", versement)
+        return dao.getDataFromUrl(config.mdlDecaiss + "bonDeVersement", versement)
     };
     servicesObject.getEtatVersements = function(obj) {
         return dao.getData(config.mdlDecaiss + "getEtatVersements", obj)
@@ -278,6 +278,9 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     };
     servicesObject.getExtEtatCaisse = function(search) {
         return dao.getData(config.mdlEtat + "getExtEtatCaisse", search)
+    };
+    servicesObject.getExtEtatCaisseControleur = function(search) {
+        return dao.getData(config.mdlEtat + "getExtEtatCaisseControleur", search)
     };
     servicesObject.getEtatFicheArt = function(search) {
         return dao.getData(config.mdlEtat + "getEtatFicheArt", search)
@@ -1168,6 +1171,10 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     servicesObject.savePaiement = function(obj) {
         return dao.getData(config.mdlPaiement + "savePaiement", obj)
     };
+    servicesObject.updatePaiement = function(obj) {
+        return dao.getData(config.mdlPaiement + "updatePaiement", obj)
+    };
+    
 
     servicesObject.isDate = function(strDate) {
         if (strDate.length != 10) {

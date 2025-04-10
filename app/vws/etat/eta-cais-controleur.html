@@ -1,0 +1,81 @@
+<div class="example">
+    <form name="form">
+        <fieldset>
+            <legend style="width:100%;">
+            <table  width="100%">
+                <tr>
+                    <td>{{title}}</td>
+                    <td><button class="success big_size" ng-click="searchFDay();"><i
+                                class="icon-meter-medium on-left on-left-more"></i>Aujourd'hui</button></td>
+                    <td><label ng-show="app.userPfl.mg==0">Magasin</label>
+                        <div ng-show="app.userPfl.mg==0" accesskey="" class="input-control select span4"
+                            data-role="input-control"><select name="magasin" ng-model="search.magasin"
+                                ng-options="magasin.id_mag as magasin.nom_mag | uppercase for magasin in magasins">
+                                <option value=""></option>
+                            </select><input type="hidden" name="ras" value="ras"></div>
+                    </td>
+                    <td><label>Date du/debut</label>
+                        <div class="input-control text span3"><input type="text" placeholder="jj/mm/aaaa"
+                                name="date_deb" ng-model="search.date_deb"></div>
+                    </td>
+                    <td><label>Date Fin</label>
+                        <div class="input-control text span3"><input type="text" name="date_fin"
+                                ng-model="search.date_fin" placeholder="jj/mm/aaaa"></div>
+                    </td>
+                    <td><button class="primary big_size" ng-click="searchF();"><i
+                                class="icon-calendar on-left on-left-more"></i>Executer</button></td>
+                </tr>
+            </table>
+            <table width="100%">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        
+                        <span class="input-control text span2" style="float:right;"><input ng-model="filterText"
+                            placeholder="filtre" type="text"></span>
+                    </td>
+                </tr>
+            </table>
+        </legend>
+
+            <div class="col-md-12" ng-show="caisse.length> 0"
+                style="min-height: 400px;max-height: 400px;overflow: auto;">
+                <table class="table striped bordered condensed hovered">
+                    <thead>
+                        <th class='text-left'>Boutique</th>
+                        <th class='text-left'>Comptant</th>
+                        <th class='text-left'>Règlement</th>
+                        <th class='text-left'>Depense</th>
+                        <th class='text-left'>Versement</th>
+                        <th class='text-left'>Crédit</th>
+                        <th class='text-left'>Remise</th>
+                        <th class='text-left'>Espèce</th>
+                        <th class='text-left'>Orange</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in filtered=(caisse|filter:filterText)" ng-click="select($index)"
+                            class="liste" ng-class="{'info':$index == index}">
+                            <td><label for="">{{data['nom_mag']}}</label></td>
+                            <td><label for="">{{data['comptant'] |number:0}}</label></td>
+                            <td><label for="">{{data['creance']|number:0}}</label></td>
+                            <td><label>{{data['depense']|number:0}}</label></td>
+                            <td><label>{{data['versement']|number:0}}</label></td>
+                            <td><label for="">{{data['credit'] |number:0}}</label></td>
+                            <td><label for="">{{data['remise']|number:0}}</label></td>
+                            <td><label for="">{{data['espece'] |number:0}}</label></td>
+                            <td><label for="">{{data['om'] |number:0}}</label></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" ng-show="caisse.length == 0">
+                <div class="col-md-12" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                    <h4>Aucune facture ... !</h4>
+                </div>
+            </div>
+        </fieldset>
+        
+    </form>
+</div>

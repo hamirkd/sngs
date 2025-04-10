@@ -29,7 +29,8 @@ $objPHPExcel->getActiveSheet()
     ->setCellValue('C1', "Designation")
     ->setCellValue('D1', "Qte")
     ->setCellValue('E1', "Prix")
-    ->setCellValue('F1', "Montant");
+    ->setCellValue('F1', "Montant")
+    ->setCellValue('G1', "code_art");
 
 $i = 2;
 
@@ -47,7 +48,7 @@ $objPHPExcel->getActiveSheet()->setCellValue('A' . $i, $rowmag['nom_mag']);
 $i=3;
     
 $query = "SELECT app.bon_liv_appro,date_format(app.date_appro,'%d %b %Y') as date_appro,
-    a.nom_art,m.code_mag,c.nom_cat,f.nom_frns,
+    apa.art_appro_art,a.nom_art,m.code_mag,c.nom_cat,f.nom_frns,
     apa.qte_appro_art,apa.prix_appro_art
     FROM t_approvisionnement app
     INNER JOIN t_approvisionnement_article apa ON app.id_appro=apa.appro_appro_art
@@ -106,6 +107,7 @@ if ($r->num_rows > 0) {
         $objPHPExcel->getActiveSheet()->setCellValue('D' . $i, $row['qte_appro_art']);
         $objPHPExcel->getActiveSheet()->setCellValue('E' . $i, $row['prix_appro_art']);
         $objPHPExcel->getActiveSheet()->setCellValue('F' . $i, $row['qte_appro_art'] * $row['prix_appro_art']);
+        $objPHPExcel->getActiveSheet()->setCellValue('G' . $i, $row['art_appro_art']);
 
         // Add page breaks every 10 rows
         if ($i % 20 == 0) {

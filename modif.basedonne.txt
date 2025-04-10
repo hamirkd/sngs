@@ -35,4 +35,74 @@ ALTER TABLE `t_user` ADD `droit_approvisionnement` TINYINT NULL DEFAULT '0' AFTE
 
 
 
-ALTER TABLE `t_facture_vente` ADD `type_reglement` VARCHAR(50) NULL DEFAULT NULL AFTER `bl_caiss`, ADD `reference_paiement` VARCHAR(50) NULL DEFAULT NULL AFTER `type_reglement`;
+ALTER TABLE `t_facture_vente` ADD `type_reglement` VARCHAR(50) NULL DEFAULT 'ESPECE' AFTER `bl_caiss`, ADD `reference_paiement` VARCHAR(50) NULL DEFAULT NULL AFTER `type_reglement`;
+
+
+
+CREATE TABLE `t_paiement` (
+  `id_paiement` int(11) NOT NULL,
+  `code` varchar(50) NOT NULL,
+  `type_paiement` varchar(20) DEFAULT 'ORANGEMONEY',
+  `date_paiement` datetime NOT NULL DEFAULT current_timestamp(),
+  `nom_expediteur` varchar(20) DEFAULT NULL,
+  `login_paiement` varchar(20) NOT NULL,
+  `used_paiement_code_user` varchar(20) DEFAULT NULL,
+  `ref_facture_vente` varchar(20) DEFAULT NULL,
+  `facture_vnt` int(11) DEFAULT NULL,
+  `mag_paiement` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `montant` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Déchargement des données de la table `t_paiement`
+--
+
+INSERT INTO `t_paiement` (`id_paiement`, `code`, `type_paiement`, `date_paiement`, `nom_expediteur`, `login_paiement`, `used_paiement_code_user`, `ref_facture_vente`, `facture_vnt`, `mag_paiement`, `created_at`, `updated_at`, `montant`) VALUES
+(1, 'PP241218.2142.25716627', 'ORANGEMONEY', '2024-12-18 22:21:47', 'DAO Hamadou', 'migermaine', 'chaid', '22024-0216', 106139, NULL, '2024-12-18 22:21:47', '2024-12-18 22:21:47', 30000),
+(2, 'PP241218.2142.25716628', 'ORANGEMONEY', '2024-12-20 23:40:39', '', 'migermaine', 'chaid', '22024-0217', 106140, 2, '2024-12-20 22:40:39', '2024-12-20 22:40:39', 10000),
+(3, 'PP241218.2142.26716628', 'ORANGEMONEY', '2024-12-20 23:41:01', '', 'migermaine', '', '', NULL, NULL, '2024-12-20 22:41:01', '2024-12-20 22:41:01', 10000),
+(4, 'PP241218.2142.25716629', 'ORANGEMONEY', '2024-12-20 23:46:06', '', 'migermaine', '', '', NULL, NULL, '2024-12-20 22:46:06', '2024-12-20 22:46:06', 60000);
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `t_paiement`
+--
+ALTER TABLE `t_paiement`
+  ADD PRIMARY KEY (`id_paiement`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `t_paiement`
+--
+ALTER TABLE `t_paiement`
+  MODIFY `id_paiement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+COMMIT;
+ALTER TABLE `t_paiement` ADD `telephone` VARCHAR(20) NULL DEFAULT NULL AFTER `nom_expediteur`;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+ALTER TABLE `t_magasin` ADD `plafond_jour` INT(11) NOT NULL DEFAULT '0' AFTER `archive`, ADD `plafond_mois` INT(11) NOT NULL DEFAULT '0' AFTER `plafond_jour`, ADD `plafond_annee` INT(11) NOT NULL DEFAULT '0' AFTER `plafond_mois`;
+UPDATE `t_magasin` SET `archive` = '0' WHERE `t_magasin`.`archive` is null;
+
+ALTER TABLE `t_magasin` CHANGE `archive` `archive` TINYINT(3) NOT NULL DEFAULT '0';
+
+ALTER TABLE t_stock ADD COLUMN derniere_date_operation TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+ALTER TABLE `t_creance_client` ADD `mag_creance` INT(11) NULL DEFAULT NULL AFTER `date_enr`;
+
+CREATE TRIGGER `t_creance_client_magasin_ad` BEFORE INSERT ON `t_creance_client` FOR EACH ROW BEGIN UPDATE t_creance_client SET mag_creance = (SELECT mag_user FROM t_user WHERE t_user.login_user = NEW.caissier_login_crce LIMIT 1) WHERE id_crce_clnt = NEW.id_crce_clnt; END;
+
+
+ALTER TABLE `t_paiement` ADD `etat` TINYINT NOT NULL DEFAULT '0' COMMENT '1 pour valider et 2 pour rejeter' AFTER `montant`;
+
+ALTER TABLE `t_paiement` ADD `motif` VARCHAR(200) NULL AFTER `etat`;

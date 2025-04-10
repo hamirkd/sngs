@@ -296,6 +296,10 @@ angular.module("sngs").controller("appCtrl", ["$rootScope", "localStorageService
         }, duree);
         elem.hide().appendTo("body").slideDown()
     }
+    app.convertDate = function (dateStr) {
+        let [year, month, day] = dateStr.split("-");
+        return `${day}/${month}/${year}`;
+    }
     
     app.jsonToCsv = function(jsonData) {
         let csv = '';

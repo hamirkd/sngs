@@ -174,7 +174,7 @@ sngs.controller("venteEtaCtrl", ["$scope", "$rootScope", "config", "prmutils", f
     }
 
 }]);
-sngs.controller("venteVntCtrl", ["$scope", "$rootScope", "config", "prmutils", "$interval", "filterFilter", "socket", function($scope, $rootScope, config, prmutils, $interval, filterFilter, socket) {
+sngs.controller("venteVntCtrl", ["$scope", "$rootScope", "config", "prmutils", "$interval", "filterFilter", "socket", "$location", function($scope, $rootScope, config, prmutils, $interval, filterFilter, socket,$location) {
     var app = $scope.app;
     app.waiting.show = false;
     app.navbar.show = true;
@@ -221,6 +221,12 @@ sngs.controller("venteVntCtrl", ["$scope", "$rootScope", "config", "prmutils", "
             show: true,
             model: {}
         }
+    }
+    if (app.userPfl.pfl == 3) {
+        $location.path(config.urlRupture);
+    }
+    if (app.userPfl.pfl == 1) {
+        $location.path(config.urlControleurGestion);
     }
     var slice = 0;
     var sliceg = "0";
@@ -797,8 +803,8 @@ sngs.controller("venteCrdtCtrl", ["$window", "$scope", "$rootScope", "prmutils",
                     }
                 }
             } else {
-                $scope.emptyForm();
-                app.notify("ok ...", "b");
+                //$scope.emptyForm();
+                app.notify(result.message, "m", 10000);
                 $scope.djob = false
             }
         })
@@ -1302,7 +1308,7 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
     ];
     $scope.items = [];
     $scope.itemsNewPrices = [];
-    $scope.appvente = {type_reglement: 'ORANGEMONEY'};
+    $scope.appvente = {type_reglement: 'ESPECE'};
     $scope.appvente.bl_bic = 0;
     $scope.appvente.bl_tva = 0;
     $scope.depot = {};
@@ -1357,8 +1363,14 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
         };
         if (ObjVente.type_reglement === 'ORANGEMONEY') {
             if(ObjVente.mnt_total != $scope.depot.montant) {
-                app.notify("Veuillez verifier les montants de " + ObjVente.type_reglement + " et la facture", "m");
-                return;
+                app.notify("Veuillez verifier les montants de " + ObjVente.type_reglement + " et la facture", "m", 5000);
+                ObjVente.reference_paiement = null;
+                // $scope.djob = false;
+                // return;
+                if (confirm("Voulez vous confirmer la facture avec un montant qui n'est pas correcte ? ") === false) {
+                    $scope.djob = false;
+                    return;
+                }
             }
         } else {
             ObjVente.reference_paiement = null;
@@ -1381,8 +1393,8 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
                     }
                 }
             } else {
-                $scope.emptyForm();
-                app.notify("ok ...", "b");
+                //$scope.emptyForm();
+                app.notify(result.message, "m", 5000);
                 $scope.djob = false
             }
         })
@@ -1456,8 +1468,8 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
         }
         if (art.prix_gros_art > 0 && parseFloat($scope.appvente.prix_var) > art.prix_gros_art && $scope.appvente.qte_appro_art >= 10) {
             app.notify("Vous êtes entrain de vendre au delas du prix fixer..! Vous pouvez vendre au prix en gros", "w", 10000);
-            if (!app.userPfl.droitControlePrixVente)
-                return false
+            // if (!app.userPfl.droitControlePrixVente)
+            //     return false
         }
         if (art.prix_max_art > 0 && parseFloat($scope.appvente.prix_var) > art.prix_max_art && $scope.appvente.qte_appro_art<10) {
             // app.notify(" Impossible d'ajouter. Le prix de vente est trop haut ..! ", "m", 10000);

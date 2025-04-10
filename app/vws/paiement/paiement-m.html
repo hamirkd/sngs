@@ -15,6 +15,7 @@
 
 
                                 </div>
+                                
             </nav>
         </div>
     </div>
@@ -24,6 +25,7 @@
         <div>
             <div class="example">
                 <fiedlset>
+                    
                     <legend>{{title}} 
 
                         <button style="float:right;margin-right:50px;" ng-hide="paiements.length == 0" class="button success" ng-click="downloadJSONAsCSV();"><span class="icon-file-excel"></span>Excel</button> 
@@ -41,6 +43,7 @@
                                 <th class='text-left'>Code&nbsp;</th>
                                 <th class='text-left'>Date paiement&nbsp;</th>
                                 <th class='text-left'>Nom expediteur&nbsp;</th>
+                                <th class='text-left'>Téléphone&nbsp;</th>
                                 <th class='text-left' ng-show="showAllDetail">caissier&nbsp;</th>
                                 <th class='text-left' ng-show="showAllDetail">Facture lié&nbsp;</th>
                                 <th class='text-left'>Magasin&nbsp;</th>
@@ -49,10 +52,11 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="data in filtered=(paiements | filter:filterText)" class="liste">
-                                    <td>{{data.type_paiement|uppercase}}</td>
+                                    <td>{{data.type_paiement|uppercase}} </td>
                                     <td>{{data.code|uppercase}}</td>
-                                    <td>{{data.date_paiement }}</td>
+                                    <td>{{data.date_paiement |date:'dd/MM/yyyy'}}</td>
                                     <td>{{data.nom_expediteur|uppercase}}</td>
+                                    <td>{{data.telephone}}</td>
                                     <td ng-show="showAllDetail">{{data.used_paiement_code_user|uppercase}}</td>
                                     <td ng-show="showAllDetail">{{data.ref_facture_vente|uppercase}}</td>
                                     <td>{{data.nom_mag|uppercase}}</td>
@@ -61,7 +65,7 @@
                                     <td>
 
                                         <a
-                                        href ng-click="actionSurReglement(data,1)" title="Valider" class="btn fg-white bg-green">&nbsp;
+                                        href   ng-click="actionSurReglement(data,1);" title="Valider" class="btn fg-white bg-green btn_validation">&nbsp;
                                         &nbsp;</a>&nbsp;&nbsp;
  
                                         <a 
@@ -88,48 +92,84 @@
                 </fiedlset>
             </div>
         </div>
-            <div class="example col-lg-5"  id="searchPannel">
-                <fieldset>
-                    <legend><a  class="inverse" href=""><span class=" icon-arrow-right-3"></span></a>Nouveau paiement</legend>
-                    <form name="form">
-                        <div   style="max-height:500px;overflow:auto;">
-                        <table width="100%">
-                            <tr>
-                                <td><label class="col-lg-12">Date paiement</label>
-                                    <div class="input-control text col-lg-3"><input type="text" placeholder="jj/mm/aaaa" name="date_paiement" ng-model="paiement.date_paiement" class="fg-orange" required></div>
-                                    <label class="col-lg-12">Code</label>
-                                    <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="code" placeholder="Exemple : PP241218.2142.25716627" type="text" ng-model="paiement.code" required></div>
-                                    <label class="col-lg-12">Montant</label>
-                                    <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="montant" placeholder="0" type="number" ng-model="paiement.montant" required></div>
-                                    <label class="col-lg-12">Nom expéditeur</label>
-                                    <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="nom_expediteur" placeholder="Nom du client" type="text" ng-model="paiement.nom_expediteur"></div>
-                                    <label class="col-lg-12">Boutique </label>
-                                    <div class="input-control select col-lg-6" data-role="input-control">
-                                        <select ng-model="paiement.mag_paiement" ng-options="magasin.id_mag as magasin.nom_mag|uppercase for magasin in myMagasinsAcces">
-                                            <option value=""></option>
+        <div class="example col-lg-5"  id="searchPannel">
+            <fieldset>
+                <legend><a  class="inverse" href=""><span class=" icon-arrow-right-3"></span></a>Nouveau paiement</legend>
+                <form name="form">
+                    <div   style="max-height:500px;overflow:auto;">
+                    <table width="100%">
+                        <tr>
+                            <td><label class="col-lg-12">Date paiement</label>
+                                <div class="input-control text col-lg-3"><input type="text" placeholder="jj/mm/aaaa" name="date_paiement" ng-model="paiement.date_paiement" class="fg-orange" required></div>
+                                <label class="col-lg-12">Code</label>
+                                <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="code" placeholder="Exemple : PP241218.2142.25716627" type="text" ng-model="paiement.code" required></div>
+                                <label class="col-lg-12">Montant</label>
+                                <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="montant" placeholder="0" type="number" ng-model="paiement.montant" required></div>
+                                <label class="col-lg-12">Nom expéditeur</label>
+                                <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="nom_expediteur" placeholder="Nom du client" type="text" ng-model="paiement.nom_expediteur"></div>
+                                <label class="col-lg-12">Numéro de téléphone</label>
+                                <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="telephone" placeholder="Numéro de téléphone" type="text" ng-model="paiement.telephone"></div>
+                                <label class="col-lg-12">Boutique </label>
+                                <div class="input-control select col-lg-6" data-role="input-control">
+                                    <select ng-model="paiement.mag_paiement" ng-options="magasin.id_mag as magasin.nom_mag|uppercase for magasin in myMagasinsAcces">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                                <label class="col-lg-12">Caissier </label>
+                                <label class="col-lg-12"> &nbsp;&nbsp;<span class="input-control text span2">
+                                <input ng-model="filterItem" placeholder="filtre" type="text" /></span></label>
+                                <div class="input-control select col-lg-6" data-role="input-control">
+                                    <select ng-model="paiement.used_paiement_code_user" ng-options="user.code_user as user.nom_prenom_user | uppercase for user in users|filter:filterItem|orderBy:'nom_prenom_user':false" ng-click="gus()">
+                                        <option value=""></option>
                                         </select>
-                                    </div>
-                                    <label class="col-lg-12">Caissier </label>
-                                    <label class="col-lg-12"> &nbsp;&nbsp;<span class="input-control text span2">
-                                    <input ng-model="filterItem" placeholder="filtre" type="text" /></span></label>
-                                    <div class="input-control select col-lg-6" data-role="input-control">
-                                        <select ng-model="paiement.used_paiement_code_user" ng-options="user.code_user as user.nom_prenom_user | uppercase for user in users|filter:filterItem|orderBy:'nom_prenom_user':false" ng-click="gus()">
-                                            <option value=""></option>
-                                            </select>
-                                    </div>
-                                    <label class="col-lg-12">Référence facture</label>
-                                    <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="facture_vnt" placeholder="Ex : 22024-0216" type="text" ng-model="paiement.facture_vnt"></div>
-                                </td>
-                            </tr>
-                        </table>
-                        <span class="element-divider"></span>
-                        <div style="padding-top: 10%;"><button class="primary" ng-click="save(paiement);" ng-disabled="form.$invalid || !paiement.code || !paiement.montant || !paiement.date_paiement"><span
-                                class="icon-checkmark"></span>Valider</button> &nbsp; <button class="inverse" type="reset" class="button"><i class="icon-undo on-left on-left-more"></i>Annuler </button>
-                            </div>
+                                </div>
+                                <label class="col-lg-12">Référence facture</label>
+                                <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="ref_facture_vente" placeholder="Ex : 22024-0216" type="text" ng-model="paiement.ref_facture_vente"></div>
+                            </td>
+                        </tr>
+                    </table>
+                    <span class="element-divider"></span>
+                    <div style="padding-top: 10%;"><button class="primary" ng-click="save(paiement);" ng-disabled="form.$invalid || !paiement.code || !paiement.montant || !paiement.date_paiement"><span
+                            class="icon-checkmark"></span>Valider</button> &nbsp; <button class="inverse" type="reset" class="button"><i class="icon-undo on-left on-left-more"></i>Annuler </button>
                         </div>
-                    </form>
-                </fieldset>
-            </div>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+        <div class="example col-lg-5"  id="detailsPannel">
+            <fieldset>
+                <legend><a  class="btn_validation_annuler" href=""><span class=" icon-arrow-right-3"></span></a>Validation</legend>
+                <form name="form">
+                    <div   style="max-height:500px;overflow:auto;">
+
+                    <div style="padding-bottom: 5%;"><button class="primary" ng-click="updatePaiement(paiement);" ng-disabled="form.$invalid || !paiement.code || !paiement.montant || !paiement.date_paiement"><span
+                            class="icon-checkmark"></span>Valider</button> &nbsp; <button type="button" class="button btn_validation_annuler"><i class="icon-undo on-left on-left-more"></i>Annuler </button>
+                    </div>
+
+                    <span class="element-divider"></span>
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <label class="col-lg-12">Référence facture</label>
+                                <div class="input-control text col-lg-12" data-role="input-control"><input required style="height:100%;font-size:20px;" name="ref_facture_vente" placeholder="Ex : 22024-0216" type="text" ng-model="paiement.ref_facture_vente"></div>
+                            
+                                <label class="col-lg-12">Date paiement</label>
+                                <div class="input-control text col-lg-3"><input disabled type="text" placeholder="jj/mm/aaaa" name="date_paiement" ng-model="paiement.date_paiement" class="fg-orange" required></div>
+                                <label class="col-lg-12">Code</label>
+                                <div class="input-control text col-lg-12" data-role="input-control"><input disabled style="height:100%;font-size:20px;" name="code" placeholder="Exemple : PP241218.2142.25716627" type="text" ng-model="paiement.code" required></div>
+                                <label class="col-lg-12">Montant</label>
+                                <div class="input-control text col-lg-12" data-role="input-control"><input  style="height:100%;font-size:20px;" name="montant" placeholder="0" type="number" ng-model="paiement.montant" required></div>
+                                <label class="col-lg-12">Nom expéditeur</label>
+                                <div class="input-control text col-lg-12" data-role="input-control"><input disabled style="height:100%;font-size:20px;" name="nom_expediteur" placeholder="Nom du client" type="text" ng-model="paiement.nom_expediteur"></div>
+                                <label class="col-lg-12">Numéro de téléphone</label>
+                                <div class="input-control text col-lg-12" data-role="input-control"><input disabled style="height:100%;font-size:20px;" name="telephone" placeholder="Numéro de téléphone" type="text" ng-model="paiement.telephone"></div>
+                                </td>
+                        </tr>
+                    </table>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
 
 
 
@@ -141,6 +181,8 @@
     $(function() {
         
         
+
+       
         $(".btn_reinitialiser").on("click", function() {
             console.log($("#searchPannel").css("right"))
             if ($("#searchPannel").css("right") === '0px') {
@@ -149,9 +191,12 @@
                 $("#searchPannel").css("right", "0")
             }
         });
-            $(".inverse").on("click", function() {
-                console.log("------")
-                $(".btn_reinitialiser").click();
-            })
+        $(".inverse").on("click", function() {
+            console.log("------o")
+            $(".btn_reinitialiser").click();
+        });
+        $(".btn_validation_annuler").on("click", function() {
+            $("#detailsPannel").css("right", "-700%");
+        });
     });
 </script>
