@@ -15,6 +15,13 @@ class stockController extends model {
         if ($this->get_request_method() != "POST") {
             $this->response('', 406);
         }
+        if (true) {
+            $response = array(
+                "status" => 0,
+                "datas" => "-1",
+                "message" => "Cette fonctionnalité a été désactivée, veuillez contacter le controlleur de gestion pour corriger votre stock");
+            $this->response($this->json($response), 200);
+        }
         $approvisionnement = $_POST;
         $id = (int) $approvisionnement['id'];
 

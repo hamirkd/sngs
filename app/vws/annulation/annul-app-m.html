@@ -76,7 +76,7 @@
         <div class="span7" style="float:right;">
             <div class="example">
                 <fieldset>
-                    <legend>Articles du bon : <span class="fg-red">{{num_fact}}</span><span
+                    <legend>Articles du bon: <span class="fg-red">{{num_fact}}</span><span
                             class="input-control text span2" style=""><input ng-model="filterText2" placeholder="filtre"
                                 type="text"></span></legend>
                     <div class="col-md-12" style="min-height: 400px;max-height: 400px;overflow: auto;">
@@ -89,15 +89,17 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="data in filtererticles=(details|filter:filterText2)">
-                                    <td>{{data.code_mag |uppercase}} <br /><span title="Date"
+                                    <td  title="{{data.nom_mag |uppercase}}">{{data.code_mag |uppercase}} <br /><span title="Date"
                                             class="fg-blue my-small-font">{{data.date_appro_art}}</span></td>
                                     <td>{{data.nom_art |uppercase}}</td>
                                     <td>{{data.qte_appro_art | uppercase}}</td>
                                     <td><a ng-if="(!app.PRMS.resa && app.userPfl.id==data.user_appro) || (!app.PRMS.resa && app.userPfl.pfl<=1) "
                                             href ng-click='undoa(data)' title="supprimer"><i
-                                                class="icon-cancel on-left on-left-more"></i></a><a
-                                            ng-if="app.PRMS.resa && app.userPfl.pfl<=1" href ng-click='undoa(data)'
-                                            title="supprimer"><i class="icon-cancel on-left on-left-more"></i></a></td>
+                                                class="icon-cancel on-left on-left-more"></i></a>
+                                        <a ng-if="app.PRMS.resa && app.userPfl.pfl<=1"
+                                            href ng-click='undoa(data)' title="supprimer"><i
+                                                class="icon-cancel on-left on-left-more"></i></a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

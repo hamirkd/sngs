@@ -25,6 +25,7 @@
                                             class="fg-red">(0{{srtnv}})</span></i>&nbsp;</a>
                             </span>
                         </th>
+                        <th class='text-left'>Source &nbsp;</th>
                         <th class='text-left'>Beneficiaire &nbsp;</th>
                         <th class='text-left'>Date &nbsp;</th>
                         <th class='text-left'>Auteur&nbsp;</th>
@@ -43,6 +44,7 @@
                                 &nbsp;&nbsp; <a class="button warning" align="right" href="./app/raps/bs.php?f={{data.id_sort}}&r={{data.id_mag}}" title="Imprimer le Bon de sortie" target="_BLANK"><span
                                         class="icon-printer"></span></a> &nbsp; <a ng-if="data.vu==0 && app.userPfl.mg==0" href ng-click="vusrt(data)" title="Marquer comme Vu" class="btn">&nbsp;<i class="icon-alarm"></i>&nbsp;</a>
                             </td>
+                            <td title="{{data.nom_mag_source}}">{{data.code_mag_source}}</td>
                             <td>{{data.nom_mag}}</td>
                             <td>{{data.date_sort | date:'dd/MM/y'}}</td>
                             <td>{{data.login_sort}}</td>

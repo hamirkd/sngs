@@ -44,14 +44,20 @@
                         <th class='text-left'>Valeur &nbsp;</th>
                         <th class='text-left'>Fourniss &nbsp;</th>
                         <th class='text-left'>Auteur&nbsp;</th>
+                        <th class='text-left'>Magasin&nbsp;</th>
                         <th class='text-left'>Action&nbsp;</th>
                     </thead>
                     <tbody>
                         <tr ng-repeat="data in filtered=(approvisionnements | filter:filterText)" class="liste">
                             <td>{{data.date_appro | date:'dd/MM/y'}}</td>
-                            <td class='fg-red'><a href ng-click="showDetails(data)"><i class="icon-eye"></i>
-                                    {{data.bon_liv_appro}} </a><a class="fg-violet" ng-show="data.openclose==0"
-                                    title="Bon clos/Ferme"><span class="icon-bookmark on-left"></span></a></td>
+                            <td class='fg-red'>
+                                <a href ng-click="showDetails(data)"><i class="icon-eye"></i>
+                                    {{data.bon_liv_appro}} </a>
+                                    <span ng-show="data.openclose==0" title="Bon clos/Ferme" class="fg-violet icon-bookmark on-left"></span>
+                                    <span ng-show="data.date_confirm" title="Valider" class="fg-green icon-thumbs-up on-left-more"></span>
+                                    <span ng-show="!data.date_confirm" title="Valider" class="fg-red">En attente de validation</span>
+
+                                </td>
                             <td>{{data.mnt_revient_appro | currency}} <br ng-if="data.bl_bon_dette==1" /><span
                                     title="Credit" class="bg-red fg-white"
                                     ng-if="data.bl_bon_dette==1">&nbsp;CR&Eacute;DIT&nbsp;</span> &nbsp;&nbsp; <span
@@ -60,6 +66,7 @@
                             </td>
                             <td>{{data.nom_frns|uppercase}}</td>
                             <td>{{data.login_appro}} </td>
+                            <td  title="{{data.nom_mag}}">{{data.code_mag}} </td>
                             <td><a ng-if="data.id_appro!=1 && app.userPfl.id==data.user_appro"
                                     href="#/stkba/{{data.id_appro}}" class="btn">&nbsp;<i class="icon-pencil"></i>&nbsp;
                                     Editer</a> &nbsp; <span ng-if="app.userPfl.pfl<=1"><a class="fg-violet"
@@ -68,7 +75,9 @@
                                             class="icon-bookmark-2 on-left"></span>Ouvrir</a><a class="fg-violet"
                                         ng-show="data.id_appro!=1 && data.openclose==1" href=""
                                         ng-click="status(0,data.id_appro,data)" title="Fermer/Clore le Bon"><span
-                                            class="icon-bookmark on-left"></span>Fermer</a></span></td>
+                                            class="icon-bookmark on-left"></span>Fermer</a></span>
+                                        
+                                        </td>
                         </tr>
                         <tr>
                             <td colspan="2" align="right">
@@ -196,11 +205,17 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="data in filtere=(details|filter:filterText2)">
-                            <td>{{data.code_mag |uppercase}}</td>
+                            <td title="{{data.nom_mag |uppercase}}">{{data.code_mag |uppercase}}</td>
                             <td>{{data.nom_art |uppercase}}</td>
                             <td>{{data.qte_appro_art}}</td>
                             <td>{{data.prix_appro_art | currency}}</td>
                             <td>{{(data.prix_appro_art * data.qte_appro_art) | currency}}</td>
+                            <td>
+                                <a class="fg-green" href=""
+                                ng-show="data.code_user_confirm == null"
+                                    ng-click="insertStockApproConfirmation(data)" title="Validation"><span
+                                        class="icon-xing on-left"></span></a>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="4" align="right">
@@ -210,6 +225,21 @@
                                 <h3><span class="fg-red"> {{ getTotalAchat() | currency }} F</span></h3>
                             </td>
                         </tr>
+                        <tr>
+                            <td colspan="6" align="right">
+                                <span class="fg-red" ng-show="approvisionnement.code_user_confirm == null"> <a class="fg-violet" href=""
+                                    
+                                    ng-click="setConfirmationApprovisionnement(0,approvisionnement.id_appro,approvisionnement)" title="Confirmation"><span
+                                        class="icon-bookmark on-left"></span>Confirmation</a></span>
+                                <span class="fg-green" ng-show="approvisionnement.code_user_confirm != null">
+                                    Confirmer par {{approvisionnement.code_user_confirm}} à
+                                    {{approvisionnement.date_confirm}}
+                                </span>
+                                <!-- {{data.code_user_confirm}}
+                                {{data.code_user_confirm}} -->
+                            </td>
+                        </tr>
+                        
                     </tbody>
                 </table>
             </div>
