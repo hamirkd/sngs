@@ -440,10 +440,10 @@ sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($
         task = prmutils.updateStock($scope.corrstock.id_stk, $scope.corrstock);
         task.promise.then(function(result) {
             if (result.err === 0) {
-                app.notify(result.message, "b");
+                app.notify(result.message, "m");
                 $scope.corrstock = {}
             } else {
-                app.notify("ok ...", "b")
+                app.notify("ok ...", "m")
             }
         })
     };
@@ -549,7 +549,7 @@ sngs.controller("stockInvCtrl", ["$scope", '$http', 'config', "$rootScope", "prm
                 "qte_appro_art": data.ecart
             }
             console.log(appstocks)
-            task = prmutils.insertStockAppro(appstocks);
+            task = prmutils.insertStockApproForConfirmation(appstocks);
             task.promise.then(function(result) {
                     $scope.compteur = $scope.compteur + 1;
                     if (result.err === 0) {
@@ -1302,7 +1302,7 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             return false
         }
         console.log(appstock);
-        task = prmutils.insertStockAppro(appstock);
+        task = prmutils.insertStockApproForConfirmation(appstock);
         task.promise.then(function(result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
@@ -2300,11 +2300,49 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         }
         var task;
         task = prmutils.statusappro(status, id);
-        task.promise.then(function(result) {})
+        task.promise.then(function(result) {
+        })
     };
+    
+    $scope.setConfirmationApprovisionnement = function(status, id, data) {
+        
+        var task;
+        task = prmutils.setConfirmationApprovisionnement(status, id);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    data['code_user_confirm'] = result.data['code_user_confirm'];
+                    data['date_confirm'] = result.data['date_confirm'];
+                }
+                // $scope.approvisionnement['code_user_confirm'] = result.data['code_user_confirm'];
+                // $scope.approvisionnement['date_confirm'] = result.data['date_confirm'];
+            }
+        })
+    };
+    
+    $scope.insertStockApproConfirmation = function(data) {
+        var task;
+        task = prmutils.insertStockApproConfirmation(data);
+        task.promise.then(function(result) {
+            console.log(result,'===')
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m", 10000)
+                } else {
+                    data['code_user_confirm'] = result.data['code_user_confirm'];
+                    data['date_confirm'] = result.data['date_confirm'];
+                }
+            } else {
+                app.notify("ok ...", "b")
+            }
+        })
+    };
+    
     $scope.showDetails = function(fac) {
         $scope.num_fact = fac.bon_liv_appro;
-        $scope.facture = fac;
+        $scope.approvisionnement = fac;
         var task = prmutils.showApproDetails(fac);
         task.promise.then(function(result) {
             app.waiting.show = true;

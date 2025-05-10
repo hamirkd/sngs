@@ -102,7 +102,11 @@ ALTER TABLE `t_creance_client` ADD `mag_creance` INT(11) NULL DEFAULT NULL AFTER
 
 CREATE TRIGGER `t_creance_client_magasin_ad` BEFORE INSERT ON `t_creance_client` FOR EACH ROW BEGIN UPDATE t_creance_client SET mag_creance = (SELECT mag_user FROM t_user WHERE t_user.login_user = NEW.caissier_login_crce LIMIT 1) WHERE id_crce_clnt = NEW.id_crce_clnt; END;
 
-
 ALTER TABLE `t_paiement` ADD `etat` TINYINT NOT NULL DEFAULT '0' COMMENT '1 pour valider et 2 pour rejeter' AFTER `montant`;
 
 ALTER TABLE `t_paiement` ADD `motif` VARCHAR(200) NULL AFTER `etat`;
+ALTER TABLE `t_approvisionnement_article` ADD `code_user_confirm` VARCHAR(20) NULL AFTER `user_appro_art`, ADD `date_confirm` DATETIME NULL AFTER `code_user_confirm`;
+ 
+ALTER TABLE `t_approvisionnement` ADD `code_user_confirm` VARCHAR(20) NULL AFTER `code_user_appro`, ADD `date_confirm` DATETIME NULL AFTER `code_user_confirm`;
+
+ALTER TABLE `t_user` ADD `droit_confirmation_approvisionnement` INT NOT NULL DEFAULT '0' AFTER `droit_validateur_demande`;

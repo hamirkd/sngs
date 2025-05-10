@@ -400,16 +400,20 @@ class sortieController extends model {
         if ($_SESSION['userMag'] != 0)
             $query = 'SELECT sort.id_sort,sort.vu,sort.bon_sort,sort.actif,
            sort.date_sort,sort.mag_sort_dst as id_mag,sort.login_sort,m.nom_mag,
-           sort.rejeter,sort.motif  
+           mm.nom_mag as nom_mag_source,mm.code_mag as code_mag_source,
+           sort.rejeter,sort.motif
             FROM t_sortie sort 
             inner join t_magasin m on m.id_mag=mag_sort_dst
+            inner join t_magasin mm on mm.id_mag=mag_sort_src
             WHERE sort.mag_sort_src =  '.$_SESSION["userMag"].'
             order by sort.id_sort DESC limit 100';
         else
             $query = "SELECT sort.id_sort,sort.vu,sort.bon_sort,sort.actif,
-           sort.date_sort,sort.mag_sort_dst as id_mag,sort.login_sort,m.nom_mag,sort.motif  
+           sort.date_sort,sort.mag_sort_dst as id_mag,sort.login_sort,m.nom_mag,sort.motif,
+           mm.nom_mag as nom_mag_source,mm.code_mag as code_mag_source  
             FROM t_sortie sort 
-            inner join t_magasin m on m.id_mag=mag_sort_dst  
+            inner join t_magasin m on m.id_mag=mag_sort_dst
+            inner join t_magasin mm on mm.id_mag=mag_sort_src  
             WHERE 1=1 order by sort.id_sort DESC limit 100";
 
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);

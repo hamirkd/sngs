@@ -132,8 +132,10 @@ sngs.directive("contenteditable", ["prmutils", function(prmutils) {
                 if (scope.typeo === "art") {
                     task = prmutils.updateArticle(scope.dt.id_art, scope.dt)
                 }
-                if (scope.typeo === "stock") {
+                else if (scope.typeo === "stock") {
                     task = prmutils.setAdresseSotck(scope.dt.id_stk, scope.dt)
+                } else {
+                    return;
                 }
                 task.promise.then(function(result) {
                     if (result.err === 0) {

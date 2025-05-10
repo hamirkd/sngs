@@ -1523,6 +1523,18 @@ sngs.controller("etaVersCtrl", ["$scope", "$rootScope", "prmutils", function($sc
             window.open(URL.createObjectURL(blob), '_blank');
         })
     };
+    $scope.downloadJSONAsCSV = function() {
+        // Convert JSON data to CSV
+        let csvData = app.jsonToCsv($scope.versements); // Add .items.data
+        // Create a CSV file and allow the user to download it
+        let blob = new Blob([csvData], { type: 'text/csv' });
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'versement.csv';
+        document.body.appendChild(a);
+        a.click();
+    }
     $scope.getTotal = function() {
         var total = 0;
         for (var i = 0; i < $scope.filtered.length; i++) {

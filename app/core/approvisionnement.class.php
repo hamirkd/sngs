@@ -176,7 +176,7 @@ class approvisionnementController extends model {
     public function geApprovisionnementOf($idappro) {
 
         $query = "SELECT app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
-            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns  
+            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns,code_user_confirm,date_confirm  
             FROM t_approvisionnement app 
             inner join (select id_frns,nom_frns from t_fournisseur) f 
             on app.frns_appro=f.id_frns 
@@ -198,19 +198,62 @@ class approvisionnementController extends model {
         }
 
         if ($_SESSION['userMag'] > 0)
-            $query = "SELECT app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle, app.dette_appro,app.actif,
+            $query = "SELECT distinct app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle, app.dette_appro,app.actif,
             mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns  
             FROM t_approvisionnement app 
             inner join (select id_frns,nom_frns from t_fournisseur) f 
             on app.frns_appro=f.id_frns WHERE app.actif=1 
-             AND  app.user_appro in (SELECT id_user from t_user where mag_user=" . $_SESSION['userMag'] . ")
-                 order by app.date_appro DESC,app.bon_liv_appro DESC";
+            AND  app.user_appro in (SELECT id_user from t_user where mag_user=" . $_SESSION['userMag'] . ")
+                             order by app.date_appro DESC,app.bon_liv_appro DESC";
         else
             $query = "SELECT app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
             mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns  
             FROM t_approvisionnement app 
             inner join (select id_frns,nom_frns from t_fournisseur) f 
-            on app.frns_appro=f.id_frns WHERE app.actif=1 OR app.id_appro=1
+            on app.frns_appro=f.id_frns
+            WHERE app.actif=1 OR app.id_appro=1
+                order by app.date_appro DESC,app.bon_liv_appro DESC";
+
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+        if ($r->num_rows > 0) {
+            $result = array();
+            while ($row = $r->fetch_assoc()) {
+                $result[] = $row;
+            }
+            $response = array("status" => 0,
+                "datas" => $result,
+                "message" => "");
+            $this->response($this->json($response), 200);
+        } else {
+            $response = array("status" => 0,
+                "datas" => "",
+                "message" => "");
+            $this->response($this->json($response), 200);
+        }
+        $this->response('', 204);
+    }
+
+    public function getApprovisionnementsDetail() {
+        if ($this->get_request_method() != "GET") {
+            $this->response('', 406);
+        }
+
+        if ($_SESSION['userMag'] > 0)
+            $query = "SELECT distinct app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle, app.dette_appro,app.actif,
+            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns  
+            FROM t_approvisionnement app
+            inner join (select id_frns,nom_frns from t_fournisseur) f 
+            on app.frns_appro=f.id_frns WHERE app.actif=1 
+            AND  app.user_appro in (SELECT id_user from t_user where mag_user=" . $_SESSION['userMag'] . ")
+                             order by app.date_appro DESC,app.bon_liv_appro DESC";
+        else
+            $query = "SELECT app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
+            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns  
+            FROM t_approvisionnement app 
+            inner join (select id_frns,nom_frns from t_fournisseur) f 
+            on app.frns_appro=f.id_frns
+            WHERE app.actif=1 OR app.id_appro=1
                 order by app.date_appro DESC,app.bon_liv_appro DESC";
 
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
@@ -239,11 +282,12 @@ class approvisionnementController extends model {
         }
 
         $query = "SELECT app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
-            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns  
+            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns,app.code_user_confirm,app.date_confirm  
             FROM t_approvisionnement app 
             inner join (select id_frns,nom_frns from t_fournisseur) f 
             on app.frns_appro=f.id_frns 
-            WHERE app.user_appro in (SELECT id_user from t_user where mag_user=" . $_SESSION['userMag'] . ")
+            inner join t_approvisionnement_article ta on app.id_appro=ta.appro_appro_art
+            WHERE ta.mag_appro_art = " . $_SESSION['userMag'] . "
              order by app.date_appro DESC,app.bon_liv_appro DESC";
 
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
@@ -273,19 +317,65 @@ class approvisionnementController extends model {
         }
 
         if ($_SESSION['userMag'] > 0)
-            $query = "SELECT app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
-            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns  
-            FROM t_approvisionnement app 
+            $query = "SELECT distinct app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
+            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns,app.code_user_confirm,app.date_confirm,m.nom_mag,m.code_mag  
+            FROM t_approvisionnement app
             inner join (select id_frns,nom_frns from t_fournisseur) f 
-            on app.frns_appro=f.id_frns 
-            WHERE app.user_appro in (SELECT id_user from t_user where mag_user=" . $_SESSION['userMag'] . ")
+            on app.frns_appro=f.id_frns
+            inner join t_approvisionnement_article ta on app.id_appro=ta.appro_appro_art
+            inner join t_magasin m on m.id_mag=ta.mag_appro_art
+            WHERE ta.mag_appro_art = " . $_SESSION['userMag'] . "
+             order by app.date_appro DESC,app.bon_liv_appro DESC limit 50";
+        else
+            $query = "SELECT distinct app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
+            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns,app.code_user_confirm,app.date_confirm,m.nom_mag,m.code_mag  
+            FROM t_approvisionnement app
+            inner join (select id_frns,nom_frns from t_fournisseur) f 
+            on app.frns_appro=f.id_frns
+            inner join t_approvisionnement_article ta on app.id_appro=ta.appro_appro_art
+            inner join t_magasin m on m.id_mag=ta.mag_appro_art
+            WHERE 1=1  order by app.date_appro DESC,app.bon_liv_appro DESC limit 50";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+        if ($r->num_rows > 0) {
+            $result = array();
+            while ($row = $r->fetch_assoc()) {
+                $row['openclose'] = $row['actif'];
+                $result[] = $row;
+            }
+            $response = array("status" => 0,
+                "datas" => $result,
+                "message" => "");
+            $this->response($this->json($response), 200);
+        } else {
+            $response = array("status" => 0,
+                "datas" => "",
+                "message" => "");
+            $this->response($this->json($response), 200);
+        }
+        $this->response('', 204);
+    }
+
+    
+    public function getLmApprovisionnementsConfirmation() {
+        if ($this->get_request_method() != "GET") {
+            $this->response('', 406);
+        }
+
+        if ($_SESSION['userMag'] > 0)
+            $query = "SELECT app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
+            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns,app.code_user_confirm,app.date_confirm  
+            FROM t_approvisionnement app, t_approvisionnement_article ta
+            inner join (select id_frns,nom_frns from t_fournisseur) f 
+            on app.frns_appro=f.id_frns
+            WHERE app.id_appro=ta.appro_appro_art AND ta.mag_appro_art = " . $_SESSION['userMag'] . "
              order by app.date_appro DESC,app.bon_liv_appro DESC limit 50";
         else
             $query = "SELECT app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
-            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns  
-            FROM t_approvisionnement app 
+            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns,code_user_confirm,date_confirm  
+            FROM t_approvisionnement app
             inner join (select id_frns,nom_frns from t_fournisseur) f 
-            on app.frns_appro=f.id_frns 
+            on app.frns_appro=f.id_frns
             WHERE 1=1  order by app.date_appro DESC,app.bon_liv_appro DESC limit 50";
 
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
@@ -314,21 +404,23 @@ class approvisionnementController extends model {
             $this->response('', 406);
         }
         $offset = doubleval($this->_request['offset']);
-
         if ($_SESSION['userMag'] > 0)
             $query = "SELECT app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
-            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns  
-            FROM t_approvisionnement app 
-            inner join (select id_frns,nom_frns from t_fournisseur) f 
-            on app.frns_appro=f.id_frns 
-            WHERE app.user_appro in (SELECT id_user from t_user where mag_user=" . $_SESSION['userMag'] . ")
-             order by app.date_appro DESC,app.bon_liv_appro DESC limit 50 offset $offset";
+            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns,app.code_user_confirm,app.date_confirm,m.code_mag,m.nom_mag   
+            FROM t_approvisionnement app
+            inner join (select id_frns,nom_frns from t_fournisseur) f  on app.frns_appro=f.id_frns
+            inner join t_approvisionnement_article ta on app.id_appro=ta.appro_appro_art
+            inner join t_magasin m on m.id_mag=ta.mag_appro_art
+            WHERE app.id_appro=ta.appro_appro_art AND ta.mag_appro_art = " . $_SESSION['userMag'] . "
+            order by app.date_appro DESC,app.bon_liv_appro DESC limit 50 offset $offset";
         else
             $query = "SELECT app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
-            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns  
+            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns,app.code_user_confirm,app.date_confirm,m.code_mag,m.nom_mag   
             FROM t_approvisionnement app 
             inner join (select id_frns,nom_frns from t_fournisseur) f 
             on app.frns_appro=f.id_frns 
+            inner join t_approvisionnement_article ta on app.id_appro=ta.appro_appro_art
+            inner join t_magasin m on m.id_mag=ta.mag_appro_art
             WHERE 1=1 order by app.date_appro DESC,app.bon_liv_appro DESC limit 50 offset $offset";
 
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
@@ -409,7 +501,7 @@ class approvisionnementController extends model {
 
         $id = intval($fact['id_appro']);
 
-        $query = "SELECT a.code_art,a.nom_art,
+        $query = "SELECT a.code_art,a.nom_art,art_appro_art,appro_appro_art,ta.code_user_confirm,ta.date_confirm,ta.mag_appro_art,
                          ta.id_appro_art,ta.qte_appro_art,ta.prix_appro_art,ta.date_appro_art,m.nom_mag,m.code_mag,ap.user_appro
                           FROM t_approvisionnement_article ta 
                          INNER JOIN t_article a ON ta.art_appro_art=a.id_art
@@ -563,8 +655,8 @@ class approvisionnementController extends model {
 
 
         if ($_SESSION['userMag'] > 0)
-            $query = "SELECT app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
-            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns  
+            $query = "SELECT distinct app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
+            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns,app.code_user_confirm,app.date_confirm,m.code_mag,m.nom_mag 
             FROM t_approvisionnement app 
             inner join (select id_frns,nom_frns from t_fournisseur) f 
             on app.frns_appro=f.id_frns 
@@ -572,11 +664,10 @@ class approvisionnementController extends model {
                 INNER JOIN t_magasin m on m.id_mag=apa.mag_appro_art
                 INNER JOIN t_article a ON apa.art_appro_art=a.id_art 
                 INNER JOIN t_categorie_article c ON c.id_cat=a.cat_art 
-            WHERE app.user_appro in (SELECT id_user from t_user where mag_user=" . $_SESSION['userMag'] . ")
-            AND 1=1 ";
+            WHERE apa.appro_appro_art=" . $_SESSION['userMag'] . " AND 1=1 ";
         else
-            $query = "SELECT app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
-            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns  
+            $query = "SELECT distinct app.id_appro,app.bon_liv_appro,app.bl_bon_dette,app.bl_dette_regle,app.dette_appro,app.actif,
+            mnt_revient_appro,app.date_appro,app.login_appro,app.user_appro,f.nom_frns,app.code_user_confirm,app.date_confirm,m.code_mag,m.nom_mag   
             FROM t_approvisionnement app 
             inner join (select id_frns,nom_frns from t_fournisseur) f 
             on app.frns_appro=f.id_frns 
@@ -617,6 +708,7 @@ class approvisionnementController extends model {
         if ($r->num_rows > 0) {
             $result = array();
             while ($row = $r->fetch_assoc()) {
+                $row['openclose'] = $row['actif'];
                 $result[] = $row;
             }
             $response = array("status" => 0,
@@ -754,11 +846,14 @@ class approvisionnementController extends model {
             $this->isExistBl($bon_sort_appro);
 
             $query = "INSERT INTO  t_approvisionnement 
-                (bon_liv_appro,frns_appro,tva_appro,bl_bon_dette,bl_dette_regle,date_appro,login_appro,user_appro,code_user_appro,actif) 
-                VALUES('$bon_sort_appro',1,0,0,1,'" . $date_sort_appro . "','" . $_SESSION['userLogin'] . "'," . $_SESSION['userId'] . ",'" . $_SESSION['userCode'] . "',0)";
+                (bon_liv_appro,frns_appro,tva_appro,bl_bon_dette,bl_dette_regle,date_appro,login_appro,user_appro,code_user_appro,actif,code_user_confirm,date_confirm) 
+                VALUES('$bon_sort_appro',1,0,0,1,'" . $date_sort_appro . "','" . $_SESSION['userLogin'] . "'," . $_SESSION['userId'] . ",'" . $_SESSION['userCode'] . "',0,'" . $_SESSION['userCode'] . "', now())";
 
             if (!$r = $this->mysqli->query($query))
-                throw new Exception($this->mysqli->error . __LINE__ . "iita");
+                {
+                    echo $query;
+                    throw new Exception($this->mysqli->error . __LINE__ . "iita");
+                }
 
             $lastInsertID = $this->mysqli->insert_id;
 
@@ -772,8 +867,8 @@ class approvisionnementController extends model {
                 while ($row = $r->fetch_assoc()) {
                     $art = $row['art_sort_art'];
                     $qt = $row['qte_sort_art'];
-                    $queri = "INSERT INTO  t_approvisionnement_article (appro_appro_art, mag_appro_art, art_appro_art, qte_appro_art,date_appro_art,login_appro_art,user_appro_art,code_user_appro_art) 
-    VALUES(" . $lastInsertID . "," . $magdest . "," . $art . "," . $qt . ",'" . $date_sort_appro . "','" . $_SESSION['userLogin'] . "'," . $_SESSION['userId'] . ",'" . $_SESSION['userCode'] . "')";
+                    $queri = "INSERT INTO  t_approvisionnement_article (appro_appro_art, mag_appro_art, art_appro_art, qte_appro_art,date_appro_art,login_appro_art,user_appro_art,code_user_appro_art,code_user_confirm,date_confirm) 
+    VALUES(" . $lastInsertID . "," . $magdest . "," . $art . "," . $qt . ",'" . $date_sort_appro . "','" . $_SESSION['userLogin'] . "'," . $_SESSION['userId'] . ",'" . $_SESSION['userCode'] . "','" . $_SESSION['userCode'] . "', now())";
 
                     if (!$ri = $this->mysqli->query($queri))
                         throw new Exception($this->mysqli->error . __LINE__ . "iitaa");
@@ -879,6 +974,13 @@ class approvisionnementController extends model {
         if ($this->get_request_method() != "POST") {
             $this->response('', 406);
         }
+        if (false) {
+            $response = array(
+                "status" => 0,
+                "datas" => "-1",
+                "message" => "Cette fonctionnalité a été désactivée, veuillez contacter le controlleur de gestion pour corriger votre stock");
+            $this->response($this->json($response), 200);
+        }
 
         $appstock = $_POST;
 
@@ -956,6 +1058,205 @@ class approvisionnementController extends model {
         }
         else
             $this->response('', 204);
+    }
+
+    
+
+    public function insertStockApproForConfirmation() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+
+        $appstock = $_POST;
+
+        $column_names = array('appro_appro_art', 'art_appro_art', 'qte_appro_art', 'prix_appro_art');
+
+        $keys = array_keys($appstock);
+        $columns = '';
+        $values = '';
+        foreach ($column_names as $desired_key) {
+            if (!in_array($desired_key, $keys)) {
+                $$desired_key = '';
+            } else {
+                $$desired_key = intval($appstock[$desired_key]);
+            }
+            $columns = $columns . $desired_key . ',';
+            $values = $values . "" . $$desired_key . ",";
+        }
+
+        $response = array();
+        $query = "INSERT INTO  t_approvisionnement_article (" . trim($columns, ',') . ",date_appro_art,mag_appro_art,login_appro_art,user_appro_art,code_user_appro_art) VALUES(" . trim($values, ',') . ",now(),'" . $appstock['mag_appro_art'] . "','" . $_SESSION['userLogin'] . "'," . $_SESSION['userId'] . ",'" . $_SESSION['userCode'] . "')";
+
+        if (!empty($appstock)) {
+            try {
+                if (!$r = $this->mysqli->query($query))
+                    throw new Exception($this->mysqli->error . __LINE__);
+                $response = array("status" => 0,
+                    "datas" => $appstock,
+                    "message" => "article approvisionnement en confirmation avec success!");
+
+                $this->response($this->json($response), 200);
+            } catch (Exception $exc) {
+                $response = array("status" => 1,
+                    "datas" => "",
+                    "message" => $exc->getMessage());
+                $this->response($this->json($response), 200);
+            }
+        }
+        else
+            $this->response('', 204);
+    }
+    
+    public function insertStockApproConfirmation() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+
+        $appstock = $_POST;
+        // Recuperation des lignes qui n'ont pas ete valider
+        $query = "SELECT id_appro_art FROM t_approvisionnement_article WHERE date_confirm IS NOT NULL AND id_appro_art =".$appstock['id_appro_art'];
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        if ($r->num_rows > 0) {
+            $response = array("status" => 0,
+                "datas" => "-1",
+                "message" => "Cette ligne a déjà été validée");
+            $this->response($this->json($response), 200);
+        }
+        if ($_SESSION['droitConfirmationApprovisionnement'] != 1) {
+            $response = array(
+                "status" => 0,
+                "datas" => "-1",
+                "message" => "Vous n'avez pas les droits pour confirmer un approvisionnement, veuillez contacter le controlleur de gestion");
+            $this->response($this->json($response), 200);
+        }
+        // echo empty($_SESSION['droitConfirmationApprovisionnement']);
+        // echo empty($appstock);
+        // return;
+
+        $column_names = array('appro_appro_art', 'art_appro_art', 'qte_appro_art', 'prix_appro_art');
+
+        $keys = array_keys($appstock);
+        $columns = '';
+        $values = '';
+        foreach ($column_names as $desired_key) {
+            if (!in_array($desired_key, $keys)) {
+                $$desired_key = '';
+            } else {
+                $$desired_key = intval($appstock[$desired_key]);
+            }
+            $columns = $columns . $desired_key . ',';
+            $values = $values . "" . $$desired_key . ",";
+        }
+
+        $response = array();
+
+        if (!empty($appstock)) {
+            try {
+                $idmag = $appstock['mag_appro_art'];
+                $idart = intval($appstock['art_appro_art']);
+                $qte = intval($appstock['qte_appro_art']);
+
+                $query = "SELECT id_stk FROM t_stock  WHERE art_stk =$idart AND mag_stk=$idmag LIMIT 1";
+                $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+                if ($r->num_rows > 0) {
+                    $query = "UPDATE t_stock SET qte_stk=qte_stk + $qte WHERE art_stk =$idart AND mag_stk=$idmag";
+                    $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+                } else {
+                    $query = "INSERT INTO t_stock (art_stk,mag_stk,qte_stk,date_stk) VALUES($idart,$idmag,$qte,now())";
+                    $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+                }
+                // echo $query ;
+                // return;
+                if (!empty($appstock['prix_mini_art_mag']) && !empty($appstock['prix_gros_art_mag'])) {
+                    $prix_mini = intval($appstock['prix_mini_art_mag']);
+                    $prix_gros = intval($appstock['prix_gros_art_mag']);
+
+                    $query = "INSERT INTO t_prix_article_magasin (art_prix_art_mag,mag_prix_art_mag,prix_mini_art_mag,prix_gros_art_mag,date_prix) VALUES($idart,$idmag,$prix_mini,$prix_gros,now())";
+                    $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+                }
+                
+                $prix_appro_art = intval($appstock['prix_appro_art']);
+
+                $query = "UPDATE  t_approvisionnement_article SET code_user_confirm='" . $_SESSION['userCode'] . "', date_confirm=now(), prix_appro_art=$prix_appro_art WHERE id_appro_art=".$appstock['id_appro_art'];
+                
+
+                if (!$r = $this->mysqli->query($query))
+                    throw new Exception($this->mysqli->error . __LINE__);
+                
+                $id = (int) $appstock['art_appro_art'];
+                $pm = (floatval($appstock['prix_mini_art']) >= 0) ? floatval($appstock['prix_mini_art']) : 0;
+                $pmx = (floatval($appstock['prix_max_art']) >= 0) ? floatval($appstock['prix_max_art']) : 0;
+                $pg = (floatval($appstock['prix_gros_art']) >= 0) ? floatval($appstock['prix_gros_art']) : 0;
+                $pa = (floatval($appstock['prix_appro_art']) >= 0) ? floatval($appstock['prix_appro_art']) : 0;
+
+                /** Je modifie l'etat des prix et leurs designant qu'ils ne sont plus a jour */
+                if ($pm>0 && $pmx>0 && $pg > 0) {
+                    $rek_update = "UPDATE t_prix_article SET a_jour=1,date_prix=now() WHERE art_prix_art=$id AND a_jour=0";
+                    $r = $this->mysqli->query($rek_update) or die($this->mysqli->error . __LINE__);
+                    $log = $_SESSION['userLogin'];
+                    $ide = $_SESSION['userId'];
+                    $rek_insert = "INSERT INTO t_prix_article (art_prix_art,prix_mini_art,prix_max_art,prix_gros_art,prix_achat_art,date_prix,created_by,user_login) VALUES($id,$pm,$pmx,$pg,$pa,now(),$ide,'$log')";
+                    $r = $this->mysqli->query($rek_insert) or die($this->mysqli->error . __LINE__);
+                }
+                $appstock['code_user_confirm'] = $_SESSION['userCode'];
+                $response = array("status" => 0,
+                    "datas" => $appstock,
+                    "message" => "article approvisionne avec success!");
+
+                $this->response($this->json($response), 200);
+            } catch (Exception $exc) {
+                $response = array("status" => 1,
+                    "datas" => "",
+                    "message" => $exc->getMessage());
+                $this->response($this->json($response), 200);
+            }
+        }
+        else
+            $this->response('', 204);
+    }
+    
+
+    public function setConfirmationApprovisionnement() {
+        if ($this->get_request_method() != "GET") {
+            $this->response('', 406);
+        }
+        $appro = $_GET;
+        $id = (int) $appro['id'];
+        $query = "";
+        
+        if ($_SESSION['droitConfirmationApprovisionnement'] != 1) {
+            $response = array(
+                "status" => 0,
+                "datas" => "-1",
+                "message" => "Vous n'avez pas les droits pour confirmer un approvisionnement, veuillez contacter le controlleur de gestion");
+            $this->response($this->json($response), 200);
+        }
+
+        $query = "SELECT id_appro_art FROM t_approvisionnement_article WHERE date_confirm IS NULL AND appro_appro_art =$id";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        if ($r->num_rows > 0) {
+            $response = array("status" => 0,
+                "datas" => "-1",
+                "message" => "Il existe des lignes qui n'ont pas été validées");
+            $this->response($this->json($response), 200);
+        }
+
+        $query = "UPDATE  t_approvisionnement set actif=0, code_user_confirm='" . $_SESSION['userCode'] . "', date_confirm=now() WHERE id_appro=$id ";
+
+        $response = array();
+        try {
+            if (!$r = $this->mysqli->query($query))
+                throw new Exception($this->mysqli->error . __LINE__);
+            $response = array("status" => 0,
+                "datas" => $this->geApprovisionnementOf($id),
+                "message" => "");
+            $this->response($this->json($response), 200);
+        } catch (Exception $exc) {
+            $response = array("status" => 1,
+                "datas" => "",
+                "message" => $exc->getMessage());
+            $this->response($this->json($response), 200);
+        }
     }
 
     private function isExistBl($bl) {

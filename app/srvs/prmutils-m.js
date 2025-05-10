@@ -509,6 +509,9 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     servicesObject.statusappro = function(sta, id) {
         return dao.getData(config.mdlStockAs + "setStat&s=" + sta + "&id=" + id)
     };
+    servicesObject.setConfirmationApprovisionnement = function(sta, id) {
+        return dao.getData(config.mdlStockAs + "setConfirmationApprovisionnement&s=" + sta + "&id=" + id)
+    };
     servicesObject.statuscmd = function(sta, id) {
         return dao.getData(config.mdlStockCmd + "setStat&s=" + sta + "&id=" + id)
     };
@@ -547,6 +550,12 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     };
     servicesObject.insertStockAppro = function(object) {
         return dao.getData(config.mdlStockAs + "insertStockAppro", object)
+    };
+    servicesObject.insertStockApproForConfirmation = function(object) {
+        return dao.getData(config.mdlStockAs + "insertStockApproForConfirmation", object)
+    };
+    servicesObject.insertStockApproConfirmation = function(object) {
+        return dao.getData(config.mdlStockAs + "insertStockApproConfirmation", object)
     };
     servicesObject.insertStockCmd = function(object) {
         return dao.getData(config.mdlStockCmd + "insertStockCmd", object)

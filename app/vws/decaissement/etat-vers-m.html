@@ -17,6 +17,9 @@
                 <fiedlset>
                     <legend>{{title}} | Filtre : <a ng-hide="versements.length == 0" class="button warning" align="right" style="float:right;margin-right:50px;" href="./app/raps/decaiss-vers.php?d={{search.date_deb}}&f={{search.date_fin}}&cs={{search.user}}&bnk={{search.bank_vrsmnt}}"
                             target="_BLANK"><span class="icon-printer"></span>{{app.txtprint}}</a>
+                            <a class="button success" align="left" style="float:right;margin-right:50px;" target="_BLANK" ng-click="downloadJSONAsCSV();">
+                                <span class="icon-file-excel"></span>Excel
+                            </a>
                         <div class="input-control text span4" style='float: right;'><input ng-model="filterText" placeholder="filtrer" type="text"></div>
                     </legend>
                     <div class="col-md-12" ng-show="versements.length> 0" style="min-height: 400px;max-height: 400px;overflow: auto;">
