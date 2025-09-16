@@ -231,6 +231,11 @@ sngs = angular.module("sngs", ["sngs.services", "ngRoute", "ngResource", "base64
         templateUrl: "app/vws/param/prm-edit-access-droit-m.html",
         controller: "paramAccessDroitCtrl"
     });
+    /** droit utilisateur */
+    $routeProvider.when("/prmusrdroit", {
+        templateUrl: "app/vws/param/prm-edit-cusr-droit-m.html",
+        controller: "paramCusrDroitCtrl"
+    });
 
     $routeProvider.when("/prmaccess/:objectID", {
         templateUrl: "app/vws/param/prm-edit-access-m.html",

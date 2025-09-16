@@ -425,7 +425,23 @@ sngs.controller("etatDechargeCtrl", ["$scope", "$rootScope", "prmutils", functio
         })
     };
     $scope.gclt();
-    
+    $scope.ficheDeDecharge = function(versement) {
+        var task;
+        // console.log("-------", versement)
+        task = prmutils.ficheDeDecharge(versement);
+        task.promise.then(function(result) {
+            console.log(result.blob,'============')
+            // const blob = new Blob(result.blob);
+            // const blob = new Blob([result.blob], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+            // const blob = new Blob(JSON.stringify(result.blob));
+            // const blob = new Blob([result.blob]);
+            // const blob = new Blob([result.blob], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+
+            // window.open(URL.createObjectURL(blob), '_blank');
+            const contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+            window.open(URL.createObjectURL(new Blob([result.blob], { type: contentType })), '_blank');
+        })
+    };
 
     $scope.reinitialiser = function() {
         $scope.decharge = { date_decharge: today2 };
@@ -1512,15 +1528,19 @@ sngs.controller("etaVersCtrl", ["$scope", "$rootScope", "prmutils", function($sc
     };
     $scope.bonDeVersement = function(versement) {
         var task;
-        console.log("-------", versement)
+        // console.log("-------", versement)
         task = prmutils.bonDeVersement(versement);
         task.promise.then(function(result) {
-            console.log(result,'')
+            console.log(result.blob,'============')
             // const blob = new Blob(result.blob);
             // const blob = new Blob([result.blob], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-            const blob = new Blob(result.blob);
+            // const blob = new Blob(JSON.stringify(result.blob));
+            // const blob = new Blob([result.blob]);
+            // const blob = new Blob([result.blob], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
 
-            window.open(URL.createObjectURL(blob), '_blank');
+            // window.open(URL.createObjectURL(blob), '_blank');
+            const contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+            window.open(URL.createObjectURL(new Blob([result.blob], { type: contentType })), '_blank');
         })
     };
     $scope.downloadJSONAsCSV = function() {

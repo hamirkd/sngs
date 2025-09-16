@@ -29,6 +29,8 @@
                             href="./app/raps/factxls.php?d={{search.date_deb}}&f={{search.date_fin}}&tv={{search.bc}}&tx={{search.tx}}&mg={{search.magasin}}&cs={{search.user}}&art={{search.article}}&cat={{search.categorie}}&clt={{search.client}}"
                             target="_BLANK"><span class="icon-file-excel"></span>Excel</a>
 
+                            <button style="float:right;margin-right:50px;" class="button success" ng-click="downloadJSONAsCSV();"><span class="icon-file-excel"></span>CSV</button> 
+
                         <div class="input-control text span4" style='float: right;'><input ng-model="filterText"
                                 placeholder="filtrer" type="text"></div>
                     </legend>
@@ -46,6 +48,7 @@
                                 <th class='text-left'>No Facture&nbsp;</th>
                                 <th class='text-left'>Libelle article &nbsp;</th>
                                 <th class='text-left'>Qte &nbsp;</th>
+                                <th ng-if="app.userPfl.pfl==1 || app.userPfl.pfl==0" class='text-left'>Pu Achat &nbsp;</th>
                                 <th class='text-left'>Pu &nbsp;</th>
                                 <th class='text-left'>Montant &nbsp;</th>
                                 <th ng-if="app.userPfl.pfl==1 || app.userPfl.pfl==0" class='text-left'>Marge &nbsp;</th>
@@ -70,6 +73,7 @@
                                     </td>
                                     <td>{{data.nom_art |uppercase}}</td>
                                     <td>{{data.Qte_vnt}}</td>
+                                    <td ng-if="app.userPfl.pfl==1 || app.userPfl.pfl==0">{{data.pu_theo_achat}}</td>
                                     <td>{{data.pu_theo_vnt | currency }}</td>
                                     <td>{{data.mnt_theo_vnt | currency}}</td>
                                     <td ng-if="app.userPfl.pfl==1 || app.userPfl.pfl==0"><span title="marge" class="fg-red my-small-font"
@@ -79,11 +83,19 @@
                                     <td>{{data.code_caissier_fact |uppercase}}</td>
                                     <td ng-if="app.userPfl.pfl==1 || app.userPfl.pfl==0">{{(data.mnt_theo_vnt/getTotal()*100 | number)}}%</td>       
                                 </tr>
-                                <tr>
+                                <tr ng-if="app.userPfl.pfl!=1 && app.userPfl.pfl!=0">
                                     <td colspan="6" align="right">
                                         <h3><span>Valeurs Des Ventes :</span></h3>
                                     </td>
                                     <td colspan="2">
+                                        <h3><span class="fg-red"> {{ getTotal() | currency }} F CFA</span></h3>
+                                    </td>
+                                </tr>
+                                <tr ng-if="app.userPfl.pfl==1 || app.userPfl.pfl==0">
+                                    <td colspan="7" align="right">
+                                        <h3><span>Valeurs Des Ventes :</span></h3>
+                                    </td>
+                                    <td colspan="4">
                                         <h3><span class="fg-red"> {{ getTotal() | currency }} F CFA</span></h3>
                                     </td>
                                 </tr>

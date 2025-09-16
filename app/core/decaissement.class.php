@@ -54,7 +54,7 @@ class decaissementController extends model {
                            FROM 
                            t_depense dep
                            INNER JOIN t_type_depense td ON dep.type_dep=td.id_type_dep
-                           WHERE user_dep in (SELECT id_user FROM t_user WHERE mag_user=" . intval($_SESSION['userMag']) . ") ";
+                           WHERE (src_dep = ".intval($_SESSION['userMag'])." or src_dep in (select mag_id from t_magadin_user where user_id=".$_SESSION['userId'].")) ";
        
             if (!empty($search['user']))
             $query.=" AND dep.code_user_dep='" . $this->esc($search['user']) . "'";
@@ -248,22 +248,22 @@ class decaissementController extends model {
         }
 
         if ($_SESSION['userMag'] > 0)
-            $query = "SELECT dep.id_dep, dep.mnt_dep,dep.details_dep,dep.code_user_dep,
+            $query = "SELECT dep.id_dep,(select nom_mag from t_magasin where id_mag=mag_depense_id) as magasin_depense, dep.mnt_dep,dep.details_dep,dep.code_user_dep,
             td.lib_type_dep
                            FROM 
                            t_depense dep
                            INNER JOIN t_type_depense td ON dep.type_dep=td.id_type_dep
-                           WHERE date(dep.date_dep)='" . date("Y-m-d") . "'
-                               AND user_dep in (SELECT id_user FROM t_user WHERE mag_user=" . intval($_SESSION['userMag']) . ")
-                           ORDER BY dep.date_dep DESC";
+                           WHERE date(dep.date_enr)='" . date("Y-m-d") . "'
+                            AND (src_dep = ".intval($_SESSION['userMag'])." or src_dep in (select mag_id from t_magadin_user where user_id=".$_SESSION['userId']."))
+                           ORDER BY dep.date_enr DESC";
         else
             $query = "SELECT dep.id_dep, dep.mnt_dep,dep.details_dep,dep.code_user_dep,
             td.lib_type_dep
                            FROM 
                            t_depense dep
                            INNER JOIN t_type_depense td ON dep.type_dep=td.id_type_dep
-                           WHERE date(dep.date_dep)='" . date("Y-m-d") . "'
-                           ORDER BY dep.date_dep DESC";
+                           WHERE date(dep.date_enr)='" . date("Y-m-d") . "'
+                           ORDER BY dep.date_enr DESC";
 
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
@@ -404,7 +404,7 @@ class decaissementController extends model {
                 $heure_vnt = date("H:i:s");
                 $query = "INSERT INTO  t_depense (
                      	type_dep,
-                     mnt_dep,mag_depense_id,src_dep
+                     mnt_dep,mag_depense_id,src_dep,
                      date_dep,
                      user_dep,
                      login_dep,
@@ -412,7 +412,7 @@ class decaissementController extends model {
                      details_dep) 
                      VALUES(" . $type_dep . ",
                           " . $mnt_dep . ", 
-                          ".$mag_depense_id.",$mag_source_id
+                          ".$mag_depense_id.",$mag_source_id,
                               '$date_dep $heure_vnt',
                               
                           " . $_SESSION['userId'] . ",
@@ -567,7 +567,14 @@ class decaissementController extends model {
         $bank_vrsmnt = intval($versement['bank_vrsmnt']);
         $obj_vrsmnt = !empty($versement['obj_vrsmnt']) ? $this->esc($versement['obj_vrsmnt']) : "Ras";
         $date_vrsmnt = (!empty($versement['date_vrsmnt'])) ? isoToMysqldate($versement['date_vrsmnt']) : date("Y-m-d");
+        if ($_SESSION['userMag']==0 || $_SESSION['userMag']=='0') {
+            $response = array("status" => 0,
+                "datas" => "-1",
+                "message" => "Veuillez choisir un magasin");
 
+            $this->response($this->json($response), 200);
+            return;
+        }
 
 
         $response = array();
@@ -624,13 +631,51 @@ class decaissementController extends model {
         }
     }
     public function bonDeVersement() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+
+        $versement = $_POST;
+        $query = "SELECT v.*, b.nom_bank, u.nom_user,u.prenom_user,m.code_mag
+        FROM t_versement v
+        LEFT JOIN t_banque b ON v.bank_vrsmnt=b.id_bank
+        LEFT JOIN t_user u ON v.`caissier_vrsmnt` = u.id_user
+        LEFT JOIN t_magasin m ON m.id_mag=v.id_mag
+        WHERE v.id_vrsmnt = " . $versement['id_vrsmnt'];
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+        if ($r->num_rows > 0) {
+            $result = array();
+            while ($row = $r->fetch_assoc()) {
+                $result[] = $row;
+            }
+            $versement = $result[0];
+        } else {
+            $response = array("status" => 1,
+                "datas" => "",
+                "message" => "Ce versement n'existe pas");
+            $this->response($this->json($response), 200);
+            return;
+        }
+        // echo json_encode($versement);
         // Initialize the TBS instance
         $TBS = new clsTinyButStrong; // new instance of TBS
         $TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN); // load the OpenTBS plugin
         $template = 'documents/demo_ms_word.docx';
         $TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
-        $TBS->MergeField('description', 'DAO Hamadou');
-        echo $TBS->Show(OPENTBS_DOWNLOAD, "bon.docx");
+        $TBS->MergeField('numero', $versement['id_vrsmnt']);
+        $TBS->MergeField('date', date('d/m/Y', strtotime($versement['date_enr'])));
+        $TBS->MergeField('datePour', date('d/m/Y', strtotime($versement['date_vrsmnt'])));
+        $TBS->MergeField('nom_deposant', $versement['nom_user'].' '.$versement['nom_user']);
+        $TBS->MergeField('montant', $versement['mnt_vrsmnt']);
+        $TBS->MergeField('banque', $versement['nom_bank']);
+        $TBS->MergeField('mode_paiement', 'Espèces');
+        $TBS->MergeField('motif', $versement['obj_vrsmnt']);
+        $response = array(
+            "status" => 0,
+            "datas" => $TBS->Show(OPENTBS_DOWNLOAD, "bon.docx"),
+            "message" => "Impression");
+        $this->response($this->json($response), 200);
     }
     
     

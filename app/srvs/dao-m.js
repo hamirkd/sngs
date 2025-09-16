@@ -24,6 +24,7 @@ angular.module("sngs").factory("dao", ["$http", "$q", "config", "$base64", "loca
         return task;
 
         function success(response) {
+            console.log(response);
             var retrieve = response.data;
             console.log(retrieve)
             reponse = retrieve.status == 0 ? {
@@ -121,17 +122,98 @@ angular.module("sngs").factory("dao", ["$http", "$q", "config", "$base64", "loca
             })
         }
     }
-    function getDataFromUrl(urlAction, info) {
+    function getDataMedia(urlAction, info) {
         var url = config.serverUrl + urlAction;
         var basic = "Basic " + $base64.encode("sngs:stock");
+
+        var headers = {
+            'Authorization': basic,
+            'Content-Type': 'application/json'
+        };
+
+    return $http.post(url, info, { headers: headers, responseType: 'arraybuffer' })
+        .then(function(response) {
+            const contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+            window.open(URL.createObjectURL(new Blob([response.data], { type: contentType })), '_blank');
+        })
+        .catch(function(error) {
+            console.error("Erreur :", error);
+        });
+        
+    }
+    function getDataMedia2(urlAction, info, cacheId) {
+        if (typeof(cacheId) === "undefined") {
+            cacheId = null
+        }
+        var task = $q.defer();
+        var url = config.serverUrl + urlAction;
+        // console.log(url, info)
+        var basic = "Basic " + $base64.encode("sngs:stock");
+        var reponse;
         var headers = $http.defaults.headers.common;
         headers.Authorization = basic;
-        window.open(url)
-        
+        var promise;
+        if (info) {
+            promise = $http.post(url, info, {
+                timeout: config.timeout,
+                headers, responseType: 'arraybuffer'
+            })
+        } else {
+            promise = $http.get(url, {
+                timeout: config.timeout,
+                headers,
+                responseType: 'arraybuffer'
+            });
+        }
+        promise.then(success, failure);
+        return task;
+
+        function success(response) {
+            console.log(response);
+            var retrieve = response.data;
+            console.log(retrieve)
+            reponse = retrieve.status == 0 ? {
+                err: 0,
+                data: retrieve.datas,
+                message: retrieve.message,
+                blob: retrieve
+            } : {
+                err: 1,
+                data: retrieve.datas,
+                message: retrieve.message,
+                blob: retrieve
+            };
+            task.resolve(reponse)
+        }
+        function failure(response) {
+            var status = response.status;
+            var error;
+            switch (status) {
+                case 401:
+                    error = 2;
+                    break;
+                case 403:
+                    error = 3;
+                    break;
+                case 404:
+                    error = 6;
+                    break;
+                case 0:
+                    error = 4;
+                    break;
+                default:
+                    error = 5
+            }
+            task.resolve({
+                err: error,
+                messages: [response.statusText]
+            })
+        }
     }
     return {
         getData: getData,
         getDataGet: getDataGet,
-        getDataFromUrl: getDataFromUrl
+        getDataMedia: getDataMedia,
+        getDataMedia2: getDataMedia2
     }
 }]);

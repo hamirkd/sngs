@@ -649,8 +649,8 @@ class etatController extends model {
 
             $query = "SELECT 
                 SUM(CASE WHEN f.bl_fact_crdt = 0 THEN f.crdt_fact ELSE 0 END) AS comptant,
-                SUM(CASE WHEN f.bl_fact_crdt = 0 AND f.type_reglement = 'ESPECE' THEN f.crdt_fact ELSE 0 END) AS espece,
-                SUM(CASE WHEN f.bl_fact_crdt = 0 AND f.type_reglement = 'ORANGEMONEY' THEN f.crdt_fact ELSE 0 END) AS om,
+                SUM(CASE WHEN f.bl_fact_crdt = 0 AND f.reference_paiement IS NOT NULL AND f.reference_paiement !='' THEN f.depot_montant ELSE 0 END) AS om,
+                SUM(CASE WHEN f.bl_fact_crdt = 0 AND (f.reference_paiement IS NULL OR f.reference_paiement ='') THEN f.depot_montant ELSE 0 END) AS depotInvalide,
                 SUM(CASE WHEN f.bl_fact_crdt = 1 THEN f.crdt_fact ELSE 0 END) AS credit,
                 SUM(f.tva_fact + f.bic_fact) AS taxe,
                 SUM(f.remise_vnt_fact) AS remise
@@ -662,8 +662,9 @@ class etatController extends model {
             if ($r->num_rows > 0) {
                 $res = $r->fetch_assoc();
                 $result['comptant'] = doubleval($res['comptant']);
-                $result['espece'] = doubleval($res['espece']);
+                $result['espece'] = doubleval($res['comptant']) - doubleval($res['om']) - doubleval($res['depotInvalide']);
                 $result['om'] = doubleval($res['om']);
+                $result['depotInvalide'] = doubleval($res['depotInvalide']);
                 $result['credit'] = doubleval($res['credit']);
                 $result['remise'] = intval($res['remise']);
             }

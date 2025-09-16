@@ -24,7 +24,7 @@ class annulationController extends model {
             $query = "SELECT f.id_fact,date(f.date_fact) as Date_vnt,time(f.date_fact) as heure_vnt,
             f.code_fact,f.bl_fact_grt,f.bl_fact_crdt,f.sup_fact,f.remise_vnt_fact,f.crdt_fact,
             f.som_verse_crdt,f.code_caissier_fact,c.code_clt,m.nom_mag,
-            m.code_mag,c.nom_clt,f.type_reglement FROM t_facture_vente f
+            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant FROM t_facture_vente f
             INNER JOIN t_client c ON f.clnt_fact=c.id_clt
             INNER JOIN t_magasin m ON f.mag_fact=m.id_mag
             INNER JOIN t_user u ON f.caissier_fact=u.id_user
@@ -33,7 +33,7 @@ class annulationController extends model {
             $query = "SELECT f.id_fact,date(f.date_fact) as Date_vnt,time(f.date_fact) as heure_vnt,
             f.code_fact,f.bl_fact_grt,f.bl_fact_crdt,f.sup_fact,f.remise_vnt_fact,f.crdt_fact,
             f.som_verse_crdt,f.code_caissier_fact,c.code_clt,m.nom_mag,
-            m.code_mag,c.nom_clt,f.type_reglement FROM t_facture_vente f
+            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant FROM t_facture_vente f
             INNER JOIN t_client c ON f.clnt_fact=c.id_clt
             INNER JOIN t_magasin m ON f.mag_fact=m.id_mag
              INNER JOIN t_user u ON f.caissier_fact=u.id_user
@@ -42,7 +42,7 @@ class annulationController extends model {
                 $query = "SELECT f.id_fact,date(f.date_fact) as Date_vnt,time(f.date_fact) as heure_vnt,
             f.code_fact,f.bl_fact_grt,f.bl_fact_crdt,f.sup_fact,f.remise_vnt_fact,f.crdt_fact,
             f.som_verse_crdt,f.code_caissier_fact,c.code_clt,m.nom_mag,
-            m.code_mag,c.nom_clt,f.type_reglement FROM t_facture_vente f
+            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant FROM t_facture_vente f
             INNER JOIN t_client c ON f.clnt_fact=c.id_clt
             INNER JOIN t_magasin m ON f.mag_fact=m.id_mag
             INNER JOIN t_user u ON f.caissier_fact=u.id_user
@@ -1689,13 +1689,13 @@ class annulationController extends model {
 
         $condmag = "";
         if ($_SESSION['userMag'] > 0)
-            $condmag = " AND d.user_dep in (SELECT id_user FROM t_user where mag_user=" . intval($_SESSION['userMag']) . ")";
+            $condmag = " AND (src_dep = ".intval($_SESSION['userMag'])." or src_dep in (select mag_id from t_magadin_user where user_id=".$_SESSION['userId']."))";
 
         $query = "SELECT d.id_dep, td.lib_type_dep,d.mnt_dep,d.date_dep,d.code_user_dep,d.details_dep,d.user_dep
                FROM  t_depense d
                            INNER JOIN t_type_depense td ON d.type_dep=td.id_type_dep 
-                           WHERE d.date_dep >= DATE_SUB(now(), INTERVAL 2 WEEK) $condmag
-                           ORDER BY d.date_dep DESC";
+                           WHERE d.date_enr >= DATE_SUB(now(), INTERVAL 2 WEEK) $condmag
+                           ORDER BY d.date_enr DESC";
 
 
 

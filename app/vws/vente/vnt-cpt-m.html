@@ -54,7 +54,6 @@
                         <div ng-if="depot && depot.code">
                             <label>{{depot.code}} </label>
                             <label>{{depot.nom_expediteur}}| {{depot.telephone}} | {{depot.montant}} XOF</label>
-                         
                         </div>
                 </td>
 
@@ -227,6 +226,24 @@
                                                 placeholder="0" type="number" title="Effectuez une remsie?"
                                                 ng-model="appvente.remise" ng-disabled="" ng-change="validRmse()"></td>
                                         <td></td>
+                                    </tr>
+                                    <tr ng-if="appvente.type_reglement === 'ORANGEMONEY'">
+                                        <td colspan="2" align="center">
+                                            <h3><span>Montant Espèce</span></h3>
+                                            <label for="">{{getTotal()-appvente.remise - appvente.depot_montant}}</label>
+                                        </td>
+                                        <td colspan="3" align="center">
+                                            <h3><span>Montant {{appvente.type_reglement}}</span></h3>
+                                            <input style='font-size:16px;padding:5px;' class="fg-crimson" name="depot_montant"
+                                                placeholder="0" type="number" title="Montant"
+                                                ng-model="appvente.depot_montant" ng-disabled="depot.montant">
+                                        </td>
+                                        <td colspan="2" align="center">
+                                            <h3><span>Téléphone</span></h3>
+                                            <input style='font-size:16px;padding:5px;' class="fg-crimson" name="depot_telephone"
+                                                placeholder="+226 XX XX XX" type="text" title="telephone"
+                                                ng-model="appvente.depot_telephone" ng-disabled="depot.telephone">
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

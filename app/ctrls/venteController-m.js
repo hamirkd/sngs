@@ -51,6 +51,23 @@ sngs.controller("venteEtaCtrl", ["$scope", "$rootScope", "config", "prmutils", f
             }
         })
     };
+    
+    $scope.downloadJSONAsCSV = function() {
+        if (!$scope.ventes  || $scope.ventes.length == 0) {
+            app.notify("Veuillez renseigner des données", "m")
+            return;
+        }
+        // Convert JSON data to CSV
+        let csvData = app.jsonToCsv($scope.ventes); // Add .items.data
+        // Create a CSV file and allow the user to download it
+        let blob = new Blob([csvData], { type: 'text/csv' });
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'vente.csv';
+        document.body.appendChild(a);
+        a.click();
+    }
     $scope.getmag = function() {
         task = prmutils.getMagasins();
         task.promise.then(function(result) {
@@ -1311,6 +1328,7 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
     $scope.appvente = {type_reglement: 'ESPECE'};
     $scope.appvente.bl_bic = 0;
     $scope.appvente.bl_tva = 0;
+    $scope.appvente.depot_montant = 0;
     $scope.depot = {};
     var datevnt;
     var today = new Date();
@@ -1358,23 +1376,41 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
             vnt_clt: $scope.appvente.vnt_clt.id_clt,
             exo_tva_clt: $scope.appvente.vnt_clt.exo_tva_clt,
             type_reglement: $scope.appvente.type_reglement,
+            depot_montant: $scope.appvente.depot_montant ? $scope.appvente.depot_montant : 0,
+            depot_telephone: $scope.appvente.depot_telephone,
             reference_paiement: $scope.depot.code,
             items: items
         };
+        
+        if (ObjVente.remise) {
+            app.notify("Les remises ne sont pas autorisées", "m", 5000);
+            $scope.djob = false;
+            return;
+        }
         if (ObjVente.type_reglement === 'ORANGEMONEY') {
-            if(ObjVente.mnt_total != $scope.depot.montant) {
-                app.notify("Veuillez verifier les montants de " + ObjVente.type_reglement + " et la facture", "m", 5000);
-                ObjVente.reference_paiement = null;
-                // $scope.djob = false;
-                // return;
-                if (confirm("Voulez vous confirmer la facture avec un montant qui n'est pas correcte ? ") === false) {
+            $scope.djob = false;
+            if (!ObjVente.depot_montant) {
+                app.notify("Veuillez verifier le montant du depot " + ObjVente.type_reglement + " sur la facture", "m", 5000);
+                return;
+            }
+            if (!ObjVente.depot_telephone || ObjVente.depot_telephone.trim() == '' ) {
+                app.notify("Veuillez verifier le numéro du depot " + ObjVente.type_reglement + " sur la facture", "m", 5000);
+                return;
+            }
+            
+            if (!ObjVente.reference_paiement || ObjVente.reference_paiement.trim()=='') {
+                if (confirm("Voulez vous confirmer la facture avec un montant non validé ? ") === false) {
                     $scope.djob = false;
                     return;
                 }
             }
         } else {
             ObjVente.reference_paiement = null;
+            ObjVente.depot_montant = null;
+            ObjVente.depot_telephone = null;
+            ObjVente.reference_paiement = null;
         }
+        $scope.djob = true;
         task = prmutils.venteCpt(ObjVente);
         task.promise.then(function(result) {
             if (result.err === 0) {
@@ -1423,10 +1459,16 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
         var task = prmutils.getPaiement(numeroRef);
         task.promise.then(function(result) {
             app.waiting.show = true;
-            $scope.depot = undefined;
+            $scope.depot = {};
             if (result.err === 0) {
                 $scope.depot = result.data[0];
-
+                if ($scope.depot?.montant) {
+                    $scope.appvente.depot_montant = Number($scope.depot?.montant);
+                    $scope.appvente.depot_telephone = $scope.depot?.telephone;
+                } else {
+                    $scope.appvente.depot_montant = 0;
+                    $scope.appvente.depot_telephone = '';
+                }
                 app.waiting.show = false
             } else {
                 app.notify(result.message, "m");
@@ -1484,6 +1526,7 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
             return false
         }
         $scope.items.unshift(art);
+        console.log(art);
         $scope.appvente.qte_appro_art = null;
         $scope.stock.qte_stk = 0;
         $scope.appvente.prix_var = ""
@@ -1609,7 +1652,11 @@ sngs.controller("venteCptCtrl", ["$window", "$scope", "$rootScope", "prmutils", 
         $scope.stock.qte_stk = 0;
         $scope.appvente.remise = 0;
         $scope.appvente.art_appro_art = null;
-        $scope.appvente.vnt_clt = null
+        $scope.appvente.vnt_clt = null;
+
+        $scope.appvente.depot_montant = null;
+        $scope.appvente.depot_telephone = null;
+        $scope.appvente.reference_paiement = null;
     };
     $scope.clearAr = function() {
         $scope.itemsNewPrices = []

@@ -1311,6 +1311,119 @@ sngs.controller("paramAccessDroitCtrl", ["$scope", "$rootScope", "config", "prmu
         }
     });
 }]);
+sngs.controller("paramCusrDroitCtrl", ["$scope", "$rootScope", "config", "prmutils", function($scope, $rootScope, config, prmutils) {
+    var paramaccessdroid = $scope.paramaccessdroid;
+    var app = $scope.app;
+    app.view = {
+        url: config.urlParamaccessdroid,
+        model: paramaccessdroid,
+        done: false
+    };
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Parametrages",
+        subtitle: "Droit",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Configuration des droits";
+    $rootScope.pageTitle = "Profil";
+    $rootScope.profil_droits = [];
+    $scope.getProfils = function() {
+        var task = prmutils.getProfils();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.profils = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.getProfils();
+    //
+
+    $scope.getcUsers = function() {
+        var task = prmutils.getcUsers();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.users = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.getcUsers();
+    $scope.enregistrer = function(droit) {
+        var task;
+
+        task = prmutils.saveDroitUser(droit);
+        task.promise.then(function(result) {
+            $scope.getDroitUser(droit);
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    app.notify(result.message, "b");
+                }
+            } else {
+                app.notify("ok ...", "b")
+            }
+        })
+    };
+    $scope.getDroitUser = function(droit) {
+        var task;
+
+        task = prmutils.getDroitUser(droit);
+        task.promise.then(function(result) {
+            console.log(result)
+            $rootScope.profil_droits = result.data;
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    // app.notify(result.message, "b");
+                }
+            } else {
+                app.notify("ok ...", "b")
+            }
+        })
+    };
+    $scope.deleteDroitUser = function(droit) {
+        var task;
+
+        task = prmutils.deleteDroitUser(droit);
+        task.promise.then(function(result) {
+            console.log(result)
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    app.notify(result.message, "b");
+                    $scope.getDroitUser(droit);
+                }
+            } else {
+                app.notify("ok ...", "b")
+            }
+        })
+    };
+    
+    task = prmutils.getMagasins();
+    task.promise.then(function(result) {
+        app.waiting.show = true;
+        console.log(result)
+        if (result.err === 0) {
+            $scope.magasins = result.data;
+            app.waiting.show = false
+        } else {
+            app.waiting.show = false
+        }
+    });
+}]);
 
 sngs.controller("paramEditAccessCtrl", ["$scope", "$rootScope", "config", "dao", "$location", "$routeParams", "utils", "prmutils", "object", function($scope, $rootScope, config, dao, $location, $routeParams, utils, prmutils, object) {
     var paramprofil = $scope.paramprofil;

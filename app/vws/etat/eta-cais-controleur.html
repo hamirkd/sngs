@@ -52,7 +52,8 @@
                         <th class='text-left'>Crédit</th>
                         <th class='text-left'>Remise</th>
                         <th class='text-left'>Espèce</th>
-                        <th class='text-left'>Orange</th>
+                        <th class='text-left'>Orange Validé</th>
+                        <th class='text-left'>Orange Non Validé</th>
                     </thead>
                     <tbody>
                         <tr ng-repeat="data in filtered=(caisse|filter:filterText)" ng-click="select($index)"
@@ -66,6 +67,7 @@
                             <td><label for="">{{data['remise']|number:0}}</label></td>
                             <td><label for="">{{data['espece'] |number:0}}</label></td>
                             <td><label for="">{{data['om'] |number:0}}</label></td>
+                            <td><label for="">{{data['depotInvalide'] |number:0}}</label></td>
                         </tr>
                     </tbody>
                 </table>

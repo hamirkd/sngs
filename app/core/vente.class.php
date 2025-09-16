@@ -18,9 +18,9 @@ class venteController extends model {
 
         $search = $_POST;
 
-        $query = "SELECT date(Date_vnt) as Date_vnt,time(Date_vnt) as heure_vnt,code_fact,bl_fact_grt,bl_fact_crdt,sup_fact,date_fact,remise_vnt_fact,crdt_fact,som_verse_crdt,code_caissier_fact,code_clt,code_art,nom_art,nom_mag,code_mag,nom_clt,Qte_vnt,pu_theo_vnt,mnt_theo_vnt,marge_vnt FROM v_etat_ventes  WHERE 1=1";
+        $query = "SELECT date(Date_vnt) as Date_vnt,time(Date_vnt) as heure_vnt,code_fact,bl_fact_grt,bl_fact_crdt,sup_fact,date_fact,remise_vnt_fact,crdt_fact,som_verse_crdt,code_caissier_fact,code_clt,code_art,nom_art,nom_mag,code_mag,nom_clt,Qte_vnt,pu_theo_achat,pu_theo_vnt,mnt_theo_vnt,marge_vnt FROM v_etat_ventes  WHERE 1=1";
         if ($_SESSION['userMag'] > 0)
-            $query = "SELECT date(Date_vnt) as Date_vnt,time(Date_vnt) as heure_vnt,code_fact,bl_fact_grt,bl_fact_crdt,sup_fact,date_fact,remise_vnt_fact,crdt_fact,som_verse_crdt,code_caissier_fact,code_clt,code_art,nom_art,nom_mag,code_mag,nom_clt,Qte_vnt,pu_theo_vnt,mnt_theo_vnt FROM v_etat_ventes WHERE id_mag=" . intval($_SESSION['userMag']);
+            $query = "SELECT date(Date_vnt) as Date_vnt,time(Date_vnt) as heure_vnt,code_fact,bl_fact_grt,bl_fact_crdt,sup_fact,date_fact,remise_vnt_fact,crdt_fact,som_verse_crdt,code_caissier_fact,code_clt,code_art,nom_art,nom_mag,code_mag,nom_clt,Qte_vnt,pu_theo_achat,pu_theo_vnt,mnt_theo_vnt FROM v_etat_ventes WHERE id_mag=" . intval($_SESSION['userMag']);
 
         if (!empty($search['magasin']))
             $query.=" AND id_mag=" . intval($search['magasin']);
@@ -467,10 +467,17 @@ class venteController extends model {
                     $pu_vnt = intval($item['prix_mini_art']);
                     $mnt_vnt = intval($item['mnt']);
                     $marg_vnt = doubleval($item['mnt']) - doubleval($item['or_mnt']);
-
+                    // Ajout du prix achat
+                    $pu_a = 0;
+                    if (isset($item['prix_achat_art'])) {
+                        $pu_a = doubleval($item['prix_achat_art']);
+                    }
+                    // FIN
                     $query = "SELECT qte_stk FROM t_stock WHERE art_stk =$id_art AND mag_stk=$id_mag";
                     $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
                     $result = $r->fetch_assoc();
+
+
 
                     if ($result['qte_stk'] >= $qte_vnt) {
                         $query = "INSERT INTO t_vente 
@@ -478,15 +485,17 @@ class venteController extends model {
                         clnt_vnt,
                         article_vnt,
                         qte_vnt,
+                        pu_theo_achat,
                         pu_theo_vnt,
                         marge_vnt,
                         mnt_theo_vnt,
                         date_vnt) VALUES($factID,$id_clt,
-                           $id_art,
+                            $id_art,
                             $qte_vnt,
-                             $pu_vnt,
-                                 $marg_vnt,
-                             $mnt_vnt,CONCAT('$date_vnt',' ',time(now())))";
+                            $pu_a,
+                            $pu_vnt,
+                            $marg_vnt,
+                            $mnt_vnt,CONCAT('$date_vnt',' ',time(now())))";
                         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
                         if ($r) {
                             $query = "UPDATE t_stock SET qte_stk=qte_stk - $qte_vnt WHERE art_stk =$id_art AND mag_stk=$id_mag";
@@ -845,7 +854,12 @@ class venteController extends model {
                     $pu_vnt = intval($item['prix_mini_art']);
                     $mnt_vnt = intval($item['mnt']);
                     $marg_vnt = doubleval($item['mnt']) - doubleval($item['or_mnt']);
-
+                    // Ajout du prix achat
+                    $pu_a = 0;
+                    if (isset($item['prix_achat_art'])) {
+                        $pu_a = doubleval($item['prix_achat_art']);
+                    }
+                    // FIN
                     $query = "SELECT qte_stk FROM t_stock WHERE art_stk =$id_art AND mag_stk=$id_mag";
                     $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
                     $result = $r->fetch_assoc();
@@ -856,15 +870,17 @@ class venteController extends model {
                         clnt_vnt,
                         article_vnt,
                         qte_vnt,
+                        pu_theo_achat,
                         pu_theo_vnt,
                         marge_vnt,
                         mnt_theo_vnt,
                         date_vnt) VALUES($factID,$id_clt,
-                           $id_art,
+                            $id_art,
                             $qte_vnt,
-                             $pu_vnt,
-                                 $marg_vnt,
-                             $mnt_vnt,CONCAT('$date_vnt',' ',time(now())))";
+                            $pu_a,
+                            $pu_vnt,
+                            $marg_vnt,
+                            $mnt_vnt,CONCAT('$date_vnt',' ',time(now())))";
                         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
                         if ($r) {
                             $query = "UPDATE t_stock SET qte_stk=qte_stk - $qte_vnt WHERE art_stk =$id_art AND mag_stk=$id_mag";
@@ -920,8 +936,10 @@ class venteController extends model {
         $exo_tva_clt = intval($appVentecpts['exo_tva_clt']);
         $remise = intval($appVentecpts['remise']);
         $mnt_crdt = doubleval($appVentecpts['mnt_total']);
-        $reference_paiement = $appVentecpts['reference_paiement'];
+        $reference_paiement = (!empty($appVentecpts['reference_paiement'])) ? $appVentecpts['reference_paiement'] : null;
         $type_reglement = $appVentecpts['type_reglement'];
+        $depot_montant = (!empty($appVentecpts['depot_montant'])) ? $appVentecpts['depot_montant'] : 0;
+        $depot_telephone = (!empty($appVentecpts['depot_telephone'])) ? $appVentecpts['depot_telephone'] : '';
 
         /* remise */
         $mnt_crdt -=$remise;
@@ -1005,7 +1023,7 @@ class venteController extends model {
 
                 $query = "INSERT INTO  t_facture_vente (
                      code_fact,
-                     clnt_fact,type_reglement,reference_paiement,
+                     clnt_fact,type_reglement,reference_paiement,depot_montant,depot_telephone,
                      mag_fact, 
                      bl_tva,
                      bl_bic, 
@@ -1018,7 +1036,7 @@ class venteController extends model {
                      login_caissier_fact,
                      code_caissier_fact) 
                      VALUES('" . $num_fac . "',
-                          $client,'$type_reglement','$reference_paiement',
+                          $client,'$type_reglement','$reference_paiement',$depot_montant,'$depot_telephone',
                           " . $id_mag . ",  
                           " . $bltva . ",
                           " . $blbic . ", 
@@ -1030,7 +1048,6 @@ class venteController extends model {
                           " . $_SESSION['userId'] . ",
                          '" . $_SESSION['userLogin'] . "',
                          '" . $_SESSION['userCode'] . "')";
-
 
                 if (!$r = $this->mysqli->query($query))
                     throw new Exception($this->mysqli->error . __LINE__);
@@ -1044,6 +1061,12 @@ class venteController extends model {
                     $mnt_vnt = doubleval($item['mnt']);
                     $marg_vnt = doubleval($item['mnt']) - doubleval($item['or_mnt']);
 
+                    // Ajout du prix achat
+                    $pu_a = 0;
+                    if (isset($item['prix_achat_art'])) {
+                        $pu_a = doubleval($item['prix_achat_art']);
+                    }
+                    // FIN
                     $query = "SELECT qte_stk FROM t_stock WHERE art_stk =$id_art AND mag_stk=$id_mag";
                     $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
                     $result = $r->fetch_assoc();
@@ -1054,15 +1077,17 @@ class venteController extends model {
                         clnt_vnt,
                         article_vnt,
                         qte_vnt,
+                        pu_theo_achat,
                         pu_theo_vnt,
                         marge_vnt,
                         mnt_theo_vnt,
                         date_vnt) VALUES($factID,$client,
-                           $id_art,
+                            $id_art,
                             $qte_vnt,
-                             $pu_vnt,
-                                $marg_vnt,
-                             $mnt_vnt,CONCAT('$date_vnt',' ',time(now())))";
+                            $pu_a,
+                            $pu_vnt,
+                            $marg_vnt,
+                            $mnt_vnt,CONCAT('$date_vnt',' ',time(now())))";
 
                         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
                         if ($r) {
@@ -1234,6 +1259,12 @@ class venteController extends model {
             $pu_vnt = intval($appVentecpts['prix_mini_art']);
             $mnt_vnt = intval($appVentecpts['mnt']);
             $marg_vnt = doubleval($appVentecpts['mnt']) - doubleval($appVentecpts['or_mnt']);
+            // Ajout du prix achat
+            $pu_a = 0;
+            if (isset($appVentecpts['prix_achat_art'])) {
+                $pu_a = intval($appVentecpts['prix_achat_art']);
+            }
+
 
             $qk = "SELECT clnt_fact,date_fact   FROM t_facture_vente  WHERE id_fact =$factID LIMIT 1";
             $rs = $this->mysqli->query($qk) or die($this->mysqli->error . __LINE__);
@@ -1251,12 +1282,14 @@ class venteController extends model {
                         clnt_vnt,
                         article_vnt,
                         qte_vnt,
+                        pu_theo_achat,
                         pu_theo_vnt,
                         mnt_theo_vnt,
                         marge_vnt,
                         date_vnt) VALUES($factID,$id_clt,
                            $id_art,
                             $qte_vnt,
+                             $pu_a, 
                              $pu_vnt, 
                              $mnt_vnt,
                             $marg_vnt,'$date_vnt')";
@@ -1607,7 +1640,8 @@ inner join (select * from t_stock where qte_stk > 0 GROUP BY mag_stk) sm ON m.id
             $query = "select ar.*,
 COALESCE( mag.prix_mini_art_mag, tpa.prix_mini_art) as prix_mini_art,
 COALESCE( mag.prix_gros_art_mag, tpa.prix_gros_art) as prix_gros_art ,
-COALESCE( mag.prix_max_art_mag, tpa.prix_max_art) as prix_max_art 
+COALESCE( mag.prix_max_art_mag, tpa.prix_max_art) as prix_max_art ,
+COALESCE( mag.prix_achat_art_mag, tpa.prix_achat_art) as prix_achat_art 
 				from (select a.id_art,s.qte_stk,c.nom_cat,a.code_art,a.nom_art
 		from t_stock s 
 		inner join t_article a on s.art_stk=a.id_art
@@ -1618,7 +1652,7 @@ COALESCE( mag.prix_max_art_mag, tpa.prix_max_art) as prix_max_art
 		inner join (select * from t_prix_article GROUP BY art_prix_art DESC) tpa
 		on ar.id_art=tpa.art_prix_art
 		LEFT JOIN ( SELECT  art_prix_art_mag,mag_prix_art_mag,prix_mini_art_mag
-        , prix_max_art_mag, prix_gros_art_mag
+        , prix_max_art_mag, prix_gros_art_mag,prix_achat_art_mag 
            FROM t_prix_article_magasin group by mag_prix_art_mag DESC
 	            ) mag ON  mag.art_prix_art_mag = ar.id_art AND  mag.mag_prix_art_mag = $id_mag";
 

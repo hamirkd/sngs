@@ -217,6 +217,9 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
         return dao.getData(config.mdlDecharge + "getEtatDecharges", obj)
     };
 
+    servicesObject.ficheDeDecharge = function(versement) {
+        return dao.getDataMedia2(config.mdlDecharge + "ficheDeDecharge", versement)
+    };
     servicesObject.getDemandes = function() {
         return dao.getData(config.mdlDemande + "getDemandes")
     };
@@ -262,8 +265,9 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
         return dao.getData(config.mdlDecaiss + "getVersements")
     };
     servicesObject.bonDeVersement = function(versement) {
-        return dao.getDataFromUrl(config.mdlDecaiss + "bonDeVersement", versement)
+        return dao.getDataMedia2(config.mdlDecaiss + "bonDeVersement", versement)
     };
+    
     servicesObject.getEtatVersements = function(obj) {
         return dao.getData(config.mdlDecaiss + "getEtatVersements", obj)
     };
@@ -978,8 +982,19 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
             profil_droits: profil_droits
         })
     };
+    /** Enregistrement des droits de l utilisateur */
+    
+    servicesObject.getDroitUser = function(object) {
+        return dao.getData(config.mdlParamCusr + "getDroitUser", object)
+    };
+    servicesObject.saveDroitUser = function(droit) {
+        return dao.getData(config.mdlParamCusr + "saveDroitUser", droit)
+    };
+    servicesObject.deleteDroitUser = function(droit) {
+        return dao.getData(config.mdlParamCusr + "deleteDroitUser", droit)
+    };
 
-
+    
     servicesObject.getInfosStruct = function() {
         return dao.getData(config.mdlParamStruct + "getInfosStruct")
     };

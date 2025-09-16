@@ -140,7 +140,7 @@ class userController extends model {
         $this->isExistcodeUpdt($user['user']['code_user'], $id);
         $this->isExistloginUpdt($user['user']['login_user'], $id);
 
-        $column_names = array('sexe_user','nom_user', 'login_user', 'prenom_user', 'code_user', 'mail_user','regl_credit','vente_credit','facture_vente_annulee','droit_facture_vente_annulee_today','droit_controle_prix_vente','droit_reglement_facture_credit','droit_confirmation_approvisionnement','droit_paiement');
+        $column_names = array('sexe_user','nom_user', 'login_user', 'prenom_user', 'code_user', 'mail_user','regl_credit','vente_credit','facture_vente_annulee','droit_facture_vente_annulee_today','droit_controle_prix_vente','droit_reglement_facture_credit','droit_confirmation_approvisionnement','droit_paiement','droit_depense','droit_annule_depense','droit_approvisionnement');
 
         $keys = array_keys($user['user']);
         $columns = '';
@@ -681,6 +681,97 @@ class userController extends model {
         $response = array("status" => 0,
             "datas" => $result,
             "message" => "");
+        $this->response($this->json($response), 200);
+
+    }
+
+    
+    public function deleteDroitUser() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+        $id = (int) $_POST['id'];
+        if ($id > 0) {
+            $query = "DELETE FROM t_magadin_user WHERE id = $id";
+            $response = array();
+            try {
+                if (!$r = $this->mysqli->query($query))
+                    throw new Exception($this->mysqli->error . __LINE__);
+                $response = array("status" => 0,
+                    "datas" => "",
+                    "message" => "User Profil supprimé avec success!");
+                $this->response($this->json($response), 200);
+            } catch (Exception $exc) {
+                $response = array("status" => 1,
+                    "datas" => "",
+                    "message" => $exc->getMessage());
+                $this->response($this->json($response), 200);
+            }
+        }
+        else
+            $this->response('', 204);
+    }
+    // lll
+    public function getDroitUser() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+
+        $droit = $_POST;
+
+        $response = array();
+        $query = "SELECT mu.*,u.nom_user,u.prenom_user,ifnull(m.nom_mag, 'TOUS') as nom_mag,p.lib_profil FROM t_magadin_user mu left join t_user u on u.id_user=mu.user_id
+        left join t_magasin m on m.id_mag=mu.mag_id
+        left join t_profil p on p.id_profil=mu.profil_id WHERE user_id=".$droit['user_id'];
+         
+        try {
+            if (!$r = $this->mysqli->query($query))
+                throw new Exception($this->mysqli->error . __LINE__);
+                if ($r->num_rows > 0) {
+                    $result = array();
+                    while ($row = $r->fetch_assoc()) {
+                        $result[] = $row;
+                    }
+                    
+                    $response = array("status" => 0,
+                        "datas" => $result,
+                        "message" => "Récuperer avec succès");
+                    $this->response($this->json($response), 200);
+                } else {
+                    $response = array("status" => 0,
+                        "datas" => "",
+                        "message" => "");
+                    $this->response($this->json($response), 200);
+                }
+                $this->response('', 204);
+        } catch (Exception $exc) {
+            $response = array("status" => 1,
+                "datas" => "",
+                "message" => $exc->getMessage());
+            $this->response($this->json($response), 200);
+        }
+        $this->response('', 204);
+    }
+
+
+    public function saveDroitUser() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+
+        $droit = $_POST;
+        $query = "DELETE FROM t_magadin_user WHERE profil_id=".$droit['profil_id']." AND mag_id=".$droit['mag_id']." AND user_id=".$droit['user_id'];
+
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+        $query = "INSERT INTO `t_magadin_user`(`profil_id`, `mag_id`, `user_id`) 
+        VALUES (".$droit['profil_id'].",".$droit['mag_id'].",".$droit['user_id'].")";
+
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+        $response = array("status" => 0,
+            "datas" => "",
+            "message" => "Sauvegarder avec succès");
         $this->response($this->json($response), 200);
 
     }

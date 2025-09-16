@@ -2,6 +2,9 @@
 
 require_once ("api-class/model.php");
 require_once ("api-class/helpers.php");
+// Include classes
+require_once dirname(__FILE__) . '/../../libs/tbs/tbs_class.php';// Load the TinyButStrong template engine
+require_once dirname(__FILE__) . '/../../libs/tbs/tbs_plugin_opentbs.php';// Load the OpenTBS plugin
 
 class dechargeController extends model {
 
@@ -111,6 +114,66 @@ class dechargeController extends model {
 
             $this->response($this->json($response), 200);
         }
+    }
+    
+    public function ficheDeDecharge() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+
+        $decharge = $_POST;
+        $query = "SELECT d.*, m.nom_mag, c.tel_clt FROM t_decharge d
+        LEFT JOIN t_magasin m ON m.id_mag=d.mag_decharge
+        LEFT JOIN t_client c ON c.id_clt=d.client_id
+        WHERE d.id_decharge=" . $decharge['id_decharge'];
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+        if ($r->num_rows > 0) {
+            $result = array();
+            while ($row = $r->fetch_assoc()) {
+                $result[] = $row;
+            }
+            $row = $result[0];
+        } else {
+            $response = array("status" => 1,
+                "datas" => "",
+                "message" => "Cette decharge n'existe pas");
+            $this->response($this->json($response), 200);
+            return;
+        }
+        // echo json_encode($versement);
+        // Initialize the TBS instance
+        $TBS = new clsTinyButStrong; // new instance of TBS
+        $TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN); // load the OpenTBS plugin
+        $template = 'documents/FICHE_DE_DECHARGE_DE_FONDS.docx';
+        $TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
+        $TBS->MergeField('id_decharge', $row['id_decharge']);
+        $TBS->MergeField('mag_decharge', $row['nom_mag']);
+        $TBS->MergeField('user_decharge_id', $row['user_decharge_id']);
+        $TBS->MergeField('client_id', $row['client_id']);
+        $TBS->MergeField('date_decharge_formatted', date('d/m/Y à H\hi', strtotime($row['date_decharge'])));
+        $TBS->MergeField('montant', number_format($row['montant'], 0, ',', ' '));
+        $TBS->MergeField('login_decharge', $row['login_decharge']);
+        $TBS->MergeField('motif_decharge', $row['motif_decharge']);
+        $TBS->MergeField('type_decharge', $row['type_decharge']);
+        $TBS->MergeField('tel_clt', $row['tel_clt']);
+        $TBS->MergeField('nom_prenom_dechargeur', trim($row['nom_prenom_dechargeur']));
+        $TBS->MergeField('nom_prenom_client', trim($row['nom_prenom_client']));
+        $TBS->MergeField('mode_paiement', 'Espèces'); // ou dynamique
+        if ($row['type_decharge'] == 'RECEVOIR') {
+            $TBS->MergeField('sens', 'reçu');
+            $TBS->MergeField('compte', 'pour le compte du');
+        } else {
+            $TBS->MergeField('sens', 'remis');
+            $TBS->MergeField('compte', 'au');
+        }
+        $TBS->MergeField('mode_paiement', 'Espèces');
+
+        $response = array(
+            "status" => 0,
+            "datas" => $TBS->Show(OPENTBS_DOWNLOAD, "bon.docx"),
+            "message" => "Impression");
+        $this->response($this->json($response), 200);
     }
 
 

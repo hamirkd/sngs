@@ -27,6 +27,7 @@
                                 <th class='text-left'>client&nbsp;</th>
                                 <th class='text-left'>Motif &nbsp;</th>
                                 <th class='text-left'>Etablisseur &nbsp;</th>
+                                <th class='text-left'> &nbsp;</th>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="data in filtered=(decharges | filter:filterText)" class="liste">
@@ -37,6 +38,7 @@
                                     <td>{{data.nom_prenom_client|uppercase}}</td>
                                     <td>{{data.motif_decharge}}</td>
                                     <td>{{data.login_decharge}}</td>
+                                    <td><button class="primary" ng-click="ficheDeDecharge(data);"><span class="icon-printer"></span></button> &nbsp; </td>
                                 </tr>
                                 <tr>
                                     <td align="right" colspan="2">

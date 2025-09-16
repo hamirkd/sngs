@@ -110,3 +110,20 @@ ALTER TABLE `t_approvisionnement_article` ADD `code_user_confirm` VARCHAR(20) NU
 ALTER TABLE `t_approvisionnement` ADD `code_user_confirm` VARCHAR(20) NULL AFTER `code_user_appro`, ADD `date_confirm` DATETIME NULL AFTER `code_user_confirm`;
 
 ALTER TABLE `t_user` ADD `droit_confirmation_approvisionnement` INT NOT NULL DEFAULT '0' AFTER `droit_validateur_demande`;
+
+ALTER TABLE `t_facture_vente` ADD `depot_montant` INT(11) NULL AFTER `date_enr`, ADD `depot_telephone` VARCHAR(200) NULL AFTER `depot_montant`;
+
+ALTER TABLE `t_vente` ADD `pu_theo_achat` DOUBLE NULL DEFAULT '0' AFTER `Qte_vnt`;
+
+
+
+
+
+
+// Modification de la vue
+ALTER
+ ALGORITHM = UNDEFINED
+DEFINER=`root`@`localhost` 
+ SQL SECURITY DEFINER
+ VIEW `v_etat_ventes`
+ AS select `v`.`id_vnt` AS `id_vnt`,`v`.`facture_vnt` AS `facture_vnt`,`v`.`clnt_vnt` AS `clnt_vnt`,`v`.`article_vnt` AS `article_vnt`,`v`.`Qte_vnt` AS `Qte_vnt`,`v`.`pu_theo_vnt` AS `pu_theo_vnt`,`v`.`pu_theo_achat` AS `pu_theo_achat`,`v`.`pu_reel_vnt` AS `pu_reel_vnt`,`v`.`mnt_theo_vnt` AS `mnt_theo_vnt`,`v`.`mnt_reel_vnt` AS `mnt_reel_vnt`,`v`.`marge_vnt` AS `marge_vnt`,`v`.`Date_vnt` AS `Date_vnt`,`v`.`sup_vnt` AS `sup_vnt`,`v`.`date_sup_vnt` AS `date_sup_vnt`,`v`.`date_enr` AS `date_enr`,`m`.`id_mag` AS `id_mag`,`m`.`nom_mag` AS `nom_mag`,`m`.`code_mag` AS `code_mag`,`a`.`id_art` AS `id_art`,`a`.`nom_art` AS `nom_art`,`a`.`code_art` AS `code_art`,`ca`.`id_cat` AS `id_cat`,`ca`.`nom_cat` AS `nom_cat`,`f`.`code_fact` AS `code_fact`,`f`.`bl_tva` AS `bl_tva`,`f`.`bl_fact_crdt` AS `bl_fact_crdt`,`f`.`crdt_fact` AS `crdt_fact`,`f`.`som_verse_crdt` AS `som_verse_crdt`,`f`.`bl_fact_grt` AS `bl_fact_grt`,`f`.`bl_crdt_regle` AS `bl_crdt_regle`,`f`.`sup_fact` AS `sup_fact`,`f`.`remise_vnt_fact` AS `remise_vnt_fact`,`f`.`date_fact` AS `date_fact`,`f`.`login_caissier_fact` AS `login_caissier_fact`,`f`.`code_caissier_fact` AS `code_caissier_fact`,`f`.`clnt_fact` AS `id_clt`,coalesce(`c`.`code_clt`,'-') AS `code_clt`,coalesce(`c`.`nom_clt`,'-') AS `nom_clt` from (((((`bd_songo_sgns`.`t_vente` `v` join `bd_songo_sgns`.`t_facture_vente` `f` on(`v`.`facture_vnt` = `f`.`id_fact`)) join `bd_songo_sgns`.`t_magasin` `m` on(`f`.`mag_fact` = `m`.`id_mag`)) join `bd_songo_sgns`.`t_article` `a` on(`v`.`article_vnt` = `a`.`id_art`)) join `bd_songo_sgns`.`t_categorie_article` `ca` on(`a`.`cat_art` = `ca`.`id_cat`)) left join `bd_songo_sgns`.`t_client` `c` on(`f`.`clnt_fact` = `c`.`id_clt`))

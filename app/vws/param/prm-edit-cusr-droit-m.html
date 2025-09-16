@@ -1,0 +1,85 @@
+<link href="public/bootstrap-3.4.1-dist/css/bootstrap.css" rel="stylesheet">
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content">
+                    <a href="#/prmcusr" class="element"><span class="icon-list"></span>
+                        Liste des utilisateurs </a><span class="element-divider"></span>
+                    <a href="#/prmaccess" class="element"><span class="icon-list"></span>
+                        {{title}} </a><span class="element-divider"></span>
+                    <div class="no-tablet-portrait" ng-show="profil.id_profil"><span class="element-divider"></span><a class="element brand" href="#/prmaccess/0"><span class="icon-plus-2"></span> Nouveau
+                            profil </a><span class="element-divider"></span><a class="element brand place-right"><span class="icon-pencil"></span> Modification du profil : <span class='fg-active-green'>{{profil.code_profil}}</span></a></div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <form name="form">
+        <fieldset>
+            <legend></legend>
+            <form>
+                <div class="container padding">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="">
+                                <label>Utilisateur </label>
+                                <div class="input-control select span4" data-role="input-control">
+                                    <select ng-model="droit.user_id" required>
+                                <option ng-repeat="data in users" value="{{data.id_user}}" >{{data.nom_user}} {{data.prenom_user}} [{{data.login_user}}]</option>
+                            </select>
+                            <button class="primary" ng-click="getDroitUser(droit);"><span
+                                class="icon-forward"></span> {{buttonText}}</button> &nbsp;
+                        </div>
+                            </div>
+                            <div class="">
+                                <label>Profil </label>
+                                <div class="input-control select span4" data-role="input-control">
+                                    <select ng-model="droit.profil_id" required>
+                                <option ng-repeat="data in profils" value="{{data.id_profil}}" >{{data.lib_profil}} [{{data.code_profil}}]</option>
+                            </select></div>
+                            </div>
+                            <div class="">
+                                <label>Magasin</label>
+                                <div class="input-control select span4" data-role="input-control">
+                                    <select ng-model="droit.mag_id" required>
+                                        <option value="0">TOUS</option>
+                                <option ng-repeat="data in magasins" value="{{data.id_mag}}" >{{data.nom_mag}} [{{data.code_mag}}]</option>
+                            </select></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8" ng-show="profil_droits.length> 0">
+                            <table class="table">
+                                <tr>
+                                    <th>Utilisateur</th>
+                                    <th>Magasin</th>
+                                    <th>Profil</th>
+                                    <th></th>
+                                </tr>
+                                <tr ng-repeat="data in profil_droits">
+                                    <td>{{data.nom_user}} {{data.prenom_user}}</td>
+                                    <td>{{data.nom_mag}}</td>
+                                    <td>{{data.lib_profil}}</td>
+                                    <td>
+                                        <button class="danger" ng-click="deleteDroitUser(data);"><span
+                                            class="glyphicon-remove"></span></button> &nbsp;
+                                    </td>
+
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="padding">
+                        <br>
+                        <button class="primary" ng-click="enregistrer(droit);" ng-disabled="form.$invalid"><span
+                        class="icon-file"></span> Sauvegarde</button> &nbsp;
+                    </div>
+                </div>
+
+            </form>
+
+        </fieldset>
+    </form>
+</div>
