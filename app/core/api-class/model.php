@@ -397,6 +397,92 @@ class model extends REST {
         
     }
 
+    
+
+    /**
+     * Fonction de production
+     * @param type $idArticle article a recherche la quantite destocker
+     * @param type $date
+     * @return int
+     */
+    public function getProdOfArticleFrom($idArticle, $date, $magasin = 0) {
+
+        $condmag = "";
+        if ($magasin != 0)
+            $condmag .=" AND a.prod_mag_src = $magasin";
+        $query = "SELECT IFNULL(sum(a.qte),0) as qteprod
+                from t_production a
+                           WHERE a.prod_art=$idArticle
+                           AND date(a.date_confirm)='$date' $condmag ";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        $res = $r->fetch_assoc();
+        return $res['qteprod'];
+    }
+
+    /**
+     * Rcuper
+     * @param type $idArticle
+     * @param type $date_debut
+     * @param type $date_fin
+     * @param type $magasin
+     * @return type
+     */
+    public function getProdOfArticleFromTo($idArticle, $date_debut, $date_fin, $magasin = 0) {
+
+        $condmag = "";
+        if ($magasin != 0)
+            $condmag .=" AND a.prod_mag_src = $magasin";
+        $query = "SELECT IFNULL(sum(a.qte),0) as qteprod
+                from t_production a
+                           WHERE a.prod_art=$idArticle
+                           AND date(a.date_confirm) between '$date_debut' AND '$date_fin' $condmag ";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        $res = $r->fetch_assoc();
+        return $res['qteprod'];
+    }
+
+    /**
+     * Fonction de production article
+     * @param type $idArticle article a recherche la quantite destocker
+     * @param type $date
+     * @return int
+     */
+    public function getProdArticleOfArticleFrom($idArticle, $date, $magasin = 0) {
+
+        $condmag = "";
+        if ($magasin != 0)
+            $condmag .=" AND a.prod_mag_src = $magasin";
+        $query = "SELECT IFNULL(sum(a.qte_prod_art),0) as qteProdArt
+                from t_production_article a
+                           WHERE a.art_prod_art=$idArticle
+                           AND date(a.date_confirm)='$date' $condmag ";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        $res = $r->fetch_assoc();
+        return $res['qteProdArt'];
+    }
+
+    /**
+     * Rcuper
+     * @param type $idArticle
+     * @param type $date_debut
+     * @param type $date_fin
+     * @param type $magasin
+     * @return type
+     */
+    public function getProdArticleOfArticleFromTo($idArticle, $date_debut, $date_fin, $magasin = 0) {
+
+        $condmag = "";
+        if ($magasin != 0)
+            $condmag .=" AND a.prod_mag_src = $magasin";
+        $query = "SELECT IFNULL(sum(a.qte_prod_art),0) as qteProdArt
+                from t_production_article a
+                           WHERE a.art_prod_art=$idArticle
+                           AND date(a.date_confirm) between '$date_debut' AND '$date_fin' $condmag ";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        $res = $r->fetch_assoc();
+        return $res['qteProdArt'];
+    }
+
 }
 
 ?>

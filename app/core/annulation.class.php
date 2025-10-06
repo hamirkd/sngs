@@ -24,7 +24,7 @@ class annulationController extends model {
             $query = "SELECT f.id_fact,date(f.date_fact) as Date_vnt,time(f.date_fact) as heure_vnt,
             f.code_fact,f.bl_fact_grt,f.bl_fact_crdt,f.sup_fact,f.remise_vnt_fact,f.crdt_fact,
             f.som_verse_crdt,f.code_caissier_fact,c.code_clt,m.nom_mag,
-            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant FROM t_facture_vente f
+            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant,f.depot_telephone FROM t_facture_vente f
             INNER JOIN t_client c ON f.clnt_fact=c.id_clt
             INNER JOIN t_magasin m ON f.mag_fact=m.id_mag
             INNER JOIN t_user u ON f.caissier_fact=u.id_user
@@ -33,7 +33,7 @@ class annulationController extends model {
             $query = "SELECT f.id_fact,date(f.date_fact) as Date_vnt,time(f.date_fact) as heure_vnt,
             f.code_fact,f.bl_fact_grt,f.bl_fact_crdt,f.sup_fact,f.remise_vnt_fact,f.crdt_fact,
             f.som_verse_crdt,f.code_caissier_fact,c.code_clt,m.nom_mag,
-            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant FROM t_facture_vente f
+            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant,f.depot_telephone FROM t_facture_vente f
             INNER JOIN t_client c ON f.clnt_fact=c.id_clt
             INNER JOIN t_magasin m ON f.mag_fact=m.id_mag
              INNER JOIN t_user u ON f.caissier_fact=u.id_user
@@ -42,7 +42,7 @@ class annulationController extends model {
                 $query = "SELECT f.id_fact,date(f.date_fact) as Date_vnt,time(f.date_fact) as heure_vnt,
             f.code_fact,f.bl_fact_grt,f.bl_fact_crdt,f.sup_fact,f.remise_vnt_fact,f.crdt_fact,
             f.som_verse_crdt,f.code_caissier_fact,c.code_clt,m.nom_mag,
-            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant FROM t_facture_vente f
+            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant,f.depot_telephone FROM t_facture_vente f
             INNER JOIN t_client c ON f.clnt_fact=c.id_clt
             INNER JOIN t_magasin m ON f.mag_fact=m.id_mag
             INNER JOIN t_user u ON f.caissier_fact=u.id_user

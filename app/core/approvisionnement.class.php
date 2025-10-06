@@ -1184,10 +1184,10 @@ class approvisionnementController extends model {
                     throw new Exception($this->mysqli->error . __LINE__);
                 
                 $id = (int) $appstock['art_appro_art'];
-                $pm = (floatval($appstock['prix_mini_art']) >= 0) ? floatval($appstock['prix_mini_art']) : 0;
-                $pmx = (floatval($appstock['prix_max_art']) >= 0) ? floatval($appstock['prix_max_art']) : 0;
-                $pg = (floatval($appstock['prix_gros_art']) >= 0) ? floatval($appstock['prix_gros_art']) : 0;
-                $pa = (floatval($appstock['prix_appro_art']) >= 0) ? floatval($appstock['prix_appro_art']) : 0;
+                $pm = (isset($appstock['prix_mini_art']) && floatval($appstock['prix_mini_art']) >= 0) ? floatval($appstock['prix_mini_art']) : 0;
+                $pmx = (isset($appstock['prix_max_art']) && floatval($appstock['prix_max_art']) >= 0) ? floatval($appstock['prix_max_art']) : 0;
+                $pg = (isset($appstock['prix_gros_art']) && floatval($appstock['prix_gros_art']) >= 0) ? floatval($appstock['prix_gros_art']) : 0;
+                $pa = (isset($appstock['prix_appro_art']) && floatval($appstock['prix_appro_art']) >= 0) ? floatval($appstock['prix_appro_art']) : 0;
 
                 /** Je modifie l'etat des prix et leurs designant qu'ils ne sont plus a jour */
                 if ($pm>0 && $pmx>0 && $pg > 0) {

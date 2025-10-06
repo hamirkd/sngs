@@ -669,6 +669,46 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     servicesObject.deleteSortie = function(objectID) {
         return dao.getData(config.mdlStockBs + "deleteSortie&id=" + objectID)
     };
+
+    // Debut production
+
+    servicesObject.insertProd = function(object) {
+        return dao.getData(config.mdlStockProd + "insertProd", object)
+    };
+    // Récupération des productions
+    servicesObject.getProductions = function() {
+        return dao.getData(config.mdlStockProd + "getProductions")
+    };
+    // Récupération des productions qui n'ont pas été validé
+    servicesObject.getProductionsNonValidees = function() {
+        return dao.getData(config.mdlStockProd + "getProductions&date_confirm=true")
+    };
+    // Récupération de la liste de la production taille de 50
+    servicesObject.loadProductionsMore = function(offset) {
+        return dao.getData(config.mdlStockProd + "getProductions&offset=" + offset + "&date_confirm=" + date_confirm)
+    };
+
+    // Afficher les détails qui sont liés à la production
+    servicesObject.showProdDetails = function(fact) {
+        return dao.getData(config.mdlStockProd + "showProdDetails", fact)
+    };
+    
+    // Ajout des matieres première en attendant confirmation
+    servicesObject.insertStockProdForConfirmation = function(object) {
+        return dao.getData(config.mdlStockProd + "insertStockProdForConfirmation", object)
+    };
+    // Confirmation des matières première pour réduire le stock si disponible
+    servicesObject.insertStockProdConfirmation = function(object) {
+        return dao.getData(config.mdlStockProd + "insertStockProdConfirmation", object)
+    };
+    // Confirmation de la production
+    servicesObject.setConfirmationProduction = function(object) {
+        return dao.getData(config.mdlStockProd + "setConfirmationProduction", object)
+    };
+    
+    
+    // Fin production 
+    
     servicesObject.insertStockDeff = function(object) {
         return dao.getData(config.mdlDeff + "insertStockDeff", object)
     };

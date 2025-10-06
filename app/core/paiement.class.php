@@ -69,7 +69,6 @@ class paiementController extends model {
         $query.=" AND date(pa.date_paiement) between '" . isoToMysqldate($search['date_deb']) . "' 
             AND '" . isoToMysqldate($search['date_fin']) . "'";
         $query.= $condition." ORDER BY pa.date_paiement DESC";
-        //echo $query;
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
         if ($r->num_rows > 0) {

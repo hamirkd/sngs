@@ -1,0 +1,94 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/prod" class="element"><span class="icon-list"></span>
+                        Liste des BP </a><a href="#/production" class="element bg-pink"><span
+                            class="icon-plus"></span>&nbsp;<span class="icon-upload-3"></span> Nouvelle Production
+                    </a><a href="#/anprod" class="element"><span class="icon-undo"></span> Details/Annuler </a><a href="#/etaprod" class="element"><span class="icon-stats-2"></span> Etat Productions </a>
+                    <div class="no-tablet-portrait" ng-show="prod.id_prod"><span class="element-divider"></span><a class="element brand bg-pink" href="#/stkbs/0"><span class="icon-plus-2"></span> Nouveau Bon
+                        </a><span class="element-divider"></span><a class="element brand place-right"><span
+                                class="icon-pencil"></span> Modification du bon de production : <span
+                                class='fg-amber'>{{prod.bon_prod}}</span></a></div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <form name="form">
+        <fieldset>
+            <legend>{{title}}</legend>
+            <table width="100%">
+                <tr>
+                    <td width="50%"><label>Date production</label>
+                        <div class="input-control text span4"><input type="text" placeholder="JJ/MM/AAAA" name="date_prod" ng-disabled="!app.PRMS.defdat||prod.actif==0" ng-model="prod.date_prod" required>
+                        </div> (jj/mm/aaaa)
+                    </td>
+                    <td colspan="4">
+                        <legend>Motif</legend>
+                        <p>
+                            {{prod.motif}}
+
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>No du Bon</label>
+                        <div class="input-control text span4" data-role="input-control"><input name="bon_prod" placeholder="PROD202509221104" type="text" ng-model="prod.bon_prod" ng-disabled="true" value="PROD202509221104"><button type="button" class="btn-clear" tabindex="-1"></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+            </table>
+            <h3><u>Article en production</u></h3>
+        <table width="100%" border="0" style="padding:2px;" cellsacing="10">
+            <tr>
+                <td><label ng-show="app.PRMS.cat">Categorie[<a href="#/prmcat/0" title="Ajouter/Creer une categorie"
+                            target="_BLANK">+</a>] &nbsp;&nbsp;<span class="input-control text span2"
+                            style=""><input ng-model="filterItemcat1" placeholder="filtre"
+                                type="text"></span></label>
+                                <div ng-show="app.PRMS.cat" class="input-control select span4" data-role="input-control"><select
+                                    ng-model="mCategoriep1"
+                                    ng-options="categorie.id_cat as categorie.nom_cat|uppercase for categorie in categories|filter:filterItemcat1|orderBy:'nom_cat':false"
+                                    ng-change="loadArticlesOfCategorie(mCategoriep1)" ng-click="getcat()"></select><span
+                                    style="position:absolute;" title="Actualiser la liste des categories articles"
+                                    class="icon-cycle" ng-click="app.refreshcatCache()"></span></div>
+                </td>
+                <td colspan="2">
+                    <label>Article  &nbsp;&nbsp;<span class="input-control text span2" style=""><input ng-model="filterItem1"
+                                placeholder="filtre" type="text"></span></label>
+                    <div class="input-control select span8" data-role="input-control"><select name='prod_art'
+                            ng-model="prod.prod_art"
+                            ng-options="article.id_art as article.nom_art|uppercase for article in articles|filter:filterItem1|orderBy:'nom_art':false"
+                            required></select><span style="position:absolute;"
+                            title="Actualiser la liste des articles" class="icon-cycle"
+                            ng-click="loadArticlesOfCategorie(mCategoriep1)"></span></div>
+                            
+                </td>
+
+                <td><label>Quantit&eacute;</label>
+                    <div class="input-control text span2" data-role="input-control"><input
+                            style='font-size:16px;padding:5px;' class="fg-cobalt" name="qte"
+                            placeholder="Qte" type="number" ng-model="prod.qte" required></div>
+                    <br />
+                </td>
+            </tr>
+            <tr>
+            </tr>
+        </table>
+            <span ng-if="prod.actif==1||prod.actif==undefined">
+              
+            <button class="primary" ng-click="save(prod);" ng-disabled="form.$invalid"><span class="icon-checkmark"></span> {{buttonText}}</button> &nbsp;
+            <button class="danger" ng-click="deleted(prod)" ng-show="prod.id_prod"><span class="icon-cancel-2"></span> Supprimer</button>
+            </span>
+            <span ng-if="prod.actif==0" class="fg-red">
+                Ce bon a été validé
+            </span>
+        </fieldset>
+    </form>
+</div>

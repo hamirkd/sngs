@@ -647,6 +647,44 @@ sngs = angular.module("sngs", ["sngs.services", "ngRoute", "ngResource", "base64
         templateUrl: "app/vws/param/prm-sauv-m.html",
         controller: "paramSauvCtrl"
     });
+    // production
+    $routeProvider.when("/production", {
+        templateUrl: "app/vws/stock/prod-stk-as-m.html",
+        controller: "stockProdAsCtrl"
+    });
+    
+    $routeProvider.when("/prod/:objectID", {
+        templateUrl: "app/vws/stock/prod-stk-edit-as-m.html",
+        controller: "stockProdEditAsCtrl",
+        resolve: {
+            object: ["prmutils", "$route", function(prmutils, $route) {
+                var objectID = $route.current.params.objectID;
+                var task = prmutils.getSortie(objectID);
+                return task.promise.then(function(result) {
+                    // console.log(result)
+                    if (result.err == 0) {
+                        console.log(result)
+                        return result
+                    } else {
+                        return result
+                    }
+                })
+            }]
+        }
+    });
+    
+    $routeProvider.when("/anprod", {
+        templateUrl: "app/vws/annulation/annul-prod-m.html",
+        controller: "annulProdCtrl"
+    });
+    
+     
+    $routeProvider.when("/prod", {
+        templateUrl: "app/vws/stock/prod-stk-ba-m.html",
+        controller: "stockProdBaCtrl"
+    }); 
+
+
     $routeProvider.otherwise({
         redirectTo: "/"
     })

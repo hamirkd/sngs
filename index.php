@@ -50,6 +50,7 @@
             margin-right: -15px!important;
             margin-left: -15px!important;
             margin-bottom: 10%!important;
+            border-radius: 5px;
         }
     </style>
 </head>

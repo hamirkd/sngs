@@ -1,0 +1,245 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a class="element btn_search_all" ng-click="getAll();"><span
+                            class="icon-clipboard-2"></span> Tout </a><a class="element btn_search"><span
+                            class="icon-search"></span> Recherche </a><span class="element-divider"></span><a
+                        ng-if="app.userPfl.mg!=0" href="#/prod/0" class="element bg-lightOrange"><span
+                            class="icon-plus"></span>&nbsp;<span class="icon-copy"></span> Nouv PROD </a><a
+                        ng-if="app.userPfl.mg!=0" href="#/production" class="element bg-lightGreen"><span
+                            class="icon-plus"></span>&nbsp;<span class="icon-download-2"></span> Entree production </a><a
+                        ng-if="!app.PRMS.resa" href="#/anprod" class="element"><span class="icon-undo"></span>
+                        Details/Annuler </a><a href="#/etaprod" class="element"><span class="icon-stats-2"></span> Etat
+                        Approv </a><span class="element-divider"></span> &nbsp; <img src="public/images/1.gif"
+                        ng-show="loading" alt="" />
+                    <div class="input-control text span4 fg-blue" style='float: right;'> recherche approfondie : <form
+                            ng-submit="fullSearch()"><input fg-red ng-model="fullSearchText"
+                                placeholder="Recherche approfondie.." type="text"></form>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="example">
+    <div class="row">
+        <fiedlset>
+            <legend>
+                <table width="100%">
+                    <tr>
+                        <td>{{title}}</td>
+                        <td><span class="input-control text span2" style=""><input ng-model="filterText"
+                                    placeholder="filtre" type="text"></span></td>
+                        <td>Total : {{filtered.length}}</td>
+                    </tr>
+                </table>
+            </legend>
+            <div class="col-md-12" ng-show="productions.length> 0"
+                style="min-height: 400px;max-height: 500px;overflow: auto;" when-scrolled="loadMore()">
+                <table class="table striped bordered hovered">
+                    <thead>
+                        <th class='text-left'>Date &nbsp;</th>
+                        <th class='text-left'>Num Bordereau&nbsp;</th>
+                        <th class='text-left'>Article&nbsp;</th>
+                        <th class='text-left'>Quantité&nbsp;</th>
+                        <th class='text-left'>Coût &nbsp;</th>
+                        <th class='text-left'>Auteur&nbsp;</th>
+                        <th class='text-left'>Magasin&nbsp;</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in filtered=(productions | filter:filterText)" class="liste">
+                            <td>{{data.date_prod | date:'dd/MM/y'}}</td>
+                            <td class='fg-red'>
+                                <a href ng-click="showDetails(data)"><i class="icon-eye"></i>
+                                    {{data.bon_prod}} </a>
+                                    <span ng-show="data.openclose==0" title="Bon clos/Ferme" class="fg-violet icon-bookmark on-left"></span>
+                                    <span ng-show="data.date_confirm" title="Valider" class="fg-green icon-thumbs-up on-left-more"></span>
+                                    <span ng-show="!data.date_confirm" title="Valider" class="fg-red">En attente de validation</span>
+
+                            </td>
+                            <td>{{data.nom_art}} </td>
+                            <td>{{data.qte}} </td>
+                            <td>{{data.cout_prod_total | currency}}
+                            </td>
+                            <td>{{data.login_prod}} </td>
+                            <td  title="{{data.nom_mag}}">{{data.code_mag}} </td>
+                            <td> </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="right">
+                                <h3><span>TOTAL :</span></h3>
+                            </td>
+                            <td>
+                                <h3><span class="fg-red">  </span></h3>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" ng-show="productions.length == 0">
+                <div class="col-md-12">
+                    <h4>Aucun bordereau ... !</h4>
+                </div>
+            </div>
+        </fiedlset>
+    </div>
+    <div class="example" id="searchPannel">
+        <fieldset>
+            <legend><a class="toggle_search" href=""><span class=" icon-arrow-right-3"></span></a> Nouveau Filtre
+            </legend>
+            <form name="form">
+                <div style="max-height:500px;overflow:auto;">
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <div class="stagger"><label>Date du/debut</label>
+                                    <div class="input-control text span2"><input type="text" placeholder="jj/mm/aaaa"
+                                            name="date_deb" ng-model="search.date_deb"></div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="stagger"><label>Date Fin</label>
+                                    <div class="input-control text span2"><input type="text" name="date_fin"
+                                            ng-model="search.date_fin" placeholder="jj/mm/aaaa"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="stagger"><label>Magasin</label>
+                                    <div class="input-control select span4" data-role="input-control"><select
+                                            ng-model="search.magasin"
+                                            ng-options="magasin.id_mag as magasin.nom_mag | uppercase for magasin in magasins"
+                                            ng-click="getmag()">
+                                            <option value=""></option>
+                                        </select></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="input-control select span6" data-role="input-control"><label>Article
+                                        &nbsp;&nbsp;<span class="input-control text span2" style=""><input
+                                                ng-model="filterItem" placeholder="filtre"
+                                                type="text"></span></label><select ng-model="search.article"
+                                        ng-options="article.id_art as article.nom_art | uppercase for article in articles|filter:filterItem|orderBy:'nom_art':false"
+                                        ng-click="getart()">
+                                        <option value=""></option>
+                                    </select><span style="position:absolute;" title="Actualiser la liste des articles"
+                                        class="icon-cycle" ng-click="app.refreshartCache()"></span></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="input-control select span6" data-role="input-control"><label>Categorie
+                                        &nbsp;&nbsp;<span class="input-control text span2" style=""><input
+                                                ng-model="filterItemcat" placeholder="filtre"
+                                                type="text"></span></label><select ng-model="search.categorie"
+                                        ng-options="categorie.id_cat as categorie.nom_cat | uppercase for categorie in categories|filter:filterItemcat"
+                                        ng-click="getcat()">
+                                        <option value=""></option>
+                                    </select><span style="position:absolute;"
+                                        title="Actualiser la liste des categories articles" class="icon-cycle"
+                                        ng-click="app.refreshcatCache()"></span></div>
+                            </td>
+                        </tr>
+                    </table>
+                </div><button class="primary" ng-click="searchF();"><i
+                        class="icon-search on-left on-left-more"></i>Valider</button> &nbsp; <button class="inverse"
+                    type="reset" class="button"><i class="icon-undo on-left on-left-more"></i> Annuler </button>
+            </form>
+        </fieldset>
+    </div>
+    <div class="example" id="detailsPannel" style="width: 1200px!important; right: -1200px;">
+        <fieldset>
+            <legend><a class="toggle_details" href=""><span class=" icon-arrow-right-3"></span></a> Articles du bon :
+                <span class="fg-red">{{num_fact}}</span><span class="input-control text span2" style=""><input
+                        ng-model="filterText2" placeholder="filtre" type="text"></span></legend>
+            <div class="col-md-12" style="max-height: 600px;overflow: auto;">
+                <table class="table striped bordered condensed hovered">
+                    <thead>
+                        <th class='text-left'>Magasin&nbsp;</th>
+                        <th class='text-left'>Designation&nbsp;</th>
+                        <th class='text-left'>Qte&nbsp;</th>
+                        <th class='text-left'>Coût Achat&nbsp;</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in filtere=(details|filter:filterText2)">
+                            <td title="{{data.nom_mag |uppercase}}">{{data.code_mag |uppercase}}</td>
+                            <td>{{data.nom_art |uppercase}}</td>
+                            <td>{{data.qte_prod_art}}</td>
+                            <td ng-show="data.code_user_confirm != null">
+                                {{data.qte_prod_art }}
+                            </td>
+                            <td ng-show="data.code_user_confirm == null">
+                                <input style="color: black;" ng-model="data.cout_prod" placeholder="Coût d'achat" type="number">
+                            </td>
+                            <td>{{(data.cout_prod * data.qte_prod_art) | currency}}</td>
+                            <td>
+                                <a class="fg-green" href=""
+                                ng-show="data.code_user_confirm == null"
+                                    ng-click="insertStockProdConfirmation(data)" title="Validation"><span
+                                        class="icon-xing on-left"></span></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" align="right"></td>
+                            <td colspan="3"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table striped bordered condensed hovered">
+                        <tr>
+                            <td align="left" > Nom article en production : </td>
+                            <td colspan="3">{{production.nom_art}}</td>
+                        </tr>
+                        <tr>
+                            <td align="left">Quantité : </td>
+                            <td>{{production.qte}}</td>
+                        </tr>
+                        <tr>
+                            <td align="left">Coût d'achat : </td>
+                            <td>{{coutAchat()| currency}}</td>
+                        </tr>
+                        <tr>
+                            <td align="left">Charge de production : </td>
+                            <td ng-show="production.code_user_confirm != null">
+                                {{production.charge_prod| currency}}
+                            </td>
+                            <td ng-show="production.code_user_confirm == null">
+                                <input style="color: black;" ng-model="production.charge_prod" placeholder="Charge production" type="number">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">Coût production : </td>
+                            <td>{{(coutChargeProd() + coutAchat())| currency}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            
+                            <td>
+                                <span class="fg-red" ng-show="production.code_user_confirm == null"> <a class="fg-violet" href=""
+                                    
+                                    ng-click="setConfirmationProduction(production)" title="Confirmation"><span
+                                        class="icon-bookmark on-left"></span>Confirmation</a></span>
+                                        <span class="fg-green" ng-show="production.code_user_confirm != null">
+                                            Confirmer par {{production.code_user_confirm}} 
+                                        </span>
+                                        <span class="fg-green" ng-show="production.code_user_confirm != null">
+                                            à
+                                            {{production.date_confirm}}
+                                        </span>
+
+                            </td>
+                        </tr>
+                        
+                </table>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<script>$(function () { $(".toggle_details").on("click", function () { $("#detailsPannel").css("right", "-1600px") }); $(".toggle_search").on("click", function () { $("#searchPannel").css("right", "-700px") }); $(".btn_search").on("click", function () { $("#searchPannel").css("right", "0") }) });</script>

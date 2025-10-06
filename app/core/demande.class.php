@@ -69,7 +69,7 @@ class demandeController extends model {
         $query = "SELECT *,td.lib_type_dep as type_demande,(SELECT nom_mag FROM t_magasin WHERE id_mag=dem.mag_demandeur) as magasin from t_demande dem
                         INNER JOIN t_type_depense td ON dem.type_demande=td.id_type_dep
                         WHERE (next_role='".$search['role']."' OR next_user_id=".$_SESSION['userId'].") 
-                        AND (etat=0 || etat is null) $condition ORDER BY dem.date_demande DESC";
+                        AND (etat=0 || etat is null) $condition ORDER BY dem.date_demande DESC limit 50";
         // echo $query;
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 

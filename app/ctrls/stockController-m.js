@@ -1,4 +1,4 @@
-sngs.controller("etaAppCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+sngs.controller("etaAppCtrl", ["$scope", "$rootScope", "prmutils", function ($scope, $rootScope, prmutils) {
     var app = $scope.app;
     app.waiting.show = false;
     app.navbar.show = true;
@@ -23,9 +23,9 @@ sngs.controller("etaAppCtrl", ["$scope", "$rootScope", "prmutils", function($sco
     }
     today = dd + "/" + mm + "/" + yyyy;
     $scope.search.date_deb = today;
-    $scope.getmag = function() {
+    $scope.getmag = function () {
         task = prmutils.getMagasins();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.magasins = result.data;
@@ -35,9 +35,9 @@ sngs.controller("etaAppCtrl", ["$scope", "$rootScope", "prmutils", function($sco
             }
         })
     };
-    $scope.getcat = function() {
+    $scope.getcat = function () {
         task = prmutils.getCategories();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -47,9 +47,9 @@ sngs.controller("etaAppCtrl", ["$scope", "$rootScope", "prmutils", function($sco
             }
         })
     };
-    $scope.getart = function() {
+    $scope.getart = function () {
         task = prmutils.getArticles();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.articles = result.data;
@@ -59,9 +59,9 @@ sngs.controller("etaAppCtrl", ["$scope", "$rootScope", "prmutils", function($sco
             }
         })
     };
-    $scope.getfrns = function() {
+    $scope.getfrns = function () {
         var task = prmutils.getFournisseurs();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.fournisseurs = result.data;
@@ -71,10 +71,10 @@ sngs.controller("etaAppCtrl", ["$scope", "$rootScope", "prmutils", function($sco
             }
         })
     };
-    $scope.searchF = function() {
+    $scope.searchF = function () {
         var task;
         task = prmutils.getEtaAppro($scope.search);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -87,7 +87,7 @@ sngs.controller("etaAppCtrl", ["$scope", "$rootScope", "prmutils", function($sco
         })
     };
     $scope.searchF();
-    $scope.getTotalQte = function() {
+    $scope.getTotalQte = function () {
         var total = 0;
         for (var i = 0; i < $scope.filtered.length; i++) {
             var vente = $scope.filtered[i];
@@ -95,7 +95,7 @@ sngs.controller("etaAppCtrl", ["$scope", "$rootScope", "prmutils", function($sco
         }
         return total
     };
-    $scope.getTotalMnt = function() {
+    $scope.getTotalMnt = function () {
         var total = 0;
         for (var i = 0; i < $scope.filtered.length; i++) {
             var vente = $scope.filtered[i];
@@ -104,7 +104,7 @@ sngs.controller("etaAppCtrl", ["$scope", "$rootScope", "prmutils", function($sco
         return total
     }
 }]);
-sngs.controller("etaCmdCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+sngs.controller("etaCmdCtrl", ["$scope", "$rootScope", "prmutils", function ($scope, $rootScope, prmutils) {
     var app = $scope.app;
     app.waiting.show = false;
     app.navbar.show = true;
@@ -129,9 +129,9 @@ sngs.controller("etaCmdCtrl", ["$scope", "$rootScope", "prmutils", function($sco
     }
     today = dd + "/" + mm + "/" + yyyy;
     $scope.search.date_deb = today;
-    $scope.getmag = function() {
+    $scope.getmag = function () {
         task = prmutils.getMagasins();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.magasins = result.data;
@@ -141,9 +141,9 @@ sngs.controller("etaCmdCtrl", ["$scope", "$rootScope", "prmutils", function($sco
             }
         })
     };
-    $scope.getcat = function() {
+    $scope.getcat = function () {
         task = prmutils.getCategories();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -153,9 +153,9 @@ sngs.controller("etaCmdCtrl", ["$scope", "$rootScope", "prmutils", function($sco
             }
         })
     };
-    $scope.getart = function() {
+    $scope.getart = function () {
         task = prmutils.getArticles();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.articles = result.data;
@@ -165,9 +165,9 @@ sngs.controller("etaCmdCtrl", ["$scope", "$rootScope", "prmutils", function($sco
             }
         })
     };
-    $scope.getfrns = function() {
+    $scope.getfrns = function () {
         var task = prmutils.getFournisseurs();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.fournisseurs = result.data;
@@ -177,10 +177,10 @@ sngs.controller("etaCmdCtrl", ["$scope", "$rootScope", "prmutils", function($sco
             }
         })
     };
-    $scope.searchF = function() {
+    $scope.searchF = function () {
         var task;
         task = prmutils.getEtaCmd($scope.search);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -193,7 +193,7 @@ sngs.controller("etaCmdCtrl", ["$scope", "$rootScope", "prmutils", function($sco
         })
     };
     $scope.searchF();
-    $scope.getTotalQte = function() {
+    $scope.getTotalQte = function () {
         var total = 0;
         for (var i = 0; i < $scope.filtered.length; i++) {
             var vente = $scope.filtered[i];
@@ -201,7 +201,7 @@ sngs.controller("etaCmdCtrl", ["$scope", "$rootScope", "prmutils", function($sco
         }
         return total
     };
-    $scope.getTotalMnt = function() {
+    $scope.getTotalMnt = function () {
         var total = 0;
         for (var i = 0; i < $scope.filtered.length; i++) {
             var vente = $scope.filtered[i];
@@ -210,7 +210,7 @@ sngs.controller("etaCmdCtrl", ["$scope", "$rootScope", "prmutils", function($sco
         return total
     }
 }]);
-sngs.controller("etaSortCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+sngs.controller("etaSortCtrl", ["$scope", "$rootScope", "prmutils", function ($scope, $rootScope, prmutils) {
     var app = $scope.app;
     app.waiting.show = false;
     app.navbar.show = true;
@@ -235,9 +235,9 @@ sngs.controller("etaSortCtrl", ["$scope", "$rootScope", "prmutils", function($sc
     }
     today = dd + "/" + mm + "/" + yyyy;
     $scope.search.date_deb = today;
-    $scope.getmag = function() {
+    $scope.getmag = function () {
         task = prmutils.getExceptMagasins();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.magasins = result.data;
@@ -247,9 +247,9 @@ sngs.controller("etaSortCtrl", ["$scope", "$rootScope", "prmutils", function($sc
             }
         })
     };
-    $scope.getcat = function() {
+    $scope.getcat = function () {
         task = prmutils.getCategories();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -259,9 +259,9 @@ sngs.controller("etaSortCtrl", ["$scope", "$rootScope", "prmutils", function($sc
             }
         })
     };
-    $scope.getart = function() {
+    $scope.getart = function () {
         task = prmutils.getArticles();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.articles = result.data;
@@ -271,10 +271,10 @@ sngs.controller("etaSortCtrl", ["$scope", "$rootScope", "prmutils", function($sc
             }
         })
     };
-    $scope.searchF = function() {
+    $scope.searchF = function () {
         var task;
         task = prmutils.getEtaSort($scope.search);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -288,7 +288,7 @@ sngs.controller("etaSortCtrl", ["$scope", "$rootScope", "prmutils", function($sc
     };
     $scope.searchF()
 }]);
-sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function ($scope, $rootScope, prmutils) {
     var app = $scope.app;
     $scope.loading = true;
     app.navbar.show = true;
@@ -302,9 +302,9 @@ sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($
     $rootScope.pageTitle = "Inventaire du stock";
     $scope.fullSearchText = "";
     $scope.search = {};
-    $scope.getmag = function() {
+    $scope.getmag = function () {
         task = prmutils.getMagasins();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             $scope.loading = true;
             if (result.err === 0) {
                 $scope.magasins = result.data;
@@ -314,13 +314,13 @@ sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($
             }
         })
     };
-    $scope.loadMore = function() {
+    $scope.loadMore = function () {
         if ($scope.fullSearchText.length > 0) {
             return false
         }
         $scope.loading = true;
         var task = prmutils.loadMorealert($scope.alertes.length);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data.length > 0) {
                     $scope.alertes = $scope.alertes.concat(result.data)
@@ -331,9 +331,9 @@ sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($
             }
         })
     };
-    $scope.getcat = function() {
+    $scope.getcat = function () {
         task = prmutils.getCategories();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             $scope.loading = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -343,9 +343,9 @@ sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($
             }
         })
     };
-    $scope.getart = function() {
+    $scope.getart = function () {
         task = prmutils.getArticles();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.articles = result.data;
@@ -355,12 +355,12 @@ sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($
             }
         })
     };
-    $scope.approuv = function(data) {
+    $scope.approuv = function (data) {
         var objc = {
             p: data.id_stk
         };
         task = prmutils.approuvCorrection(objc);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 app.notify("Correction approuvee avec succes...", "b");
@@ -370,11 +370,11 @@ sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($
             }
         })
     };
-    $scope.searchF = function() {
+    $scope.searchF = function () {
         $scope.loading = true;
         var task;
         task = prmutils.etatStock($scope.search);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -388,11 +388,11 @@ sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($
             }
         })
     };
-    $scope.searchFLimit = function() {
+    $scope.searchFLimit = function () {
         $scope.loading = true;
         var task;
         task = prmutils.etatStocklimit();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -406,10 +406,10 @@ sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($
             }
         })
     };
-    $scope.refresh = function() {
+    $scope.refresh = function () {
         $scope.searchFLimit()
     };
-    $scope.fullSearch = function() {
+    $scope.fullSearch = function () {
         $scope.loading = true;
         var task;
         if ($scope.fullSearchText.length > 1) {
@@ -417,7 +417,7 @@ sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($
         } else {
             task = prmutils.etatStocklimit()
         }
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -431,14 +431,14 @@ sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($
             }
         })
     };
-    $scope.affStock = function(data) {
+    $scope.affStock = function (data) {
         $scope.corrstock = data;
         $scope.corrstock.qte_stk = parseInt(data.qte_stk)
     };
-    $scope.corrStock = function(data) {
+    $scope.corrStock = function (data) {
         var task;
         task = prmutils.updateStock($scope.corrstock.id_stk, $scope.corrstock);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 app.notify(result.message, "m");
                 $scope.corrstock = {}
@@ -447,16 +447,16 @@ sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($
             }
         })
     };
-    $scope.searchAll = function() {
+    $scope.searchAll = function () {
         $scope.search.magasin = null;
         $scope.search.categorie = null;
         $scope.search.article = null;
         $scope.searchF()
     };
     $scope.searchFLimit();
-    $scope.loadArticlesOfCategorie = function(cat) {
+    $scope.loadArticlesOfCategorie = function (cat) {
         task = prmutils.getArticlesOfCategorie(cat);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.articles = result.data;
                 app.waiting.show = false
@@ -465,18 +465,18 @@ sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($
             }
         })
     };
-    $scope.showReplace = function(art) {
+    $scope.showReplace = function (art) {
         $("#replacePannel").css("right", "0");
         $scope.anc_art = art
     };
-    $scope.replaceItem = function(data) {
+    $scope.replaceItem = function (data) {
         var obj;
         obj = {
             anc: parseInt($scope.anc_art.art_stk),
             newe: parseInt($scope.replace.article)
         };
         task = prmutils.replaceItem(obj);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 app.notify(result.message, "b");
                 $scope.replace.article = {};
@@ -487,7 +487,7 @@ sngs.controller("stockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($
         })
     }
 }]);
-sngs.controller("stockInvCtrl", ["$scope", '$http', 'config', "$rootScope", "prmutils", "$routeParams", function($scope, $http, config, $rootScope, prmutils, $routeParams) {
+sngs.controller("stockInvCtrl", ["$scope", '$http', 'config', "$rootScope", "prmutils", "$routeParams", function ($scope, $http, config, $rootScope, prmutils, $routeParams) {
     var app = $scope.app;
     $scope.loading = true;
     app.navbar.show = true;
@@ -507,9 +507,9 @@ sngs.controller("stockInvCtrl", ["$scope", '$http', 'config', "$rootScope", "prm
     $scope.search = {};
     $scope.approvisionnement;
 
-    $scope.getInventaire = function() {
+    $scope.getInventaire = function () {
         task = prmutils.getInventaire();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             $scope.loading = true;
             if (result.err === 0) {
                 $scope.inventaire = result.data;
@@ -523,7 +523,7 @@ sngs.controller("stockInvCtrl", ["$scope", '$http', 'config', "$rootScope", "prm
     };
     $showErrors = false;
     $scope.compteur = 0;
-    $scope.showError = function() {
+    $scope.showError = function () {
         $showErrors = !$showErrors;
         if ($showErrors) {
             $scope.filtres = [];
@@ -534,7 +534,7 @@ sngs.controller("stockInvCtrl", ["$scope", '$http', 'config', "$rootScope", "prm
             $scope.filtres = angular.copy($scope.datas);
         }
     }
-    $scope.importerInventaireDansLaBase = function() {
+    $scope.importerInventaireDansLaBase = function () {
         $scope.compteur = 0;
         for (const data of $scope.datas) {
             if (data.ecart == 0) {
@@ -550,27 +550,27 @@ sngs.controller("stockInvCtrl", ["$scope", '$http', 'config', "$rootScope", "prm
             }
             console.log(appstocks)
             task = prmutils.insertStockApproForConfirmation(appstocks);
-            task.promise.then(function(result) {
-                    $scope.compteur = $scope.compteur + 1;
-                    if (result.err === 0) {
-                        if (result.data === "-1") {
-                            app.notify(result.message, "m");
-                            $scope.djob = false
-                        } else {
-                            app.notify(result.message, "b");
-                            $scope.djob = false;
-                        }
-                    } else {
-
-                        app.notify(result.message, "m", 5000);
+            task.promise.then(function (result) {
+                $scope.compteur = $scope.compteur + 1;
+                if (result.err === 0) {
+                    if (result.data === "-1") {
+                        app.notify(result.message, "m");
                         $scope.djob = false
+                    } else {
+                        app.notify(result.message, "b");
+                        $scope.djob = false;
                     }
-                })
-                // $scope.loading = false;
+                } else {
+
+                    app.notify(result.message, "m", 5000);
+                    $scope.djob = false
+                }
+            })
+            // $scope.loading = false;
         }
     }
     $scope.getInventaire();
-    $scope.importInventaire = function() {
+    $scope.importInventaire = function () {
         $scope.loading = true;
         // alert(document.getElementById('fichierImporte').files[0]);
         var file_data = $('#fichierImporte').prop('files')[0];
@@ -587,7 +587,7 @@ sngs.controller("stockInvCtrl", ["$scope", '$http', 'config', "$rootScope", "prm
             processData: false,
             data: form_data,
             type: 'post',
-            success: function(php_script_response) {
+            success: function (php_script_response) {
                 // alert(php_script_response); // <-- display response from the PHP script, if any
                 $scope.loading = false;
                 // console.log(php_script_response)
@@ -629,7 +629,7 @@ sngs.controller("stockInvCtrl", ["$scope", '$http', 'config', "$rootScope", "prm
 
 }]);
 
-sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", function ($scope, $rootScope, prmutils) {
     var app = $scope.app;
     $scope.loading = true;
     app.navbar.show = true;
@@ -643,9 +643,9 @@ sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", functio
     $rootScope.pageTitle = "Session inventaire du stock";
     $scope.fullSearchText = "";
     $scope.search = {};
-    $scope.getmag = function() {
+    $scope.getmag = function () {
         task = prmutils.getMagasins();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             $scope.loading = true;
             if (result.err === 0) {
                 $scope.magasins = result.data;
@@ -655,13 +655,13 @@ sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", functio
             }
         })
     };
-    $scope.loadMore = function() {
+    $scope.loadMore = function () {
         if ($scope.fullSearchText.length > 0) {
             return false
         }
         $scope.loading = true;
         var task = prmutils.loadMorealert($scope.alertes.length);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data.length > 0) {
                     $scope.alertes = $scope.alertes.concat(result.data)
@@ -672,9 +672,9 @@ sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", functio
             }
         })
     };
-    $scope.getcat = function() {
+    $scope.getcat = function () {
         task = prmutils.getCategories();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             $scope.loading = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -684,9 +684,9 @@ sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", functio
             }
         })
     };
-    $scope.getart = function() {
+    $scope.getart = function () {
         task = prmutils.getArticles();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.articles = result.data;
@@ -696,12 +696,12 @@ sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", functio
             }
         })
     };
-    $scope.approuv = function(data) {
+    $scope.approuv = function (data) {
         var objc = {
             p: data.id_stk
         };
         task = prmutils.approuvCorrection(objc);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 app.notify("Correction approuvee avec succes...", "b");
@@ -711,11 +711,11 @@ sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", functio
             }
         })
     };
-    $scope.searchF = function() {
+    $scope.searchF = function () {
         $scope.loading = true;
         var task;
         task = prmutils.etatStock($scope.search);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -729,11 +729,11 @@ sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", functio
             }
         })
     };
-    $scope.searchFLimit = function() {
+    $scope.searchFLimit = function () {
         $scope.loading = true;
         var task;
         task = prmutils.etatStocklimit();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -747,10 +747,10 @@ sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", functio
             }
         })
     };
-    $scope.refresh = function() {
+    $scope.refresh = function () {
         $scope.searchFLimit()
     };
-    $scope.fullSearch = function() {
+    $scope.fullSearch = function () {
         $scope.loading = true;
         var task;
         if ($scope.fullSearchText.length > 1) {
@@ -758,7 +758,7 @@ sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", functio
         } else {
             task = prmutils.etatStocklimit()
         }
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -772,14 +772,14 @@ sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", functio
             }
         })
     };
-    $scope.affStock = function(data) {
+    $scope.affStock = function (data) {
         $scope.corrstock = data;
         $scope.corrstock.qte_stk = parseInt(data.qte_stk)
     };
-    $scope.corrStock = function(data) {
+    $scope.corrStock = function (data) {
         var task;
         task = prmutils.updateStock($scope.corrstock.id_stk, $scope.corrstock);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 app.notify(result.message, "b");
                 $scope.corrstock = {}
@@ -788,16 +788,16 @@ sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", functio
             }
         })
     };
-    $scope.searchAll = function() {
+    $scope.searchAll = function () {
         $scope.search.magasin = null;
         $scope.search.categorie = null;
         $scope.search.article = null;
         $scope.searchF()
     };
     $scope.searchFLimit();
-    $scope.loadArticlesOfCategorie = function(cat) {
+    $scope.loadArticlesOfCategorie = function (cat) {
         task = prmutils.getArticlesOfCategorie(cat);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.articles = result.data;
                 app.waiting.show = false
@@ -806,18 +806,18 @@ sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", functio
             }
         })
     };
-    $scope.showReplace = function(art) {
+    $scope.showReplace = function (art) {
         $("#replacePannel").css("right", "0");
         $scope.anc_art = art
     };
-    $scope.replaceItem = function(data) {
+    $scope.replaceItem = function (data) {
         var obj;
         obj = {
             anc: parseInt($scope.anc_art.art_stk),
             newe: parseInt($scope.replace.article)
         };
         task = prmutils.replaceItem(obj);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 app.notify(result.message, "b");
                 $scope.replace.article = {};
@@ -828,7 +828,7 @@ sngs.controller("stockSessionCtrl", ["$scope", "$rootScope", "prmutils", functio
         })
     }
 }]);
-sngs.controller("AutreStockEtatCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+sngs.controller("AutreStockEtatCtrl", ["$scope", "$rootScope", "prmutils", function ($scope, $rootScope, prmutils) {
     var app = $scope.app;
     $scope.loading = true;
     app.navbar.show = true;
@@ -842,7 +842,7 @@ sngs.controller("AutreStockEtatCtrl", ["$scope", "$rootScope", "prmutils", funct
     $rootScope.pageTitle = "Autre stock";
     $scope.fullSearchText = "";
     $scope.search = {};
-    $scope.fullSearch = function() {
+    $scope.fullSearch = function () {
         $scope.loading = true;
         var task;
         if ($scope.fullSearchText.length > 1) {
@@ -851,7 +851,7 @@ sngs.controller("AutreStockEtatCtrl", ["$scope", "$rootScope", "prmutils", funct
             $scope.alertes = {};
             return false
         }
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -866,7 +866,7 @@ sngs.controller("AutreStockEtatCtrl", ["$scope", "$rootScope", "prmutils", funct
         })
     }
 }]);
-sngs.controller("stockEtatTrsfCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+sngs.controller("stockEtatTrsfCtrl", ["$scope", "$rootScope", "prmutils", function ($scope, $rootScope, prmutils) {
     var app = $scope.app;
     app.waiting.show = false;
     app.navbar.show = true;
@@ -881,7 +881,7 @@ sngs.controller("stockEtatTrsfCtrl", ["$scope", "$rootScope", "prmutils", functi
     $scope.search = {};
     $scope.supok = false;
     task = prmutils.getLimitedMagasins();
-    task.promise.then(function(result) {
+    task.promise.then(function (result) {
         app.waiting.show = true;
         if (result.err === 0) {
             $scope.magasins = result.data;
@@ -891,7 +891,7 @@ sngs.controller("stockEtatTrsfCtrl", ["$scope", "$rootScope", "prmutils", functi
         }
     });
     task = prmutils.getAllMagasins();
-    task.promise.then(function(result) {
+    task.promise.then(function (result) {
         app.waiting.show = true;
         if (result.err === 0) {
             $scope.magasinsd = result.data;
@@ -900,9 +900,9 @@ sngs.controller("stockEtatTrsfCtrl", ["$scope", "$rootScope", "prmutils", functi
             app.waiting.show = false
         }
     });
-    $scope.getcat = function() {
+    $scope.getcat = function () {
         task = prmutils.getCategories();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -912,9 +912,9 @@ sngs.controller("stockEtatTrsfCtrl", ["$scope", "$rootScope", "prmutils", functi
             }
         })
     };
-    $scope.getart = function() {
+    $scope.getart = function () {
         task = prmutils.getArticles();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.articles = result.data;
@@ -924,9 +924,9 @@ sngs.controller("stockEtatTrsfCtrl", ["$scope", "$rootScope", "prmutils", functi
             }
         })
     };
-    $scope.undot = function(fac) {
+    $scope.undot = function (fac) {
         var task = prmutils.undoTransf(fac);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 fac.supok = true;
@@ -937,10 +937,10 @@ sngs.controller("stockEtatTrsfCtrl", ["$scope", "$rootScope", "prmutils", functi
             }
         })
     };
-    $scope.searchF = function() {
+    $scope.searchF = function () {
         var task;
         task = prmutils.etatTransf($scope.search);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -953,11 +953,11 @@ sngs.controller("stockEtatTrsfCtrl", ["$scope", "$rootScope", "prmutils", functi
         })
     };
     $scope.searchF();
-    $scope.select = function(index) {
+    $scope.select = function (index) {
         $scope.index = index
     }
 }]);
-sngs.controller("stockEtatDeffCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+sngs.controller("stockEtatDeffCtrl", ["$scope", "$rootScope", "prmutils", function ($scope, $rootScope, prmutils) {
     var app = $scope.app;
     app.waiting.show = false;
     app.navbar.show = true;
@@ -971,7 +971,7 @@ sngs.controller("stockEtatDeffCtrl", ["$scope", "$rootScope", "prmutils", functi
     $rootScope.pageTitle = "Etat des destockage";
     $scope.search = {};
     task = prmutils.getLimitedMagasins();
-    task.promise.then(function(result) {
+    task.promise.then(function (result) {
         app.waiting.show = true;
         if (result.err === 0) {
             $scope.magasins = result.data;
@@ -980,9 +980,9 @@ sngs.controller("stockEtatDeffCtrl", ["$scope", "$rootScope", "prmutils", functi
             app.waiting.show = false
         }
     });
-    $scope.getcat = function() {
+    $scope.getcat = function () {
         task = prmutils.getCategories();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -992,9 +992,9 @@ sngs.controller("stockEtatDeffCtrl", ["$scope", "$rootScope", "prmutils", functi
             }
         })
     };
-    $scope.getart = function() {
+    $scope.getart = function () {
         task = prmutils.getArticles();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.articles = result.data;
@@ -1004,9 +1004,9 @@ sngs.controller("stockEtatDeffCtrl", ["$scope", "$rootScope", "prmutils", functi
             }
         })
     };
-    $scope.undot = function(fac) {
+    $scope.undot = function (fac) {
         var task = prmutils.undoDeff(fac);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 app.notify(result.message, "b");
@@ -1018,9 +1018,9 @@ sngs.controller("stockEtatDeffCtrl", ["$scope", "$rootScope", "prmutils", functi
             }
         })
     };
-    $scope.vudef = function(fac) {
+    $scope.vudef = function (fac) {
         var task = prmutils.vudef(fac);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 fac.vu = 1;
@@ -1031,9 +1031,9 @@ sngs.controller("stockEtatDeffCtrl", ["$scope", "$rootScope", "prmutils", functi
             }
         })
     };
-    $scope.tvudef = function() {
+    $scope.tvudef = function () {
         var task = prmutils.tvudef();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 for (var i = 0; i < $scope.alertes.length; i++) {
@@ -1047,10 +1047,10 @@ sngs.controller("stockEtatDeffCtrl", ["$scope", "$rootScope", "prmutils", functi
             }
         })
     };
-    $scope.searchF = function() {
+    $scope.searchF = function () {
         var task;
         task = prmutils.etatDeff($scope.search);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -1064,7 +1064,7 @@ sngs.controller("stockEtatDeffCtrl", ["$scope", "$rootScope", "prmutils", functi
     };
     $scope.searchF()
 }]);
-sngs.controller("stockAlerteCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+sngs.controller("stockAlerteCtrl", ["$scope", "$rootScope", "prmutils", function ($scope, $rootScope, prmutils) {
     var app = $scope.app;
     app.waiting.show = false;
     app.navbar.show = true;
@@ -1078,7 +1078,7 @@ sngs.controller("stockAlerteCtrl", ["$scope", "$rootScope", "prmutils", function
     $rootScope.pageTitle = "Ruptures de stock";
     $scope.search = {};
     task = prmutils.getMagasins();
-    task.promise.then(function(result) {
+    task.promise.then(function (result) {
         app.waiting.show = true;
         if (result.err === 0) {
             $scope.magasins = result.data;
@@ -1087,9 +1087,9 @@ sngs.controller("stockAlerteCtrl", ["$scope", "$rootScope", "prmutils", function
             app.waiting.show = false
         }
     });
-    $scope.getcat = function() {
+    $scope.getcat = function () {
         task = prmutils.getCategories();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -1099,9 +1099,9 @@ sngs.controller("stockAlerteCtrl", ["$scope", "$rootScope", "prmutils", function
             }
         })
     };
-    $scope.getart = function() {
+    $scope.getart = function () {
         task = prmutils.getArticles();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.articles = result.data;
@@ -1111,10 +1111,10 @@ sngs.controller("stockAlerteCtrl", ["$scope", "$rootScope", "prmutils", function
             }
         })
     };
-    $scope.searchF = function() {
+    $scope.searchF = function () {
         var task;
         task = prmutils.etatAlerte($scope.search);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -1128,7 +1128,7 @@ sngs.controller("stockAlerteCtrl", ["$scope", "$rootScope", "prmutils", function
     };
     $scope.searchF()
 }]);
-sngs.controller("stockAlerteRuptureCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+sngs.controller("stockAlerteRuptureCtrl", ["$scope", "$rootScope", "prmutils", function ($scope, $rootScope, prmutils) {
     var app = $scope.app;
     app.waiting.show = false;
     app.navbar.show = true;
@@ -1142,7 +1142,7 @@ sngs.controller("stockAlerteRuptureCtrl", ["$scope", "$rootScope", "prmutils", f
     $rootScope.pageTitle = "Ruptures de stock";
     $scope.search = {};
     task = prmutils.getAllMagasins();
-    task.promise.then(function(result) {
+    task.promise.then(function (result) {
         app.waiting.show = true;
         if (result.err === 0) {
             $scope.magasins = result.data;
@@ -1151,9 +1151,9 @@ sngs.controller("stockAlerteRuptureCtrl", ["$scope", "$rootScope", "prmutils", f
             app.waiting.show = false
         }
     });
-    $scope.getcat = function() {
+    $scope.getcat = function () {
         task = prmutils.getCategories();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -1163,9 +1163,9 @@ sngs.controller("stockAlerteRuptureCtrl", ["$scope", "$rootScope", "prmutils", f
             }
         })
     };
-    $scope.getart = function() {
+    $scope.getart = function () {
         task = prmutils.getArticles();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.articles = result.data;
@@ -1175,10 +1175,10 @@ sngs.controller("stockAlerteRuptureCtrl", ["$scope", "$rootScope", "prmutils", f
             }
         })
     };
-    $scope.searchF = function() {
+    $scope.searchF = function () {
         var task;
         task = prmutils.etatAlerte($scope.search);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -1192,7 +1192,7 @@ sngs.controller("stockAlerteRuptureCtrl", ["$scope", "$rootScope", "prmutils", f
     };
     $scope.searchF()
 }]);
-sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", function($scope, $rootScope, config, prmutils) {
+sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", function ($scope, $rootScope, config, prmutils) {
     var stockas = $scope.stockas;
     var app = $scope.app;
     app.view = {
@@ -1220,9 +1220,9 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
     };
     $scope.appstock = {};
     $scope.appstock.prix_appro_art = 0;
-    $scope.getappo = function() {
+    $scope.getappo = function () {
         var task = prmutils.getApprovisionnements();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.approvisionnements = result.data;
@@ -1233,7 +1233,7 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         })
     };
     task = prmutils.getMagasins();
-    task.promise.then(function(result) {
+    task.promise.then(function (result) {
         app.waiting.show = true;
         if (result.err === 0) {
             $scope.magasins = result.data;
@@ -1243,9 +1243,9 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             app.waiting.show = false
         }
     });
-    $scope.getcat = function() {
+    $scope.getcat = function () {
         task = prmutils.getCategories();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -1255,9 +1255,9 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.gae = function() {
+    $scope.gae = function () {
         task = prmutils.getArticleEntrees($scope.appstock.appro_appro_art);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.articlesentrees = result.data;
                 app.waiting.show = false
@@ -1265,15 +1265,15 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
                 app.waiting.show = false
             }
         })
-        
+
         const approvisionnement = $scope.approvisionnements.find(approvis => approvis.id_appro === $scope.appstock.appro_appro_art);
         if (approvisionnement) {
             $scope.appstock.referenceStock = approvisionnement.bon_liv_appro
         }
     };
-    $scope.undobl = function(data) {
+    $scope.undobl = function (data) {
         var task = prmutils.undoEntArt(data);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.gae();
@@ -1283,7 +1283,7 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.save = function(appstock) {
+    $scope.save = function (appstock) {
         var task;
         $scope.djob = true;
         if (parseInt($scope.appstock.prix_appro_art) <= 0) {
@@ -1303,7 +1303,7 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         }
         console.log(appstock);
         task = prmutils.insertStockApproForConfirmation(appstock);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     $scope.appstock.art_appro_art = "";
@@ -1336,13 +1336,13 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             prix_gros: 0
         }
     };
-    $scope.loadArticlesOfCategorie = function(cat) {
+    $scope.loadArticlesOfCategorie = function (cat) {
         if (typeof cat == "undefined") {
             task = prmutils.getArticles()
         } else {
             task = prmutils.getArticlesOfCategorie(cat)
         }
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.articles = result.data;
                 app.waiting.show = false
@@ -1351,9 +1351,9 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.loadArticles = function(cat) {
+    $scope.loadArticles = function (cat) {
         task = prmutils.getArticles();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.articles = result.data;
                 app.waiting.show = false
@@ -1368,8 +1368,8 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
     if (!app.PRMS.liopl && !app.PRMS.cat) {
         $scope.loadArticles(0)
     }
-    $scope.getStock = function(art, mag) {
-        
+    $scope.getStock = function (art, mag) {
+
         const article = $scope.articles.find(article => article.id_art === art);
         console.log(article)
         console.log(article)
@@ -1378,7 +1378,7 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             $scope.appstock.referenceLabel = article.reference
         }
         task = prmutils.getStock(art, mag);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === null) {
                     $scope.stock = {
@@ -1392,12 +1392,12 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
                 app.waiting.show = false
             }
         });
-        
+
         $scope.getPrices(art, mag)
     };
-    $scope.getPrices = function(art, mag) {
+    $scope.getPrices = function (art, mag) {
         task = prmutils.getPrices(art, mag);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === null) {
                     $scope.prices = {
@@ -1413,12 +1413,14 @@ sngs.controller("stockAsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.$on("$destroy", function() {
+    $scope.$on("$destroy", function () {
         var task;
         task = prmutils.statusappro(0, $scope.appstock.appro_appro_art)
     })
 }]);
-sngs.controller("stockCmdCtrl", ["$scope", "$rootScope", "config", "prmutils", function($scope, $rootScope, config, prmutils) {
+
+
+sngs.controller("stockCmdCtrl", ["$scope", "$rootScope", "config", "prmutils", function ($scope, $rootScope, config, prmutils) {
     var stockas = $scope.stockas;
     var app = $scope.app;
     app.view = {
@@ -1446,9 +1448,9 @@ sngs.controller("stockCmdCtrl", ["$scope", "$rootScope", "config", "prmutils", f
     };
     $scope.appstock = {};
     $scope.appstock.prix_cmd_art = 0;
-    $scope.getappo = function() {
+    $scope.getappo = function () {
         var task = prmutils.getCommandes();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.approvisionnements = result.data;
@@ -1458,9 +1460,9 @@ sngs.controller("stockCmdCtrl", ["$scope", "$rootScope", "config", "prmutils", f
             }
         })
     };
-    $scope.getcat = function() {
+    $scope.getcat = function () {
         task = prmutils.getCategories();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -1470,9 +1472,9 @@ sngs.controller("stockCmdCtrl", ["$scope", "$rootScope", "config", "prmutils", f
             }
         })
     };
-    $scope.gae = function() {
+    $scope.gae = function () {
         task = prmutils.getArticleCommandees($scope.appstock.cmd_cmd_art);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.articlesentrees = result.data;
                 app.waiting.show = false
@@ -1481,9 +1483,9 @@ sngs.controller("stockCmdCtrl", ["$scope", "$rootScope", "config", "prmutils", f
             }
         })
     };
-    $scope.undobl = function(data) {
+    $scope.undobl = function (data) {
         var task = prmutils.undoEntArt(data);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.gae();
@@ -1493,14 +1495,14 @@ sngs.controller("stockCmdCtrl", ["$scope", "$rootScope", "config", "prmutils", f
             }
         })
     };
-    $scope.save = function(appstock) {
+    $scope.save = function (appstock) {
         var task;
         $scope.djob = true;
         if (parseInt($scope.appstock.prix_cmd_art) <= 0) {
             $scope.appstock.prix_cmd_art = 0
         }
         task = prmutils.insertStockCmd(appstock);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     $scope.appstock.art_cmd_art = "";
@@ -1530,13 +1532,13 @@ sngs.controller("stockCmdCtrl", ["$scope", "$rootScope", "config", "prmutils", f
             prix_gros: 0
         }
     };
-    $scope.loadArticlesOfCategorie = function(cat) {
+    $scope.loadArticlesOfCategorie = function (cat) {
         if (typeof cat == "undefined") {
             task = prmutils.getArticles()
         } else {
             task = prmutils.getArticlesOfCategorie(cat)
         }
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.articles = result.data;
                 app.waiting.show = false
@@ -1545,9 +1547,9 @@ sngs.controller("stockCmdCtrl", ["$scope", "$rootScope", "config", "prmutils", f
             }
         })
     };
-    $scope.loadArticles = function(cat) {
+    $scope.loadArticles = function (cat) {
         task = prmutils.getArticles();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.articles = result.data;
                 app.waiting.show = false
@@ -1562,9 +1564,9 @@ sngs.controller("stockCmdCtrl", ["$scope", "$rootScope", "config", "prmutils", f
     if (!app.PRMS.liopl && !app.PRMS.cat) {
         $scope.loadArticles(0)
     }
-    $scope.getStock = function(art, mag) {
+    $scope.getStock = function (art, mag) {
         task = prmutils.getStock(art, mag);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === null) {
                     $scope.stock = {
@@ -1580,9 +1582,9 @@ sngs.controller("stockCmdCtrl", ["$scope", "$rootScope", "config", "prmutils", f
         });
         $scope.getPrices(art, mag)
     };
-    $scope.getPrices = function(art, mag) {
+    $scope.getPrices = function (art, mag) {
         task = prmutils.getPrices(art, mag);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === null) {
                     $scope.prices = {
@@ -1598,11 +1600,11 @@ sngs.controller("stockCmdCtrl", ["$scope", "$rootScope", "config", "prmutils", f
             }
         })
     };
-    $scope.$on("$destroy", function() {
+    $scope.$on("$destroy", function () {
         var task
     })
 }]);
-sngs.controller("stockDeffCtrl", ["$scope", "$rootScope", "config", "prmutils", function($scope, $rootScope, config, prmutils) {
+sngs.controller("stockDeffCtrl", ["$scope", "$rootScope", "config", "prmutils", function ($scope, $rootScope, config, prmutils) {
     var stockas = $scope.stockas;
     var app = $scope.app;
     app.view = {
@@ -1622,7 +1624,7 @@ sngs.controller("stockDeffCtrl", ["$scope", "$rootScope", "config", "prmutils", 
     $rootScope.pageTitle = "Destockage articles";
     $scope.appdef = {};
     task = prmutils.getMagasins();
-    task.promise.then(function(result) {
+    task.promise.then(function (result) {
         app.waiting.show = true;
         if (result.err === 0) {
             $scope.magasins = result.data;
@@ -1632,9 +1634,9 @@ sngs.controller("stockDeffCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             app.waiting.show = false
         }
     });
-    $scope.loadExtCategories = function(mag) {
+    $scope.loadExtCategories = function (mag) {
         task = prmutils.getExtCategoriesOfMag(mag);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.categories = result.data;
                 app.waiting.show = false
@@ -1643,10 +1645,10 @@ sngs.controller("stockDeffCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.save = function(appdef) {
+    $scope.save = function (appdef) {
         var task;
         task = prmutils.insertStockDeff(appdef);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     $scope.appdef.art_def = "";
@@ -1663,9 +1665,9 @@ sngs.controller("stockDeffCtrl", ["$scope", "$rootScope", "config", "prmutils", 
         });
         $scope.stock.qte_stk = 0
     };
-    $scope.loadArticlesOfCategorie = function(cat) {
+    $scope.loadArticlesOfCategorie = function (cat) {
         task = prmutils.getArticlesOfCategorie(cat);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.articles = result.data;
                 app.waiting.show = false
@@ -1674,9 +1676,9 @@ sngs.controller("stockDeffCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.loadArticlesForSell = function() {
+    $scope.loadArticlesForSell = function () {
         task = prmutils.loadArticlesForSell();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.articles = result.data;
                 app.waiting.show = false
@@ -1691,9 +1693,9 @@ sngs.controller("stockDeffCtrl", ["$scope", "$rootScope", "config", "prmutils", 
     if (!app.PRMS.liopl && !app.PRMS.cat) {
         $scope.loadArticlesForSell()
     }
-    $scope.getStock = function(art, mag) {
+    $scope.getStock = function (art, mag) {
         task = prmutils.getStock(art, mag);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === null) {
                     $scope.stock = {
@@ -1709,7 +1711,7 @@ sngs.controller("stockDeffCtrl", ["$scope", "$rootScope", "config", "prmutils", 
         })
     }
 }]);
-sngs.controller("stockTrfCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+sngs.controller("stockTrfCtrl", ["$scope", "$rootScope", "prmutils", function ($scope, $rootScope, prmutils) {
     var app = $scope.app;
     app.waiting.show = false;
     app.navbar.show = true;
@@ -1729,7 +1731,7 @@ sngs.controller("stockTrfCtrl", ["$scope", "$rootScope", "prmutils", function($s
     };
     $scope.appstock = {};
     task = prmutils.getExceptMagasins();
-    task.promise.then(function(result) {
+    task.promise.then(function (result) {
         app.waiting.show = true;
         if (result.err === 0) {
             $scope.magasins = result.data;
@@ -1739,7 +1741,7 @@ sngs.controller("stockTrfCtrl", ["$scope", "$rootScope", "prmutils", function($s
         }
     });
     task = prmutils.getLimitedMagasins();
-    task.promise.then(function(result) {
+    task.promise.then(function (result) {
         app.waiting.show = true;
         if (result.err === 0) {
             $scope.lmagasins = result.data;
@@ -1749,9 +1751,9 @@ sngs.controller("stockTrfCtrl", ["$scope", "$rootScope", "prmutils", function($s
             app.waiting.show = false
         }
     });
-    $scope.getcat = function() {
+    $scope.getcat = function () {
         task = prmutils.getCategories();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -1761,7 +1763,7 @@ sngs.controller("stockTrfCtrl", ["$scope", "$rootScope", "prmutils", function($s
             }
         })
     };
-    $scope.save = function(appstock) {
+    $scope.save = function (appstock) {
         var task;
         if (parseInt($scope.appstock.qte_transf) <= 0) {
             app.notify("Veuillez entrer une quantite  superieure a 0", "m");
@@ -1776,7 +1778,7 @@ sngs.controller("stockTrfCtrl", ["$scope", "$rootScope", "prmutils", function($s
             return false
         }
         task = prmutils.transfStock(appstock);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     $scope.reset();
@@ -1792,9 +1794,9 @@ sngs.controller("stockTrfCtrl", ["$scope", "$rootScope", "prmutils", function($s
             }
         })
     };
-    $scope.loadArticlesOfCategorie = function(cat) {
+    $scope.loadArticlesOfCategorie = function (cat) {
         task = prmutils.getExtArticlesOfCategorie(0, cat);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.articles = result.data;
                 app.waiting.show = false
@@ -1804,9 +1806,9 @@ sngs.controller("stockTrfCtrl", ["$scope", "$rootScope", "prmutils", function($s
         });
         $scope.reset()
     };
-    $scope.loadArticlesForSell = function() {
+    $scope.loadArticlesForSell = function () {
         task = prmutils.loadArticlesForSell();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.articles = result.data;
                 app.waiting.show = false
@@ -1821,9 +1823,9 @@ sngs.controller("stockTrfCtrl", ["$scope", "$rootScope", "prmutils", function($s
     if (!app.PRMS.liopl && !app.PRMS.cat) {
         $scope.loadArticlesForSell()
     }
-    $scope.getStocks = function(art, mag) {
+    $scope.getStocks = function (art, mag) {
         task = prmutils.getTransStock(art, mag);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === null) {
                     $scope.stocks = {
@@ -1838,9 +1840,9 @@ sngs.controller("stockTrfCtrl", ["$scope", "$rootScope", "prmutils", function($s
             }
         })
     };
-    $scope.getStockd = function(art, mag) {
+    $scope.getStockd = function (art, mag) {
         task = prmutils.getTransStock(art, mag);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === null) {
                     $scope.stockd = {
@@ -1855,14 +1857,14 @@ sngs.controller("stockTrfCtrl", ["$scope", "$rootScope", "prmutils", function($s
             }
         })
     };
-    $scope.validStk = function() {
+    $scope.validStk = function () {
         $scope.appstock.qte_transf = (parseInt($scope.appstock.qte_transf) > parseInt($scope.stocks.qte_stk)) ? parseInt(0) : parseInt($scope.appstock.qte_transf)
     };
-    $scope.reset = function() {
+    $scope.reset = function () {
         $scope.appstock.qte_transf = 0
     }
 }]);
-sngs.controller("stockSsCtrl", ["$scope", "$rootScope", "config", "prmutils", function($scope, $rootScope, config, prmutils) {
+sngs.controller("stockSsCtrl", ["$scope", "$rootScope", "config", "prmutils", function ($scope, $rootScope, config, prmutils) {
     var stockas = $scope.stockas;
     var app = $scope.app;
     app.view = {
@@ -1889,9 +1891,9 @@ sngs.controller("stockSsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         prix_gros: 0
     };
     $scope.sortstock = {};
-    $scope.getsort = function() {
+    $scope.getsort = function () {
         var task = prmutils.getSorties();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.sorties = result.data;
@@ -1901,9 +1903,9 @@ sngs.controller("stockSsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.getcat = function(mag) {
+    $scope.getcat = function (mag) {
         task = prmutils.getExtCategoriesOfMag(mag);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -1913,7 +1915,7 @@ sngs.controller("stockSsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.save = function(sortstock) {
+    $scope.save = function (sortstock) {
         var task;
         if (parseInt($scope.sortstock.qte_sort_art) <= 0) {
             app.notify("Veuillez entrer une quantite superieure a 0", "m");
@@ -1925,7 +1927,7 @@ sngs.controller("stockSsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         }
         $scope.djob = true;
         task = prmutils.insertStockSort(sortstock);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     $scope.sortstock.art_sort_art = "";
@@ -1950,9 +1952,9 @@ sngs.controller("stockSsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         };
         $scope.gas()
     };
-    $scope.loadArticlesOfCategorie = function(cat) {
+    $scope.loadArticlesOfCategorie = function (cat) {
         task = prmutils.getExtArticlesOfCategorie(0, cat);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             console.log(result);
             if (result.err === 0) {
                 $scope.articles = result.data;
@@ -1962,9 +1964,9 @@ sngs.controller("stockSsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.loadArticlesForSell = function() {
+    $scope.loadArticlesForSell = function () {
         task = prmutils.loadArticlesForSell();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.articles = result.data;
                 app.waiting.show = false
@@ -1979,9 +1981,9 @@ sngs.controller("stockSsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
     if (!app.PRMS.liopl && !app.PRMS.cat) {
         $scope.loadArticlesForSell()
     }
-    $scope.getStock = function(art, mag) {
+    $scope.getStock = function (art, mag) {
         task = prmutils.getStock(art, mag);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === null) {
                     $scope.stock = {
@@ -1996,9 +1998,9 @@ sngs.controller("stockSsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.gas = function() {
+    $scope.gas = function () {
         task = prmutils.getArticleSorties($scope.sortstock.sort_sort_art);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.articlessorties = result.data;
                 app.waiting.show = false
@@ -2007,9 +2009,9 @@ sngs.controller("stockSsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.undobs = function(data) {
+    $scope.undobs = function (data) {
         var task = prmutils.undoSortArt(data);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.gas();
@@ -2019,12 +2021,12 @@ sngs.controller("stockSsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.$on("$destroy", function() {
+    $scope.$on("$destroy", function () {
         var task;
         task = prmutils.statussort(0, $scope.sortstock.sort_sort_art)
     })
 }]);
-sngs.controller("stockBsCtrl", ["$scope", "$rootScope", "config", "prmutils", function($scope, $rootScope, config, prmutils) {
+sngs.controller("stockBsCtrl", ["$scope", "$rootScope", "config", "prmutils", function ($scope, $rootScope, config, prmutils) {
     var stockba = $scope.stockba;
     var app = $scope.app;
     app.view = {
@@ -2042,10 +2044,10 @@ sngs.controller("stockBsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
     };
     $rootScope.title = "Liste des bons de sorties";
     $rootScope.pageTitle = "Bons de sorties";
-    $scope.getaSorties = function() {
+    $scope.getaSorties = function () {
         app.waiting.show = true;
         var task = prmutils.getaSorties();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.sorties = result.data;
                 app.waiting.show = false
@@ -2055,16 +2057,16 @@ sngs.controller("stockBsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         })
     };
     $scope.getaSorties();
-    $scope.status = function(status, id) {
+    $scope.status = function (status, id) {
         var task;
         task = prmutils.statussort(status, id);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             $scope.getaSorties()
         })
     };
-    $scope.vusrt = function(fac) {
+    $scope.vusrt = function (fac) {
         var task = prmutils.vusrt(fac);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             app.notify(fac.message)
             if (result.err === 0) {
@@ -2076,9 +2078,9 @@ sngs.controller("stockBsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.tvusrt = function() {
+    $scope.tvusrt = function () {
         var task = prmutils.tvusrt();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 for (var i = 0; i < $scope.sorties.length; i++) {
@@ -2092,7 +2094,7 @@ sngs.controller("stockBsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     }
-    $scope.showDetails = function(bonEntree) {
+    $scope.showDetails = function (bonEntree) {
         app.waiting.show = true;
         console.log(bonEntree)
         $scope.num_BonEntree = bonEntree.bon_sort;
@@ -2103,9 +2105,9 @@ sngs.controller("stockBsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
     };
 
 
-    $scope.rejetersrtRenvoye = function(bonEntree) {
+    $scope.rejetersrtRenvoye = function (bonEntree) {
         var task = prmutils.rejetersrtRenvoye(bonEntree);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             console.log(result)
             if (result.err === 0) {
                 app.notify(result.message, "b");
@@ -2118,7 +2120,7 @@ sngs.controller("stockBsCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         })
     };
 }]);
-sngs.controller("stockEditBsCtrl", ["$scope", "$rootScope", "config", "$location", "$routeParams", "$filter", "prmutils", "object", function($scope, $rootScope, config, $location, $routeParams, $filter, prmutils, object) {
+sngs.controller("stockEditBsCtrl", ["$scope", "$rootScope", "config", "$location", "$routeParams", "$filter", "prmutils", "object", function ($scope, $rootScope, config, $location, $routeParams, $filter, prmutils, object) {
     var stockeditba = $scope.stockeditba;
     var app = $scope.app;
     app.view = {
@@ -2149,7 +2151,7 @@ sngs.controller("stockEditBsCtrl", ["$scope", "$rootScope", "config", "$location
     }
     datebs = dd + "/" + mm + "/" + yyyy;
     $scope.sortie.date_sort = datebs;
-    prmutils.getExceptMagasins().promise.then(function(result) {
+    prmutils.getExceptMagasins().promise.then(function (result) {
         $scope.magasins = result.data
     });
     var objectID = ($routeParams.objectID) ? parseInt($routeParams.objectID) : 0;
@@ -2164,9 +2166,9 @@ sngs.controller("stockEditBsCtrl", ["$scope", "$rootScope", "config", "$location
     if (objectID < 1) {
         $scope.sortie = {}
     }
-    $scope.getdateDs = function() {
+    $scope.getdateDs = function () {
         var task = prmutils.getDs();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 if (!$scope.sortie.bon_sort)
@@ -2181,13 +2183,13 @@ sngs.controller("stockEditBsCtrl", ["$scope", "$rootScope", "config", "$location
             }
         })
     };
-    $scope.isClean = function() {
+    $scope.isClean = function () {
         return angular.equals(original, $scope.sortie)
     };
 
-    $scope.rejetersrtRenvoye = function(fac) {
+    $scope.rejetersrtRenvoye = function (fac) {
         var task = prmutils.rejetersrtRenvoye(fac);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 app.notify("Le bon a été relancé", "b");
                 $location.path(config.urlStockBs)
@@ -2197,12 +2199,12 @@ sngs.controller("stockEditBsCtrl", ["$scope", "$rootScope", "config", "$location
             }
         })
     };
-    $scope.deleted = function(sortie) {
+    $scope.deleted = function (sortie) {
         var task;
         if (confirm("Confirmer vous la suppression du bon de sortie : " + $scope.sortie.bon_sort) === true) {
             task = prmutils.deleteSortie(sortie.id_sort)
         }
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -2215,7 +2217,7 @@ sngs.controller("stockEditBsCtrl", ["$scope", "$rootScope", "config", "$location
             }
         })
     };
-    $scope.save = function(sortie) {
+    $scope.save = function (sortie) {
         var task;
         if (!prmutils.isDate(sortie.date_sort)) {
             app.notify("Le format de la date est incorrect", "m");
@@ -2223,7 +2225,7 @@ sngs.controller("stockEditBsCtrl", ["$scope", "$rootScope", "config", "$location
         }
         if (objectID <= 0) {
             task = prmutils.insertSortie(sortie);
-            task.promise.then(function(result) {
+            task.promise.then(function (result) {
                 console.log(result)
                 if (result.err === 0) {
                     if (result.data === "-1") {
@@ -2239,7 +2241,7 @@ sngs.controller("stockEditBsCtrl", ["$scope", "$rootScope", "config", "$location
         } else {
             sortie.prec_ben = prec_ben;
             task = prmutils.updateSortie(objectID, sortie);
-            task.promise.then(function(result) {
+            task.promise.then(function (result) {
                 console.log(result)
                 if (result.err === 0) {
                     if (result.data === "-1") {
@@ -2257,7 +2259,7 @@ sngs.controller("stockEditBsCtrl", ["$scope", "$rootScope", "config", "$location
     };
     $scope.getdateDs()
 }]);
-sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", function($scope, $rootScope, config, prmutils) {
+sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", function ($scope, $rootScope, config, prmutils) {
     var stockba = $scope.stockba;
     var app = $scope.app;
     app.view = {
@@ -2277,9 +2279,9 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
     $scope.search = {};
     $rootScope.title = "Liste des bons d'entrees";
     $rootScope.pageTitle = "Bons d'entrees";
-    $scope.getaApprovisionnements = function() {
+    $scope.getaApprovisionnements = function () {
         var task = prmutils.getaApprovisionnements();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.approvisionnements = result.data;
@@ -2289,10 +2291,10 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.getAll = function() {
+    $scope.getAll = function () {
         $scope.getaApprovisionnements()
     };
-    $scope.status = function(status, id, data) {
+    $scope.status = function (status, id, data) {
         if (data.openclose === "1") {
             data.openclose = "0"
         } else {
@@ -2300,15 +2302,15 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         }
         var task;
         task = prmutils.statusappro(status, id);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
         })
     };
-    
-    $scope.setConfirmationApprovisionnement = function(status, id, data) {
-        
+
+    $scope.setConfirmationApprovisionnement = function (status, id, data) {
+
         var task;
         task = prmutils.setConfirmationApprovisionnement(status, id);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -2321,12 +2323,12 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    
-    $scope.insertStockApproConfirmation = function(data) {
+
+    $scope.insertStockApproConfirmation = function (data) {
         var task;
         task = prmutils.insertStockApproConfirmation(data);
-        task.promise.then(function(result) {
-            console.log(result,'===')
+        task.promise.then(function (result) {
+            console.log(result, '===')
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m", 10000)
@@ -2339,12 +2341,12 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    
-    $scope.showDetails = function(fac) {
+
+    $scope.showDetails = function (fac) {
         $scope.num_fact = fac.bon_liv_appro;
         $scope.approvisionnement = fac;
         var task = prmutils.showApproDetails(fac);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.details = result.data;
@@ -2355,10 +2357,10 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.getLimit = function() {
+    $scope.getLimit = function () {
         $scope.loading = true;
         var task = prmutils.getLmApprovisionnements();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             $scope.loading = true;
             if (result.err === 0) {
                 $scope.approvisionnements = result.data;
@@ -2368,7 +2370,7 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.fullSearch = function() {
+    $scope.fullSearch = function () {
         $scope.loading = true;
         var task;
         if ($scope.fullSearchText.length > 1) {
@@ -2376,7 +2378,7 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         } else {
             task = prmutils.getLmApprovisionnements()
         }
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.approvisionnements = result.data;
                 $scope.loading = false
@@ -2385,7 +2387,7 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.loadMore = function() {
+    $scope.loadMore = function () {
         if ($scope.fullSearchText.length > 0) {
             return false
         }
@@ -2394,7 +2396,7 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         }
         $scope.loading = true;
         var task = prmutils.loadapproMore($scope.approvisionnements.length);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data.length > 0) {
                     $scope.approvisionnements = $scope.approvisionnements.concat(result.data)
@@ -2406,9 +2408,9 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         })
     };
     $scope.getLimit();
-    $scope.getmag = function() {
+    $scope.getmag = function () {
         task = prmutils.getMagasins();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.magasins = result.data;
@@ -2418,9 +2420,9 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.getcat = function() {
+    $scope.getcat = function () {
         task = prmutils.getCategories();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -2430,9 +2432,9 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.getart = function() {
+    $scope.getart = function () {
         task = prmutils.getArticles();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.articles = result.data;
@@ -2442,9 +2444,9 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.getfrns = function() {
+    $scope.getfrns = function () {
         var task = prmutils.getFournisseurs();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.fournisseurs = result.data;
@@ -2454,10 +2456,10 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.searchF = function() {
+    $scope.searchF = function () {
         var task;
         task = prmutils.getEtaBl($scope.search);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -2469,7 +2471,7 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
             }
         })
     };
-    $scope.getTotalMnt = function() {
+    $scope.getTotalMnt = function () {
         var total = 0;
         for (var i = 0; i < $scope.filtered.length; i++) {
             var vente = $scope.filtered[i];
@@ -2477,7 +2479,7 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         }
         return total
     };
-    $scope.getTotalAchat = function() {
+    $scope.getTotalAchat = function () {
         var total = 0;
         for (var i = 0; i < $scope.filtere.length; i++) {
             var achat = $scope.filtere[i];
@@ -2485,9 +2487,9 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         }
         return total
     };
-    $scope.objectIsNull = function(obj) {
+    $scope.objectIsNull = function (obj) {
         var rep = true;
-        angular.forEach(obj, function(value, key) {
+        angular.forEach(obj, function (value, key) {
             if ((value !== null) && (value !== "")) {
                 rep = false;
                 return false
@@ -2496,7 +2498,7 @@ sngs.controller("stockBaCtrl", ["$scope", "$rootScope", "config", "prmutils", fu
         return rep
     }
 }]);
-sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", function($scope, $rootScope, config, prmutils) {
+sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", function ($scope, $rootScope, config, prmutils) {
     var stockba = $scope.stockba;
     var app = $scope.app;
     app.view = {
@@ -2516,9 +2518,9 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
     $scope.search = {};
     $rootScope.title = "Liste des bons de commande";
     $rootScope.pageTitle = "Bons de commande";
-    $scope.getaApprovisionnements = function() {
+    $scope.getaApprovisionnements = function () {
         var task = prmutils.getCommandes();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.approvisionnements = result.data;
@@ -2528,9 +2530,9 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.getAll = function() {
+    $scope.getAll = function () {
         var task = prmutils.getaCommandes();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.approvisionnements = result.data;
@@ -2540,7 +2542,7 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.statusca = function(status, id) {
+    $scope.statusca = function (status, id) {
         var task;
         var daterecu = "";
         if (status === 1) {
@@ -2553,7 +2555,7 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         }
         task = prmutils.statusca(status, daterecu, id);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             for (i = 0; i < $scope.approvisionnements.length; i++) {
                 if (result.data.cmd.id_cmd === $scope.approvisionnements[i].id_cmd) {
                     $scope.approvisionnements[i] = result.data.cmd;
@@ -2568,7 +2570,7 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.statusc = function(status, id) {
+    $scope.statusc = function (status, id) {
         var task;
         var daterecu = "";
         if (status === 1) {
@@ -2581,14 +2583,14 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         }
         task = prmutils.statusc(status, daterecu, id);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             $scope.getAll()
         })
     };
-    $scope.status = function(status, id) {
+    $scope.status = function (status, id) {
         var task;
         task = prmutils.statuscmd(status, id);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             for (i = 0; i < $scope.approvisionnements.length; i++) {
                 if (result.data.id_cmd === $scope.approvisionnements[i].id_cmd) {
                     $scope.approvisionnements[i] = result.data;
@@ -2597,12 +2599,12 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.showDetails = function(fac) {
+    $scope.showDetails = function (fac) {
         $scope.num_fact = fac.bon_cmd;
         $scope.nid_cmd = fac.id_cmd;
         $scope.facture = fac;
         var task = prmutils.showCmdDetails(fac);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.details = result.data;
@@ -2613,12 +2615,12 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.details = function(fac) {
+    $scope.details = function (fac) {
         $scope.num_fact = fac.bon_cmd;
         $scope.nid_cmd = fac.id_cmd;
         $scope.facture = fac;
         var task = prmutils.showCmdDetails(fac);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.details = result.data;
@@ -2628,10 +2630,10 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.getLimit = function() {
+    $scope.getLimit = function () {
         $scope.loading = true;
         var task = prmutils.getLmCommandes();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             $scope.loading = true;
             if (result.err === 0) {
                 $scope.approvisionnements = result.data;
@@ -2641,7 +2643,7 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.fullSearch = function() {
+    $scope.fullSearch = function () {
         $scope.loading = true;
         var task;
         if ($scope.fullSearchText.length > 1) {
@@ -2649,7 +2651,7 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
         } else {
             task = prmutils.getLmCommandes()
         }
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 $scope.approvisionnements = result.data;
                 $scope.loading = false
@@ -2658,7 +2660,7 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.loadMore = function() {
+    $scope.loadMore = function () {
         if ($scope.fullSearchText.length > 0) {
             return false
         }
@@ -2667,7 +2669,7 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
         }
         $scope.loading = true;
         var task = prmutils.loadcmdMore($scope.approvisionnements.length);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data.length > 0) {
                     $scope.approvisionnements = $scope.approvisionnements.concat(result.data)
@@ -2679,9 +2681,9 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
         })
     };
     $scope.getLimit();
-    $scope.getmag = function() {
+    $scope.getmag = function () {
         task = prmutils.getMagasins();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.magasins = result.data;
@@ -2691,9 +2693,9 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.getcat = function() {
+    $scope.getcat = function () {
         task = prmutils.getCategories();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.categories = result.data;
@@ -2703,9 +2705,9 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.getart = function() {
+    $scope.getart = function () {
         task = prmutils.getArticles();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.articles = result.data;
@@ -2715,9 +2717,9 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.getfrns = function() {
+    $scope.getfrns = function () {
         var task = prmutils.getFournisseurs();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.fournisseurs = result.data;
@@ -2727,10 +2729,10 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.searchF = function() {
+    $scope.searchF = function () {
         var task;
         task = prmutils.getEtaBc($scope.search);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -2742,7 +2744,7 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.getTotalMnt = function() {
+    $scope.getTotalMnt = function () {
         var total = 0;
         for (var i = 0; i < $scope.filtered.length; i++) {
             var vente = $scope.filtered[i];
@@ -2750,7 +2752,7 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
         }
         return total
     };
-    $scope.getTotalAchat = function() {
+    $scope.getTotalAchat = function () {
         var total = 0;
         for (var i = 0; i < $scope.filtere.length; i++) {
             var achat = $scope.filtere[i];
@@ -2758,9 +2760,9 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
         }
         return total
     };
-    $scope.objectIsNull = function(obj) {
+    $scope.objectIsNull = function (obj) {
         var rep = true;
-        angular.forEach(obj, function(value, key) {
+        angular.forEach(obj, function (value, key) {
             if ((value !== null) && (value !== "")) {
                 rep = false;
                 return false
@@ -2769,7 +2771,7 @@ sngs.controller("stockBcmdCtrl", ["$scope", "$rootScope", "config", "prmutils", 
         return rep
     }
 }]);
-sngs.controller("stockEditBaCtrl", ["$scope", "$rootScope", "config", "$location", "$routeParams", "prmutils", "$filter", "object", function($scope, $rootScope, config, $location, $routeParams, prmutils, $filter, object) {
+sngs.controller("stockEditBaCtrl", ["$scope", "$rootScope", "config", "$location", "$routeParams", "prmutils", "$filter", "object", function ($scope, $rootScope, config, $location, $routeParams, prmutils, $filter, object) {
     var stockeditba = $scope.stockeditba;
     var app = $scope.app;
     app.view = {
@@ -2786,13 +2788,13 @@ sngs.controller("stockEditBaCtrl", ["$scope", "$rootScope", "config", "$location
         model: {}
     };
     $rootScope.pageTitle = "Bon de livraison";
-    prmutils.getFournisseurs().promise.then(function(result) {
+    prmutils.getFournisseurs().promise.then(function (result) {
         $scope.fournisseurs = result.data
         for (let fournisseur of $scope.fournisseurs) {
-           fournisseur.nom_frns 
-           if(fournisseur.tel_frns && fournisseur.tel_frns.trim().length>0) {
-            fournisseur.nom_frns = fournisseur.nom_frns + " [" + fournisseur.tel_frns + "]";
-           }
+            fournisseur.nom_frns
+            if (fournisseur.tel_frns && fournisseur.tel_frns.trim().length > 0) {
+                fournisseur.nom_frns = fournisseur.nom_frns + " [" + fournisseur.tel_frns + "]";
+            }
         }
     });
     var objectID = ($routeParams.objectID) ? parseInt($routeParams.objectID) : 0;
@@ -2809,9 +2811,9 @@ sngs.controller("stockEditBaCtrl", ["$scope", "$rootScope", "config", "$location
     if (objectID < 1) {
         $scope.approvisionnement = {}
     }
-    $scope.getdateDs = function() {
+    $scope.getdateDs = function () {
         var task = prmutils.getDs();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.approvisionnement.date_appro = result.data.datej;
@@ -2821,15 +2823,15 @@ sngs.controller("stockEditBaCtrl", ["$scope", "$rootScope", "config", "$location
             }
         })
     };
-    $scope.isClean = function() {
+    $scope.isClean = function () {
         return angular.equals(original, $scope.approvisionnement)
     };
-    $scope.deleted = function(approvisionnement) {
+    $scope.deleted = function (approvisionnement) {
         var task;
         if (confirm("Confirmer vous la suppression du bon l'approvisionnement : " + $scope.approvisionnement.bon_liv_appro) === true) {
             task = prmutils.deleteApprovisionnement(approvisionnement.id_appro)
         }
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -2842,16 +2844,16 @@ sngs.controller("stockEditBaCtrl", ["$scope", "$rootScope", "config", "$location
             }
         })
     };
-    $scope.plafond = function(frns) {
+    $scope.plafond = function (frns) {
         $scope.plafondFrns = frns.dette_frns
     };
-    $scope.VerifPlafond = function() {
+    $scope.VerifPlafond = function () {
         if (parseInt($scope.approvisionnement.mnt_revient_appro) > $scope.plafondFrns) {
             $scope.approvisionnement.mnt_revient_appro = parseInt($scope.plafondFrns);
             app.notify("Attention Vous ne pouvez pas depasser le credit maximal du fournisseur indique ...", "m")
         }
     };
-    $scope.save = function(approvisionnement) {
+    $scope.save = function (approvisionnement) {
         var task;
         if (!prmutils.isDate(approvisionnement.date_appro)) {
             app.notify("Le format de la date est incorrect", "m");
@@ -2866,7 +2868,7 @@ sngs.controller("stockEditBaCtrl", ["$scope", "$rootScope", "config", "$location
         }
         if (objectID <= 0) {
             task = prmutils.insertApprovisionnement(approvisionnement);
-            task.promise.then(function(result) {
+            task.promise.then(function (result) {
                 if (result.err === 0) {
                     if (result.data === "-1") {
                         app.notify(result.message, "m")
@@ -2886,7 +2888,7 @@ sngs.controller("stockEditBaCtrl", ["$scope", "$rootScope", "config", "$location
                 return false
             }
             task = prmutils.updateApprovisionnement(objectID, approvisionnement);
-            task.promise.then(function(result) {
+            task.promise.then(function (result) {
                 if (result.err === 0) {
                     if (result.data === "-1") {
                         app.notify(result.message, "m")
@@ -2902,7 +2904,7 @@ sngs.controller("stockEditBaCtrl", ["$scope", "$rootScope", "config", "$location
     };
     $scope.getdateDs()
 }]);
-sngs.controller("stockEditBcmdCtrl", ["$scope", "$rootScope", "config", "$location", "$routeParams", "prmutils", "$filter", "object", function($scope, $rootScope, config, $location, $routeParams, prmutils, $filter, object) {
+sngs.controller("stockEditBcmdCtrl", ["$scope", "$rootScope", "config", "$location", "$routeParams", "prmutils", "$filter", "object", function ($scope, $rootScope, config, $location, $routeParams, prmutils, $filter, object) {
     var stockeditba = $scope.stockeditba;
     var app = $scope.app;
     app.view = {
@@ -2919,7 +2921,7 @@ sngs.controller("stockEditBcmdCtrl", ["$scope", "$rootScope", "config", "$locati
         model: {}
     };
     $rootScope.pageTitle = "Bon de commande";
-    prmutils.getFournisseurs().promise.then(function(result) {
+    prmutils.getFournisseurs().promise.then(function (result) {
         $scope.fournisseurs = result.data
     });
     var objectID = ($routeParams.objectID) ? parseInt($routeParams.objectID) : 0;
@@ -2933,9 +2935,9 @@ sngs.controller("stockEditBcmdCtrl", ["$scope", "$rootScope", "config", "$locati
     if (objectID < 1) {
         $scope.approvisionnement = {}
     }
-    $scope.getdateDs = function() {
+    $scope.getdateDs = function () {
         var task = prmutils.getDs();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.approvisionnement.date_cmd = result.data.datej;
@@ -2945,15 +2947,15 @@ sngs.controller("stockEditBcmdCtrl", ["$scope", "$rootScope", "config", "$locati
             }
         })
     };
-    $scope.isClean = function() {
+    $scope.isClean = function () {
         return angular.equals(original, $scope.approvisionnement)
     };
-    $scope.deleted = function(approvisionnement) {
+    $scope.deleted = function (approvisionnement) {
         var task;
         if (confirm("Confirmer vous la suppression du bon de commande No : " + $scope.approvisionnement.bon_cmd) === true) {
             task = prmutils.deleteCommande(approvisionnement.id_cmd)
         }
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
                     app.notify(result.message, "m")
@@ -2966,7 +2968,7 @@ sngs.controller("stockEditBcmdCtrl", ["$scope", "$rootScope", "config", "$locati
             }
         })
     };
-    $scope.save = function(approvisionnement) {
+    $scope.save = function (approvisionnement) {
         var task;
         if (!prmutils.isDate(approvisionnement.date_cmd)) {
             app.notify("Le format de la date est incorrect", "m");
@@ -2975,7 +2977,7 @@ sngs.controller("stockEditBcmdCtrl", ["$scope", "$rootScope", "config", "$locati
         approvisionnement.frns_cmd = parseInt(approvisionnement.frns_cmd);
         if (objectID <= 0) {
             task = prmutils.insertCommande(approvisionnement);
-            task.promise.then(function(result) {
+            task.promise.then(function (result) {
                 if (result.err === 0) {
                     if (result.data === "-1") {
                         app.notify(result.message, "m")
@@ -2993,7 +2995,7 @@ sngs.controller("stockEditBcmdCtrl", ["$scope", "$rootScope", "config", "$locati
                 return false
             }
             task = prmutils.updateCommande(objectID, approvisionnement);
-            task.promise.then(function(result) {
+            task.promise.then(function (result) {
                 if (result.err === 0) {
                     if (result.data === "-1") {
                         app.notify(result.message, "m")
@@ -3009,7 +3011,7 @@ sngs.controller("stockEditBcmdCtrl", ["$scope", "$rootScope", "config", "$locati
     };
     $scope.getdateDs()
 }]);
-sngs.controller("stockBaAeCtrl", ["$scope", "$rootScope", "config", "prmutils", function($scope, $rootScope, config, prmutils) {
+sngs.controller("stockBaAeCtrl", ["$scope", "$rootScope", "config", "prmutils", function ($scope, $rootScope, config, prmutils) {
     var stockba = $scope.stockba;
     var app = $scope.app;
     app.view = {
@@ -3027,9 +3029,9 @@ sngs.controller("stockBaAeCtrl", ["$scope", "$rootScope", "config", "prmutils", 
     };
     $rootScope.title = "Liste des bons en Attentes";
     $rootScope.pageTitle = "Bons En Attentes d'entrees";
-    $scope.getSortiesAttentes = function() {
+    $scope.getSortiesAttentes = function () {
         var task = prmutils.getSortiesAttentes();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.sorties = result.data;
@@ -3040,9 +3042,9 @@ sngs.controller("stockBaAeCtrl", ["$scope", "$rootScope", "config", "prmutils", 
         })
     };
     $scope.getSortiesAttentes();
-    $scope.rejetersrt = function(fac) {
+    $scope.rejetersrt = function (fac) {
         var task = prmutils.rejetersrt(fac);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 fac.bon_vu = 1;
@@ -3058,9 +3060,9 @@ sngs.controller("stockBaAeCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.bonvusrt = function(fac) {
+    $scope.bonvusrt = function (fac) {
         var task = prmutils.bonvusrt(fac);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             app.notify(result.message)
             if (result.err === 0) {
@@ -3073,9 +3075,9 @@ sngs.controller("stockBaAeCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.tbonvusrt = function() {
+    $scope.tbonvusrt = function () {
         var task = prmutils.tbonvusrt();
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 for (var i = 0; i < $scope.sorties.length; i++) {
@@ -3090,13 +3092,13 @@ sngs.controller("stockBaAeCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.apprvae = function(fac) {
+    $scope.apprvae = function (fac) {
         if (!app.userPfl.droitApprovisionnement) {
             app.notify("Vous n'êtes pas autorisés à faire un approvisionnement, veuillez informer votre supérieur ou contacter l'administrateur", "m", 10000);
             return false;
         }
         var task = prmutils.apprvae(fac);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.getSortiesAttentes();
@@ -3108,10 +3110,10 @@ sngs.controller("stockBaAeCtrl", ["$scope", "$rootScope", "config", "prmutils", 
             }
         })
     };
-    $scope.showDetails = function(fac) {
+    $scope.showDetails = function (fac) {
         $scope.num_fact = fac.bon_sort;
         var task = prmutils.showSortDetails(fac);
-        task.promise.then(function(result) {
+        task.promise.then(function (result) {
             app.waiting.show = true;
             if (result.err === 0) {
                 $scope.details = result.data;
@@ -3123,7 +3125,7 @@ sngs.controller("stockBaAeCtrl", ["$scope", "$rootScope", "config", "prmutils", 
         })
     }
 
-    $scope.showDetailsRj = function(bonEntree) {
+    $scope.showDetailsRj = function (bonEntree) {
         app.waiting.show = true;
         console.log(bonEntree)
         $scope.num_BonEntree = bonEntree.bon_sort;
@@ -3132,4 +3134,717 @@ sngs.controller("stockBaAeCtrl", ["$scope", "$rootScope", "config", "prmutils", 
         $("#detailsPannelRj").css("top", "10%")
         app.waiting.show = false
     };
+}]);
+
+
+// production
+
+
+sngs.controller("stockProdAsCtrl", ["$scope", "$rootScope", "config", "prmutils", function ($scope, $rootScope, config, prmutils) {
+    var stockas = $scope.stockas;
+    var app = $scope.app;
+    app.view = {
+        url: config.urlStockAs,
+        model: stockas,
+        done: false
+    };
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Stock",
+        subtitle: "Provision de stock",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Enregistrement d'une production";
+    $rootScope.pageTitle = "Production stock";
+    $scope.djob = false;
+    $scope.stock = {
+        qte_stk: 0
+    };
+    $scope.prices = {
+        prix_mini: 0,
+        prix_gros: 0
+    };
+    $scope.appstock = {};
+    $scope.articlesentrees = [];
+    $scope.appstock.prix_appro_art = 0;
+    $scope.appstockp = {};
+    $scope.appstockp.prix_appro_art = 0;
+    $scope.articles = {};
+    $scope.getprod = function () {
+        var task = prmutils.getProductionsNonValidees();
+        task.promise.then(function (result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.productions = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    task = prmutils.getMagasins();
+    task.promise.then(function (result) {
+        app.waiting.show = true;
+        if (result.err === 0) {
+            $scope.magasins = result.data;
+            $scope.appstock.prod_mag_art = $scope.magasins[0].id_mag;
+            app.waiting.show = false
+        } else {
+            app.waiting.show = false
+        }
+    });
+    $scope.getcat = function () {
+        task = prmutils.getCategories();
+        task.promise.then(function (result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.categories = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.gae = function () {
+        task = prmutils.showProdDetails($scope.appstock);
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                $scope.articlesentrees = result.data || [];
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+
+        const production = $scope.productions.find(approvis => approvis.id_prod === $scope.appstock.prod_prod_art);
+        if (production) {
+            $scope.appstock.referenceStock = production.bon_prod;
+            $scope.appstock.prod_mag_src = production.prod_mag_src;
+            $scope.appstock.prod = production;
+        }
+    };
+    $scope.undobl = function (data) {
+        var task = prmutils.undoEntArt(data);
+        task.promise.then(function (result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.gae();
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.saveToProduction = function (appstock) {
+        const copieAppstock = JSON.parse(JSON.stringify(appstock));
+        if (parseInt($scope.appstock.qte_prod_art) <= 0) {
+            app.notify("Veuillez definir une quantité supérieur à 0 ", "m");
+            return false
+        }
+        if (($scope.stock[2].qte_stk - appstock.qte_prod_art) < 0) {
+            app.notify("La quantité disponible est inférieur pour la production", "m");
+            console.log($scope.stock[2].qte_stk);
+            console.log($scope.stock[2]);
+            console.log(appstock.qte_prod_art);
+            return false
+        }
+        const article = $scope.articles[2].find(article => article.id_art === appstock.art_prod_art);
+        console.log(article)
+        console.log(appstock)
+        console.log($scope.articles)
+        if (article) {
+            copieAppstock.prod_mag_src = $scope.appstock.prod_mag_src;
+            copieAppstock.art_prod_art = article.id_art;
+            copieAppstock.cout_prod = $scope.prices.prix_gros;
+        }
+        
+        task = prmutils.insertStockProdForConfirmation(copieAppstock);
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                $scope.gae()
+                if (result.data === "-1") {
+                    $scope.appstock.art_prod_art = "";
+                    $scope.appstock.qte_prod_art = "";
+                    $scope.appstock.cout_prod = 0;
+                    app.notify(result.message, "m");
+                } else {
+                    $scope.appstock.art_prod_art = "";
+                    $scope.appstock.qte_prod_art = "";
+                    $scope.appstock.cout_prod = 0;
+                    app.refreshextcatmagCache();
+                    app.notify(result.message, "b");
+                    $scope.form.$setPristine();
+                }
+                $scope.djob = false;
+            } else {
+                app.refreshextcatmagCache();
+                app.notify(result.message, "m", 5000);
+
+                $scope.djob = false
+            }
+        });
+
+        // ✅ Réinitialiser l'état du formulaire
+        $scope.form.$setPristine();
+
+        $scope.appstock.art_prod_art = "";
+        $scope.appstock.qte_prod_art = "";
+        $scope.appstock.cout_prod = 0;
+        app.refreshextcatmagCache();
+
+        $scope.stock = {
+            qte_stk: 0
+        };
+    };
+
+    $scope.savep = function (appstock) {
+        var task;
+        $scope.djob = true;
+        if (parseInt($scope.appstockp.prix_appro_art) <= 0) {
+            $scope.appstockp.prix_appro_art = 0
+        }
+        if (parseInt($scope.appstockp.prix_mini_art_mag) <= 0) {
+            app.notify("Veuillez entrer un prix minimum  superieure a 0", "m");
+            return false
+        }
+        if (parseInt($scope.appstockp.prix_gros_art_mag) <= 0) {
+            app.notify("Veuillez entrer un prix gros  superieure a 0", "m");
+            return false
+        }
+        if ((parseInt($scope.appstockp.prix_mini_art_mag) > 0 && ($scope.appstockp.prix_gros_art_mag === null || typeof $scope.appstockp.prix_gros_art_mag === undefined)) || (($scope.appstock.prix_mini_art_mag === null || typeof $scope.appstock.prix_mini_art_mag === undefined) && parseInt($scope.appstock.prix_gros_art_mag) > 0)) {
+            app.notify("Veuillez definir les deux prix ensembles ", "m");
+            return false
+        }
+        if (parseInt($scope.appstockp.qte_appro_art) <= 0) {
+            app.notify("Veuillez definir une quantité supérieur à 0 ", "m");
+            return false
+        }
+        console.log(appstock);
+        task = prmutils.insertStockApproForConfirmation(appstock);
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    $scope.appstockp.art_appro_art = "";
+                    $scope.appstockp.qte_appro_art = "";
+                    $scope.appstockp.prix_appro_art = 0;
+                    app.notify(result.message, "m");
+                    $scope.djob = false
+                } else {
+                    $scope.formp.$setPristine();
+                    $scope.appstockp.art_appro_art = "";
+                    $scope.appstockp.qte_appro_art = "";
+                    $scope.appstockp.prix_appro_art = 0;
+                    app.refreshextcatmagCache();
+                    app.notify(result.message, "b");
+                    $scope.djob = false;
+                    $scope.gae()
+                }
+            } else {
+                app.refreshextcatmagCache();
+                app.notify(result.message, "m", 5000);
+
+                $scope.djob = false
+            }
+        });
+        $scope.stock = {
+            qte_stk: 0
+        };
+    };
+    $scope.loadArticlesOfCategorie = function (cat, type) {
+        if (typeof cat == "undefined") {
+            task = prmutils.getArticles()
+        } else {
+            task = prmutils.getArticlesOfCategorie(cat)
+        }
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                $scope.articles[type] = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.loadArticles = function (cat) {
+        task = prmutils.getArticles();
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                $scope.articles = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    if (app.PRMS.liopl) {
+        $scope.loadArticles(0)
+    }
+    if (!app.PRMS.liopl && !app.PRMS.cat) {
+        $scope.loadArticles(0)
+    }
+    $scope.getStock = function (art, mag, type) {
+        task = prmutils.getStock(art, mag);
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                if (result.data === null) {
+                    $scope.stock[type] = {
+                        qte_stk: 0
+                    }
+                } else {
+                    $scope.stock[type] = result.data
+                    $scope.stock[type]['qte_stk'] = result.data.qteg
+
+                }
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        });
+        $scope.getPrices(art, mag)
+    };
+    $scope.getPrices = function (art, mag) {
+        task = prmutils.getPrices(art, mag);
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                if (result.data === null) {
+                    $scope.prices = {
+                        prix_mini: 0,
+                        prix_gros: 0
+                    }
+                } else {
+                    $scope.prices = result.data
+                }
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.$on("$destroy", function () {
+        var task;
+        task = prmutils.statusappro(0, $scope.appstock.appro_appro_art)
+    })
+}]);
+
+
+sngs.controller("stockProdEditAsCtrl", ["$scope", "$rootScope", "config", "$location", "$routeParams", "$filter", "prmutils", "object", function ($scope, $rootScope, config, $location, $routeParams, $filter, prmutils, object) {
+    var stockeditba = $scope.stockeditba;
+    var app = $scope.app;
+    app.view = {
+        url: config.urlStockEditBs,
+        model: stockeditba,
+        done: false
+    };
+    app.waiting.show = false;
+    app.navbar.show = true;
+    $scope.prod = {};
+    app.title = {
+        text: "Stock",
+        subtitle: "Bon de production",
+        show: true,
+        model: {}
+    };
+    $rootScope.pageTitle = "Bon de production";
+    var datebs;
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = "0" + dd
+    }
+    if (mm < 10) {
+        mm = "0" + mm
+    }
+    datebs = dd + "/" + mm + "/" + yyyy;
+    $scope.prod.date_prod = datebs;
+    prmutils.getExceptMagasins().promise.then(function (result) {
+        $scope.magasins = result.data
+    });
+    var objectID = ($routeParams.objectID) ? parseInt($routeParams.objectID) : 0;
+    $rootScope.title = (objectID > 0) ? "Modification Bon" : "Nouveau Bon de production";
+    $scope.buttonText = (objectID > 0) ? "Modifier" : "Ajouter";
+    $scope.isDisabled = (objectID > 0) ? false : false;
+    var original = object.data;
+    var prec_ben = original.id_mag;
+    original.id_prod = objectID;
+    $scope.prod = angular.copy(original);
+    $scope.prod.id_prod = objectID;
+    if (objectID < 1) {
+        $scope.prod = {}
+    }
+    $scope.getdateDs = function () {
+        var task = prmutils.getDs();
+        task.promise.then(function (result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                if (!$scope.prod.bon_prod)
+                    $scope.prod.date_prod = result.data.datej;
+                else {
+                    $scope.prod.date_prod = new Date($scope.prod.date_prod).toLocaleDateString();
+
+                }
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.isClean = function () {
+        return angular.equals(original, $scope.prod)
+    };
+    $scope.getcat = function () {
+        task = prmutils.getCategories();
+        task.promise.then(function (result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.categories = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.loadArticlesOfCategorie = function (cat) {
+        if (typeof cat == "undefined") {
+            task = prmutils.getArticles()
+        } else {
+            task = prmutils.getArticlesOfCategorie(cat)
+        }
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                $scope.articles = result.data;
+                console.log($scope.articles)
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.loadArticles = function (cat) {
+        task = prmutils.getArticles();
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                $scope.articles = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+
+    $scope.rejetersrtRenvoye = function (fac) {
+        var task = prmutils.rejetersrtRenvoye(fac);
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                app.notify("Le bon a été relancé", "b");
+                $location.path(config.urlStockProd)
+            } else {
+                console.log(result)
+                app.notify(result.message, 'm')
+            }
+        })
+    };
+    $scope.deleted = function (prod) {
+        var task;
+        if (confirm("Confirmer vous la suppression du bon de production : " + $scope.prod.bon_prod) === true) {
+            task = prmutils.deleteProd(prod.id_prod)
+        }
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    app.notify(result.message, "b");
+                    $location.path(config.urlStockProd)
+                }
+            } else {
+                app.notify("ok...", "b")
+            }
+        })
+    };
+    $scope.save = function (prod) {
+        var task;
+        if (!prmutils.isDate(prod.date_prod)) {
+            app.notify("Le format de la date est incorrect", "m");
+            return false
+        }
+        const article = $scope.articles.find(article => article.id_art === prod.prod_art);
+        if (article) {
+            prod.nom_art = article.nom_art;
+        }
+        console.log(prod);
+        console.log('=========+>');
+        task = prmutils.insertProd(prod);
+        task.promise.then(function (result) {
+            console.log(result)
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    app.notify(result.message, "b");
+                    $location.path(config.urlStockProd)
+                }
+            } else {
+                app.notify(result.message, "m")
+            }
+        });
+        
+    };
+    $scope.getdateDs()
+}]);
+
+sngs.controller("stockProdBaCtrl", ["$scope", "$rootScope", "config", "prmutils", function ($scope, $rootScope, config, prmutils) {
+    var stockba = $scope.stockba;
+    var app = $scope.app;
+    app.view = {
+        url: config.urlStockBa,
+        model: stockba,
+        done: false
+    };
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Stock",
+        subtitle: "Production / Bons de production",
+        show: true,
+        model: {}
+    };
+    $scope.fullSearchText = "";
+    $scope.search = {};
+    $rootScope.title = "Liste des bons de production";
+    $rootScope.pageTitle = "Bons de production";
+    $scope.getProductions = function () {
+        var task = prmutils.getProductions();
+        task.promise.then(function (result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.productions = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.getAll = function () {
+        $scope.getProductions()
+    };
+    $scope.status = function (status, id, data) {
+        if (data.openclose === "1") {
+            data.openclose = "0"
+        } else {
+            data.openclose = "1"
+        }
+        var task;
+        task = prmutils.statusappro(status, id);
+        task.promise.then(function (result) {
+        })
+    };
+
+    $scope.setConfirmationProduction = function (data) {
+        var task;
+        if (confirm("Confirmer vous la validation de la production de l'article : " + data.nom_art +' ?') !== true) {
+            return
+        }
+        task = prmutils.setConfirmationProduction(data);
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    data['code_user_confirm'] = result.data['code_user_confirm'];
+                    data['date_confirm'] = result.data['date_confirm'];
+                }
+                // $scope.approvisionnement['code_user_confirm'] = result.data['code_user_confirm'];
+                // $scope.approvisionnement['date_confirm'] = result.data['date_confirm'];
+            }
+        })
+    };
+
+    $scope.insertStockProdConfirmation = function (data) {
+        var task;
+        if (confirm("Confirmer vous la validation de l'article : " + data.nom_art + ' ?') !== true) {
+            return
+        }
+        task = prmutils.insertStockProdConfirmation(data);
+        task.promise.then(function (result) {
+            console.log(result, '===')
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m", 10000)
+                } else {
+                    data['code_user_confirm'] = result.data['code_user_confirm'];
+                    data['date_confirm'] = result.data['date_confirm'];
+                }
+            } else {
+                app.notify("ok ...", "b")
+            }
+        })
+    };
+
+    $scope.showDetails = function (prod) {
+        $scope.bon_prod = prod.bon_prod;
+        $scope.production = prod;
+        var task = prmutils.showProdDetails(prod);
+        task.promise.then(function (result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.details = result.data;
+                // recuperation de la charge de production
+                
+                $scope.production.cout_achat = 0;
+                for (let prodA of $scope.details) { 
+                    $scope.production.cout_achat = $scope.production.cout_achat + parseInt(prodA.cout_prod) * parseInt(prodA.qte_prod_art);
+                    prodA.cout_prod = parseInt(prodA.cout_prod);
+                } 
+                app.waiting.show = false;
+                $("#detailsPannel").css("right", "0")
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.coutAchat = function () {
+        let coutAchat = 0;
+        for (let prodA of $scope.details) {
+            coutAchat = coutAchat + parseInt(prodA.cout_prod) * parseInt(prodA.qte_prod_art);
+            prodA.cout_prod = parseInt(prodA.cout_prod);
+        }
+        return coutAchat;
+    }
+    $scope.coutChargeProd = function () {
+        
+        return  parseInt($scope.production.charge_prod ||0);
+    }
+
+    $scope.getLimit = function () {
+        $scope.loading = true;
+        var task = prmutils.getProductions();
+        task.promise.then(function (result) {
+            $scope.loading = true;
+            if (result.err === 0) {
+                $scope.productions = result.data;
+                $scope.loading = false
+            } else {
+                $scope.loading = false
+            }
+        })
+    };
+    $scope.fullSearch = function () {
+        $scope.loading = true;
+        var task;
+        if ($scope.fullSearchText.length > 1) {
+            task = prmutils.queryApprovisionnements($scope.fullSearchText)
+        } else {
+            task = prmutils.getProductions()
+        }
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                $scope.productions = result.data;
+                $scope.loading = false
+            } else {
+                $scope.loading = false
+            }
+        })
+    };
+    $scope.loadMore = function () {
+        if ($scope.fullSearchText.length > 0) {
+            return false
+        }
+        if (!$scope.objectIsNull($scope.search)) {
+            return false
+        }
+        $scope.loading = true;
+        var task = prmutils.getProductions($scope.productions.length);
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                if (result.data.length > 0) {
+                    $scope.productions = $scope.productions.concat(result.data)
+                }
+                $scope.loading = false
+            } else {
+                $scope.loading = false
+            }
+        })
+    };
+    $scope.getLimit();
+    $scope.getmag = function () {
+        task = prmutils.getMagasins();
+        task.promise.then(function (result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.magasins = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.getcat = function () {
+        task = prmutils.getCategories();
+        task.promise.then(function (result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.categories = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.getart = function () {
+        task = prmutils.getArticles();
+        task.promise.then(function (result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.articles = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.searchF = function () {
+        var task;
+        task = prmutils.getEtaProd($scope.search);
+        task.promise.then(function (result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    $scope.productions = result.data
+                }
+            } else {
+                app.notify("ok ...", "b")
+            }
+        })
+    };
+    $scope.getTotalMnt = function () {
+        var total = 0;
+        for (var i = 0; i < $scope.filtered.length; i++) {
+            var vente = $scope.filtered[i];
+            total += parseInt(vente.mnt_revient_appro)
+        }
+        return total
+    };
+    $scope.getTotalAchat = function () {
+        var total = 0;
+        for (var i = 0; i < $scope.filtere.length; i++) {
+            var achat = $scope.filtere[i];
+            total += parseInt(achat.prix_appro_art * achat.qte_appro_art)
+        }
+        return total
+    };
+    $scope.objectIsNull = function (obj) {
+        var rep = true;
+        angular.forEach(obj, function (value, key) {
+            if ((value !== null) && (value !== "")) {
+                rep = false;
+                return false
+            }
+        });
+        return rep
+    }
 }]);

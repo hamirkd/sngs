@@ -63,6 +63,8 @@ class frontController extends model {
                 $_SESSION['droitDepense'] = $result['droit_depense'];
                 $_SESSION['droitPaiement'] = $result['droit_paiement'];
                 $_SESSION['droitConfirmationApprovisionnement'] = $result['droit_confirmation_approvisionnement'];
+                $_SESSION['droitConfirmationProduction'] = $result['droit_confirmation_production'];
+                
                 
                 /* options */
                 $_SESSION['tf'] = $result['tva_fact'];

@@ -2335,7 +2335,10 @@ AND MONTH(date_fact)=12";
                     $qtevente = intval($this->getVenteOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
                     $qtesortie = intval($this->getSortieOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
                     $qtedef = intval($this->getDeffOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
-
+                    // production
+                    $qteprod = intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
+                    $qteProdArt = intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
+                    
                     $result[] = array(
                         'periode' => "Date du " . date('d/m/Y', strtotime($dated)),
                         'qteappro' => intval($this->getApproOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
@@ -2349,7 +2352,12 @@ AND MONTH(date_fact)=12";
                         'qtesortie' => intval($this->getSortieOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
                         'qtesortieb' => intval($this->getSortieOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
                         'qtedef' => intval($this->getDeffOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
-                        'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag']))
+                        'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
+                        // production
+                        'qteprod' => intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
+                        'qteprodb' => intval($this->getProdOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
+                        'qteProdArt' => intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
+                        'qteProdArtb' => intval($this->getProdArticleOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag']))
                     );
 
 
@@ -2366,7 +2374,11 @@ AND MONTH(date_fact)=12";
                         $qtevente = intval($this->getVenteOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
                         $qtesortie = intval($this->getSortieOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
                         $qtedef = intval($this->getDeffOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
-                        if ($qteappro != 0 || $qtetransfget != 0 || $qtetransfset != 0 || $qtevente != 0 || $qtesortie != 0 || $qtedef != 0)
+                        // production
+                        $qteprod = intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
+                        $qteProdArt = intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
+                       
+                        if ($qteappro != 0 || $qtetransfget != 0 || $qtetransfset != 0 || $qtevente != 0 || $qtesortie != 0 || $qtedef != 0 || $qteprod != 0 || $qteProdArt != 0)
                             $result[] = array(
                                 'periode' => "Date du " . date('d/m/Y', strtotime($dated)),
                                 'qteappro' => intval($this->getApproOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
@@ -2380,7 +2392,11 @@ AND MONTH(date_fact)=12";
                                 'qtesortie' => intval($this->getSortieOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
                                 'qtesortieb' => intval($this->getSortieOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
                                 'qtedef' => intval($this->getDeffOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
-                                'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag']))
+                                'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
+                                'qteprod' => intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
+                                'qteprodb' => intval($this->getProdOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
+                                'qteProdArt' => intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
+                                'qteProdArtb' => intval($this->getProdArticleOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag']))                                
                             );
 
                         $dated = date('Y-m-d', strtotime($dated . ' + 1 days'));
@@ -2400,6 +2416,10 @@ AND MONTH(date_fact)=12";
                         $qtevente = intval($this->getVenteOfArticleFrom($search['article'], $dated, $search['magasin']));
                         $qtesortie = intval($this->getSortieOfArticleFrom($search['article'], $dated, $search['magasin']));
                         $qtedef = intval($this->getDeffOfArticleFrom($search['article'], $dated, $search['magasin']));
+                        // production
+                        $qteprod = intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
+                        $qteProdArt = intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
+                    
 
                         $result[] = array(
                             'periode' => "Date du " . date('d/m/Y', strtotime($dated)),
@@ -2414,7 +2434,11 @@ AND MONTH(date_fact)=12";
                             'qtesortie' => intval($this->getSortieOfArticleFrom($search['article'], $dated, $search['magasin'])),
                             'qtesortieb' => intval($this->getSortieOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $search['magasin'])),
                             'qtedef' => intval($this->getDeffOfArticleFrom($search['article'], $dated, $search['magasin'])),
-                            'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $search['magasin']))
+                            'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $search['magasin'])),
+                            'qteprod' => intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
+                            'qteprodb' => intval($this->getProdOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
+                            'qteProdArt' => intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
+                            'qteProdArtb' => intval($this->getProdArticleOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag']))                            
                         );
 
 
@@ -2433,8 +2457,12 @@ AND MONTH(date_fact)=12";
                             $qtevente = intval($this->getVenteOfArticleFrom($search['article'], $dated, $search['magasin']));
                             $qtesortie = intval($this->getSortieOfArticleFrom($search['article'], $dated, $search['magasin']));
                             $qtedef = intval($this->getDeffOfArticleFrom($search['article'], $dated, $search['magasin']));
+                            // production
+                            $qteprod = intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
+                            $qteProdArt = intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
+                    
 
-                            if ($qteappro != 0 || $qtetransfget != 0 || $qtetransfset != 0 || $qtevente != 0 || $qtesortie != 0 || $qtedef != 0)
+                            if ($qteappro != 0 || $qtetransfget != 0 || $qtetransfset != 0 || $qtevente != 0 || $qtesortie != 0 || $qtedef != 0 || $qteprod != 0 || $qteProdArt != 0 || $qteprod != 0 || $qteProdArt != 0)
                                 $result[] = array(
                                     'periode' => "Date du " . date('d/m/Y', strtotime($dated)),
                                     'qteappro' => intval($this->getApproOfArticleFrom($search['article'], $dated, $search['magasin'])),
@@ -2448,7 +2476,12 @@ AND MONTH(date_fact)=12";
                                     'qtesortie' => intval($this->getSortieOfArticleFrom($search['article'], $dated, $search['magasin'])),
                                     'qtesortieb' => intval($this->getSortieOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $search['magasin'])),
                                     'qtedef' => intval($this->getDeffOfArticleFrom($search['article'], $dated, $search['magasin'])),
-                                    'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $search['magasin']))
+                                    'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $search['magasin'])),
+                                    // production
+                                    'qteprod' => intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
+                                    'qteprodb' => intval($this->getProdOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
+                                    'qteProdArt' => intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
+                                    'qteProdArtb' => intval($this->getProdArticleOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag']))                                    
                                 );
 
                             $dated = date('Y-m-d', strtotime($dated . ' + 1 days'));
