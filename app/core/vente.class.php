@@ -1021,6 +1021,32 @@ class venteController extends model {
 
                 $heure_vnt = date("H:i:s");
 
+                
+                $anneeCourante = date('Y');
+                
+                if (strpos($num_fac, $anneeCourante) === false && strpos($num_fac, $anneeCourante - 1) === false) {
+                    throw new Exception(
+                        "Il y a une erreur lors de la génération du code de la facture, veuillez réactualiser votre écran ou vérifier la date de la facture"
+                    );
+                }
+                /*
+                if (strpos($num_fac, $anneeCourante) === false) {
+                    throw new Exception(
+                        "Il y a une erreur lors de la génération du code de la facture, veuillez réactualiser votre écran ou vérifier la date de la facture"
+                    );
+                }*/
+
+                /*$dateVente = new DateTime($date_vnt);
+                $aujourdhui = new DateTime();
+
+                $diff = $dateVente->diff($aujourdhui)->days;
+
+                if ($diff > 5) {
+                    throw new Exception(
+                        "Impossible de saisir une facture de plus de 5 jours"
+                    );
+                }*/
+
                 $query = "INSERT INTO  t_facture_vente (
                      code_fact,
                      clnt_fact,type_reglement,reference_paiement,depot_montant,depot_telephone,
@@ -1134,7 +1160,7 @@ class venteController extends model {
         $plafond_mois = $result['plafond_mois'];
         $plafond_annee = $result['plafond_annee'];
         if ($plafond_jour>0) {
-            $query = "SELECT IFNULL(SUM(f.crdt_fact),0) as mntcpt FROM t_facture_vente f WHERE f.mag_fact = $id_mag ";
+            $query = "SELECT IFNULL(SUM(f.crdt_fact-f.som_verse_crdt),0) as mntcpt FROM t_facture_vente f WHERE f.mag_fact = $id_mag ";
             $query.= " AND f.bl_fact_crdt=1  AND f.sup_fact=0 AND  f.bl_crdt_regle=0 AND f.crdt_fact>0 AND (f.crdt_fact-f.som_verse_crdt)>0 ";
             $query.= " AND DATE(f.date_enr)='" . date('Y-m-d') . "'";
             $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
@@ -1147,7 +1173,7 @@ class venteController extends model {
             }
         }
         if ($plafond_jour>0) {
-            $query = "SELECT IFNULL(SUM(f.crdt_fact),0) as mntcpt FROM t_facture_vente f WHERE f.mag_fact = $id_mag ";
+            $query = "SELECT IFNULL(SUM(f.crdt_fact-f.som_verse_crdt),0) as mntcpt FROM t_facture_vente f WHERE f.mag_fact = $id_mag ";
             $query.= " AND f.bl_fact_crdt=1  AND f.sup_fact=0 AND  f.bl_crdt_regle=0 AND f.crdt_fact>0 AND (f.crdt_fact-f.som_verse_crdt)>0 ";
             $query.= " AND DATE(f.date_enr)= CURDATE()";
             $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
@@ -1160,8 +1186,8 @@ class venteController extends model {
             }
         }
         
-        else if ($plafond_mois>0) {
-            $query = "SELECT IFNULL(SUM(f.crdt_fact),0) as mntcpt FROM t_facture_vente f WHERE f.mag_fact = $id_mag ";
+        if ($plafond_mois>0) {
+            $query = "SELECT IFNULL(SUM(f.crdt_fact-f.som_verse_crdt),0) as mntcpt FROM t_facture_vente f WHERE f.mag_fact = $id_mag ";
             $query.= " AND f.bl_fact_crdt=1  AND f.sup_fact=0 AND  f.bl_crdt_regle=0 AND f.crdt_fact>0 AND (f.crdt_fact-f.som_verse_crdt)>0 ";
             $query.= " AND YEAR(f.date_enr) = YEAR(CURDATE())  AND MONTH(f.date_enr) = MONTH(CURDATE())";
             $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
@@ -1174,8 +1200,8 @@ class venteController extends model {
             }
         } 
         
-        else if ($plafond_annee>0) {
-            $query = "SELECT IFNULL(SUM(f.crdt_fact),0) as mntcpt FROM t_facture_vente f WHERE f.mag_fact = $id_mag ";
+        if ($plafond_annee>0) {
+            $query = "SELECT IFNULL(SUM(f.crdt_fact-f.som_verse_crdt),0) as mntcpt FROM t_facture_vente f WHERE f.mag_fact = $id_mag ";
             $query.= " AND f.bl_fact_crdt=1  AND f.sup_fact=0 AND  f.bl_crdt_regle=0 AND f.crdt_fact>0 AND (f.crdt_fact-f.som_verse_crdt)>0 ";
             $query.= " AND YEAR(f.date_enr) = YEAR(CURDATE()) ";
             $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
@@ -1187,10 +1213,7 @@ class venteController extends model {
                 return $response;
             }
         }
-        return null;
-        
-
-                    
+        return null;            
     }
 
     public function rdfP() {

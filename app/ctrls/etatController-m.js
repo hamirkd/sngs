@@ -584,6 +584,18 @@ sngs.controller("etaCaisControleurCtrl", ["$scope", "$rootScope", "config", "prm
         })
     };
     
+    $scope.sommeTotal = function(colonne) {
+        var somme = 0;
+        if (!$scope.caisse || $scope.caisse.length == 0) {
+            return 0;
+        }
+        for (let data of $scope.caisse) {
+            somme = somme + data[colonne];
+        }
+        return somme;
+        
+    };
+    
     $scope.searchFDay = function() {
         $scope.search = {date_deb : today,date_fin : today};
         $scope.searchF();

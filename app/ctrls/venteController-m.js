@@ -196,6 +196,7 @@ sngs.controller("venteVntCtrl", ["$scope", "$rootScope", "config", "prmutils", "
     app.waiting.show = false;
     app.navbar.show = true;
     $scope.ventes = [];
+    
     if (app.userPfl.pfl != 3 || app.userPfl.mg != 0) {
         app.title = {
             text: config.home,
@@ -806,7 +807,7 @@ sngs.controller("venteCrdtCtrl", ["$window", "$scope", "$rootScope", "prmutils",
         task.promise.then(function(result) {
             if (result.err === 0) {
                 if (result.data === "-1") {
-                    app.notify(result.message, "m");
+                    app.notify(result.message, "m", 10000);
                     $scope.djob = false
                 } else {
                     socket.emit("new_vente", {

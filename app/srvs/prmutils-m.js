@@ -1238,6 +1238,13 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     servicesObject.updatePaiement = function(obj) {
         return dao.getData(config.mdlPaiement + "updatePaiement", obj)
     };
+    servicesObject.validationOrangeMoneyPaiement = function(obj) {
+        return dao.getData(config.mdlPaiement + "validationOrangeMoneyPaiement", obj)
+    };
+    
+    servicesObject.editFacturePaiement = function(fact) {
+        return dao.getData(config.mdlPaiement + "editFacturePaiement", fact);
+    };
     
 
     servicesObject.isDate = function(strDate) {

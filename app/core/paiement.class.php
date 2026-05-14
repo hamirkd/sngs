@@ -306,6 +306,130 @@ class paiementController extends model {
             $this->response($this->json($response), 200);
         } 
     }
+     
+    public function validationOrangeMoneyPaiement() {
+        if ($this->get_request_method() != "POST") {
+        $this->response('', 406);
+        }
+
+        $facture = $_POST;
+
+        $idFact = $facture['id_fact'];
+        $depotTelephone = $facture['depot_telephone'];
+
+        // Récupération de la facture de vente
+        $query = "SELECT * FROM t_facture_vente WHERE id_fact=$idFact AND (reference_paiement IS NULL OR reference_paiement like '') AND type_reglement='ORANGEMONEY'";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        if ($r->num_rows <= 0) {
+            $response = array("status" => 0,
+            "datas" => "",
+            "message" => "La facture a déjà été validée");
+            $this->response($this->json($response), 200);
+        }
+        $facture = $r->fetch_assoc();
+
+        $query = "SELECT * FROM t_paiement WHERE code like '%$depotTelephone' AND (ref_facture_vente IS NULL OR ref_facture_vente like '') AND facture_vnt IS NULL";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        if ($r->num_rows <= 0) {
+            $response = array("status" => 0,
+            "datas" => "",
+            "message" => "Ce paiement a déjà été validé pour une autre facture ou inexistant");
+            $this->response($this->json($response), 200);
+        } else if ($r->num_rows > 1) {
+            $response = array("status" => 0,
+            "datas" => "",
+            "message" => "Il existe plusieurs paiement avec cette reférence");
+            $this->response($this->json($response), 200);
+        }
+        $paiement = $r->fetch_assoc();
+
+        if ($paiement['montant'] !== $facture['depot_montant']) {
+            $response = array("status" => 0,
+            "datas" => "",
+            "message" => "Le montant du paiement est différent du montant du Orange Money, veuillez proceder par une validation manuel");
+            $this->response($this->json($response), 200);
+        }
+        $code = $paiement['code'];
+        $ref_facture_vente = $facture['code_fact'];
+        $idMag = $facture['mag_fact'];
+
+        try {
+            $this->mysqli->autocommit(FALSE);
+            // Nous allons sauvegarder la référence du paiement Orange Money sur la facture.
+            $query = "UPDATE  t_facture_vente SET reference_paiement='$code' WHERE code_fact='$ref_facture_vente';";
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+            
+            $userCode = $_SESSION['userCode'];
+            // Nous allons sauvegarder la référence de la facture sur le paiement et confirmer le paiement
+            $query = "UPDATE  t_paiement SET used_paiement_code_user='$userCode', ref_facture_vente='$ref_facture_vente',facture_vnt=$idFact,etat=1,mag_paiement=$idMag,updated_at=now() WHERE code='$code';";
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+            $this->mysqli->autocommit(TRUE);
+
+            $response = array("status" => 1,
+                "datas" => "",
+                "message" => "Cet paiement a été validé");
+            $this->response($this->json($response), 200);
+        } catch (Exception $exc) {
+            $this->mysqli->rollback();
+            $this->mysqli->autocommit(TRUE);
+            $response = array("status" => 0,
+            "datas" => "",
+            "message" => $exc->getMessage());
+            $this->response($this->json($response), 200);
+        } 
+    }
+    // Correction de facture
+    public function editFacturePaiement() {
+        if ($this->get_request_method() != "POST") {
+        $this->response('', 406);
+        }
+
+        $facture = $_POST;
+
+        $idFact = $facture['id_fact'];
+
+        $depotMontant = $facture['depot_montant'];
+
+        $depotTelephone = $facture['depot_telephone'];
+
+        if ($_SESSION['droitPaiement'] != 1) {
+            $response = array(
+                "status" => 0,
+                "datas" => "-1",
+                "message" => "Vous n'avez pas les droits pour modifier cette facture, veuillez contacter l'administrateur");
+            $this->response($this->json($response), 200);
+        } 
+        // Récupération de la facture de vente
+        $query = "SELECT * FROM t_facture_vente WHERE id_fact=$idFact AND (reference_paiement IS NULL OR reference_paiement like '') AND type_reglement='ORANGEMONEY' AND sup_fact=0 AND crdt_fact>0 AND crdt_fact>='$depotMontant'";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        if ($r->num_rows <= 0) {
+            $response = array("status" => 0,
+            "datas" => '-1',
+            "message" => "La facture a déjà été validée ou les données sont incorrectes");
+            $this->response($this->json($response), 200);
+        }
+
+        try {
+            // Nous allons sauvegarder les informations du paiement Orange Money sur la facture.
+            $query = "UPDATE  t_facture_vente SET depot_telephone='$depotTelephone', depot_montant='$depotMontant'  WHERE id_fact=$idFact;";
+            $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+            $response = array("status" => 0,
+                "datas" => "",
+                "message" => "La facture a été modifiée");
+            $this->response($this->json($response), 200);
+        } catch (Exception $exc) {
+            $this->mysqli->rollback();
+            $this->mysqli->autocommit(TRUE);
+            $response = array("status" => 0,
+            "datas" => "",
+            "message" => $exc->getMessage());
+            $this->response($this->json($response), 200);
+        } 
+    }
+
+    
 }
 
 session_name('SessSngS');

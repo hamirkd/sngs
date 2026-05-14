@@ -54,8 +54,15 @@
                                             title="Comptant" class="fg-black my-small-font"
                                             ng-if="data.type_reglement=='ORANGEMONEY'"> - OM ({{data.depot_montant}})
                                             - reference ({{data.depot_telephone}})
-                                        
-                                        </span>
+                                            <button class="success" ng-click="validationOrangeMoneyPaiement(data);" style="border-radius: 5px;"
+                                            ng-if="data.type_reglement=='ORANGEMONEY' && (data.reference_paiement == null || data.reference_paiement == '')">
+                                                <span class="icon-dollar"></span>
+                                            </button>
+                                            <button class="bg-amber" style="border-radius: 5px;" ng-click='getFactCorrection(data)'
+                                            ng-if="data.type_reglement=='ORANGEMONEY' && (data.reference_paiement == null || data.reference_paiement == '')"><i
+                                                class="icon-dollar"></i>Corriger</button>
+                                            </span>
+
                                         </span><span
                                             title="{{data.remise_vnt_fact}}" class="fg-red my-small-font"
                                             ng-if="data.remise_vnt_fact>0">(rem)</span><span title="Annulee"
@@ -133,6 +140,21 @@
                                     </div>
                                 </td>
                             </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Type de règlement</label>
+                                        <div class="input-control select span4" data-role="input-control"><select
+                                                ng-model="search.type_reglement">
+                                                <option value=""></option>
+                                                <option value="ESPECE">ESPECE</option>
+                                                <option value="ORANGEMONEY">ORANGEMONEY</option>
+                                                <option value="ORANGEMONEYVALIDE">ORANGEMONEY VALIDE</option>
+                                                <option value="ORANGEMONEYNONVALIDE">ORANGEMONEY NONVALIDE</option>
+                                            </select></div>
+                                    </div>
+                                </td>
+                            </tr>
                             <tr>
                                 <td>
                                     <div class="stagger"><label>Btq/Mag</label>
@@ -200,6 +222,88 @@
                 </div>
             </fieldset>
         </div>
+
+        <div class="example" id="replacePannel" style="max-height:400px;">
+            <fieldset>
+                <legend><a class="toggle_search_correction" href=""><span class=" icon-arrow-right-3"></span></a> Correction Facture Paiement
+                </legend>
+                <form name="form">
+                    <div style="max-height:300px;">
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Date Facture</label>
+                                        <div class="input-control text span4">
+                                            {{fact.Date_vnt}}
+                                        </div>
+                                    </div>
+                                </td>
+                            
+                                <td>
+                                    <div class="stagger"><label>Code Facture</label>
+                                        <div class="input-control text span4">
+                                            {{fact.code_fact}}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Client</label>
+                                        <div class="input-control text span4">
+                                            <label>{{fact.nom_clt}}</label>
+                                    </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="stagger"><label>Btq/Mag</label>
+                                        <div class="input-control text span4">
+                                            <label>{{fact.nom_mag}}</label>
+                                    </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Caissier</label>
+                                        <div class="input-control text span4" data-role="input-control">
+                                            <label>{{fact.code_caissier_fact}}</label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="stagger"><label>Montant</label>
+                                        <div class="input-control text span4" data-role="input-control">
+                                            <label>{{fact.crdt_fact}}</label>
+                                        </div>
+                                    </div>
+                                </td>
+                                
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Montant Dépot</label>
+                                        <div class="input-control text span4"><input type="text"
+                                                name="depot_montant" ng-model="fact.depot_montant">
+                                        </div>
+                                    </div>
+                                </td> 
+                                <td>
+                                    <div class="stagger"><label>Référence du téléphone</label>
+                                        <div class="input-control text span4"><input type="text"
+                                                name="depot_telephone" ng-model="fact.depot_telephone">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div><button class="primary" ng-click="modificationFacture(fact);"><i
+                            class="icon-search on-left on-left-more"></i>Valider</button> &nbsp; <button class="inverse"
+                        type="reset" class="button"><i class="icon-undo on-left on-left-more"></i> Annuler </button>
+                </form>
+            </fieldset>
+        </div>
     </div>
 </div>
 <script>$(function () { $(".toggle_search").on("click", function () { $("#searchPannel").css("right", "-700px") }); $(".btn_search").on("click", function () { $("#searchPannel").css("right", "0") }); $(".toggle_details").on("click", function () { $("#detailsPannel").css("right", "-800px") }) });</script>
+<script>$(function () { $(".toggle_search_correction").on("click", function () { $("#replacePannel").css("right", "-700px") }); $(".btn_search_correction").on("click", function () { $("#searchPannelCorrection").css("right", "0") }) });</script>

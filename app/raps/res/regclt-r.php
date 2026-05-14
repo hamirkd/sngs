@@ -47,8 +47,11 @@ session_start();
      $search = $_GET;
 
     $condmag = "";
-        if ($_SESSION['userMag'] > 0)
+        if ($_SESSION['userMag'] > 0) {
             $condmag = " AND fv.caissier_fact in (SELECT id_user FROM t_user where mag_user=" . intval($_SESSION['userMag']) . ")";
+            $condmag = " AND fv.mag_fact = " . intval($_SESSION['userMag']) . " ";
+        }
+            
 
         $query = "SELECT date(c.date_crce_clnt) as date_crce_clnt,
             c.code_caissier_crce,

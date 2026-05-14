@@ -200,8 +200,8 @@
                         <th class='text-left'>Magasin&nbsp;</th>
                         <th class='text-left'>Designation&nbsp;</th>
                         <th class='text-left'>Qte&nbsp;</th>
-                        <th class='text-left'>Prix&nbsp;</th>
-                        <th class='text-left'>Mnt&nbsp;</th>
+                        <th class='text-left' ng-if="app.userPfl.droitConfirmationApprovisionnement">Prix&nbsp;</th>
+                        <th class='text-left' ng-if="app.userPfl.droitConfirmationApprovisionnement">Mnt&nbsp;</th>
                         <th class='text-left'>PU Mini&nbsp;</th>
                         <th class='text-left'>PU Maxi&nbsp;</th>
                         <th class='text-left'>PU Gros&nbsp;</th>
@@ -211,10 +211,10 @@
                             <td title="{{data.nom_mag |uppercase}}">{{data.code_mag |uppercase}}</td>
                             <td>{{data.nom_art |uppercase}}</td>
                             <td>{{data.qte_appro_art}}</td>
-                            <td>
+                            <td ng-if="app.userPfl.droitConfirmationApprovisionnement">
                                 <input style="color: black;width: 90px!important" ng-model="data.prix_appro_art" placeholder="filtre" type="text">
                             </td>
-                            <td>{{(data.prix_appro_art * data.qte_appro_art) | currency}}</td>
+                            <td ng-if="app.userPfl.droitConfirmationApprovisionnement">{{(data.prix_appro_art * data.qte_appro_art) | currency}}</td>
                             <td>
                                 <input style="color: black;width: 90px!important" ng-model="data.prix_mini_art" placeholder="Prix Mini" type="text">
                             </td>

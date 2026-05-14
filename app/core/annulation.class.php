@@ -24,7 +24,7 @@ class annulationController extends model {
             $query = "SELECT f.id_fact,date(f.date_fact) as Date_vnt,time(f.date_fact) as heure_vnt,
             f.code_fact,f.bl_fact_grt,f.bl_fact_crdt,f.sup_fact,f.remise_vnt_fact,f.crdt_fact,
             f.som_verse_crdt,f.code_caissier_fact,c.code_clt,m.nom_mag,
-            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant,f.depot_telephone FROM t_facture_vente f
+            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant,f.depot_telephone,f.reference_paiement FROM t_facture_vente f
             INNER JOIN t_client c ON f.clnt_fact=c.id_clt
             INNER JOIN t_magasin m ON f.mag_fact=m.id_mag
             INNER JOIN t_user u ON f.caissier_fact=u.id_user
@@ -33,7 +33,7 @@ class annulationController extends model {
             $query = "SELECT f.id_fact,date(f.date_fact) as Date_vnt,time(f.date_fact) as heure_vnt,
             f.code_fact,f.bl_fact_grt,f.bl_fact_crdt,f.sup_fact,f.remise_vnt_fact,f.crdt_fact,
             f.som_verse_crdt,f.code_caissier_fact,c.code_clt,m.nom_mag,
-            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant,f.depot_telephone FROM t_facture_vente f
+            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant,f.depot_telephone,f.reference_paiement FROM t_facture_vente f
             INNER JOIN t_client c ON f.clnt_fact=c.id_clt
             INNER JOIN t_magasin m ON f.mag_fact=m.id_mag
              INNER JOIN t_user u ON f.caissier_fact=u.id_user
@@ -42,7 +42,7 @@ class annulationController extends model {
                 $query = "SELECT f.id_fact,date(f.date_fact) as Date_vnt,time(f.date_fact) as heure_vnt,
             f.code_fact,f.bl_fact_grt,f.bl_fact_crdt,f.sup_fact,f.remise_vnt_fact,f.crdt_fact,
             f.som_verse_crdt,f.code_caissier_fact,c.code_clt,m.nom_mag,
-            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant,f.depot_telephone FROM t_facture_vente f
+            m.code_mag,c.nom_clt,f.type_reglement,f.depot_montant,f.depot_telephone,f.reference_paiement FROM t_facture_vente f
             INNER JOIN t_client c ON f.clnt_fact=c.id_clt
             INNER JOIN t_magasin m ON f.mag_fact=m.id_mag
             INNER JOIN t_user u ON f.caissier_fact=u.id_user
@@ -74,6 +74,28 @@ class annulationController extends model {
         if (isset($search['bc']) && $search['bc'] != "" && $search['bc'] == 2)
             $query.=" AND f.bl_fact_crdt=1 AND f.bl_fact_grt=1";
 
+        // Ajout du filtre du type de règlement
+        if (!empty($search['type_reglement'])) {
+            $typeReglement = $search['type_reglement'];
+
+            switch ($typeReglement) {
+                case 'ESPECE':
+                case 'ORANGEMONEY':
+                    $query.= " AND f.type_reglement = '$typeReglement'";
+                    break;
+
+                case 'ORANGEMONEYVALIDE':
+                    $query.= " AND f.type_reglement = 'ORANGEMONEY' 
+                                AND (f.reference_paiement IS NOT NULL AND f.reference_paiement <> '')";
+                    break;
+
+                case 'ORANGEMONEYNONVALIDE':
+                    $query.= " AND f.type_reglement = 'ORANGEMONEY' 
+                                AND (f.reference_paiement IS NULL OR f.reference_paiement = '')";
+                    break;
+            }
+        }
+        
         $query.=" ORDER BY Date_vnt DESC,id_fact DESC  ";
 
 

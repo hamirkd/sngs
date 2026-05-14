@@ -5,7 +5,7 @@ class DB {
     const DB_SERVER = "127.0.0.1";
     const DB_USER = "adminroot";
     const DB_PASSWORD = "adminroot";
-    const DB = "bd_songo_lina";
+    const DB = "bd_songo_sgns";
     const PROPRIETAIRE = "LINA ENTREPRISE";
 
     protected $proprietaire;

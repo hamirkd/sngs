@@ -158,6 +158,8 @@ class dechargeController extends model {
         $TBS->MergeField('type_decharge', $row['type_decharge']);
         $TBS->MergeField('tel_clt', $row['tel_clt']);
         $TBS->MergeField('nom_prenom_dechargeur', trim($row['nom_prenom_dechargeur']));
+        $TBS->MergeField('nom_dechargeur', trim($row['nom_dechargeur']));
+        $TBS->MergeField('prenom_dechargeur', trim($row['prenom_dechargeur']));
         $TBS->MergeField('nom_prenom_client', trim($row['nom_prenom_client']));
         $TBS->MergeField('mode_paiement', 'Espèces'); // ou dynamique
         if ($row['type_decharge'] == 'RECEVOIR') {

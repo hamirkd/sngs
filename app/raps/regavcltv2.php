@@ -6,7 +6,8 @@
 
 <?php
      $content = ob_get_clean();
-
+        echo $content;
+        exit();
     require_once(dirname(__FILE__).'/../../libs/html2pdf/html2pdf.class.php');
     try
     {

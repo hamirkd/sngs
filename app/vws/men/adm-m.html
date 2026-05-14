@@ -16,9 +16,7 @@
             <li><a href="#/fctvnttva"><span class="icon-newspaper"></span>&nbsp; Factures Tva</a></li>
             <div class="divider" ng-if="app.PRMS.resa && app.userPfl.pfl==1"></div>
             <div class="divider" ng-if="!app.PRMS.resa && app.userPfl.pfl!=1"></div>
-            <li ng-if="app.PRMS.resa && app.userPfl.pfl==1"><a href="#/annvnt"><span class="icon-undo"></span>&nbsp;
-                    Annuler Facture</a></li>
-            <li ng-if="!app.PRMS.resa && app.userPfl.pfl!=1"><a href="#/annvnt"><span class="icon-undo"></span>&nbsp;
+            <li ng-if="app.userPfl.pfl==1"><a href="#/annvnt"><span class="icon-undo"></span>&nbsp;
                     Annuler Facture</a></li>
             <li><a href="#/vnteta"><span class="icon-stats-2"></span>&nbsp; Etat ventes</a></li>
             <li><a href="#/facteta"><span class="icon-copy"></span>&nbsp; Etat Factures</a></li>
@@ -174,7 +172,8 @@
             <li><a href="#/etacais"><span class="icon-dollar-2"></span>&nbsp; Etats caisse jour</a></li>
             <li><a href="#/etacaisp"><span class="icon-dollar-2"></span>&nbsp; Etats caisse period</a></li>
             <li><a href="#/etamargp"><span class="icon-dollar-2"></span>&nbsp; Etats Marges period</a></li>
-            <li><a href="#/etacais-controlleur"><span class="icon-dollar-2"></span>&nbsp; Controleur de gestion</a></li>
+            <li ng-if="app.userPfl.droitValidateurDemande === 'CONTROGES'"><a href="#/etacais-controlleur"><span class="icon-dollar-2"></span>&nbsp; Etats Bilan</a></li>
+            <li ng-if="app.userPfl.droitValidateurDemande !== 'CONTROGES' && app.userPfl.pfl==1"><a href="#/etacais-comptable"><span class="icon-dollar-2"></span>&nbsp; Controlleur de gestion</a></li>
             <li><a href="#/decharge"><span class="icon-link-2"></span>&nbsp; Decharge</a></li>
             <li><a href="#/paiements"><span class="icon-dollar-2"></span>&nbsp; Paiements Orange</a></li>
 

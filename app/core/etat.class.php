@@ -572,6 +572,7 @@ class etatController extends model {
         }
     }
     
+    
     public function getExtEtatCaisseControleur() {
         if ($this->get_request_method() != "POST") {
             $this->response('', 406);
@@ -585,9 +586,10 @@ class etatController extends model {
         $result = [];
         $date_fin = !empty($search['date_fin']) ? $search['date_fin']:null;
         $date_deb = !empty($search['date_deb']) ? $search['date_deb']: null;
+        $nbMag = $rmag->num_rows;
         while ($rowmag = $rmag->fetch_assoc()) {
             $row = $this->getExtEtatCaisseControleurByIdMagAndDate($rowmag['id_mag'],$date_deb,$date_fin);
-            if ($row != null) {
+            if ($row != null && $nbMag > 1) {
                 $row ['nom_mag'] = $rowmag['nom_mag'];
                 $row ['id_mag'] = $rowmag['id_mag'];
                 $somme =  doubleval($row['comptant']) + doubleval($row['credit']) + doubleval($row['remise']) + doubleval($row['creance']) + doubleval($row['depense']);
@@ -599,7 +601,38 @@ class etatController extends model {
                 else if ($rowmag['archive'] == 0 && $rowmag['type_mag'] == 'BOUTIQUE') {
                     $result [] = $row;
                 }
-                
+            } else if ($nbMag == 1) {
+
+                $debut = DateTime::createFromFormat('d/m/Y', $date_deb);
+                $fin   = DateTime::createFromFormat('d/m/Y', $date_fin);
+                $fin->modify('+1 day');
+            
+                $interval = new DateInterval('P1D');
+                $periode = new DatePeriod($debut, $interval, $fin);
+            
+                foreach ($periode as $date) {
+                    $dateCourante = $date->format('d/m/Y');
+            
+                    $row = $this->getExtEtatCaisseControleurByIdMagAndDate(
+                        $rowmag['id_mag'],
+                        $dateCourante,
+                        $dateCourante
+                    );
+            
+                    if ($row != null) {
+                        $row ['nom_mag'] = $dateCourante;
+                        $row ['id_mag'] = $rowmag['id_mag'];
+                        $somme =  doubleval($row['comptant']) + doubleval($row['credit']) + doubleval($row['remise']) + doubleval($row['creance']) + doubleval($row['depense']);
+                        if ($rowmag['archive'] == 1 && $somme > 0) {
+                            $result [] = $row;
+                        } else if ($rowmag['type_mag'] !== 'BOUTIQUE' && $somme > 0) {
+                            $result [] = $row;
+                        } 
+                        else if ($rowmag['archive'] == 0 && $rowmag['type_mag'] == 'BOUTIQUE') {
+                            $result [] = $row;
+                        }
+                    }
+                }
             }
         }
         $response = array("status" => 0,
@@ -633,19 +666,20 @@ class etatController extends model {
                 $crc = " AND cr.fact_crce_clnt IN (SELECT id_fact FROM t_facture_vente WHERE id_fact=cr.fact_crce_clnt AND mag_fact=" . intval($id_mag) . ")";
                 $cdp = " AND d.mag_depense_id =" . intval($id_mag);
                 $cvrs = " AND vrs.id_mag =" . intval($id_mag);
+                $cdemande = " AND d.mag_demandeur =" . intval($id_mag);
             }
             
 
-            if (!empty($search['date_deb']) && empty($search['date_fin']))
-                $dateq = "='" . isoToMysqldate($search['date_deb']) . "'";
+            if (!empty($date_deb) && empty($date_fin))
+                $dateq = "='" . isoToMysqldate($date_deb) . "'";
 
-            if (!empty($search['date_fin']) && empty($search['date_deb']))
+            if (!empty($date_fin) && empty($date_deb))
                 $dateq = " between '2010-01-01' 
-                AND '" . isoToMysqldate($search['date_fin']) . "'";
+                AND '" . isoToMysqldate($date_fin) . "'";
             
-            if (!empty($search['date_fin']) && !empty($search['date_deb']))
-                $dateq = " between '" . isoToMysqldate($search['date_deb']) . "' 
-                AND '" . isoToMysqldate($search['date_fin']) . "'";
+            if (!empty($date_fin) && !empty($date_deb))
+                $dateq = " between '" . isoToMysqldate($date_deb) . "' 
+                AND '" . isoToMysqldate($date_fin) . "'";
 
             $query = "SELECT 
                 SUM(CASE WHEN f.bl_fact_crdt = 0 THEN f.crdt_fact ELSE 0 END) AS comptant,
@@ -657,6 +691,7 @@ class etatController extends model {
                 FROM t_facture_vente f
                 WHERE f.sup_fact = 0 
                 AND date(f.date_fact) $dateq $ccpt $crse";
+                // echo $query;
             $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
             if ($r->num_rows > 0) {
@@ -688,6 +723,10 @@ class etatController extends model {
                            FROM 
                            t_depense d
                             WHERE date(d.date_dep) $dateq $cdp";
+            $query = "SELECT IFNULL(sum(d.montant),0) as depense
+                           FROM 
+                           t_demande d
+                            WHERE date(d.date_demande) $dateq $cdemande AND (next_role = 'RESPACHAT' OR next_role='PDG')";
 
 
             $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
@@ -715,6 +754,7 @@ class etatController extends model {
         }
     }
 
+
     public function getExtEtatCaisse() {
         if ($this->get_request_method() != "POST") {
             $this->response('', 406);
@@ -741,7 +781,8 @@ class etatController extends model {
                 $crf = " AND df.caissier_dette_frns IN (SELECT id_user FROM t_user WHERE mag_user=" . intval($_SESSION['userMag']) . ")";
                 $cdp = " AND d.user_dep IN (SELECT id_user FROM t_user WHERE mag_user=" . intval($_SESSION['userMag']) . ")";
                 $prov = " AND cais.user_cais IN (SELECT id_user FROM t_user WHERE mag_user=" . intval($_SESSION['userMag']) . ")";
-                $cvrs = " AND vrs.caissier_vrsmnt IN (SELECT id_user FROM t_user WHERE mag_user=" . intval($_SESSION['userMag']) . ")";
+                // $cvrs = " AND vrs.caissier_vrsmnt IN (SELECT id_user FROM t_user WHERE mag_user=" . intval($_SESSION['magasin']) . ")";
+                $cvrs = " AND vrs.id_mag=" . intval($_SESSION['userMag']) . "";
             } else {
 
                 $ccpt = "";
@@ -762,7 +803,8 @@ class etatController extends model {
                     $crf = " AND df.caissier_dette_frns IN (SELECT id_user FROM t_user WHERE mag_user=" . intval($search['magasin']) . ")";
                     $cdp = " AND d.user_dep IN (SELECT id_user FROM t_user WHERE mag_user=" . intval($search['magasin']) . ")";
                     $prov = " AND cais.user_cais IN (SELECT id_user FROM t_user WHERE mag_user=" . intval($search['magasin']) . ")";
-                    $cvrs = " AND vrs.caissier_vrsmnt IN (SELECT id_user FROM t_user WHERE mag_user=" . intval($search['magasin']) . ")";
+                    // $cvrs = " AND vrs.caissier_vrsmnt IN (SELECT id_user FROM t_user WHERE mag_user=" . intval($search['magasin']) . ")";
+                    $cvrs = " AND vrs.id_mag=" . intval($search['magasin']) . "";
                 }
             }
 
@@ -2335,10 +2377,7 @@ AND MONTH(date_fact)=12";
                     $qtevente = intval($this->getVenteOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
                     $qtesortie = intval($this->getSortieOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
                     $qtedef = intval($this->getDeffOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
-                    // production
-                    $qteprod = intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
-                    $qteProdArt = intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
-                    
+
                     $result[] = array(
                         'periode' => "Date du " . date('d/m/Y', strtotime($dated)),
                         'qteappro' => intval($this->getApproOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
@@ -2352,12 +2391,7 @@ AND MONTH(date_fact)=12";
                         'qtesortie' => intval($this->getSortieOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
                         'qtesortieb' => intval($this->getSortieOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
                         'qtedef' => intval($this->getDeffOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
-                        'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
-                        // production
-                        'qteprod' => intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
-                        'qteprodb' => intval($this->getProdOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
-                        'qteProdArt' => intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
-                        'qteProdArtb' => intval($this->getProdArticleOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag']))
+                        'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag']))
                     );
 
 
@@ -2374,11 +2408,7 @@ AND MONTH(date_fact)=12";
                         $qtevente = intval($this->getVenteOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
                         $qtesortie = intval($this->getSortieOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
                         $qtedef = intval($this->getDeffOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
-                        // production
-                        $qteprod = intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
-                        $qteProdArt = intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
-                       
-                        if ($qteappro != 0 || $qtetransfget != 0 || $qtetransfset != 0 || $qtevente != 0 || $qtesortie != 0 || $qtedef != 0 || $qteprod != 0 || $qteProdArt != 0)
+                        if ($qteappro != 0 || $qtetransfget != 0 || $qtetransfset != 0 || $qtevente != 0 || $qtesortie != 0 || $qtedef != 0)
                             $result[] = array(
                                 'periode' => "Date du " . date('d/m/Y', strtotime($dated)),
                                 'qteappro' => intval($this->getApproOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
@@ -2392,11 +2422,7 @@ AND MONTH(date_fact)=12";
                                 'qtesortie' => intval($this->getSortieOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
                                 'qtesortieb' => intval($this->getSortieOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
                                 'qtedef' => intval($this->getDeffOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
-                                'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
-                                'qteprod' => intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
-                                'qteprodb' => intval($this->getProdOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
-                                'qteProdArt' => intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
-                                'qteProdArtb' => intval($this->getProdArticleOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag']))                                
+                                'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag']))
                             );
 
                         $dated = date('Y-m-d', strtotime($dated . ' + 1 days'));
@@ -2416,10 +2442,6 @@ AND MONTH(date_fact)=12";
                         $qtevente = intval($this->getVenteOfArticleFrom($search['article'], $dated, $search['magasin']));
                         $qtesortie = intval($this->getSortieOfArticleFrom($search['article'], $dated, $search['magasin']));
                         $qtedef = intval($this->getDeffOfArticleFrom($search['article'], $dated, $search['magasin']));
-                        // production
-                        $qteprod = intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
-                        $qteProdArt = intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
-                    
 
                         $result[] = array(
                             'periode' => "Date du " . date('d/m/Y', strtotime($dated)),
@@ -2434,11 +2456,7 @@ AND MONTH(date_fact)=12";
                             'qtesortie' => intval($this->getSortieOfArticleFrom($search['article'], $dated, $search['magasin'])),
                             'qtesortieb' => intval($this->getSortieOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $search['magasin'])),
                             'qtedef' => intval($this->getDeffOfArticleFrom($search['article'], $dated, $search['magasin'])),
-                            'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $search['magasin'])),
-                            'qteprod' => intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
-                            'qteprodb' => intval($this->getProdOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
-                            'qteProdArt' => intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
-                            'qteProdArtb' => intval($this->getProdArticleOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag']))                            
+                            'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $search['magasin']))
                         );
 
 
@@ -2457,12 +2475,8 @@ AND MONTH(date_fact)=12";
                             $qtevente = intval($this->getVenteOfArticleFrom($search['article'], $dated, $search['magasin']));
                             $qtesortie = intval($this->getSortieOfArticleFrom($search['article'], $dated, $search['magasin']));
                             $qtedef = intval($this->getDeffOfArticleFrom($search['article'], $dated, $search['magasin']));
-                            // production
-                            $qteprod = intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
-                            $qteProdArt = intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag']));
-                    
 
-                            if ($qteappro != 0 || $qtetransfget != 0 || $qtetransfset != 0 || $qtevente != 0 || $qtesortie != 0 || $qtedef != 0 || $qteprod != 0 || $qteProdArt != 0 || $qteprod != 0 || $qteProdArt != 0)
+                            if ($qteappro != 0 || $qtetransfget != 0 || $qtetransfset != 0 || $qtevente != 0 || $qtesortie != 0 || $qtedef != 0)
                                 $result[] = array(
                                     'periode' => "Date du " . date('d/m/Y', strtotime($dated)),
                                     'qteappro' => intval($this->getApproOfArticleFrom($search['article'], $dated, $search['magasin'])),
@@ -2476,12 +2490,7 @@ AND MONTH(date_fact)=12";
                                     'qtesortie' => intval($this->getSortieOfArticleFrom($search['article'], $dated, $search['magasin'])),
                                     'qtesortieb' => intval($this->getSortieOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $search['magasin'])),
                                     'qtedef' => intval($this->getDeffOfArticleFrom($search['article'], $dated, $search['magasin'])),
-                                    'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $search['magasin'])),
-                                    // production
-                                    'qteprod' => intval($this->getProdOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
-                                    'qteprodb' => intval($this->getProdOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag'])),
-                                    'qteProdArt' => intval($this->getProdArticleOfArticleFrom($search['article'], $dated, $_SESSION['userMag'])),
-                                    'qteProdArtb' => intval($this->getProdArticleOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $_SESSION['userMag']))                                    
+                                    'qtedefb' => intval($this->getDeffOfArticleFromTo($search['article'], '2000-01-01', date('Y-m-d', strtotime($dated . ' - 1 days')), $search['magasin']))
                                 );
 
                             $dated = date('Y-m-d', strtotime($dated . ' + 1 days'));

@@ -234,12 +234,13 @@ class demandeController extends model {
             // $query = "UPDATE t_demande set etat=$action, motif='$motif',last_user='" . $_SESSION['userLogin'] . "',last_user_id=" . $_SESSION['userId'] . " WHERE id_dem=$id ";
             $queryAu = "INSERT INTO t_historique_workflow SET actu_action=$action, actu_role='$role', actu_user='" . $_SESSION['nom_prenom_user'] . "',actu_user_id=" . $_SESSION['userId'];
             if($role == 'RESP' && $action == 1){
-                $query = "UPDATE t_demande set next_role='RESPACHAT',next_user_id=0, last_user='" . $_SESSION['nom_prenom_user'] . "',last_user_id=" . $_SESSION['userId'] . " WHERE id_dem=$id ";
-            }else if($role == 'RESPACHAT' && $action == 1){
-                $query = "UPDATE t_demande set next_role='CONTROGES', last_user='" . $_SESSION['nom_prenom_user'] . "',last_user_id=" . $_SESSION['userId'] . " WHERE id_dem=$id ";
-            }else if($role == 'CONTROGES' && $action == 1){
+                $query = "UPDATE t_demande set next_role='CONTROGES',next_user_id=0, last_user='" . $_SESSION['nom_prenom_user'] . "',last_user_id=" . $_SESSION['userId'] . " WHERE id_dem=$id ";
+            } else if($role == 'CONTROGES' && $action == 1){
+                $query = "UPDATE t_demande set next_role='RESPACHAT', last_user='" . $_SESSION['nom_prenom_user'] . "',last_user_id=" . $_SESSION['userId'] . " WHERE id_dem=$id ";
+            }
+            else if($role == 'RESPACHAT' && $action == 1){
                 $query = "UPDATE t_demande set next_role='PDG', last_user='" . $_SESSION['nom_prenom_user'] . "',last_user_id=" . $_SESSION['userId'] . " WHERE id_dem=$id ";
-            }else if($role == 'PDG' && $action == 1){
+            } else if($role == 'PDG' && $action == 1){
                 $query = "UPDATE t_demande set  etat=$action, last_user='" . $_SESSION['nom_prenom_user'] . "',last_user_id=" . $_SESSION['userId'] . " WHERE id_dem=$id ";
             }
             else if($action == 2){

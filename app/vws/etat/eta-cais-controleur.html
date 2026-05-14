@@ -70,6 +70,20 @@
                             <td><label for="">{{data['depotInvalide'] |number:0}}</label></td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><label for="">TOTAL</label></td>
+                            <td><label for="">{{sommeTotal('comptant') |number:0}}</label></td>
+                            <td><label for="">{{sommeTotal('creance')|number:0}}</label></td>
+                            <td><label>{{sommeTotal('depense')|number:0}}</label></td>
+                            <td><label>{{sommeTotal('versement')|number:0}}</label></td>
+                            <td><label for="">{{sommeTotal('credit') |number:0}}</label></td>
+                            <td><label for="">{{sommeTotal('remise')|number:0}}</label></td>
+                            <td><label for="">{{sommeTotal('espece') |number:0}}</label></td>
+                            <td><label for="">{{sommeTotal('om') |number:0}}</label></td>
+                            <td><label for="">{{sommeTotal('depotInvalide') |number:0}}</label></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
             <div class="col-md-12" ng-show="caisse.length == 0">

@@ -676,11 +676,11 @@ from t_stock s
 
             $query = "SELECT COALESCE( prix_mini_art_mag, prix_mini_art) as prix_mini
             , COALESCE( prix_gros_art_mag, prix_gros_art) as prix_gros
-     , COALESCE( prix_max_art_mag, prix_max_art) as prix_max
+     , COALESCE( prix_max_art_mag, prix_max_art) as prix_max, prix_achat_art as prix_achat
   FROM ( SELECT art_prix_art
               , prix_mini_art
               , prix_max_art
-              , prix_gros_art
+              , prix_gros_art, prix_achat_art
            FROM t_prix_article
           WHERE id_prix_art = ( SELECT MAX( id_prix_art )
                                   FROM t_prix_article

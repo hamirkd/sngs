@@ -11,6 +11,7 @@ sngs.controller("factureEtaCtrl", ["$scope", "$rootScope", "config", "prmutils",
     $rootScope.title = "Liste des factures";
     $rootScope.pageTitle = "Etat des factures";
     $scope.search = {};
+    $scope.fact = {};
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth() + 1;
@@ -22,6 +23,7 @@ sngs.controller("factureEtaCtrl", ["$scope", "$rootScope", "config", "prmutils",
         mm = "0" + mm
     }
     today = dd + "/" + mm + "/" + yyyy;
+    today = "05/12/2025";
     $scope.search.date_deb = today;
     $scope.getclt = function() {
         var task = prmutils.getaClients();
@@ -91,6 +93,23 @@ sngs.controller("factureEtaCtrl", ["$scope", "$rootScope", "config", "prmutils",
         }
         return total
     };
+    
+    $scope.validationOrangeMoneyPaiement = function(facture) {
+        var task;
+        task = prmutils.validationOrangeMoneyPaiement(facture);
+        task.promise.then(function(result) {
+            console.log(result)
+            if (result.err === 1) {
+                     app.notify(result.message, "b")
+                  
+                $scope.searchF();
+            } else if (result.err === 0) {
+                app.notify(result.message, "m");
+            } else {
+                app.notify("ok ...", "b")
+            }
+        })
+    };
     $scope.searchF = function() {
         var task;
         task = prmutils.etatFacture($scope.search);
@@ -140,9 +159,32 @@ sngs.controller("factureEtaCtrl", ["$scope", "$rootScope", "config", "prmutils",
             if (result.err === 0) {
                 $scope.details = result.data;
                 app.waiting.show = false;
-                $("#detailsPannel").css("right", "0")
+                $("#detailsPannel").css("right", "0");
             } else {
                 app.waiting.show = false
+            }
+        })
+    }
+    $scope.getFactCorrection = function(fact) {
+        $scope.fact = JSON.parse(JSON.stringify(fact));
+        $("#replacePannel").css("right", "0");
+    }
+    $scope.modificationFacture = function(fact)  {
+        console.log(fact);
+        var task = prmutils.editFacturePaiement(fact);
+        task.promise.then(function(result) {
+            app.waiting.show = false;
+            console.log(result)
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m", 10000)
+                } else {
+                    $scope.fact = {};
+                    $("#replacePannel").css("right", "-800px");
+                    app.notify(result.message, "b");$scope.searchF();
+                }
+            } else {
+                app.notify("ok ...", "m", 10000)
             }
         })
     }

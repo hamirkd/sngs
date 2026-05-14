@@ -61,6 +61,7 @@ angular.module("sngs").controller("loginCtrl", ["$rootScope", "$scope", "localSt
                     droitApprovisionnement: Number(result.data.droit_approvisionnement),
                     droitDepense: Number(result.data.droit_depense),
                     droitPaiement: Number(result.data.droit_paiement),
+                    droitConfirmationApprovisionnement: Number(result.data.droit_confirmation_approvisionnement),
                     droitValidateurDemande: result.data.droit_validateur_demande,
                     magasins: result.data.magasins
                 };

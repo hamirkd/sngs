@@ -3254,10 +3254,12 @@ sngs.controller("stockProdAsCtrl", ["$scope", "$rootScope", "config", "prmutils"
         console.log(article)
         console.log(appstock)
         console.log($scope.articles)
+        console.log($scope.prices)
+        
         if (article) {
             copieAppstock.prod_mag_src = $scope.appstock.prod_mag_src;
             copieAppstock.art_prod_art = article.id_art;
-            copieAppstock.cout_prod = $scope.prices.prix_gros;
+            copieAppstock.cout_prod = $scope.prices.prix_achat;
         }
         
         task = prmutils.insertStockProdForConfirmation(copieAppstock);

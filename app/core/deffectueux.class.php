@@ -51,6 +51,22 @@ class deffectueuxController extends model {
        $art = intval($appstock['art_def']);
        $qte = intval($appstock['qte_def']);
       $obj = $this->esc($appstock['obj_def']);
+      
+        if ($_SESSION['droitDestockage'] != 1) {
+            $response = array(
+                "status" => 0,
+                "datas" => "-1",
+                "message" => "Vous n'avez pas les droits pour faire un destockage, veuillez contacter le controlleur de gestion");
+            $this->response($this->json($response), 200);
+        }
+        if ($_SESSION['droitMagasinDestockage'] != 1) {
+            $response = array(
+                "status" => 0,
+                "datas" => "-1",
+                "message" => "Votre magasin n'a pas le droit de faire un destokage, veuillez contacter le controlleur de gestion");
+            $this->response($this->json($response), 200);
+        }
+        
         $response = array();
         $query = "INSERT INTO  t_deffectueux (mag_def,art_def,qte_def,obj_def,login_def,user_def,user_code_def) 
             VALUES($mag,$art,$qte,'".$obj."','" . $_SESSION['userLogin'] . "'," . $_SESSION['userId'] . ",'" . $_SESSION['userCode'] . "')";
@@ -61,12 +77,9 @@ class deffectueuxController extends model {
                 if (!$r = $this->mysqli->query($query))
                     throw new Exception($this->mysqli->error . __LINE__);
 
-              
-                    $query = "UPDATE t_stock SET qte_stk=qte_stk - $qte WHERE art_stk =$art AND mag_stk=$mag";
-                    $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
-               
 
-                 
+                $query = "UPDATE t_stock SET qte_stk=qte_stk - $qte WHERE art_stk =$art AND mag_stk=$mag";
+                $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
                 $response = array("status" => 0,
                     "datas" => $appstock,

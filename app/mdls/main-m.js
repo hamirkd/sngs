@@ -695,7 +695,7 @@ sngs = angular.module("sngs", ["sngs.services", "ngRoute", "ngResource", "base64
 });
 sngs.run(["$rootScope", "$cookieStore", "PARAMS", "$location", function($rootScope, PARAMS, $location) {
     $rootScope.$on("$routeChangeSuccess", function(event, current, previous) {
-        $rootScope.title = current.$$route.title;
+        $rootScope.title = current.$$route?.title;
         $rootScope.pageTitle = current.$$route.pageTitle;
         $rootScope.PRMS = PARAMS
     })
