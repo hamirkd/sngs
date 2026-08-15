@@ -162,15 +162,19 @@ class demandeController extends model {
                 $query = 'UPDATE t_vente SET pu_theo_vnt='.$factp['prix_propose'].',mnt_theo_vnt=Qte_vnt*'.$factp['prix_propose']
                 .',marge_vnt=('.$factp['prix_propose'].'-pu_theo_achat)*Qte_vnt WHERE id_vnt='.$factp['id_vntp'];
                 $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+                $this->verificationErreur();
                 $query = 'UPDATE t_facture_vente SET mnt_theo_fact=(select SUM(mnt_theo_vnt) FROM t_vente WHERE facture_vnt=id_fact)
                 WHERE id_fact='.$factp['facture_vnt'];
                 $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+                $this->verificationErreur();
                 $query = 'UPDATE t_facture_vente SET crdt_fact=(select SUM(mnt_theo_vnt) FROM t_vente WHERE facture_vnt=id_fact)
                 WHERE id_fact='.$factp['facture_vnt'];
                 $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+                $this->verificationErreur();
             }
             $query = "UPDATE t_facture_prix SET action=$action,last_updated=now(),user_valid='".$_SESSION['nom_prenom_user']."' WHERE id_facp=$id";
             $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+            $this->verificationErreur();
             $this->mysqli->autocommit(TRUE);
             $response = array("status" => 0,
                 "datas" => $r,
@@ -187,56 +191,62 @@ class demandeController extends model {
         } 
 }
 
-public function showFactureDetails() {
-    if ($this->get_request_method() != "POST") {
-        $this->response('', 406);
-    }
-
-    $fact = $_POST;
-
-    $code_fact = $fact['code_fact'];
-
-    $query = "SELECT a.code_art,a.nom_art,v.pu_theo_achat,
-                     v.id_vnt,f.id_fact,f.bl_fact_grt,f.bl_bic,f.bl_tva,v.qte_vnt,v.pu_theo_vnt,v.mnt_theo_vnt,v.date_vnt,f.caissier_fact
-                      FROM t_vente v 
-                     INNER JOIN t_article a ON v.article_vnt=a.id_art
-                     INNER JOIN t_facture_vente f ON v.facture_vnt=f.id_fact
-                      WHERE f.code_fact='$code_fact' ORDER BY a.nom_art ASC";
-
-    $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
-
-    if ($r->num_rows > 0) {
-        $result = array();
-
-        while ($row = $r->fetch_assoc()) {
-            $id_vntp = $row['id_vnt'];
-            $query = "SELECT * FROM t_facture_prix WHERE id_vntp = $id_vntp order by id_facp desc limit 1";
-            
-            $r2 = $this->mysqli->query($query);
-            if ($r2->num_rows > 0) {
-                $rowp = $r2->fetch_assoc();
-                $row['prix_propose'] = intval($rowp['prix_propose']);
-                $row['id_facp'] = intval($rowp['id_facp']);
-                $row['action'] = intval($rowp['action']);
-                $row['user_valid'] = $rowp['user_valid'];
-                $row['user_enr'] = $rowp['user_enr'];
-            } else {
-                $row['prix_propose'] = intval($row['pu_theo_vnt']);
-            }
-            $result[] = $row;
+    public function showFactureDetails() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
         }
-        $response = array("status" => 0,
-            "datas" => $result,
-            "message" => "");
-        $this->response($this->json($response), 200);
-    } else {
-        $response = array("status" => 0,
-            "datas" => "",
-            "message" => "");
-        $this->response($this->json($response), 200);
-    }
 
-    $this->response('', 204);
+        $fact = $_POST;
+
+        $code_fact = $fact['code_fact'];
+
+        $query = "SELECT a.code_art,a.nom_art,v.pu_theo_achat,
+                        v.id_vnt,f.id_fact,f.bl_fact_grt,f.bl_bic,f.bl_tva,v.qte_vnt,v.pu_theo_vnt,v.mnt_theo_vnt,v.date_vnt,f.caissier_fact
+                        FROM t_vente v 
+                        INNER JOIN t_article a ON v.article_vnt=a.id_art
+                        INNER JOIN t_facture_vente f ON v.facture_vnt=f.id_fact
+                        WHERE f.code_fact='$code_fact' ORDER BY a.nom_art ASC";
+
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+
+        if ($r->num_rows > 0) {
+            $result = array();
+
+            while ($row = $r->fetch_assoc()) {
+                $id_vntp = $row['id_vnt'];
+                $query = "SELECT * FROM t_facture_prix WHERE id_vntp = $id_vntp order by id_facp desc limit 1";
+                
+                $r2 = $this->mysqli->query($query);
+                if ($r2->num_rows > 0) {
+                    $rowp = $r2->fetch_assoc();
+                    $row['prix_propose'] = intval($rowp['prix_propose']);
+                    $row['id_facp'] = intval($rowp['id_facp']);
+                    $row['action'] = intval($rowp['action']);
+                    $row['user_valid'] = $rowp['user_valid'];
+                    $row['user_enr'] = $rowp['user_enr'];
+                } else {
+                    $row['prix_propose'] = intval($row['pu_theo_vnt']);
+                }
+                $result[] = $row;
+            }
+            $response = array("status" => 0,
+                "datas" => $result,
+                "message" => "");
+            $this->response($this->json($response), 200);
+        } else {
+            $response = array("status" => 0,
+                "datas" => "",
+                "message" => "");
+            $this->response($this->json($response), 200);
+        }
+
+        $this->response('', 204);
+    }
+    public function verificationErreur() {
+        if ($this->mysqli->affected_rows !== 1) {
+        throw new Exception("Mise à jour de nombre de lignes inattendu " 
+            . $this->mysqli->affected_rows);
+    }
 }
 
 
