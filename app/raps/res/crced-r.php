@@ -10,7 +10,7 @@ include "includes/const.php";
     @page {
         margin: 2cm;
         @bottom-center {
-            content: "Page " counter(page);
+            content: "Page " counter(page) " / " counter(pages);
         }
     }
     @media print {
