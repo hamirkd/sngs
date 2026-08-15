@@ -26,7 +26,7 @@ include "includes/const.php";
     }
 </style>
 <page backtop="30mm" format="A4" backbottom="10mm" backleft="10mm" backright="10mm">
-    <page_header>
+    <page_header style='border:dotted'>
         <?php
         include "includes/header.php";
         ?>
