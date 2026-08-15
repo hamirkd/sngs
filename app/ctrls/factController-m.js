@@ -23,7 +23,7 @@ sngs.controller("factureEtaCtrl", ["$scope", "$rootScope", "config", "prmutils",
         mm = "0" + mm
     }
     today = dd + "/" + mm + "/" + yyyy;
-    today = "05/12/2025";
+    // today = "05/12/2025";
     $scope.search.date_deb = today;
     $scope.getclt = function() {
         var task = prmutils.getaClients();
