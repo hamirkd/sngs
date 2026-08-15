@@ -18,7 +18,7 @@
             <legend>{{title}}</legend>
             <table width="100%">
                 <tr>
-                    <td width="30%"><label>Code utilisateur (5 caracteres maxi)</label>
+                    <td width="40%"><label>Code utilisateur (5 caracteres maxi)</label>
                         <div class="input-control text span4" data-role="input-control"><input placeholder="code" type="text" ng-model="user.code_user" required><button type="button" class="btn-clear" tabindex="-1"></button></div>
                         <label>Profil</label>
                         <div class="input-control select span4" data-role="input-control"><select ng-model="user.profil_user">
@@ -38,12 +38,6 @@
                                 <option value=""></option>
                             </select></div>
                     </td>
-                    <td width="10%">
-                        <label>Responsable </label>
-                        <div class="input-control select span4" data-role="input-control"><select name='resp_user' ng-model="user.resp_user" ng-options="user.id_user as user.nom_prenom_user|uppercase for user in users">
-                                    <option value=""></option>
-                                </select></div>
-                    </td>
                 </tr>
                 <tr>
                     <td><label>Nom</label>
@@ -51,7 +45,7 @@
                         <label>Pr&eacute;nom(s) </label>
                         <div class="input-control text span4" data-role="input-control"><input placeholder="Hamza" type="text" ng-model="user.prenom_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
                         <label>E-mail</label>
-                        <div class="input-control text span4" data-role="input-control"><input placeholder="onyxbf@yahoo.fr" type="email" ng-model="user.mail_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                        <div class="input-control text span6" data-role="input-control"><input placeholder="onyxbf@yahoo.fr" type="email" ng-model="user.mail_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
                         <label>Sexe</label>
                         <div class="input-control radio default-style" data-role="input-control"><label><input
                                     name="sexe_user" checked="" type="radio" ng-model="user.sexe_user" value="M"
@@ -59,6 +53,16 @@
                         <div class="input-control radio default-style" data-role="input-control"><label><input
                                     name="sexe_user" type="radio" ng-model="user.sexe_user" value="F"><span
                                     class="check"></span> Femme </label></div>
+                                    
+                                <label>Responsable </label>
+                                <div class="input-control select span6" data-role="input-control"><select name='resp_user' ng-model="user.resp_user" ng-options="user.id_user as user.nom_prenom_user|uppercase for user in users">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                    <label>Poste </label>
+                                    <div class="input-control text span4" data-role="input-control"><input placeholder="Agent" type="text" ng-model="user.poste_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
+                                    <label>CNIB </label>
+                                    <div class="input-control text span4" data-role="input-control"><input placeholder="B240983" type="text" ng-model="user.cnib_user"><button type="button" class="btn-clear" tabindex="-1"></button></div>
                     </td>
                     <td>
                         <div>
@@ -106,7 +110,10 @@
                             <label> Peut-il confirmer une production ? 
                                 <label style="display: contents;"><input name="droit_confirmation_production" checked="" type="radio" ng-model="user.droit_confirmation_production" value="1" checked><span class="check"></span> Oui </label>
                             <label style="display: contents;"><input name="droit_confirmation_production" type="radio" ng-model="user.droit_confirmation_production" value="0"><span class="check"></span> Non </label></label>
-
+                            <label> Peut-il confirmer une validation de prix ? 
+                                <label style="display: contents;"><input name="droit_validation_prix_facture" checked="" type="radio" ng-model="user.droit_validation_prix_facture" value="1" checked><span class="check"></span> Oui </label>
+                            <label style="display: contents;"><input name="droit_validation_prix_facture" type="radio" ng-model="user.droit_validation_prix_facture" value="0"><span class="check"></span> Non </label></label>
+                            
                             <label> Role du validateur d'expression de besoin ? </label>
                             <label style="display: contents;"><input name="droit_validateur_demande" checked="" type="radio" ng-model="user.droit_validateur_demande" value="PDG" checked><span class="check"></span> PDG </label>
                             <label style="display: contents;"><input name="droit_validateur_demande" checked="" type="radio" ng-model="user.droit_validateur_demande" value="CONTROGES" checked><span class="check"></span> Control. gestion </label>

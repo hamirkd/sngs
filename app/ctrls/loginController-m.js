@@ -63,6 +63,8 @@ angular.module("sngs").controller("loginCtrl", ["$rootScope", "$scope", "localSt
                     droitPaiement: Number(result.data.droit_paiement),
                     droitConfirmationApprovisionnement: Number(result.data.droit_confirmation_approvisionnement),
                     droitValidateurDemande: result.data.droit_validateur_demande,
+                    droitValidationPrixFacture: result.data.droit_validation_prix_facture,
+                    
                     magasins: result.data.magasins
                 };
                 app.options = {

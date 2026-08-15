@@ -1,0 +1,112 @@
+<div class="grid">
+    <div class="row">
+        <div>
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a href="#/facture-prix-etat" class="element btn_search"><span
+                            class="icon-stats"></span> Liste des soumissions </a><span class="element-divider"></span>
+                </div>
+
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <div class="">
+        <div>
+            <div class="example">
+                <fiedlset>
+
+                    <legend> Soumission de facture pour réduction
+
+                        &nbsp;<button style="float:right;margin-right:50px;margin-left:50px;"
+                            class="button success" ng-click="recupererElementFacture(code_fact);">Rechercher</button>
+
+                        <div class="input-control text span4" style='float: right;'>
+
+                            <input ng-model="code_fact" placeholder="Numéro de facture" type="text">
+                        </div>
+
+                    </legend>
+                    <div class="col-md-12"> 
+
+                <form name="form">
+                    <div style="max-height:500px;overflow:auto;">
+                        <table width="100%" class="table striped bordered condensed">
+                            <tr>
+                                <td>Nom article</td>
+                                <td>Quantité</td>
+                                <td>prix unitaire</td>
+                                <td>Ancien Montant</td>
+                                <td>Prix unitaire Proposé</td>
+                                <td>Nouveau Montant Proposé</td>
+                            </tr>
+                            <tr ng-repeat="data in details" class="liste">
+                                <td>{{data.nom_art|uppercase}}</td>
+                                <td>{{app.formatNumber(data.qte_vnt)}}</td>
+                                <td>{{app.formatNumber(data.pu_theo_vnt)}}</td>
+                                <td>{{app.formatNumber(data.mnt_theo_vnt)}}</td>
+                                <td>
+                                    <input
+                                            style="height:100%;font-size:20px;" name="prix_propose" placeholder="0"
+                                            type="number" ng-model="data.prix_propose">
+                                </td>
+                                <td>{{app.formatNumber((data.prix_propose||0) *  data.qte_vnt)}}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{app.formatNumber(getTotal().totalAncien)}}</td>
+                                <td></td>
+                                <td>{{app.formatNumber(getTotal().totalNouveau)}}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>Réduction : </td>
+                                <td>{{getTotal().totalNouveau - getTotal().totalAncien | number}}</td>
+                            </tr>
+                        </table>
+                        <span class="element-divider"></span>
+                        <div style="padding-top: 10%;"><button class="primary" ng-click="saveFacturePrix(details);"><span
+                                    class="icon-checkmark"></span>Valider</button> &nbsp; <button class="inverse"
+                                type="reset" class="button"><i class="icon-undo on-left on-left-more"></i>Annuler
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                    </div> 
+                </fiedlset>
+            </div>
+        </div> 
+
+
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+
+
+
+
+        $(".btn_reinitialiser").on("click", function () {
+            console.log($("#searchPannel").css("right"))
+            if ($("#searchPannel").css("right") === '0px') {
+                $("#searchPannel").css("right", "-700%");
+            } else {
+                $("#searchPannel").css("right", "0")
+            }
+        });
+        $(".inverse").on("click", function () {
+            console.log("------o")
+            $(".btn_reinitialiser").click();
+        });
+        $(".btn_validation_annuler").on("click", function () {
+            $("#detailsPannel").css("right", "-700%");
+        });
+    });
+</script>

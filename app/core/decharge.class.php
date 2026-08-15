@@ -68,12 +68,31 @@ class dechargeController extends model {
         $motif = $this->esc($decharge['motif']);
         $magasin = !empty($decharge['magasin']) ? intval($decharge['magasin']):$_SESSION['userMag'];
         $date_decharge = (!empty($decharge['date_decharge'])) ? isoToMysqldate($decharge['date_decharge']) : date("Y-m-d");
+        $delivre_le = isoToMysqldate($decharge['delivre_le']);
+        $expire_le = isoToMysqldate($decharge['expire_le']);
+        $type_piece = $decharge['type_piece'];
+        $reference_piece = $decharge['reference_piece'];
+
+
+        
         $user_decharge_id = $decharge['user_decharge_id'];
         $type_decharge = $decharge['type_decharge'];
         $client_id = $decharge['client_id'];
         $type_decharge = $decharge['type_decharge'];
         $nom_prenom_dechargeur = $decharge['nom_prenom_dechargeur'];
         $nom_prenom_client = $decharge['nom_prenom_client'];
+
+        $queryClient = "SELECT max(numero_ordre) as numero_ordre FROM t_decharge WHERE client_id=$client_id";
+        $r = $this->mysqli->query($queryClient) or die($this->mysqli->error . __LINE__);
+        $numero_ordre = 0;
+        if ($r->num_rows > 0) {
+            while ($row = $r->fetch_assoc()) {
+                $numero_ordre = intval($row ['numero_ordre']);
+                $numero_ordre = $numero_ordre + 1;
+            }
+        } else {
+            $numero_ordre = $numero_ordre + 1;
+        }
         
         $response = array();
         if ($magasin>0 && !empty($montant) && $montant >= 0) {
@@ -82,10 +101,10 @@ class dechargeController extends model {
                 $heure_vnt = date("H:i:s");
                 $query = "INSERT INTO  t_decharge(mag_decharge, user_decharge_id,
                 client_id, date_decharge, montant, login_decharge, motif_decharge,
-                type_decharge, nom_prenom_dechargeur, nom_prenom_client) 
+                type_decharge, nom_prenom_dechargeur, nom_prenom_client, delivre_le,expire_le,reference_piece,type_piece,numero_ordre) 
                     VALUES($magasin, $user_decharge_id, $client_id , '$date_decharge $heure_vnt',
                     $montant,'" . $_SESSION['userLogin'] . "','" . $motif . "','" . $type_decharge . "',
-                    '$nom_prenom_dechargeur','$nom_prenom_client')";
+                    '$nom_prenom_dechargeur','$nom_prenom_client','$delivre_le','$expire_le','$reference_piece', '$type_piece',$numero_ordre)";
                     // echo $query;
                 if (!$r = $this->mysqli->query($query))
                     throw new Exception($this->mysqli->error . __LINE__);
@@ -122,9 +141,10 @@ class dechargeController extends model {
         }
 
         $decharge = $_POST;
-        $query = "SELECT d.*, m.nom_mag, c.tel_clt FROM t_decharge d
+        $query = "SELECT d.*,u.*, m.nom_mag, c.tel_clt FROM t_decharge d
         LEFT JOIN t_magasin m ON m.id_mag=d.mag_decharge
         LEFT JOIN t_client c ON c.id_clt=d.client_id
+        LEFT JOIN t_user u ON u.id_user=d.user_decharge_id
         WHERE d.id_decharge=" . $decharge['id_decharge'];
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
@@ -151,23 +171,36 @@ class dechargeController extends model {
         $TBS->MergeField('mag_decharge', $row['nom_mag']);
         $TBS->MergeField('user_decharge_id', $row['user_decharge_id']);
         $TBS->MergeField('client_id', $row['client_id']);
-        $TBS->MergeField('date_decharge_formatted', date('d/m/Y à H\hi', strtotime($row['date_decharge'])));
+        $TBS->MergeField('date_decharge_formatted', date('d/m/Y', strtotime($row['date_decharge'])));
+        $TBS->MergeField('date_imp', date('d/m/Y à H\hi'));
         $TBS->MergeField('montant', number_format($row['montant'], 0, ',', ' '));
         $TBS->MergeField('login_decharge', $row['login_decharge']);
         $TBS->MergeField('motif_decharge', $row['motif_decharge']);
-        $TBS->MergeField('type_decharge', $row['type_decharge']);
-        $TBS->MergeField('tel_clt', $row['tel_clt']);
+        // Information de l'emetteur
         $TBS->MergeField('nom_prenom_dechargeur', trim($row['nom_prenom_dechargeur']));
-        $TBS->MergeField('nom_dechargeur', trim($row['nom_dechargeur']));
-        $TBS->MergeField('prenom_dechargeur', trim($row['prenom_dechargeur']));
+        $TBS->MergeField('nom_dechargeur', trim($row['nom_user']));
+        $TBS->MergeField('prenom_dechargeur', trim($row['prenom_user']));
+        $TBS->MergeField('poste_dechargeur', trim($row['poste_user']));
+        $TBS->MergeField('cnib_dechargeur', trim($row['cnib_user']));
+        // Information du client
         $TBS->MergeField('nom_prenom_client', trim($row['nom_prenom_client']));
-        $TBS->MergeField('mode_paiement', 'Espèces'); // ou dynamique
+        $TBS->MergeField('tel_clt', $row['tel_clt']);
+        $TBS->MergeField('numero_ordre_client', str_pad($row['numero_ordre'], 4, '0', STR_PAD_LEFT));
+        $TBS->MergeField('type_piece', $row['type_piece']);
+        $TBS->MergeField('reference_piece', $row['reference_piece']);
+        $TBS->MergeField('delivre_le', date('d/m/Y', strtotime($row['delivre_le'])));
+        $TBS->MergeField('expire_le', date('d/m/Y', strtotime($row['expire_le'])));
+
+
+        $TBS->MergeField('mode_paiement', 'Espèces');
         if ($row['type_decharge'] == 'RECEVOIR') {
             $TBS->MergeField('sens', 'reçu');
             $TBS->MergeField('compte', 'pour le compte du');
+            $TBS->MergeField('type_decharge', 'Retrait de fonds');
         } else {
             $TBS->MergeField('sens', 'remis');
             $TBS->MergeField('compte', 'au');
+            $TBS->MergeField('type_decharge', 'Envoi de fonds');
         }
         $TBS->MergeField('mode_paiement', 'Espèces');
 

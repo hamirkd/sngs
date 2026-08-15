@@ -73,25 +73,53 @@
                                     <label class="col-lg-12">Date decharge</label>
                                     <div class="input-control text col-lg-3"><input type="text" required placeholder="jj/mm/aaaa" name="date_decharge" ng-model="decharge.date_decharge" class="fg-orange"></div>
                                     <label>Type</label>
-                        <div class="input-control select col-lg-3" data-role="input-control"><select ng-model="decharge.type_decharge">
-                                <option value="RECEVOIR">RECEVOIR</option>
-                                <option value="ENVOYER">ENVOYER</option>
-                            </select></div>
+                        <div class="input-control select col-lg-3" data-role="input-control">
+                            <select ng-model="decharge.type_decharge">
+                                <option value="RECEVOIR">Retrait de fonds</option>
+                                <option value="ENVOYER">Transfert de fonds</option>
+                            </select>
+                        </div>
                                     
                         <label>Responsable </label>
-                        <div class="input-control select  col-lg-3" data-role="input-control"><select name='user_decharge_id' ng-model="decharge.user_decharge_id" ng-options="user.id_user as user.nom_prenom_user for user in users">
+                        <div class="input-control  select col-lg-3">
+                            <span class="input-control text span2"><input ng-model="ftu"
+                                placeholder="filtre" type="text" ng-focus=""></span>
+                        </div>
+
+                        <div class="input-control select  col-lg-3" data-role="input-control"><select name='user_decharge_id' ng-model="decharge.user_decharge_id" ng-options="user.id_user as user.nom_prenom_user for user in users|filter:ftu|orderBy:'nom_prenom_user':false">
                                     <option value=""></option>
                                 </select></div>
 
-
-                                    <label>Client &nbsp;&nbsp;[<a href="#/prmclt/0" title="Ajouter un client" target="_BLANK">+</a>]<span class="input-control text span2"><input ng-model="ft"
-                                        placeholder="filtre" type="text" ng-focus=""></span></label>
-                            <div class="input-control  select col-lg-3" data-role="input-control"><select name='client_id'
-                                    ng-model="decharge.client_id" required
-                                    ng-options="client.id_clt as client.nom_prenom_client |uppercase for client in clients|filter:ft|orderBy:'nom_prenom_client':false"
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Client &nbsp;&nbsp;[<a href="#/prmclt/0" title="Ajouter un client" target="_BLANK">+</a>]
+                                    </label>
+                                    <div class="input-control  select col-lg-3">
+                                    <span class="input-control text span2"><input ng-model="ft"
+                                        placeholder="filtre" type="text" ng-focus=""></span>
+                                    </div>
+                                    <div class="input-control  select col-lg-3" data-role="input-control">
+                                        <select name='client_id' ng-model="decharge.client_id" required ng-options="client.id_clt as client.nom_prenom_client |uppercase for client in clients|filter:ft|orderBy:'nom_prenom_client':false"
                                     ng-change="focusField('montant')" required></select><span style="position:absolute;"
                                     title="Actualiser la liste des clients" class="icon-cycle" ng-click="gclt()"></span></div>
-                       
+                                    <label class="col-lg-12">Type Piece</label>
+                                    <div class="input-control select col-lg-3" data-role="input-control">
+                                        <select ng-model="decharge.type_piece">
+                                            <option value="CNIB">CNIB</option>
+                                            <option value="PASSPORT">Passport</option>
+                                            <option value="CARTE_CONSULAIRE">CARTE CONSULAIRE</option>
+                                            <option value="AUTRE">Autre</option>
+                                        </select>
+                                    </div>
+                                    <label class="col-lg-12">Numéro de la pièce</label>
+                                    <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="reference_piece" placeholder="B2343... ou A3433..." type="text" ng-model="decharge.reference_piece" required></div>
+                                    <label class="col-lg-12">Délivré le </label>
+                                    <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="delivre_le"  placeholder="jj/mm/aaaa" type="text" ng-model="decharge.delivre_le" required></div>
+                                    <label class="col-lg-12">Expire le </label>
+                                    <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="expire_le"  placeholder="jj/mm/aaaa" type="text" ng-model="decharge.expire_le" required></div>
+
                                     
                                     
                                     <label class="col-lg-12">Montant</label>

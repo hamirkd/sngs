@@ -1245,6 +1245,23 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     servicesObject.editFacturePaiement = function(fact) {
         return dao.getData(config.mdlPaiement + "editFacturePaiement", fact);
     };
+
+    servicesObject.getEtatFacturePrix = function(obj) {
+        return dao.getData(config.mdlFacturePrix + "getEtatFacturePrix", obj)
+    };
+    servicesObject.getEtatFacturePrixshowFactureDetails = function(obj) {
+        return dao.getData(config.mdlFacturePrix + "showFactureDetails", obj)
+    };
+    servicesObject.saveFacturePrix = function(obj) {
+        return dao.getData(config.mdlFacturePrix + "saveFacturePrix", obj)
+    };
+    servicesObject.validationFacturePrix = function(obj) {
+        return dao.getData(config.mdlFacturePrix + "validationFacturePrix", obj)
+    };
+
+    
+    
+    
     
 
     servicesObject.isDate = function(strDate) {
@@ -1258,6 +1275,26 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
         } else {
             return false
         }
+    };
+    
+    servicesObject.convertDateToFrench = function(strDate) {
+        var date = new Date(strDate);
+        
+        // Vérifier si la date est valide
+        if (isNaN(date.getTime())) {
+            return "Date invalide";
+        }
+        
+        // Ajouter un zéro devant si nécessaire
+        var jour = date.getDate();
+        var mois = date.getMonth() + 1;
+        var annee = date.getFullYear();
+        
+        jour = jour < 10 ? '0' + jour : jour;
+        mois = mois < 10 ? '0' + mois : mois;
+        
+        var strDateFrench = jour + '/' + mois + '/' + annee;
+        return strDateFrench;
     };
     return servicesObject
 }]);

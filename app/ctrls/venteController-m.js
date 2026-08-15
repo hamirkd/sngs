@@ -1969,3 +1969,325 @@ sngs.controller("livraisonCtrl", ["$window", "$scope", "$rootScope", "prmutils",
     }
     $scope.loadExtArticlesOfCategorie();
 }]);
+
+
+
+sngs.controller("facturePrixEditCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+    var app = $scope.app;
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Etat des paiements",
+        subtitle: "Etat paiement",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Etat des paiements";
+    $rootScope.pageTitle = "Etat Paiements";
+    $scope.search = {};
+    var today = new Date();
+    var today2 = new Date();
+    today2.setMonth(today.getMonth() + 1);
+    
+    var dd = today.getDate();
+    var mm = today.getMonth();
+    var mmfin = today2.getMonth();
+    var mmdebut = today.getMonth();
+    var yyyydebut = today.getFullYear();
+    var yyyyfin = today2.getFullYear();
+    var sss = today.getTime();
+    if (dd < 10) {
+        dd = "0" + dd
+    }
+    if (mm < 10) {
+        mm = "0" + mm
+    }
+    if (mmdebut < 10) {
+        mmdebut = "0" + mmdebut
+    }
+    if (mmfin < 10) {
+        mmfin = "0" + mmfin
+    }
+    if (today.getMonth() == 0) {
+        today.setMonth(today.getMonth() - 1);
+        mmdebut = today.getMonth();
+        mmdebut = mmdebut + 1;
+        yyyydebut = today.getFullYear();
+    }
+    if (mmfin == "00") {
+        mmfin = "01";
+    }
+    today = dd + "/" + mmdebut + "/" + yyyydebut;
+    today2 = dd + "/" + mmfin + "/" + yyyyfin;
+    $scope.search.date_deb = today;
+    $scope.search.date_fin = today2;
+    
+    $scope.recupererElementFacture = function(code_fact) {
+        var fac = {
+            code_fact: code_fact
+        };
+        var task = prmutils.getEtatFacturePrixshowFactureDetails(fac);
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.details = result.data;
+                app.waiting.show = false;
+                $scope.getTotal($scope.details);
+            } else {
+                app.waiting.show = false
+            }
+        })
+    }
+
+    $scope.searchF = function() {
+        var task;
+        task = prmutils.getEtatFacturePrix($scope.search);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    $scope.factureprixs = result.data
+                    $scope.factureprixs.sort((a, b) => a.date_enr > b.date_enr);
+                }
+            } else {
+                app.notify("Une erreur est survenue ...", "m")
+            }
+        })
+    };
+    $scope.getTotal = function() {
+        var totalAncien = 0;
+        var totalNouveau = 0;
+        console.log();
+        if (!$scope.details) {
+            return {totalAncien:'', totalNouveau:''}
+        }
+        for (var i = 0; i < $scope.details.length; i++) {
+            var vente = $scope.details[i];
+            totalAncien += parseInt(vente.pu_theo_vnt) * parseInt(vente.qte_vnt);
+            if (vente.prix_propose)
+            totalNouveau += parseInt(vente.prix_propose) * parseInt(vente.qte_vnt);
+        }
+        return {totalAncien, totalNouveau}
+    };
+    $scope.saveFacturePrix = function() {
+        var dataToSave = [];
+        app.waiting.show = true;
+        $scope.details.forEach(d => {
+            if (d.prix_propose && d.prix_propose > 0 && d.prix_propose != d.pu_theo_vnt) {
+                dataToSave.push({
+                    id_vntp: d.id_vnt,
+                    prix_ancien: d.pu_theo_vnt,
+                    prix_propose: d.prix_propose,
+                });
+            }
+        });
+        task = prmutils.saveFacturePrix(dataToSave);
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            console.log(result)
+            if (result.err === 0) {
+                app.waiting.show = false;
+                app.notify(result.message, "b");
+                $scope.details = [];
+            } else {
+                app.waiting.show = false;
+                app.notify("Une erreur est survenue ...", "m")
+            }
+        });
+    }
+    $scope.getMyMagasinsAcces = function() {
+        if (app.userPfl.pfl == 1 || app.userPfl.pfl == 0) {
+            task = prmutils.getMagasins();
+        } else {
+            task = prmutils.getMyMagasinsAcces();
+        }
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.myMagasinsAcces = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        });
+    }
+    
+    $scope.getMyMagasinsAcces();
+
+    $scope.gus = function() {
+        task = prmutils.getcUsers();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                console.log(result.data)
+                $scope.users = result.data;
+                for (let user of $scope.users) {
+                    user['nom_prenom_user'] = '[' + user.code_user + '] ' + user.nom_user + ' ' + user.prenom_user;
+                }
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.gus();
+    
+}]);
+
+
+sngs.controller("facturePrixEtatCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+    var app = $scope.app;
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Etat des soumissions de prix",
+        subtitle: "Etat facture",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Etat des soumissions de prix";
+    $rootScope.pageTitle = "Etat soumission prix";
+    $scope.search = {};
+    $scope.code_fact = null;
+    var today = new Date();
+    var today2 = new Date();
+    today2.setMonth(today.getMonth() + 1);
+    
+    var dd = today.getDate();
+    var mm = today.getMonth();
+    var mmfin = today2.getMonth();
+    var mmdebut = today.getMonth();
+    var yyyydebut = today.getFullYear();
+    var yyyyfin = today2.getFullYear();
+    var sss = today.getTime();
+    if (dd < 10) {
+        dd = "0" + dd
+    }
+    if (mm < 10) {
+        mm = "0" + mm
+    }
+    if (mmdebut < 10) {
+        mmdebut = "0" + mmdebut
+    }
+    if (mmfin < 10) {
+        mmfin = "0" + mmfin
+    }
+    if (today.getMonth() == 0) {
+        today.setMonth(today.getMonth() - 1);
+        mmdebut = today.getMonth();
+        mmdebut = mmdebut + 1;
+        yyyydebut = today.getFullYear();
+    }
+    if (mmfin == "00") {
+        mmfin = "01";
+    }
+    today = dd + "/" + mmdebut + "/" + yyyydebut;
+    today2 = dd + "/" + mmfin + "/" + yyyyfin;
+    $scope.search.date_deb = today;
+    $scope.search.date_fin = today2;
+     
+    $scope.downloadJSONAsCSV = function() {
+        // Convert JSON data to CSV
+        let csvData = app.jsonToCsv($scope.factureprixs); // Add .items.data
+        // Create a CSV file and allow the user to download it
+        let blob = new Blob([csvData], { type: 'text/csv' });
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.csv';
+        document.body.appendChild(a);
+        a.click();
+    }
+    $scope.recupererElementFacture = function(code_fact) {
+        var fac = {
+            code_fact: code_fact
+        };
+        $scope.code_fact = code_fact;
+        var task = prmutils.getEtatFacturePrixshowFactureDetails(fac);
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.details = result.data;
+                app.waiting.show = false;
+                $("#detailsPannel").css("right", "0");
+            } else {
+                app.waiting.show = false
+            }
+        })
+    }
+    
+    $scope.validationFacturePrix = function(data, action) {
+        var fac = {
+            id_fact_prix: data['id_facp'],
+            action: action
+        };
+        app.waiting.show = true;
+        var task = prmutils.validationFacturePrix(fac);
+        task.promise.then(function(result) {
+            console.log(result)
+            if (result.err === 0) {
+                $scope.recupererElementFacture($scope.code_fact);
+                $scope.searchF();
+                app.notify(result.message, action == 1 ? "b" : "m");
+            } else {
+                app.waiting.show = false;
+                app.notify(result.message || "Une erreur est survenue ...", "m")
+            }
+        })
+    }
+
+    $scope.searchF = function() {
+        var task;
+        task = prmutils.getEtatFacturePrix($scope.search);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    $scope.factureprixs = result.data
+                    $scope.factureprixs.sort((a, b) => a.date_enr > b.date_enr);
+                }
+            } else {
+                app.notify("Une erreur est survenue ...", "m")
+            }
+        })
+    };
+    $scope.searchF();
+    $scope.getMyMagasinsAcces = function() {
+        if (app.userPfl.pfl == 1 || app.userPfl.pfl == 0) {
+            task = prmutils.getMagasins();
+        } else {
+            task = prmutils.getMyMagasinsAcces();
+        }
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.myMagasinsAcces = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        });
+    }
+    $scope.getMyMagasinsAcces();
+
+    $scope.gus = function() {
+        task = prmutils.getcUsers();
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                console.log(result.data)
+                $scope.users = result.data;
+                for (let user of $scope.users) {
+                    user['nom_prenom_user'] = '[' + user.code_user + '] ' + user.nom_user + ' ' + user.prenom_user;
+                }
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        })
+    };
+    $scope.gus();
+    
+}]);

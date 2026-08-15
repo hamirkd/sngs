@@ -139,4 +139,40 @@ DEFINER=`root`@`localhost`
  
 
 
-ALTER TABLE `t_user` ADD `poste` VARCHAR(200) NULL AFTER `droit_approvisionnement`;
+ALTER TABLE `t_user` ADD `droit_confirmation_production` TINYINT NOT NULL DEFAULT '0' AFTER `droit_approvisionnement`;
+
+
+ALTER TABLE `t_user` ADD `poste_user` VARCHAR(200) NULL AFTER `droit_confirmation_production`;
+ALTER TABLE `t_user` ADD `cnib_user` VARCHAR(200) NULL AFTER `poste_user`;
+
+ALTER TABLE `t_decharge` ADD `numero_ordre` INT(11) NOT NULL DEFAULT '0' AFTER `nom_prenom_client`, ADD `type_piece` VARCHAR(200) NOT NULL DEFAULT 'CNIB' AFTER `numero_ordre`, ADD `reference_piece` VARCHAR(200) NULL AFTER `type_piece`, ADD `delivre_le` DATE NOT NULL AFTER `reference_piece`, ADD `expire_le` DATE NOT NULL AFTER `delivre_le`;
+
+ALTER TABLE `t_decharge` ADD `numero_ordre` INT(11) NOT NULL DEFAULT '0' AFTER `nom_prenom_client`;
+ALTER TABLE `t_decharge` ADD `type_piece` VARCHAR(200) NOT NULL DEFAULT 'CNIB' AFTER `numero_ordre`;
+ALTER TABLE `t_decharge` ADD `reference_piece` VARCHAR(200) NULL AFTER `type_piece`;
+ALTER TABLE `t_decharge` ADD `delivre_le` DATE NOT NULL AFTER `reference_piece`;
+ALTER TABLE `t_decharge` ADD `expire_le` DATE NOT NULL AFTER `delivre_le`;
+
+
+CREATE TABLE `t_facture_prix` (
+  `id_facp` int(11) NOT NULL,
+  `id_vntp` int(11) NOT NULL,
+  `prix_ancien` int(11) NOT NULL,
+  `prix_propose` int(11) NOT NULL,
+  `date_enr` datetime NOT NULL DEFAULT current_timestamp(),
+  `user_enr` varchar(50) NOT NULL,
+  `last_updated` datetime NOT NULL DEFAULT current_timestamp(),
+  `user_valid` varchar(50) DEFAULT NULL,
+  `action` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+ALTER TABLE `t_facture_prix`
+  ADD PRIMARY KEY (`id_facp`);
+
+ALTER TABLE `t_facture_prix`
+  MODIFY `id_facp` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+ALTER TABLE `t_user` ADD `droit_validation_prix_facture` TINYINT NOT NULL DEFAULT '0' AFTER `droit_confirmation_production`;
+
+mysql -u root -p bd_songo_sgns < bkp_gestion_stock_2025-12-06_10h39.sql

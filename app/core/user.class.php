@@ -140,7 +140,7 @@ class userController extends model {
         $this->isExistcodeUpdt($user['user']['code_user'], $id);
         $this->isExistloginUpdt($user['user']['login_user'], $id);
 
-        $column_names = array('poste','sexe_user','nom_user', 'login_user', 'prenom_user', 'code_user', 'mail_user','regl_credit','vente_credit','facture_vente_annulee','droit_facture_vente_annulee_today','droit_controle_prix_vente','droit_reglement_facture_credit','droit_confirmation_approvisionnement','droit_confirmation_production','droit_paiement','droit_depense','droit_annule_depense','droit_approvisionnement');
+        $column_names = array('poste_user','cnib_user','sexe_user','nom_user', 'login_user', 'prenom_user', 'code_user', 'mail_user','regl_credit','vente_credit','facture_vente_annulee','droit_facture_vente_annulee_today','droit_controle_prix_vente','droit_reglement_facture_credit','droit_confirmation_approvisionnement','droit_confirmation_production','droit_paiement','droit_depense','droit_annule_depense','droit_approvisionnement','droit_validation_prix_facture');
 
         $keys = array_keys($user['user']);
         $columns = '';

@@ -551,6 +551,15 @@ sngs = angular.module("sngs", ["sngs.services", "ngRoute", "ngResource", "base64
         controller: "etatPaiementCtrl"
     });
 
+    $routeProvider.when("/facture-prix-edit", {
+        templateUrl: "app/vws/facture-prix/facture-prix-edit-m.html",
+        controller: "facturePrixEditCtrl"
+    });
+    $routeProvider.when("/facture-prix-etat", {
+        templateUrl: "app/vws/facture-prix/facture-prix-etat-m.html",
+        controller: "facturePrixEtatCtrl"
+    });
+
     $routeProvider.when("/demandes-validation", {
         templateUrl: "app/vws/demande/etat-demande-m-validation.html",
         controller: "etatDemandeValidationCtrl"

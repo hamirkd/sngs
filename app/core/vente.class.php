@@ -1029,6 +1029,7 @@ class venteController extends model {
                         "Il y a une erreur lors de la génération du code de la facture, veuillez réactualiser votre écran ou vérifier la date de la facture"
                     );
                 }
+
                 /*
                 if (strpos($num_fac, $anneeCourante) === false) {
                     throw new Exception(

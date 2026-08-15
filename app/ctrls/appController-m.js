@@ -313,5 +313,18 @@ angular.module("sngs").controller("appCtrl", ["$rootScope", "localStorageService
         });
         return csv;
     }
+    app.formatNumber = function(value) {
+        if (value === null || value === undefined || value === '') {
+            return '';
+        }
+    
+        value = Math.round(Number(value));
+    
+        if (isNaN(value)) {
+            return '';
+        }
+    
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    }
 
 }]);

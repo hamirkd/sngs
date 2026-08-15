@@ -368,6 +368,8 @@ sngs.controller("etatDechargeCtrl", ["$scope", "$rootScope", "prmutils", functio
 
 
         var task;
+        console.log(decharge)
+        console.log(decharge)
         if (!prmutils.isDate(decharge.date_decharge)) {
             app.notify("Le format de la date est incorrect", "m");
             return false
