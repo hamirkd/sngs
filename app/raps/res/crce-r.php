@@ -7,6 +7,16 @@ session_start();
 include "includes/const.php";
 ?>
 <style type="text/css">
+    @page {
+        margin: 2cm;
+        @bottom-center {
+            content: "Page " counter(page);
+        }
+    }
+    @media print {
+        .page-break { page-break-after: always; }
+        .avoid-break { page-break-inside: avoid; }
+    }
     table tr td{
         border:1px solid #000;
         padding:2px;
