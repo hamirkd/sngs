@@ -12,10 +12,11 @@ include ("includes/db.php");
     require_once(dirname(__FILE__).'/../../libs/html2pdf/html2pdf.class.php');
     try
     {
-        $html2pdf = new HTML2PDF('P', 'A4', 'fr', true, 'UTF-8', 3);
-        $html2pdf->pdf->SetDisplayMode('fullpage');
-        $html2pdf->writeHTML($content);
-        $html2pdf->Output('Etat-des-creances-'.date("Ymd-His").'.pdf');
+        // $html2pdf = new HTML2PDF('P', 'A4', 'fr', true, 'UTF-8', 3);
+        // $html2pdf->pdf->SetDisplayMode('fullpage');
+        // $html2pdf->writeHTML($content);
+        // $html2pdf->Output('Etat-des-creances-'.date("Ymd-His").'.pdf');
+        echo $content;
     }
     catch(HTML2PDF_exception $e) {
         echo $e;
