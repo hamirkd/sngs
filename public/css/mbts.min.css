@@ -4569,7 +4569,8 @@ a {
 .metro .navigation-bar {
     width: 100%;
     display: block;
-    background-color: #58a943;
+    /* background-color: #58a943; */
+    background-color: #4390df;
     color: #fff
 }
 
