@@ -96,7 +96,7 @@
                                     <div class="stagger"><label>Boutique</label>
                                         <div class="input-control select span4" data-role="input-control">
                                             <select ng-model="search.mag_paiement"
-                                                ng-options="magasin.id_mag as magasin.nom_mag|uppercase for magasin in myMagasinsAcces">
+                                                ng-options="magasin.id_mag as magasin.nom_mag|uppercase for magasin in myMagasinsAcces  | filter:{archive: 0, type_mag: 'BOUTIQUE'}">
                                                 <option value=""></option>
                                             </select>
                                         </div>

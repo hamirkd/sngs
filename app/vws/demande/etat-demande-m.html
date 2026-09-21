@@ -105,7 +105,8 @@
                                 <tr>
                                     <td>
                                         <div class="stagger"><label>Demandeur</label>
-                                            <div class="input-control select span4" data-role="input-control"><select ng-model="search.demandeur" ng-options="user.code_user as user.login_user | uppercase for user in users" ng-click="gus()">
+                                            <div class="input-control select span4" data-role="input-control">
+                                                <select ng-model="search.demandeur" ng-options="user.code_user as user.login_user | uppercase for user in users" ng-click="gus()">
                                                 <option value=""></option>
                                             </select></div>
                                         </div>
