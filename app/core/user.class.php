@@ -380,15 +380,16 @@ class userController extends model {
         }
         $client = $_GET;
         $id = (int) $client['id']; 
-
-        $query = "UPDATE  t_user set pass_user= md5('Noor@2024') WHERE id_user=$id";
+        $password = 'Lina@' . date('Ymd');
+        $password = "'" . $password . "'";
+        $query = "UPDATE  t_user set pass_user= md5($password) WHERE id_user=$id";
         $response = array();
         try {
             if (!$r = $this->mysqli->query($query))
                 throw new Exception($this->mysqli->error . __LINE__);
             $response = array("status" => 0,
                 "datas" => "",
-                "message" => "Mot de passe reinitialise avec success");
+                "message" => "Mot de passe reinitialise avec success " . $password);
             $this->response($this->json($response), 200);
         } catch (Exception $exc) {
             $response = array("status" => 1,

@@ -1226,7 +1226,7 @@ sngs.controller("paramAccessCtrl", ["$scope", "$rootScope", "config", "prmutils"
         var task;
         task = prmutils.reinitps(id);
         task.promise.then(function(result) {
-            app.notify(result.message, "b")
+            app.notify(result.message, "b", 10000)
         })
     }
 }]);
@@ -1561,7 +1561,7 @@ sngs.controller("paramCusrCtrl", ["$scope", "$rootScope", "config", "prmutils", 
         var task;
         task = prmutils.reinitps(id);
         task.promise.then(function(result) {
-            app.notify(result.message, "b")
+            app.notify(result.message, "b", 10000)
         })
     }
 }]);
