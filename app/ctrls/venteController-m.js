@@ -243,9 +243,13 @@ sngs.controller("venteVntCtrl", ["$scope", "$rootScope", "config", "prmutils", "
     if (app.userPfl.pfl == 3) {
         $location.path(config.urlRupture);
     }
-    if (app.userPfl.pfl == 1) {
+    if (app.userPfl.droitValidateurDemande === 'CONTROGES') {
         $location.path(config.urlControleurGestion);
     }
+    if (app.userPfl.droitValidateurDemande !== 'CONTROGES' && app.userPfl.pfl==1) {
+        $location.path('/etacais-comptable');
+    }
+
     var slice = 0;
     var sliceg = "0";
     var sliceDomaine = [];

@@ -473,6 +473,16 @@ sngs = angular.module("sngs", ["sngs.services", "ngRoute", "ngResource", "base64
         templateUrl: "app/vws/etat/eta-cais-controleur.html",
         controller: "etaCaisControleurCtrl"
     });
+    
+    $routeProvider.when("/etacais-mark", {
+        templateUrl: "app/vws/etat/eta-cais-mark.html",
+        controller: "etaCaisControleurCtrl"
+    });
+    $routeProvider.when("/etacais-comptable", {
+        templateUrl: "app/vws/etat/eta-cais-comptable.html",
+        controller: "etaCaisControleurCtrl"
+    });
+
     $routeProvider.when("/etacais", {
         templateUrl: "app/vws/etat/eta-cais-m.html",
         controller: "etaCaisCtrl"

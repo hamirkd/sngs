@@ -176,3 +176,9 @@ COMMIT;
 ALTER TABLE `t_user` ADD `droit_validation_prix_facture` TINYINT NOT NULL DEFAULT '0' AFTER `droit_confirmation_production`;
 
 mysql -u root -p bd_songo_sgns < bkp_gestion_stock_2025-12-06_10h39.sql
+
+
+ALTER TABLE `t_magasin` ADD `delete_at` DATETIME NOT NULL DEFAULT NULL AFTER `plafond_annee`;
+
+
+CREATE OR REPLACE ALGORITHM = UNDEFINED DEFINER = `root`@`localhost` SQL SECURITY DEFINER VIEW `v_etat_stock` AS SELECT s.id_stk, s.art_stk, s.mag_stk, s.qte_stk, s.date_stk, s.prec_qte_stk, s.prec_date_stk, s.bl_approuv, s.adr_stk, s.detail_stk, a.nom_art, a.ref_art, a.code_art, ca.id_cat, ca.nom_cat, a.seuil_art, m.nom_mag, m.delete_at,m.archive FROM t_stock s INNER JOIN t_magasin m ON s.mag_stk = m.id_mag INNER JOIN t_article a ON s.art_stk = a.id_art INNER JOIN t_categorie_article ca ON a.cat_art = ca.id_cat;

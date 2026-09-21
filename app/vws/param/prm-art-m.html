@@ -8,7 +8,7 @@
                         href="#/prmart/0" class="element"><span class="icon-plus-2"></span> Nouveau article </a> &nbsp;
                     <img src="public/images/1.gif" ng-show="loading" alt="" />
                     <div class="input-control text span4 fg-blue" style='float: right;'> recherche approfondie : <form
-                            ng-submit="fullSearch()"><input fg-red ng-model="fullSearchText"
+                            ng-submit="fullSearch()"><input fg-red ng-model="fullSearchText"  ng-change="fullSearch()"
                                 placeholder="Recherche approfondie.." type="text"></form>
                     </div>
                 </div>

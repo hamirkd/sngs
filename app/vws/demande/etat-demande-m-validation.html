@@ -27,10 +27,26 @@
                         <div class="input-control text span4" style='float: right;'><input ng-model="filterText"
                                 placeholder="filtrer" type="text"></div>
                     </legend>
+
+                <div ng-if="nbDemandesSelectionnees > 0" style="margin-bottom:10px; text-align:right;">
+                    <span class="label">
+                        {{nbDemandesSelectionnees}} demande(s) sélectionnée(s) — {{montantSelectionne | currency}} F CFA
+                    </span>
+                    <button class="button success" ng-click="validerSelection()" ng-if="app.userPfl.droitValidateurDemande">
+                        <span class="icon-checkmark"></span>
+                        Tout valider
+                    </button>
+                </div>
                     <div class="col-md-12" ng-show="depenses.length> 0"
                         style="min-height: 400px;max-height: 400px;overflow: auto;">
                         <table class="table striped bordered condensed hovered">
                             <thead>
+                                <th class="text-center">
+                                    <input type="checkbox"
+                                        ng-model="selectAll"
+                                        ng-change="toggleSelectAll()">
+                                    <span>Tout</span>
+                                </th>
                                 <th class='text-left'>Date&nbsp;</th>
                                 <th class='text-left'>Type depense&nbsp;</th>
                                 <th class='text-left'>Montant&nbsp;<span ng-show="depnv>0"><a ng-if="(app.userPfl.mg==0 || app.userPfl.mg==1)"
@@ -43,6 +59,12 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="data in filtered=(depenses| filter:filterText)" class="liste">
+                                    <td class="text-center">
+                                        <input type="checkbox"
+                                            ng-model="data.selected"
+                                            ng-change="updateSelection()"
+                                            ng-disabled="data.etat">
+                                    </td>
                                     <td>{{data.date_demande |date:'dd/MM/yyyy' }}</td>
                                     <td>{{data.type_demande |uppercase }}</td>
                                     <td>{{data.montant | currency}} &nbsp; <a ng-if="data.vu==0 && (app.userPfl.mg==0 || app.userPfl.mg==1)"

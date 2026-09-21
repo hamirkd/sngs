@@ -358,7 +358,7 @@ from t_stock s
 
               $query = "SELECT *,p.prix_mini_art,p.prix_max_art,p.prix_gros_art FROM v_etat_stock 
                 left join (select * from t_prix_article GROUP BY art_prix_art DESC) p on v_etat_stock.art_stk=p.art_prix_art
-                WHERE nom_art like '%$qry%' OR ref_art like '%$qry%' OR nom_cat like '%$qry%' ";
+                WHERE v_etat_stock.archive = 0 AND (nom_art like '%$qry%' OR ref_art like '%$qry%' OR nom_cat like '%$qry%') ";
 
         $query .= " Order by nom_mag,nom_cat,nom_art";
 
@@ -499,21 +499,17 @@ from t_stock s
         $search = $_POST;
 
 
-        if ($_SESSION['userMag'] != 0 && empty($search['magasin']))
-        /* $query = "SELECT * FROM v_etat_alerte WHERE mag_stk=" . intval($_SESSION['userMag']); */
-            $query = "select s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,m.code_mag  from t_stock s
+        $query = "select s.*,date(s.derniere_date_operation) as derniere_date_operation,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,m.code_mag  from t_stock s
             inner join t_magasin m on s.mag_stk=m.id_mag
             inner join t_article a on s.art_stk=a.id_art
             inner join t_categorie_article ca on a.cat_art=ca.id_cat
-            WHERE s.qte_stk <= a.seuil_art
-            AND s.mag_stk=" . intval($_SESSION['userMag']);
-        else
-        /* $query = "SELECT * FROM v_etat_alerte WHERE 1=1 "; */
-            $query = "select s.*,a.nom_art,a.ref_art,a.code_art,ca.id_cat,ca.nom_cat,a.seuil_art,m.nom_mag,m.code_mag  from t_stock s
-            inner join t_magasin m on s.mag_stk=m.id_mag
-            inner join t_article a on s.art_stk=a.id_art
-            inner join t_categorie_article ca on a.cat_art=ca.id_cat
-            WHERE s.qte_stk <= a.seuil_art";
+            WHERE s.qte_stk <= a.seuil_art AND (
+              s.qte_stk > 0
+              OR s.derniere_date_operation >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+          )";
+        if ($_SESSION['userMag'] != 0 && empty($search['magasin'])) {
+            $query .= " AND s.mag_stk = " . intval($_SESSION['userMag']);
+        }
 
 
         if (!empty($search['magasin']))

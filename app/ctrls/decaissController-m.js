@@ -898,6 +898,56 @@ sngs.controller("etatDemandeValidationCtrl", ["$scope", "$rootScope", "prmutils"
         return total
     };
     $scope.searchF()
+    // selection functions for demandes
+    
+    $scope.selectAll = false;
+    $scope.nbDemandesSelectionnees = 0;
+    $scope.montantSelectionne = 0;
+    $scope.toggleSelectAll = function () {
+
+        angular.forEach($scope.depenses, function (data) {
+
+            // Ne sélectionner que les demandes non encore traitées
+            if (!data.etat) {
+                data.selected = $scope.selectAll;
+            }
+        });
+
+        $scope.updateSelection();
+    };
+
+    $scope.updateSelection = function () {
+        $scope.nbDemandesSelectionnees = 0;
+        $scope.montantSelectionne = 0;
+        angular.forEach($scope.depenses, function (data) {
+            if (data.selected) {
+                $scope.nbDemandesSelectionnees++;
+                $scope.montantSelectionne += parseInt(data.montant);
+            }
+        });
+        // Permet de décocher "Tout" si une ligne est décochée
+            if ($scope.nbDemandesSelectionnees != $scope.depenses.filter(d => !d.etat).length) {
+                $scope.selectAll = false;
+            }
+            else if ($scope.nbDemandesSelectionnees === $scope.depenses.filter(d => !d.etat).length) {
+                $scope.selectAll = true;
+            }
+    };
+    $scope.validerSelection = function () {
+        var demandesSelectionnees = $scope.depenses.filter(function (data) {
+            return data.selected && !data.etat;
+        }); 
+        if (demandesSelectionnees.length === 0) {
+            return;
+        } 
+        angular.forEach(demandesSelectionnees, function (data) { 
+                $scope.actionSurDemande(data, 1); 
+        }); 
+        $scope.selectAll = false;
+        $scope.nbDemandesSelectionnees = 0;
+        $scope.montantSelectionne = 0;
+    };
+
 }]);
 sngs.controller("decaissDepCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
     var app = $scope.app;

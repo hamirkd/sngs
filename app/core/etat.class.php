@@ -581,7 +581,7 @@ class etatController extends model {
 
         $search = $_POST;
         $magasin = !empty($search['magasin']) ? ' AND id_mag='.$search['magasin']:'';
-        $querymag = "SELECT id_mag,nom_mag,archive,type_mag FROM t_magasin WHERE type_mag='BOUTIQUE' $magasin;";
+        $querymag = "SELECT id_mag,nom_mag,archive,type_mag FROM t_magasin WHERE type_mag='BOUTIQUE' AND delete_at IS NULL $magasin;";
         $rmag = $this->mysqli->query($querymag) or die($this->mysqli->error . __LINE__);
         $result = [];
         $date_fin = !empty($search['date_fin']) ? $search['date_fin']:null;

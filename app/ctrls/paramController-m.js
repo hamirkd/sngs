@@ -951,7 +951,7 @@ sngs.controller("paramEditTdCtrl", ["$scope", "$rootScope", "config", "dao", "$l
         }
     }
 }]);
-sngs.controller("paramArtArtCtrl", ["$scope", "$rootScope", "config", "prmutils", function($scope, $rootScope, config, prmutils) {
+sngs.controller("paramArtArtCtrl", ["$scope", "$rootScope", "config", "prmutils","$timeout", function($scope, $rootScope, config, prmutils, $timeout) {
     var paramart = $scope.paramart;
     var app = $scope.app;
     app.view = {

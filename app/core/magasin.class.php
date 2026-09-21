@@ -19,7 +19,7 @@ class magasinController extends model {
 
         if (!empty($this->_request['id'])) {
             $id = intval($this->_request['id']);
-            $query = "SELECT *  FROM t_magasin WHERE id_mag =$id LIMIT 1";
+            $query = "SELECT *  FROM t_magasin WHERE id_mag =$id AND delete_at IS NULL LIMIT 1";
             $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
             if ($r->num_rows > 0) {
@@ -71,9 +71,9 @@ class magasinController extends model {
         }
 
         if ($_SESSION['userMag'] == 0)
-            $query = "SELECT m.*  FROM t_magasin m order by m.nom_mag";
+            $query = "SELECT m.*  FROM t_magasin m WHERE m.delete_at IS NULL order by m.nom_mag";
         else
-            $query = "SELECT m.*  FROM t_magasin m WHERE id_mag=" . intval($_SESSION['userMag']) . " order by m.nom_mag";
+            $query = "SELECT m.*  FROM t_magasin m WHERE id_mag=" . intval($_SESSION['userMag']) . " AND m.delete_at IS NULL order by m.nom_mag";
 
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 
@@ -166,7 +166,7 @@ class magasinController extends model {
             $this->response('', 406);
         }
 
-        $query = "SELECT m.* FROM t_magasin m where m.archive = 0 or m.archive = 1 order by m.nom_mag";
+        $query = "SELECT m.* FROM t_magasin m where m.delete_at IS NULL order by m.nom_mag";
         
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
 

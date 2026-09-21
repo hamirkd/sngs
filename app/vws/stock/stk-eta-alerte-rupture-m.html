@@ -13,7 +13,7 @@
         <div>
             <div class="example">
                 <fiedlset>
-                    <legend>{{title}} :::: <div class="input-control text span2 pull-right"><input ng-model="filterText"
+                    <legend>{{title}} :::: <div class="input-control text span4 pull-right"><input ng-model="filterText"
                                 placeholder="libelle article" type="text"></div> Total : {{filtered.length}} <a
                             ng-hide="alertes.length == 0" class="button warning" align="right"
                             style="float:right;margin-right:50px;"
@@ -25,23 +25,23 @@
                             <thead>
                                 <th class='text-left'>Code Art&nbsp;</th>
                                 <th class='text-left'>Designation &nbsp;</th>
-                                <th class='text-left'>Ref &nbsp;</th>
                                 <th class='text-left'>Qte &nbsp;</th>
                                 <th class='text-left'>Seuil &nbsp;</th>
                                 <th class='text-left'>Magasin &nbsp;</th>
                                 <th class='text-left'>Categorie &nbsp;</th>
+                                <th title="Date de dernière opération" class='text-left'> &nbsp;</th>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="data in filtered=(alertes | filter:filterText)" class="liste">
                                     <td>{{data.code_art |uppercase}}</td>
-                                    <td>{{data.nom_art |uppercase}}</td>
-                                    <td>{{data.ref_art |uppercase}}</td>
+                                    <td tooltip="{{ data.ref_art | uppercase }}">{{data.nom_art |uppercase}}</td>
                                     <td>{{data.qte_stk |uppercase}}</td>
                                     <td>{{data.seuil_art |uppercase}}</td>
                                     <td  title="{{ data.nom_mag | uppercase }}">
                                         {{data.code_mag |uppercase}}
                                     </td>
                                     <td>{{data.nom_cat |uppercase}}</td>
+                                    <td>{{data.derniere_date_operation |date :'dd/MM/yyyy'}}</td>
                                 </tr>
                             </tbody>
                         </table>

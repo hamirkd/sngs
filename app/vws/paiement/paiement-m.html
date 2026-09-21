@@ -111,7 +111,7 @@
                                 <div class="input-control text col-lg-12" data-role="input-control"><input style="height:100%;font-size:20px;" name="telephone" placeholder="Numéro de téléphone" type="text" ng-model="paiement.telephone"></div>
                                 <label class="col-lg-12">Boutique </label>
                                 <div class="input-control select col-lg-6" data-role="input-control">
-                                    <select ng-model="paiement.mag_paiement" ng-options="magasin.id_mag as magasin.nom_mag|uppercase for magasin in myMagasinsAcces">
+                                    <select ng-model="paiement.mag_paiement" ng-options="magasin.id_mag as magasin.nom_mag|uppercase for magasin in myMagasinsAcces | filter:{type_mag: 'BOUTIQUE'}">
                                         <option value=""></option>
                                     </select>
                                 </div>
