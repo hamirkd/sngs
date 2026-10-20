@@ -112,7 +112,7 @@
             </fieldset>
         </div>
 
-        <div class="example" id="detailsPannel" style="width: 1000px;right:-1100px">
+        <div class="example" id="detailsPannel" style="width: 1200px;right:-1200px">
             <fieldset>
                 <legend><a class="toggle_details" href=""><span class=" icon-arrow-right-3"></span></a> Details articles
                     - Facture : <span class='fg-red'>{{code_fact}}</span></legend>
@@ -123,9 +123,9 @@
                             <th class='text-left'>Qte&nbsp;</th>
                             <th class='text-left'>Pu&nbsp;</th>
                             <th class='text-left' ng-show="app.userPfl.droitValidationPrixFacture==1">Pu Achat&nbsp;</th>
-                            <th class='text-left'>New Pu.&nbsp;</th>
+                            <th class='text-left'>Nouveau Pu.&nbsp;</th>
                             <th class='text-left'>An. Mnt&nbsp;</th>
-                            <th class='text-left'>New Mnt&nbsp;</th>
+                            <th class='text-left'>Nouveau Mnt&nbsp;</th>
                             <th class='text-left'>Ecart&nbsp;</th>
                             <th class='text-left'>Action&nbsp;</th>
                         </thead>
@@ -135,12 +135,15 @@
                                 <td>{{app.formatNumber(data.qte_vnt)}}</td>
                                 <td>{{app.formatNumber(data.pu_theo_vnt)}}</td>
                                 <td ng-show="app.userPfl.droitValidationPrixFacture==1">{{app.formatNumber(data.pu_theo_achat)}}</td>
-                                <td>{{app.formatNumber((data.prix_propose||0 ))}}</td>
-                                
+                                <td ng-show="!data.action" title="Nouveau Prix">{{app.formatNumber((data.prix_propose||0 ))}}</td>
+                                <td ng-show="data.action" title="Ancien Prix">{{app.formatNumber((data.prix_ancien||0 ))}}</td>
+
                                 <td>{{app.formatNumber(data.mnt_theo_vnt)}}</td>
                                 
-                                <td>{{app.formatNumber((data.prix_propose||0) *  data.qte_vnt)}}</td>
-                                <td>{{app.formatNumber((data.pu_theo_vnt - (data.prix_propose||0)) *  data.qte_vnt)}}</td>
+                                <td ng-show="!data.action" title="Nouveau Montant">{{app.formatNumber((data.prix_propose||0) *  data.qte_vnt)}}</td>
+                                <td ng-show="data.action" title="Ancien Montant">{{app.formatNumber((data.prix_ancien||0) *  data.qte_vnt)}}</td>
+                                <td title="Ecart Nouveau Montant">{{app.formatNumber((data.pu_theo_vnt - (data.prix_propose||0)) *  data.qte_vnt)}}</td>
+                                <td ng-show="data.action" title="Ecart Ancien Montant">{{app.formatNumber((data.pu_theo_vnt - (data.prix_ancien||0)) *  data.qte_vnt)}}</td>
                                 <td ng-show="data.id_facp">
                                     <a ng-show="!data.action"
                                         href   ng-click="validationFacturePrix(data,1);" title="Valider" class="btn fg-white bg-green btn_validation">&nbsp;
@@ -171,4 +174,4 @@
     });
 </script>
 
-<script>$(function () { $(".toggle_search").on("click", function () { $("#searchPannel").css("right", "-1100px") }); $(".btn_search").on("click", function () { $("#searchPannel").css("right", "0") }); $(".toggle_details").on("click", function () { $("#detailsPannel").css("right", "-1100px") }) });</script>
+<script>$(function () { $(".toggle_search").on("click", function () { $("#searchPannel").css("right", "-1200px") }); $(".btn_search").on("click", function () { $("#searchPannel").css("right", "0") }); $(".toggle_details").on("click", function () { $("#detailsPannel").css("right", "-1200px") }) });</script>

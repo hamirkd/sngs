@@ -702,6 +702,15 @@ sngs = angular.module("sngs", ["sngs.services", "ngRoute", "ngResource", "base64
         templateUrl: "app/vws/stock/prod-stk-ba-m.html",
         controller: "stockProdBaCtrl"
     }); 
+    
+    $routeProvider.when("/stock-restant-bon-etat", {
+        templateUrl: "app/vws/stock-valorisation/stock-valorisation-autre.html",
+        controller: "stockRestantBonEtatCtrl"
+    });
+    $routeProvider.when("/stock-restant-bon-etat-lina", {
+        templateUrl: "app/vws/stock-valorisation/stock-valorisation-lina.html",
+        controller: "stockRestantBonEtatLinaCtrl"
+    });
 
 
     $routeProvider.otherwise({

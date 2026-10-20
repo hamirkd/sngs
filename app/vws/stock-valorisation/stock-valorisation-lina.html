@@ -1,0 +1,176 @@
+<div class="grid">
+    <div class="row">
+        <div>
+
+            <nav class="navigation-bar white border-bottom">
+                <div class="navigation-bar-content"><a class="element btn_search"><span class="icon-search"></span>
+                        Nouveau Critere de recherche </a><span class="element-divider"></span>
+                </div>
+                <div class="input-control text span4" style='float: right;'><input ng-model="filterText"
+                        placeholder="filtrer" type="text"></div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <div class="row">
+        <div>
+            <div class="example">
+
+                <fiedlset>
+                    <legend>{{title}}
+
+
+                        <button style="float:right;margin-right:50px;" ng-hide="stock_restant_bon.length == 0"
+                            class="button success" ng-click="downloadJSONAsCSV();"><span
+                                class="icon-file-excel"></span>Excel</button>
+
+                        <div class="input-control text span4" style='float: right;'>
+
+                            <input ng-model="filterText" placeholder="filtrer" type="text">
+                        </div>
+                    </legend>
+                    <div class="col-md-12" ng-show="stock_restant_bon.length> 0">
+                        <table class="table striped bordered condensed hovered">
+                            <thead>
+                                <th class='text-left'>Bon livraison&nbsp;</th>
+                                <th class='text-left'>Date Appro.&nbsp;</th>
+                                <th class='text-left'>Nom Article&nbsp;</th>
+                                <th class='text-left'>Quantite recu&nbsp;</th>
+                                <th class='text-left'>Stock M21&nbsp;</th>
+                                <th class='text-left'>Magasin Externe&nbsp;</th>
+                                <th class='text-left'>Quantite stock Externe&nbsp;</th>
+                                <th class='text-left'>Prix Mini&nbsp;</th>
+                                <th class='text-left'>Prix Maxi&nbsp;</th>
+                                <th class='text-left'>Prix Achat&nbsp;</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in filtered=(stock_restant_bon | filter:filterText)" class="liste">
+                                    <td>{{data.bon_liv_appro|uppercase}}</td>
+                                    <td>{{data.date_appro| date:'dd/MM/y'}}</td>
+                                    <td>{{data.nom_art|uppercase}}</td>
+                                    <td>{{app.formatNumber(data.qte_recue)}}</td>
+                                    <td>{{app.formatNumber(data.qte_stock_mag21)}}</td>
+                                    <td>{{data.nom_mag|uppercase}}</td>
+                                    <td>{{app.formatNumber(data.qte_stk)}}</td>
+                                    <td>{{app.formatNumber(data.prix_mini_art)}}</td>
+                                    <td>{{app.formatNumber(data.prix_maxi_art)}}</td>
+                                    <td>{{app.formatNumber(data.prix_achat_art)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" ng-show="stock_restant_bon.length == 0">
+                        <div class="col-md-12">
+                            <h4>Aucun stock trouvé ... !</h4>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="example" id="searchPannel">
+            <fieldset>
+                <legend><a class="toggle_search" href=""><span class=" icon-arrow-right-3"></span></a> Nouveau Filtre
+                </legend>
+                <form name="form">
+                    <div style="max-height:625px!important;overflow:auto;">
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Date debut</label>
+                                        <div class="input-control text"><input type="text" placeholder="jj/mm/aaaa"
+                                                name="date_deb" ng-model="search.date_deb">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="stagger"><label>Date Fin</label>
+                                        <div class="input-control text"><input type="text" name="date_fin"
+                                                ng-model="search.date_fin" placeholder="jj/mm/aaaa"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stagger"><label>Boutique</label>
+                                        <div class="input-control select span4" data-role="input-control">
+                                            <select ng-model="search.magasin"
+                                                ng-options="magasin.id_mag as magasin.nom_mag|uppercase for magasin in myMagasinsAcces  | filter:{archive: 0, type_mag: 'BOUTIQUE'}">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div><button class="primary" ng-click="searchF();"><i
+                            class="icon-search on-left on-left-more"></i>Valider</button> &nbsp; <button class="inverse"
+                        type="reset" class="button"><i class="icon-undo on-left on-left-more"></i> Annuler </button>
+                </form>
+            </fieldset>
+        </div>
+
+        <div class="example" id="detailsPannel" style="width: 1200px;right:-1200px">
+            <fieldset>
+                <legend><a class="toggle_details" href=""><span class=" icon-arrow-right-3"></span></a> Details articles
+                    - Facture : <span class='fg-red'>{{code_fact}}</span></legend>
+                <div class="col-md-12" style="min-height: 400px;max-height: 400px;overflow: auto;">
+                    <table class="table striped bordered condensed hovered">
+                        <thead>
+                            <th class='text-left'>Designation&nbsp;</th>
+                            <th class='text-left'>Qte&nbsp;</th>
+                            <th class='text-left'>Pu&nbsp;</th>
+                            <th class='text-left' ng-show="app.userPfl.droitValidationPrixFacture==1">Pu Achat&nbsp;</th>
+                            <th class='text-left'>Nouveau Pu.&nbsp;</th>
+                            <th class='text-left'>An. Mnt&nbsp;</th>
+                            <th class='text-left'>Nouveau Mnt&nbsp;</th>
+                            <th class='text-left'>Ecart&nbsp;</th>
+                            <th class='text-left'>Action&nbsp;</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in filtere=(details)">
+                                <td>{{data.nom_art |uppercase}}</td>
+                                <td>{{app.formatNumber(data.qte_vnt)}}</td>
+                                <td>{{app.formatNumber(data.pu_theo_vnt)}}</td>
+                                <td ng-show="app.userPfl.droitValidationPrixFacture==1">{{app.formatNumber(data.pu_theo_achat)}}</td>
+                                <td ng-show="!data.action" title="Nouveau Prix">{{app.formatNumber((data.prix_propose||0 ))}}</td>
+                                <td ng-show="data.action" title="Ancien Prix">{{app.formatNumber((data.prix_ancien||0 ))}}</td>
+
+                                <td>{{app.formatNumber(data.mnt_theo_vnt)}}</td>
+                                
+                                <td ng-show="!data.action" title="Nouveau Montant">{{app.formatNumber((data.prix_propose||0) *  data.qte_vnt)}}</td>
+                                <td ng-show="data.action" title="Ancien Montant">{{app.formatNumber((data.prix_ancien||0) *  data.qte_vnt)}}</td>
+                                <td title="Ecart Nouveau Montant">{{app.formatNumber((data.pu_theo_vnt - (data.prix_propose||0)) *  data.qte_vnt)}}</td>
+                                <td ng-show="data.action" title="Ecart Ancien Montant">{{app.formatNumber((data.pu_theo_vnt - (data.prix_ancien||0)) *  data.qte_vnt)}}</td>
+                                <td ng-show="data.id_facp">
+                                    <a ng-show="!data.action"
+                                        href   ng-click="validationFacturePrix(data,1);" title="Valider" class="btn fg-white bg-green btn_validation">&nbsp;
+                                        &nbsp;</a>&nbsp;&nbsp;
+ 
+                                        <a  ng-show="!data.action"
+                                        href ng-click="validationFacturePrix(data,2)" title="Rejeter" class="btn fg-white bg-red">&nbsp;
+                                        &nbsp;</a> 
+                                    <span class='fg-green' ng-show="data.action === 1" title="valider">{{data.user_valid}}</span>
+                                    <span class='fg-red' ng-show="data.action === 2" title="rejeter">{{data.user_valid}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $(".toggle_search").on("click", function () {
+            $("#searchPannel").css("right", "-700px")
+        });
+        $(".btn_search").on("click", function () {
+            $("#searchPannel").css("right", "0")
+        });
+    });
+</script>
+
+<script>$(function () { $(".toggle_search").on("click", function () { $("#searchPannel").css("right", "-1200px") }); $(".btn_search").on("click", function () { $("#searchPannel").css("right", "0") }); $(".toggle_details").on("click", function () { $("#detailsPannel").css("right", "-1200px") }) });</script>

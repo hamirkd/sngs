@@ -235,8 +235,11 @@
                             <td colspan="4" align="right">
                                 <h3><span>Total Achat :</span></h3>
                             </td>
-                            <td colspan="3">
+                            <td colspan="3" ng-if="app.userPfl.droitConfirmationApprovisionnement">
                                 <h3><span class="fg-red"> {{ getTotalAchat() | currency }} F</span></h3>
+                            </td>
+                            <td colspan="3" ng-if="!app.userPfl.droitConfirmationApprovisionnement" title="Vous n'êtes pas habilité à voir cette information">
+                                <h3><span class="fg-red"> ****** F</span></h3>
                             </td>
                         </tr>
                         <tr>

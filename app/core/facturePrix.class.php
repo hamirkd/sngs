@@ -220,6 +220,7 @@ class demandeController extends model {
                 if ($r2->num_rows > 0) {
                     $rowp = $r2->fetch_assoc();
                     $row['prix_propose'] = intval($rowp['prix_propose']);
+                    $row['prix_ancien'] = intval($rowp['prix_ancien']);
                     $row['id_facp'] = intval($rowp['id_facp']);
                     $row['action'] = intval($rowp['action']);
                     $row['user_valid'] = $rowp['user_valid'];

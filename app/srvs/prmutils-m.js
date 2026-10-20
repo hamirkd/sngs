@@ -621,6 +621,13 @@ sngs.factory("prmutils", ["dao", "$q", "config", "localStorageService", function
     servicesObject.undoEntArt = function(vnt) {
         return dao.getData(config.mdlStockStk + "undoEntArt", vnt)
     };
+    
+    servicesObject.getStockRestantEtat = function(obj) {
+        return dao.getData(config.mdlStockStk + "getStockRestantEtat", obj)
+    };
+    servicesObject.getStockRestantEtatLina = function(obj) {
+        return dao.getData(config.mdlStockStk + "getStockRestantEtatLina", obj)
+    };
     servicesObject.getSorties = function() {
         return dao.getData(config.mdlStockSs + "getSorties")
     };

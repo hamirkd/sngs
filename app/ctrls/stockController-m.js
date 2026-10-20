@@ -3850,3 +3850,225 @@ sngs.controller("stockProdBaCtrl", ["$scope", "$rootScope", "config", "prmutils"
         return rep
     }
 }]);
+
+sngs.controller("stockRestantBonEtatCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+    var app = $scope.app;
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Etat des stocks restants",
+        subtitle: "Etat des stocks restants",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Etat des stocks restants";
+    $rootScope.pageTitle = "Etat des stocks restants";
+    $scope.search = {};
+    $scope.code_fact = null;
+    var today = new Date();
+    var today2 = new Date();
+    today2.setMonth(today.getMonth() + 1);
+    
+    var dd = today.getDate();
+    var mm = today.getMonth();
+    var mmfin = today2.getMonth();
+    var mmdebut = today.getMonth();
+    var yyyydebut = today.getFullYear();
+    var yyyyfin = today2.getFullYear();
+    var sss = today.getTime();
+    if (dd < 10) {
+        dd = "0" + dd
+    }
+    if (mm < 10) {
+        mm = "0" + mm
+    }
+    if (mmdebut < 10) {
+        mmdebut = "0" + mmdebut
+    }
+    if (mmfin < 10) {
+        mmfin = "0" + mmfin
+    }
+    if (today.getMonth() == 0) {
+        today.setMonth(today.getMonth() - 1);
+        mmdebut = today.getMonth();
+        mmdebut = mmdebut + 1;
+        yyyydebut = today.getFullYear();
+    }
+    if (mmfin == "00") {
+        mmfin = "01";
+    }
+    today = dd + "/" + mmdebut + "/" + yyyydebut;
+    today = "01/01/" + yyyydebut;
+    today2 = dd + "/" + mmfin + "/" + yyyyfin;
+    $scope.search.date_deb = today;
+    $scope.search.date_fin = today2;
+     
+    $scope.downloadJSONAsCSV = function() {
+        // Convert JSON data to CSV
+        let csvData = app.jsonToCsv($scope.stock_restant_bon); // Add .items.data
+        // Create a CSV file and allow the user to download it
+        let blob = new Blob([csvData], { type: 'text/csv' });
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.csv';
+        document.body.appendChild(a);
+        a.click();
+    }
+
+    $scope.searchF = function() {
+        var task;
+        task = prmutils.getStockRestantEtat($scope.search);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    $scope.stock_restant_bon = result.data
+                    $scope.stock_restant_bon.sort((a, b) => a.date_enr > b.date_enr);
+                }
+            } else {
+                app.notify("Une erreur est survenue ...", "m")
+            }
+        })
+    };
+    $scope.sumTotal = function($filtered, $column) {
+        return $filtered.reduce((total, item) => total + parseFloat(item[$column] || 0), 0);
+    };
+    $scope.sumTotalMontant = function($filtered, $columnQte, $columnPrix) {
+        return $filtered.reduce((total, item) => total + (parseFloat(item[$columnQte] || 0) * parseFloat(item[$columnPrix] || 0)), 0);
+    };
+    $scope.sumTotalMoyenneUnicite = function($filtered, $column) {
+        // choisir une liste d'articles uniques avant de calculer la moyenne.
+        let uniqueItems = [];
+        let seen = new Set();
+        for (let item of $filtered) {
+            if (!seen.has(item[$column])) {
+                seen.add(item[$column]);
+                uniqueItems.push(item);
+            }
+        }
+        return uniqueItems.reduce((total, item) => total + parseFloat(item[$column] || 0), 0);
+    };
+    $scope.searchF();
+    $scope.getMyMagasinsAcces = function() {
+        if (app.userPfl.pfl == 1 || app.userPfl.pfl == 0) {
+            task = prmutils.getMagasins();
+        } else {
+            task = prmutils.getMyMagasinsAcces();
+        }
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.myMagasinsAcces = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        });
+    }
+    $scope.getMyMagasinsAcces();
+    
+}]);
+
+sngs.controller("stockRestantBonEtatLinaCtrl", ["$scope", "$rootScope", "prmutils", function($scope, $rootScope, prmutils) {
+    var app = $scope.app;
+    app.waiting.show = false;
+    app.navbar.show = true;
+    app.title = {
+        text: "Etat des stocks restants Lina Industrie",
+        subtitle: "Etat des stocks restants Lina Industrie",
+        show: true,
+        model: {}
+    };
+    $rootScope.title = "Etat des stocks restants Lina Industrie";
+    $rootScope.pageTitle = "Etat des stocks restants Lina Industrie";
+    $scope.search = {};
+    $scope.code_fact = null;
+    var today = new Date();
+    var today2 = new Date();
+    today2.setMonth(today.getMonth() + 1);
+    
+    var dd = today.getDate();
+    var mm = today.getMonth();
+    var mmfin = today2.getMonth();
+    var mmdebut = today.getMonth();
+    var yyyydebut = today.getFullYear();
+    var yyyyfin = today2.getFullYear();
+    var sss = today.getTime();
+    if (dd < 10) {
+        dd = "0" + dd
+    }
+    if (mm < 10) {
+        mm = "0" + mm
+    }
+    if (mmdebut < 10) {
+        mmdebut = "0" + mmdebut
+    }
+    if (mmfin < 10) {
+        mmfin = "0" + mmfin
+    }
+    if (today.getMonth() == 0) {
+        today.setMonth(today.getMonth() - 1);
+        mmdebut = today.getMonth();
+        mmdebut = mmdebut + 1;
+        yyyydebut = today.getFullYear();
+    }
+    if (mmfin == "00") {
+        mmfin = "01";
+    }
+    today = dd + "/" + mmdebut + "/" + yyyydebut;
+    today = "01/01/" + yyyydebut;
+    today2 = dd + "/" + mmfin + "/" + yyyyfin;
+    $scope.search.date_deb = today;
+    $scope.search.date_fin = today2;
+     
+    $scope.downloadJSONAsCSV = function() {
+        // Convert JSON data to CSV
+        let csvData = app.jsonToCsv($scope.stock_restant_bon); // Add .items.data
+        // Create a CSV file and allow the user to download it
+        let blob = new Blob([csvData], { type: 'text/csv' });
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.csv';
+        document.body.appendChild(a);
+        a.click();
+    }
+
+    $scope.searchF = function() {
+        var task;
+        task = prmutils.getStockRestantEtatLina($scope.search);
+        task.promise.then(function(result) {
+            if (result.err === 0) {
+                if (result.data === "-1") {
+                    app.notify(result.message, "m")
+                } else {
+                    $scope.stock_restant_bon = result.data
+                    $scope.stock_restant_bon.sort((a, b) => a.date_enr > b.date_enr);
+                }
+            } else {
+                app.notify("Une erreur est survenue ...", "m")
+            }
+        })
+    };
+    $scope.searchF();
+    $scope.getMyMagasinsAcces = function() {
+        if (app.userPfl.pfl == 1 || app.userPfl.pfl == 0) {
+            task = prmutils.getMagasins();
+        } else {
+            task = prmutils.getMyMagasinsAcces();
+        }
+        task.promise.then(function(result) {
+            app.waiting.show = true;
+            if (result.err === 0) {
+                $scope.myMagasinsAcces = result.data;
+                app.waiting.show = false
+            } else {
+                app.waiting.show = false
+            }
+        });
+    }
+    $scope.getMyMagasinsAcces();
+    
+}]);

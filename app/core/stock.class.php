@@ -716,6 +716,65 @@ from t_stock s
         $result = $r->fetch_assoc();
         return $response = $result;
     }
+    public function getStockRestantEtat() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+        $search = $_POST;
+        $query = "SELECT * FROM v_stock_restant_bon WHERE 1=1 ";
+        if (!empty($search['magasin']))
+            $query.=" AND mag_stk=" . intval($search['magasin']);
+
+        if (!empty($search['article']))
+            $query.=" AND art_stk=" . intval($search['article']);
+
+        if (!empty($search['categorie']))
+            $query.=" AND id_cat=" . intval($search['categorie']);
+
+        if (!empty($search['date_deb']) && empty($search['date_fin']))
+            $query.=" AND date(date_appro)='" . isoToMysqldate($search['date_deb']) . "'";
+
+        if (!empty($search['date_fin']))
+            $query.=" AND date(date_appro) between '" . isoToMysqldate($search['date_deb']) . "' 
+                AND '" . isoToMysqldate($search['date_fin']) . "'";
+        $query.=" ORDER BY date(date_appro) DESC, nom_art ASC";
+
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        $result = $r->fetch_all(MYSQLI_ASSOC);
+        $response = array("status" => 0,
+                "datas" => $result,
+                "message" => "");
+            $this->response($this->json($response), 200);
+    }
+    public function getStockRestantEtatLina() {
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+        $search = $_POST;
+        $query = "SELECT * FROM v_stock_restant_bon_lina WHERE 1=1 ";
+        if (!empty($search['magasin']))
+            $query.=" AND mag_stk=" . intval($search['magasin']);
+
+        if (!empty($search['article']))
+            $query.=" AND art_stk=" . intval($search['article']);
+
+        if (!empty($search['categorie']))
+            $query.=" AND id_cat=" . intval($search['categorie']);
+
+        if (!empty($search['date_deb']) && empty($search['date_fin']))
+            $query.=" AND date(date_appro)='" . isoToMysqldate($search['date_deb']) . "'";
+
+        if (!empty($search['date_fin']))
+            $query.=" AND date(date_appro) between '" . isoToMysqldate($search['date_deb']) . "' 
+                AND '" . isoToMysqldate($search['date_fin']) . "'";
+        $query.=" ORDER BY date(date_appro) DESC, nom_art ASC";
+        $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
+        $result = $r->fetch_all(MYSQLI_ASSOC);
+        $response = array("status" => 0,
+                "datas" => $result,
+                "message" => "");
+            $this->response($this->json($response), 200);
+    }
 
 }
 
