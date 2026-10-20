@@ -4052,6 +4052,22 @@ sngs.controller("stockRestantBonEtatLinaCtrl", ["$scope", "$rootScope", "prmutil
             }
         })
     };
+    
+    $scope.sumTotalMontant = function($filtered, $columnQte, $columnPrix) {
+        return $filtered.reduce((total, item) => total + (parseFloat(item[$columnQte] || 0) * parseFloat(item[$columnPrix] || 0)), 0);
+    };
+    $scope.sumTotalMoyenneUnicite = function($filtered, $column) {
+        // choisir une liste d'articles uniques avant de calculer la moyenne.
+        let uniqueItems = [];
+        let seen = new Set();
+        for (let item of $filtered) {
+            if (!seen.has(item[$column])) {
+                seen.add(item[$column]);
+                uniqueItems.push(item);
+            }
+        }
+        return uniqueItems.reduce((total, item) => total + parseFloat(item[$column] || 0), 0);
+    };
     $scope.searchF();
     $scope.getMyMagasinsAcces = function() {
         if (app.userPfl.pfl == 1 || app.userPfl.pfl == 0) {

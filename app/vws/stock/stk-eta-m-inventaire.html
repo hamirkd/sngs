@@ -2,6 +2,14 @@
     .bg-danger {
         background-color: red!important;
     }
+    table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #ffffff;
+    color: #333333;
+    border-bottom: 2px solid #dddddd;
+}
 </style>
 <div class="grid">
     <div class="row">
@@ -42,6 +50,7 @@
                     <div class="col-md-12" ng-show="datas.length> 0" style="min-height: 400px;max-height: 400px;overflow: auto;">
                         <table class="table striped bordered condensed hovered">
                             <thead>
+                                <tr>
                                 <th class='text-left'>code&nbsp;</th>
                                 <th class='text-left'>Magasin&nbsp;</th>
                                 <th class='text-left'>Categorie&nbsp;</th>
@@ -49,6 +58,7 @@
                                 <th class='text-left'>Qte Theorique&nbsp;</th>
                                 <th class='text-left'>Qte Physique&nbsp;</th>
                                 <th class='text-left'>Ecart &nbsp;</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <!-- <tr ng-repeat="data in datas" class="liste"> -->

@@ -1,3 +1,16 @@
+<style>
+    .bg-danger {
+        background-color: red!important;
+    }
+    table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #ffffff;
+    color: #333333;
+    border-bottom: 2px solid #dddddd;
+}
+</style>
 <div class="grid">
     <div class="row">
         <div>
@@ -30,19 +43,23 @@
                             <input ng-model="filterText" placeholder="filtrer" type="text">
                         </div>
                     </legend>
-                    <div class="col-md-12" ng-show="stock_restant_bon.length> 0">
+                    <div class="col-md-12" ng-show="stock_restant_bon.length> 0" style="min-height: 400px;max-height: 600px;overflow: auto;">
                         <table class="table striped bordered condensed hovered">
                             <thead>
+                                <tr>
                                 <th class='text-left'>Bon livraison&nbsp;</th>
                                 <th class='text-left'>Date Appro.&nbsp;</th>
                                 <th class='text-left'>Nom Article&nbsp;</th>
                                 <th class='text-left'>Quantite recu&nbsp;</th>
-                                <th class='text-left'>Stock M21&nbsp;</th>
-                                <th class='text-left'>Magasin Externe&nbsp;</th>
-                                <th class='text-left'>Quantite stock Externe&nbsp;</th>
+                                <th class='text-left'>Stock Ponsomtenga&nbsp;</th>
+                                <th class='text-left'>Nom du Magasin&nbsp;</th>
+                                <th class='text-left'>Quantite recu de Ponsomtenga&nbsp;</th>
+                                <th class='text-left'>Quantite stock Boutique&nbsp;</th>
+                                <th class='text-left'>Quantite vendue Boutique&nbsp;</th>
                                 <th class='text-left'>Prix Mini&nbsp;</th>
                                 <th class='text-left'>Prix Maxi&nbsp;</th>
                                 <th class='text-left'>Prix Achat&nbsp;</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="data in filtered=(stock_restant_bon | filter:filterText)" class="liste">
@@ -52,7 +69,9 @@
                                     <td>{{app.formatNumber(data.qte_recue)}}</td>
                                     <td>{{app.formatNumber(data.qte_stock_mag21)}}</td>
                                     <td>{{data.nom_mag|uppercase}}</td>
+                                    <td>{{app.formatNumber(data.qte_recue_externe)}}</td>
                                     <td>{{app.formatNumber(data.qte_stk)}}</td>
+                                    <td>{{app.formatNumber(data.qte_vnt)}}</td>
                                     <td>{{app.formatNumber(data.prix_mini_art)}}</td>
                                     <td>{{app.formatNumber(data.prix_maxi_art)}}</td>
                                     <td>{{app.formatNumber(data.prix_achat_art)}}</td>
@@ -62,7 +81,9 @@
                                     <td>{{app.formatNumber(sumTotalMoyenneUnicite(filtered,'qte_recue'))}}</td>
                                     <td>{{app.formatNumber(sumTotalMoyenneUnicite(filtered,'qte_stock_mag21'))}}</td>
                                     <td></td>
+                                    <td>{{app.formatNumber(sumTotal(filtered,'qte_recue_externe'))}}</td>
                                     <td>{{app.formatNumber(sumTotal(filtered,'qte_stk'))}}</td>
+                                    <td>{{app.formatNumber(sumTotal(filtered,'qte_vnt'))}}</td>
                                     <td>{{app.formatNumber(sumTotalMontant(filtered,'qte_stk','prix_mini_art'))}}</td>
                                     <td>{{app.formatNumber(sumTotalMontant(filtered,'qte_stk','prix_maxi_art'))}}</td>
                                     <td>{{app.formatNumber(sumTotalMontant(filtered,'qte_stk','prix_achat_art'))}}</td>

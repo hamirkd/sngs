@@ -721,7 +721,10 @@ from t_stock s
             $this->response('', 406);
         }
         $search = $_POST;
-        $query = "SELECT * FROM v_stock_restant_bon WHERE 1=1 ";
+        $query = "SELECT *,
+        (SELECT SUM(qte_appro_art) FROM t_approvisionnement_article WHERE art_appro_art=v_stock_restant_bon.art_stk AND mag_appro_art = v_stock_restant_bon.mag_stk) as qte_recue_externe,
+         (SELECT COALESCE(SUM(tv.Qte_vnt), 0) FROM t_vente tv LEFT JOIN t_facture_vente tf ON tf.id_fact = tv.facture_vnt WHERE tv.article_vnt = v_stock_restant_bon.art_stk AND tf.mag_fact = v_stock_restant_bon.mag_stk) as qte_vnt
+          FROM v_stock_restant_bon WHERE 1=1 ";
         if (!empty($search['magasin']))
             $query.=" AND mag_stk=" . intval($search['magasin']);
 
@@ -738,7 +741,7 @@ from t_stock s
             $query.=" AND date(date_appro) between '" . isoToMysqldate($search['date_deb']) . "' 
                 AND '" . isoToMysqldate($search['date_fin']) . "'";
         $query.=" ORDER BY date(date_appro) DESC, nom_art ASC";
-
+        // echo $query;
         $r = $this->mysqli->query($query) or die($this->mysqli->error . __LINE__);
         $result = $r->fetch_all(MYSQLI_ASSOC);
         $response = array("status" => 0,
@@ -751,7 +754,11 @@ from t_stock s
             $this->response('', 406);
         }
         $search = $_POST;
-        $query = "SELECT * FROM v_stock_restant_bon_lina WHERE 1=1 ";
+        
+        $query = "SELECT *,
+        (SELECT SUM(qte_appro_art) FROM t_approvisionnement_article WHERE art_appro_art=v_stock_restant_bon_lina.art_stk AND mag_appro_art = v_stock_restant_bon_lina.mag_stk) as qte_recue_externe,
+         (SELECT COALESCE(SUM(tv.Qte_vnt), 0) FROM t_vente tv LEFT JOIN t_facture_vente tf ON tf.id_fact = tv.facture_vnt WHERE tv.article_vnt = v_stock_restant_bon_lina.art_stk AND tf.mag_fact = v_stock_restant_bon_lina.mag_stk) as qte_vnt
+          FROM v_stock_restant_bon_lina WHERE 1=1 ";
         if (!empty($search['magasin']))
             $query.=" AND mag_stk=" . intval($search['magasin']);
 
